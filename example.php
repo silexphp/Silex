@@ -11,12 +11,22 @@ $hello = function ($name)
     return new Response('Hello '.$name);
 };
 
+$goodbye = function($name)
+{
+    return new Response('Goodbye '.$name);
+};
+
 $framework = new Framework(array(
-    '/hello/:name' => $hello,
+    'GET /hello/:name'    => $hello,
+    'POST /goodbye/:name' => $goodbye,
 ));
 
-// Simulate a request without a Client
+// Simulate a hello request without a Client
 //$request = Request::create('/hello/Fabien');
+//$framework->handle($request)->send();
+
+// Simulate a goodbye request without a Client
+//$request = Request::create('/goodbye/Fabien', 'post');
 //$framework->handle($request)->send();
 
 $framework->handle()->send();
