@@ -32,7 +32,13 @@ class Framework extends HttpKernel
     {
         $this->routes = new RouteCollection();
         foreach ($map as $pattern => $to) {
-            $route = new Route($pattern, array('_controller' => $to));
+            if (false !== strpos($pattern, ' ')) {
+                list($method, $pattern) = explode(' ', $pattern, 2);
+            } else {
+                $method = 'GET';
+            }
+
+            $route = new Route($pattern, array('_controller' => $to), array('_method' => explode('|', $method)));
             $this->routes->addRoute(str_replace(array('/', ':'), '_', $pattern), $route);
         }
 
