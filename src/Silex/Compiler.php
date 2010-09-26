@@ -3,7 +3,7 @@
 namespace Silex;
 
 use Symfony\Component\Finder\Finder;
-use Symfony\Framework\Kernel;
+use Symfony\Component\HttpKernel\Kernel;
 
 /*
  * This file is part of the Goutte utility.
