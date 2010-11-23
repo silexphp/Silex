@@ -23,10 +23,10 @@ $framework = new Framework(array(
 
 // Simulate a hello request without a Client
 //$request = Request::create('/hello/Fabien');
-//$framework->handle($request)->send();
+//$framework->run($request);
 
 // Simulate a goodbye request without a Client
 //$request = Request::create('/goodbye/Fabien', 'post');
-//$framework->handle($request)->send();
+//$framework->run($request);
 
-$framework->handle()->send();
+$framework->run();

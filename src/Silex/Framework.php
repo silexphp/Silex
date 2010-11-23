@@ -2,8 +2,9 @@
 
 namespace Silex;
 
-use Symfony\Component\HttpKernel\HttpKernel;
+use Symfony\Component\HttpKernel\BaseHttpKernel;
 use Symfony\Component\HttpKernel\Controller\ControllerResolver;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\Routing\RouteCollection;
@@ -24,7 +25,7 @@ use Symfony\Component\Routing\Matcher\UrlMatcher;
  *
  * @author Fabien Potencier <fabien.potencier@symfony-project.org>
  */
-class Framework extends HttpKernel
+class Framework extends BaseHttpKernel
 {
     protected $routes;
 
@@ -49,9 +50,18 @@ class Framework extends HttpKernel
         parent::__construct($dispatcher, $resolver);
     }
 
+    public function run(Request $request = null)
+    {
+        if (null === $request) {
+            $request = new Request();
+        }
+
+        $this->handle($request)->send();
+    }
+
     public function parseRequest(Event $event)
     {
-        $request = $event['request'];
+        $request = $event->getParameter('request');
 
         $matcher = new UrlMatcher($this->routes, array(
             'base_url'  => $request->getBaseUrl(),
