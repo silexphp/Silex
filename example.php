@@ -3,17 +3,16 @@
 require_once __DIR__.'/silex.phar';
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Silex\Framework;
 
-$hello = function ($name)
+$hello = function($name)
 {
-    return new Response('Hello '.$name);
+    return "Hello $name";
 };
 
 $goodbye = function($name)
 {
-    return new Response('Goodbye '.$name);
+    return "Goodbye $name";
 };
 
 $framework = new Framework(array(

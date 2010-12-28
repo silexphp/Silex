@@ -5,6 +5,7 @@ namespace Silex;
 use Symfony\Component\HttpKernel\BaseHttpKernel;
 use Symfony\Component\HttpKernel\Controller\ControllerResolver;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\Routing\RouteCollection;
@@ -45,6 +46,7 @@ class Framework extends BaseHttpKernel
 
         $dispatcher = new EventDispatcher();
         $dispatcher->connect('core.request', array($this, 'parseRequest'));
+        $dispatcher->connect('core.view', array($this, 'parseResponse'));
         $resolver = new ControllerResolver();
 
         parent::__construct($dispatcher, $resolver);
@@ -75,5 +77,16 @@ class Framework extends BaseHttpKernel
         }
 
         $request->attributes->add($attributes);
+    }
+
+    public function parseResponse(Event $event, $response)
+    {
+        // convert return value into a response object
+        if (!$response instanceof Response)
+        {
+            return new Response((string) $response);
+        }
+
+        return $response;
     }
 }

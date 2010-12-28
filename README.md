@@ -5,17 +5,16 @@ Silex is a simple web framework to develop simple websites:
 
     require_once __DIR__.'/silex.phar';
 
-    use Symfony\Component\HttpFoundation\Response;
     use Silex\Framework;
 
     $framework = new Framework(array(
         'GET /hello/:name' => function($name)
         {
-            return new Response('Hello '.$name);
+            return "Hello $name";
         },
         'POST /goodbye/:name' => function($name)
         {
-            return new Response('Goodbye '.$name);
+            return "Goodbye $name";
         },
     ));
 
