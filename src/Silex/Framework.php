@@ -2,7 +2,7 @@
 
 namespace Silex;
 
-use Symfony\Component\HttpKernel\BaseHttpKernel;
+use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\Controller\ControllerResolver;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -25,7 +25,7 @@ use Symfony\Component\Routing\Matcher\UrlMatcher;
  *
  * @author Fabien Potencier <fabien.potencier@symfony-project.org>
  */
-class Framework extends BaseHttpKernel
+class Framework extends HttpKernel
 {
     protected $routes;
 
@@ -35,13 +35,13 @@ class Framework extends BaseHttpKernel
         foreach ($map as $pattern => $to) {
             if (false !== strpos($pattern, ' ')) {
                 list($method, $pattern) = explode(' ', $pattern, 2);
-                $method = explode('|', $method);
+                $requirements = array('_method' => $method);
             } else {
-                $method = array();
+                $requirements = array();
             }
 
-            $route = new Route($pattern, array('_controller' => $to), array('_method' => $method));
-            $this->routes->addRoute(str_replace(array('/', ':'), '_', $pattern), $route);
+            $route = new Route($pattern, array('_controller' => $to), $requirements);
+            $this->routes->add(str_replace(array('/', ':'), '_', $pattern), $route);
         }
 
         $dispatcher = new EventDispatcher();
@@ -62,7 +62,7 @@ class Framework extends BaseHttpKernel
 
     public function parseRequest(Event $event)
     {
-        $request = $event->getParameter('request');
+        $request = $event->get('request');
 
         $matcher = new UrlMatcher($this->routes, array(
             'base_url'  => $request->getBaseUrl(),
