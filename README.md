@@ -9,17 +9,17 @@ Silex is a simple web framework to develop simple websites:
     use Silex\Framework;
 
     $framework = new Framework(array(
-        'GET /hello/:name' => function($name)
+        '/hello/:name' => function($name)
         {
             return new Response('Hello '.$name);
         },
-        'POST /goodbye/:name' => function($name)
+        'GET|PUT|POST /goodbye/:name' => function($name)
         {
             return new Response('Goodbye '.$name);
         },
     ));
 
-    $framework->handle()->send();
+    $framework->run();
 
 Silex is based on [Symfony2][1].
 
