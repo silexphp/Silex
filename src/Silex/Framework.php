@@ -35,11 +35,12 @@ class Framework extends BaseHttpKernel
         foreach ($map as $pattern => $to) {
             if (false !== strpos($pattern, ' ')) {
                 list($method, $pattern) = explode(' ', $pattern, 2);
+                $method = explode('|', $method);
             } else {
-                $method = 'GET';
+                $method = array();
             }
 
-            $route = new Route($pattern, array('_controller' => $to), array('_method' => explode('|', $method)));
+            $route = new Route($pattern, array('_controller' => $to), array('_method' => $method));
             $this->routes->addRoute(str_replace(array('/', ':'), '_', $pattern), $route);
         }
 
