@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 
 /*
- * This file is part of the Goutte utility.
+ * This file is part of the Silex framework.
  *
  * (c) Fabien Potencier <fabien.potencier@symfony-project.org>
  *

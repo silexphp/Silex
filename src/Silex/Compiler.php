@@ -6,7 +6,7 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\Kernel;
 
 /*
- * This file is part of the Goutte utility.
+ * This file is part of the Silex framework.
  *
  * (c) Fabien Potencier <fabien.potencier@symfony-project.org>
  *
