@@ -33,6 +33,11 @@ Installation
 Installing Silex is as easy as it can get. Download the [`Silex.phar`][2] file
 and you're done!
 
+Test Suite
+----------------
+
+You can run the [PHPUnit][3] test suite by running `phpunit`.
+
 More Information
 ----------------
 
@@ -46,3 +51,4 @@ Silex is licensed under the MIT license.
 
 [1]: http://symfony-reloaded.org/
 [2]: http://github.com/fabpot/silex/blob/master/silex.phar
+[3]: https://github.com/sebastianbergmann/phpunit
