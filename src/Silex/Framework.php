@@ -30,19 +30,12 @@ class Framework extends HttpKernel
 {
     protected $routes;
 
-    public function __construct($map)
+    public function __construct(array $map = null)
     {
         $this->routes = new RouteCollection();
-        foreach ($map as $pattern => $to) {
-            if (false !== strpos($pattern, ' ')) {
-                list($method, $pattern) = explode(' ', $pattern, 2);
-                $requirements = array('_method' => $method);
-            } else {
-                $requirements = array();
-            }
 
-            $route = new Route($pattern, array('_controller' => $to), $requirements);
-            $this->routes->add(str_replace(array('/', ':'), '_', $pattern), $route);
+        if ($map) {
+            $this->parseRouteMap($map);
         }
 
         $dispatcher = new EventDispatcher();
@@ -53,6 +46,48 @@ class Framework extends HttpKernel
         parent::__construct($dispatcher, $resolver);
     }
 
+    public function match($pattern, $to, $method = null)
+    {
+        $requirements = array();
+
+        if ($method) {
+            $requirements['_method'] = $method;
+        }
+
+        $route = new Route($pattern, array('_controller' => $to), $requirements);
+        $this->routes->add(str_replace(array('/', ':', '|'), '_', (string) $method . $pattern), $route);
+
+        return $this;
+    }
+
+    public function get($pattern, $to)
+    {
+        $this->match($pattern, $to, 'GET');
+
+        return $this;
+    }
+
+    public function post($pattern, $to)
+    {
+        $this->match($pattern, $to, 'POST');
+
+        return $this;
+    }
+
+    public function put($pattern, $to)
+    {
+        $this->match($pattern, $to, 'PUT');
+
+        return $this;
+    }
+
+    public function delete($pattern, $to)
+    {
+        $this->match($pattern, $to, 'DELETE');
+
+        return $this;
+    }
+
     public function run(Request $request = null)
     {
         if (null === $request) {
@@ -60,6 +95,18 @@ class Framework extends HttpKernel
         }
 
         $this->handle($request)->send();
+    }
+
+    protected function parseRouteMap(array $map) {
+        foreach ($map as $pattern => $to) {
+            $method = null;
+
+            if (false !== strpos($pattern, ' ')) {
+                list($method, $pattern) = explode(' ', $pattern, 2);
+            }
+
+            $this->match($pattern, $to, $method);
+        }
     }
 
     public function parseRequest(Event $event)
@@ -83,11 +130,15 @@ class Framework extends HttpKernel
     public function parseResponse(Event $event, $response)
     {
         // convert return value into a response object
-        if (!$response instanceof Response)
-        {
+        if (!$response instanceof Response) {
             return new Response((string) $response);
         }
 
         return $response;
+    }
+
+    public static function create(array $map = null)
+    {
+        return new static($map);
     }
 }
