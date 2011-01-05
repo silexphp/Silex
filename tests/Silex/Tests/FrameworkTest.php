@@ -4,10 +4,6 @@ namespace Silex\Tests;
 
 use Silex\Framework;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
 /*
  * This file is part of the Silex framework.
  *
@@ -18,7 +14,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 
 /**
- * The Silex framework class.
+ * Framework test cases.
  *
  * @author Fabien Potencier <fabien.potencier@symfony-project.org>
  */
@@ -30,186 +26,26 @@ class FrameworkTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Silex\Framework', $framework, "Framework::create() must return instance of Framework");
     }
 
-    public function testMapRouting()
-    {
-        $framework = Framework::create(array(
-            '/foo' => function() {
-                return 'foo';
-            },
-            '/bar' => function() {
-                return 'bar';
-            },
-            '/' => function() {
-                return 'root';
-            },
-        ));
-
-        $this->checkRouteResponse($framework, '/foo', 'foo');
-        $this->checkRouteResponse($framework, '/bar', 'bar');
-        $this->checkRouteResponse($framework, '/', 'root');
-    }
-
-    public function testMapRoutingMethods()
-    {
-        $framework = Framework::create(array(
-            'GET /foo' => function() {
-                return 'foo';
-            },
-            'PUT|DELETE /bar' => function() {
-                return 'bar';
-            },
-            '/' => function() {
-                return 'root';
-            },
-        ));
-
-        // foo route
-        $this->checkRouteResponse($framework, '/foo', 'foo');
-
-        // bar route
-        $this->checkRouteResponse($framework, '/bar', 'bar', 'put');
-        $this->checkRouteResponse($framework, '/bar', 'bar', 'delete');
-
-        // root route
-        $this->checkRouteResponse($framework, '/', 'root');
-        $this->checkRouteResponse($framework, '/', 'root', 'post');
-        $this->checkRouteResponse($framework, '/', 'root', 'put');
-        $this->checkRouteResponse($framework, '/', 'root', 'delete');
-
-        try {
-            $request = Request::create('http://test.com/bar');
-            $framework->handle($request);
-
-            $this->fail('Framework must reject HTTP GET method to /bar');
-        } catch (NotFoundHttpException $expected) {
-        }
-
-        try {
-            $request = Request::create('http://test.com/bar', 'post');
-            $framework->handle($request);
-
-            $this->fail('Framework must reject HTTP POST method to /bar');
-        } catch (NotFoundHttpException $expected) {
-        }
-    }
-
-    public function testMapRoutingParameters()
-    {
-        $framework = Framework::create(array(
-            '/hello' => function() {
-                return "Hello anon";
-            },
-            '/hello/:name' => function($name) {
-                return "Hello $name";
-            },
-            '/goodbye/:name' => function($name) {
-                return "Goodbye $name";
-            },
-            '/tell/:name/:message' => function($message, $name) {
-                return "Message for $name: $message";
-            },
-            '/' => function() {
-                return 'root';
-            },
-        ));
-
-        $this->checkRouteResponse($framework, '/hello', 'Hello anon');
-        $this->checkRouteResponse($framework, '/hello/alice', 'Hello alice');
-        $this->checkRouteResponse($framework, '/hello/bob', 'Hello bob');
-        $this->checkRouteResponse($framework, '/goodbye/alice', 'Goodbye alice');
-        $this->checkRouteResponse($framework, '/goodbye/bob', 'Goodbye bob');
-        $this->checkRouteResponse($framework, '/tell/bob/secret', 'Message for bob: secret');
-        $this->checkRouteResponse($framework, '/', 'root');
-    }
-
-    public function testStatusCode()
-    {
-        $framework = Framework::create(array(
-            'PUT /created' => function() {
-                return new Response('', 201);
-            },
-            '/forbidden' => function() {
-                return new Response('', 403);
-            },
-            '/not_found' => function() {
-                return new Response('', 404);
-            },
-        ));
-
-        $request = Request::create('http://test.com/created', 'put');
-        $response = $framework->handle($request);
-        $this->assertEquals(201, $response->getStatusCode());
-
-        $request = Request::create('http://test.com/forbidden');
-        $response = $framework->handle($request);
-        $this->assertEquals(403, $response->getStatusCode());
-
-        $request = Request::create('http://test.com/not_found');
-        $response = $framework->handle($request);
-        $this->assertEquals(404, $response->getStatusCode());
-    }
-
-    public function testRedirect()
-    {
-        $framework = Framework::create(array(
-            '/redirect' => function() {
-                $response = new Response();
-                $response->setRedirect('/target');
-                return $response;
-            },
-        ));
-
-        $request = Request::create('http://test.com/redirect');
-        $response = $framework->handle($request);
-        $this->assertTrue($response->isRedirected('/target'));
-    }
-
-    /**
-    * @expectedException Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-    */
-    public function testMissingRoute()
+    public function testFluidInterface()
     {
         $framework = Framework::create();
 
-        $request = Request::create('http://test.com/baz');
-        $framework->handle($request);
-    }
+        $returnValue = $framework->match('/foo', function() {});
+        $this->assertSame($framework, $returnValue, '->match() should return $this');
 
-    public function testMethodRouting()
-    {
-        $framework = Framework::create()
-            ->match('/foo', function() {
-                return 'foo';
-            })
-            ->match('/bar', function() {
-                return 'bar';
-            }, 'GET|POST')
-            ->get('/resource', function() {
-                return 'get resource';
-            })
-            ->post('/resource', function() {
-                return 'post resource';
-            })
-            ->put('/resource', function() {
-                return 'put resource';
-            })
-            ->delete('/resource', function() {
-                return 'delete resource';
-            });
+        $returnValue = $framework->get('/foo', function() {});
+        $this->assertSame($framework, $returnValue, '->get() should return $this');
 
-        $this->checkRouteResponse($framework, '/foo', 'foo');
-        $this->checkRouteResponse($framework, '/bar', 'bar');
-        $this->checkRouteResponse($framework, '/bar', 'bar', 'post');
-        $this->checkRouteResponse($framework, '/resource', 'get resource');
-        $this->checkRouteResponse($framework, '/resource', 'post resource', 'post');
-        $this->checkRouteResponse($framework, '/resource', 'put resource', 'put');
-        $this->checkRouteResponse($framework, '/resource', 'delete resource', 'delete');
-    }
+        $returnValue = $framework->post('/foo', function() {});
+        $this->assertSame($framework, $returnValue, '->post() should return $this');
 
-    protected function checkRouteResponse($framework, $path, $expectedContent, $method = 'get', $message = null)
-    {
-        $request = Request::create('http://test.com' . $path, $method);
-        $response = $framework->handle($request);
-        $this->assertEquals($expectedContent, $response->getContent(), $message);
+        $returnValue = $framework->put('/foo', function() {});
+        $this->assertSame($framework, $returnValue, '->put() should return $this');
+
+        $returnValue = $framework->delete('/foo', function() {});
+        $this->assertSame($framework, $returnValue, '->delete() should return $this');
+
+        $returnValue = $framework->error(function() {});
+        $this->assertSame($framework, $returnValue, '->error() should return $this');
     }
 }

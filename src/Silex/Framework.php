@@ -29,6 +29,7 @@ use Symfony\Component\Routing\Matcher\UrlMatcher;
 class Framework extends HttpKernel
 {
     protected $routes;
+    protected $errorHandlers = array();
 
     public function __construct(array $map = null)
     {
@@ -41,6 +42,7 @@ class Framework extends HttpKernel
         $dispatcher = new EventDispatcher();
         $dispatcher->connect('core.request', array($this, 'parseRequest'));
         $dispatcher->connect('core.view', array($this, 'parseResponse'));
+        $dispatcher->connect('core.exception', array($this, 'handleException'));
         $resolver = new ControllerResolver();
 
         parent::__construct($dispatcher, $resolver);
@@ -84,6 +86,13 @@ class Framework extends HttpKernel
     public function delete($pattern, $to)
     {
         $this->match($pattern, $to, 'DELETE');
+
+        return $this;
+    }
+
+    public function error($callback)
+    {
+        $this->errorHandlers[] = $callback;
 
         return $this;
     }
@@ -135,6 +144,23 @@ class Framework extends HttpKernel
         }
 
         return $response;
+    }
+
+    // use the first non-null handler response
+    // but execute all error handlers
+    public function handleException(Event $event)
+    {
+        $exception = $event->get('exception');
+        $prevResult = null;
+        foreach ($this->errorHandlers as $callback) {
+            $result = $callback($exception);
+            if (null !== $result && !$prevResult) {
+                $response = $this->parseResponse($event, $result);
+                $event->setReturnValue($response);
+                $event->setProcessed(true);
+                $prevResult = $result;
+            }
+        }
     }
 
     public static function create(array $map = null)
