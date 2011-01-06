@@ -1,5 +1,4 @@
-Silex, a simple Web Framework
-=============================
+# Silex, a simple Web Framework
 
 Silex is a simple web framework to develop simple websites:
 
@@ -7,45 +6,43 @@ Silex is a simple web framework to develop simple websites:
 
     use Silex\Framework;
 
-    $framework = new Framework(array(
-        '/hello/:name' => function($name)
-        {
-            return "Hello $name";
-        },
-        'GET|PUT|POST /goodbye/:name' => function($name)
-        {
-            return "Goodbye $name";
-        },
-    ));
+    $app = Framework::create();
 
-    $framework->run();
+    $app->get('/home/:name', function($name) {
+        return "Hello $name";
+    });
+
+    $app->match('/goodbye/:name', function($name) {
+        return "Goodbye $name";
+    });
+
+    $app->error(function($e) {
+        return "An error occured<br />" . $e->getMessage();
+    });
+
+    $app->run();
 
 Silex is based on [Symfony2][1].
 
-Requirements
-------------
+## Requirements
 
 Silex works with PHP 5.3.2 or later.
 
-Installation
-------------
+## Installation
 
 Installing Silex is as easy as it can get. Download the [`Silex.phar`][2] file
 and you're done!
 
-Test Suite
-----------------
+## Test Suite
 
 You can run the [PHPUnit][3] test suite by running `phpunit`.
 
-More Information
-----------------
+## More Information
 
 Read the documentation of Symfony2 for more information about how you can
 leverage Symfony2 features.
 
-License
--------
+## License
 
 Silex is licensed under the MIT license.
 
