@@ -30,12 +30,16 @@ Silex works with PHP 5.3.2 or later.
 
 ## Installation
 
-Installing Silex is as easy as it can get. Download the [`Silex.phar`][2] file
+Installing Silex is as easy as it can get. Download the [`silex.phar`][2] file
 and you're done!
 
 ## Test Suite
 
 You can run the [PHPUnit][3] test suite by running `phpunit`.
+
+## Build
+
+You can build the silex.phar file by running `php compile.php`.
 
 ## More Information
 
