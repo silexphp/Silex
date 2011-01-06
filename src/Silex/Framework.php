@@ -31,6 +31,15 @@ class Framework extends HttpKernel
     protected $routes;
     protected $errorHandlers = array();
 
+    /**
+     * Constructor.
+     *
+     * Takes a route map argument (assoc array). The key is (optional) a pipe '|'
+     * delimited list of HTTP methods followed by a single space ' ', followed by
+     * the path pattern to match. The value is a callable.
+     *
+     * @param array $map Route map, mapping patterns to callables
+     */
     public function __construct(array $map = null)
     {
         $this->routes = new RouteCollection();
@@ -48,6 +57,20 @@ class Framework extends HttpKernel
         parent::__construct($dispatcher, $resolver);
     }
 
+    /**
+     * Map a pattern to a callable.
+     *
+     * You can optionally specify HTTP methods that should be matched.
+     *
+     * This method is chainable.
+     *
+     * @param string $pattern Matched route pattern
+     * @param mixed $to Callback that returns the response when matched
+     * @param string $method Matched HTTP methods, multiple can be supplied,
+     *                       delimited by a pipe character '|', eg. 'GET|POST'. 
+     *
+     * @return $this
+     */
     public function match($pattern, $to, $method = null)
     {
         $requirements = array();
@@ -62,6 +85,16 @@ class Framework extends HttpKernel
         return $this;
     }
 
+    /**
+     * Map a GET request to a callable.
+     *
+     * This method is chainable.
+     *
+     * @param string $pattern Matched route pattern
+     * @param mixed $to Callback that returns the response when matched
+     *
+     * @return $this
+     */
     public function get($pattern, $to)
     {
         $this->match($pattern, $to, 'GET');
@@ -69,6 +102,16 @@ class Framework extends HttpKernel
         return $this;
     }
 
+    /**
+     * Map a POST request to a callable.
+     *
+     * This method is chainable.
+     *
+     * @param string $pattern Matched route pattern
+     * @param mixed $to Callback that returns the response when matched
+     *
+     * @return $this
+     */
     public function post($pattern, $to)
     {
         $this->match($pattern, $to, 'POST');
@@ -76,6 +119,16 @@ class Framework extends HttpKernel
         return $this;
     }
 
+    /**
+     * Map a PUT request to a callable.
+     *
+     * This method is chainable.
+     *
+     * @param string $pattern Matched route pattern
+     * @param mixed $to Callback that returns the response when matched
+     *
+     * @return $this
+     */
     public function put($pattern, $to)
     {
         $this->match($pattern, $to, 'PUT');
@@ -83,6 +136,16 @@ class Framework extends HttpKernel
         return $this;
     }
 
+    /**
+     * Map a DELETE request to a callable.
+     *
+     * This method is chainable.
+     *
+     * @param string $pattern Matched route pattern
+     * @param mixed $to Callback that returns the response when matched
+     *
+     * @return $this
+     */
     public function delete($pattern, $to)
     {
         $this->match($pattern, $to, 'DELETE');
@@ -90,6 +153,23 @@ class Framework extends HttpKernel
         return $this;
     }
 
+    /**
+     * Register an error handler.
+     *
+     * Error handlers are simple callables which take a single Exception
+     * as an argument. If a controller throws an exception, an error handler
+     * can return a specific response.
+     *
+     * When an exception occurs, all registered error handlers will be called.
+     * The first response a handler returns (it may also return nothing) will
+     * then be served.
+     *
+     * This method is chainable.
+     *
+     * @param mixed $callback Error handler callback, takes an Exception argument
+     *
+     * @return $this
+     */
     public function error($callback)
     {
         $this->errorHandlers[] = $callback;
@@ -97,6 +177,13 @@ class Framework extends HttpKernel
         return $this;
     }
 
+    /**
+     * Handle the request and deliver the response.
+     *
+     * @param Request $request Request to process
+     *
+     * @return $this
+     */
     public function run(Request $request = null)
     {
         if (null === $request) {
@@ -106,6 +193,11 @@ class Framework extends HttpKernel
         $this->handle($request)->send();
     }
 
+    /**
+     * Parse a route map and create routes
+     *
+     * @see __construct()
+     */
     protected function parseRouteMap(array $map) {
         foreach ($map as $pattern => $to) {
             $method = null;
@@ -118,6 +210,11 @@ class Framework extends HttpKernel
         }
     }
 
+    /**
+     * Handler for core.request
+     *
+     * @see __construct()
+     */
     public function parseRequest(Event $event)
     {
         $request = $event->get('request');
@@ -136,6 +233,13 @@ class Framework extends HttpKernel
         $request->attributes->add($attributes);
     }
 
+    /**
+     * Handler for core.view
+     *
+     * Converts string responses to Response objects.
+     *
+     * @see __construct()
+     */
     public function parseResponse(Event $event, $response)
     {
         // convert return value into a response object
@@ -146,8 +250,14 @@ class Framework extends HttpKernel
         return $response;
     }
 
-    // use the first non-null handler response
-    // but execute all error handlers
+    /**
+     * Handler for core.exception
+     *
+     * Executes all registered error handlers and sets the first response
+     * to be sent to the client.
+     *
+     * @see error()
+     */
     public function handleException(Event $event)
     {
         $exception = $event->get('exception');
@@ -163,6 +273,13 @@ class Framework extends HttpKernel
         }
     }
 
+    /**
+     * Convenience method to create a new instance of Framework.
+     *
+     * @param array $map
+     *
+     * @return instance of Framework
+     */
     public static function create(array $map = null)
     {
         return new static($map);
