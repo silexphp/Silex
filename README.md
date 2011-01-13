@@ -8,11 +8,11 @@ Silex is a simple web framework to develop simple websites:
 
     $app = Framework::create();
 
-    $app->get('/home/:name', function($name) {
+    $app->get('/home/{name}', function($name) {
         return "Hello $name";
     });
 
-    $app->match('/goodbye/:name', function($name) {
+    $app->match('/goodbye/{name}', function($name) {
         return "Goodbye $name";
     });
 

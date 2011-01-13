@@ -79,8 +79,11 @@ class Framework extends HttpKernel
             $requirements['_method'] = $method;
         }
 
+        $routeName = (string) $method . $pattern;
+        $routeName = str_replace(array('{', '}'), '', $routeName);
+        $routeName = str_replace(array('/', ':', '|'), '_', $routeName);
         $route = new Route($pattern, array('_controller' => $to), $requirements);
-        $this->routes->add(str_replace(array('/', ':', '|'), '_', (string) $method . $pattern), $route);
+        $this->routes->add($routeName, $route);
 
         return $this;
     }

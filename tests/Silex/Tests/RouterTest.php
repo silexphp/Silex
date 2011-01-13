@@ -93,13 +93,13 @@ class RouterTest extends \PHPUnit_Framework_TestCase
             '/hello' => function() {
                 return "Hello anon";
             },
-            '/hello/:name' => function($name) {
+            '/hello/{name}' => function($name) {
                 return "Hello $name";
             },
-            '/goodbye/:name' => function($name) {
+            '/goodbye/{name}' => function($name) {
                 return "Goodbye $name";
             },
-            '/tell/:name/:message' => function($message, $name) {
+            '/tell/{name}/{message}' => function($message, $name) {
                 return "Message for $name: $message";
             },
             '/' => function() {
