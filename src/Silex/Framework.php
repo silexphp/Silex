@@ -29,7 +29,7 @@ use Symfony\Component\Routing\Matcher\UrlMatcher;
 class Framework extends HttpKernel
 {
     protected $routes;
-    protected $errorHandlers = array();
+    protected $handlers = array('error' => array(), 'before' => array(), 'after' => array());
 
     /**
      * Constructor.
@@ -50,7 +50,9 @@ class Framework extends HttpKernel
 
         $dispatcher = new EventDispatcher();
         $dispatcher->connect('core.request', array($this, 'parseRequest'));
+        $dispatcher->connect('core.request', array($this, 'runBeforeFilters'));
         $dispatcher->connect('core.view', array($this, 'parseResponse'));
+        $dispatcher->connect('core.view', array($this, 'runAfterFilters'));
         $dispatcher->connect('core.exception', array($this, 'handleException'));
         $resolver = new ControllerResolver();
 
@@ -157,6 +159,42 @@ class Framework extends HttpKernel
     }
 
     /**
+     * Register a before filter.
+     *
+     * Before filters are run before any route has been matched.
+     *
+     * This method is chainable.
+     *
+     * @param mixed $callback Before filter callback
+     *
+     * @return $this
+     */
+    public function before($callback)
+    {
+        $this->handlers['before'][] = $callback;
+
+        return $this;
+    }
+
+    /**
+     * Register an after filter.
+     *
+     * After filters are run after the controller has been executed.
+     *
+     * This method is chainable.
+     *
+     * @param mixed $callback After filter callback
+     *
+     * @return $this
+     */
+    public function after($callback)
+    {
+        $this->handlers['after'][] = $callback;
+
+        return $this;
+    }
+
+    /**
      * Register an error handler.
      *
      * Error handlers are simple callables which take a single Exception
@@ -175,7 +213,7 @@ class Framework extends HttpKernel
      */
     public function error($callback)
     {
-        $this->errorHandlers[] = $callback;
+        $this->handlers['error'][] = $callback;
 
         return $this;
     }
@@ -237,6 +275,20 @@ class Framework extends HttpKernel
     }
 
     /**
+     * Handler for core.request
+     *
+     * Runs before filters right after the request comes in.
+     *
+     * @see __construct()
+     */
+    public function runBeforeFilters(Event $event)
+    {
+        foreach ($this->handlers['before'] as $beforeFilter) {
+            $beforeFilter();
+        }
+    }
+
+    /**
      * Handler for core.view
      *
      * Converts string responses to Response objects.
@@ -254,6 +306,22 @@ class Framework extends HttpKernel
     }
 
     /**
+     * Handler for core.view
+     *
+     * Runs after filters.
+     *
+     * @see __construct()
+     */
+    public function runAfterFilters(Event $event, $response)
+    {
+        foreach ($this->handlers['after'] as $afterFilter) {
+            $afterFilter();
+        }
+
+        return $response;
+    }
+
+    /**
      * Handler for core.exception
      *
      * Executes all registered error handlers and sets the first response
@@ -265,7 +333,7 @@ class Framework extends HttpKernel
     {
         $exception = $event->get('exception');
         $prevResult = null;
-        foreach ($this->errorHandlers as $callback) {
+        foreach ($this->handlers['error'] as $callback) {
             $result = $callback($exception);
             if (null !== $result && !$prevResult) {
                 $response = $this->parseResponse($event, $result);
