@@ -26,7 +26,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 {
     public function testMapRouting()
     {
-        $framework = Framework::create(array(
+        $framework = new Framework(array(
             '/foo' => function() {
                 return 'foo';
             },
@@ -45,7 +45,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
     public function testMapRoutingMethods()
     {
-        $framework = Framework::create(array(
+        $framework = new Framework(array(
             'GET /foo' => function() {
                 return 'foo';
             },
@@ -89,7 +89,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
     public function testMapRoutingParameters()
     {
-        $framework = Framework::create(array(
+        $framework = new Framework(array(
             '/hello' => function() {
                 return "Hello anon";
             },
@@ -118,7 +118,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
     public function testStatusCode()
     {
-        $framework = Framework::create(array(
+        $framework = new Framework(array(
             'PUT /created' => function() {
                 return new Response('', 201);
             },
@@ -145,7 +145,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
     public function testRedirect()
     {
-        $framework = Framework::create(array(
+        $framework = new Framework(array(
             '/redirect' => function() {
                 $response = new Response();
                 $response->setRedirect('/target');
@@ -163,7 +163,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     */
     public function testMissingRoute()
     {
-        $framework = Framework::create();
+        $framework = new Framework();
 
         $request = Request::create('http://test.com/baz');
         $framework->handle($request);
@@ -171,7 +171,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
     public function testMethodRouting()
     {
-        $framework = Framework::create();
+        $framework = new Framework();
         $framework->match('/foo', function() {
             return 'foo';
         });

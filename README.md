@@ -6,7 +6,7 @@ Silex is a simple web framework to develop simple websites:
 
     use Silex\Framework;
 
-    $app = Framework::create();
+    $app = new Framework();
 
     $app->get('/home/{name}', function($name) {
         return "Hello $name";

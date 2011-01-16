@@ -20,15 +20,9 @@ use Silex\Framework;
  */
 class FrameworkTest extends \PHPUnit_Framework_TestCase
 {
-    public function testCreate()
-    {
-        $framework = Framework::create();
-        $this->assertInstanceOf('Silex\Framework', $framework, "Framework::create() must return instance of Framework");
-    }
-
     public function testFluidInterface()
     {
-        $framework = Framework::create();
+        $framework = new Framework();
 
         $returnValue = $framework->match('/foo', function() {});
         $this->assertSame($framework, $returnValue, '->match() should return $this');

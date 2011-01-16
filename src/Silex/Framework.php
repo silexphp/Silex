@@ -343,16 +343,4 @@ class Framework extends HttpKernel
             }
         }
     }
-
-    /**
-     * Convenience method to create a new instance of Framework.
-     *
-     * @param array $map
-     *
-     * @return instance of Framework
-     */
-    public static function create(array $map = null)
-    {
-        return new static($map);
-    }
 }

@@ -29,7 +29,7 @@ class BeforeAfterFilterTest extends \PHPUnit_Framework_TestCase
 
         $test = $this;
 
-        $framework = Framework::create();
+        $framework = new Framework();
         $framework->before(function() use(&$i, $test) {
             $test->assertEquals(0, $i);
             $i++;
