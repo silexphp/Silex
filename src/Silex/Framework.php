@@ -51,8 +51,8 @@ class Framework extends HttpKernel
         $dispatcher = new EventDispatcher();
         $dispatcher->connect('core.request', array($this, 'parseRequest'));
         $dispatcher->connect('core.request', array($this, 'runBeforeFilters'));
-        $dispatcher->connect('core.view', array($this, 'parseResponse'));
-        $dispatcher->connect('core.view', array($this, 'runAfterFilters'));
+        $dispatcher->connect('core.view', array($this, 'parseResponse'), -7);
+        $dispatcher->connect('core.view', array($this, 'runAfterFilters'), -8);
         $dispatcher->connect('core.exception', array($this, 'handleException'));
         $resolver = new ControllerResolver();
 
