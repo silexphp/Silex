@@ -30,6 +30,7 @@ class Framework extends HttpKernel
 {
     protected $routes;
     protected $handlers = array('error' => array(), 'before' => array(), 'after' => array());
+    protected $request;
 
     /**
      * Constructor.
@@ -57,6 +58,16 @@ class Framework extends HttpKernel
         $resolver = new ControllerResolver();
 
         parent::__construct($dispatcher, $resolver);
+    }
+
+    /**
+     * Get the current request.
+     *
+     * @return Symfony\Component\HttpFoundation\Request
+     */
+    public function getRequest()
+    {
+        return $this->request;
     }
 
     /**
@@ -272,6 +283,8 @@ class Framework extends HttpKernel
         }
 
         $request->attributes->add($attributes);
+
+        $this->request = $request;
     }
 
     /**
@@ -332,15 +345,16 @@ class Framework extends HttpKernel
     public function handleException(Event $event)
     {
         $exception = $event->get('exception');
-        $prevResult = null;
+        $response = $prevResult = null;
         foreach ($this->handlers['error'] as $callback) {
             $result = $callback($exception);
             if (null !== $result && !$prevResult) {
                 $response = $this->parseResponse($event, $result);
-                $event->setReturnValue($response);
                 $event->setProcessed(true);
                 $prevResult = $result;
             }
         }
+
+        return $response;
     }
 }
