@@ -27,6 +27,9 @@ class WebTestCaseTest extends WebTestCase
             '/hello' => function() {
                 return 'world';
             },
+            '/html' => function() {
+                return '<h1>title</h1>';
+            },
         ));
 
         return $app;
@@ -40,5 +43,13 @@ class WebTestCaseTest extends WebTestCase
         $response = $client->getResponse();
         $this->assertTrue($response->isSuccessful());
         $this->assertEquals('world', $response->getContent());
+    }
+
+    public function testCrawlerFilter()
+    {
+        $client = $this->createClient();
+
+        $crawler = $client->request('GET', '/html');
+        $this->assertEquals('title', $crawler->filter('h1')->text());
     }
 }
