@@ -39,6 +39,12 @@ class FrameworkTest extends \PHPUnit_Framework_TestCase
         $returnValue = $framework->delete('/foo', function() {});
         $this->assertSame($framework, $returnValue, '->delete() should return $this');
 
+        $returnValue = $framework->before(function() {});
+        $this->assertSame($framework, $returnValue, '->before() should return $this');
+
+        $returnValue = $framework->after(function() {});
+        $this->assertSame($framework, $returnValue, '->after() should return $this');
+
         $returnValue = $framework->error(function() {});
         $this->assertSame($framework, $returnValue, '->error() should return $this');
     }
