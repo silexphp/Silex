@@ -32,7 +32,7 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
         ));
 
         try {
-            $request = Request::create('http://test.com/foo');
+            $request = Request::create('/foo');
             $framework->handle($request);
             $this->fail('->handle() should not catch exceptions where no error handler was supplied');
         } catch (\RuntimeException $e) {
@@ -52,7 +52,7 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
             return new Response('foo exception handler');
         });
 
-        $request = Request::create('http://test.com/foo');
+        $request = Request::create('/foo');
         $this->checkRouteResponse($framework, '/foo', 'foo exception handler');
     }
 
@@ -80,7 +80,7 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
             return new Response('foo exception handler 2');
         });
 
-        $request = Request::create('http://test.com/foo');
+        $request = Request::create('/foo');
         $this->checkRouteResponse($framework, '/foo', 'foo exception handler', 'should return the first response returned by an exception handler');
 
         $this->assertEquals(3, $errors, 'should execute all error handlers');
@@ -101,7 +101,7 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
         });
 
         try {
-            $request = Request::create('http://test.com/foo');
+            $request = Request::create('/foo');
             $framework->handle($request);
             $this->fail('->handle() should not catch exceptions where an empty error handler was supplied');
         } catch (\RuntimeException $e) {
@@ -123,7 +123,7 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
             return 'foo exception handler';
         });
 
-        $request = Request::create('http://test.com/foo');
+        $request = Request::create('/foo');
         $this->checkRouteResponse($framework, '/foo', 'foo exception handler', 'should accept a string response from the error handler');
     }
 
@@ -140,7 +140,7 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
         });
 
         try {
-            $request = Request::create('http://test.com/foo');
+            $request = Request::create('/foo');
             $this->checkRouteResponse($framework, '/foo', 'foo exception handler', 'should accept a string response from the error handler');
             $this->fail('->handle() should not catch exceptions thrown from an error handler');
         } catch (\RuntimeException $e) {
@@ -150,7 +150,7 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
 
     protected function checkRouteResponse($framework, $path, $expectedContent, $method = 'get', $message = null)
     {
-        $request = Request::create('http://test.com' . $path, $method);
+        $request = Request::create($path, $method);
         $response = $framework->handle($request);
         $this->assertEquals($expectedContent, $response->getContent(), $message);
     }

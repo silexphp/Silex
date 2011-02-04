@@ -71,7 +71,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $this->checkRouteResponse($framework, '/', 'root', 'delete');
 
         try {
-            $request = Request::create('http://test.com/bar');
+            $request = Request::create('/bar');
             $framework->handle($request);
 
             $this->fail('Framework must reject HTTP GET method to /bar');
@@ -79,7 +79,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         }
 
         try {
-            $request = Request::create('http://test.com/bar', 'post');
+            $request = Request::create('/bar', 'post');
             $framework->handle($request);
 
             $this->fail('Framework must reject HTTP POST method to /bar');
@@ -130,15 +130,15 @@ class RouterTest extends \PHPUnit_Framework_TestCase
             },
         ));
 
-        $request = Request::create('http://test.com/created', 'put');
+        $request = Request::create('/created', 'put');
         $response = $framework->handle($request);
         $this->assertEquals(201, $response->getStatusCode());
 
-        $request = Request::create('http://test.com/forbidden');
+        $request = Request::create('/forbidden');
         $response = $framework->handle($request);
         $this->assertEquals(403, $response->getStatusCode());
 
-        $request = Request::create('http://test.com/not_found');
+        $request = Request::create('/not_found');
         $response = $framework->handle($request);
         $this->assertEquals(404, $response->getStatusCode());
     }
@@ -153,7 +153,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
             },
         ));
 
-        $request = Request::create('http://test.com/redirect');
+        $request = Request::create('/redirect');
         $response = $framework->handle($request);
         $this->assertTrue($response->isRedirected('/target'));
     }
@@ -165,7 +165,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     {
         $framework = new Framework();
 
-        $request = Request::create('http://test.com/baz');
+        $request = Request::create('/baz');
         $framework->handle($request);
     }
 
@@ -202,7 +202,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
     protected function checkRouteResponse($framework, $path, $expectedContent, $method = 'get', $message = null)
     {
-        $request = Request::create('http://test.com' . $path, $method);
+        $request = Request::create($path, $method);
         $response = $framework->handle($request);
         $this->assertEquals($expectedContent, $response->getContent(), $message);
     }

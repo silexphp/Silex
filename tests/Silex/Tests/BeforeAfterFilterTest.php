@@ -43,7 +43,7 @@ class BeforeAfterFilterTest extends \PHPUnit_Framework_TestCase
             $i++;
         });
 
-        $request = Request::create('http://test.com/foo');
+        $request = Request::create('/foo');
         $framework->handle($request);
 
         $test->assertEquals(3, $i);
