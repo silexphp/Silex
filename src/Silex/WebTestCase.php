@@ -28,8 +28,6 @@ abstract class WebTestCase extends BaseWebTestCase
      *
      * Note: Child classes that define a setUp method must call
      * parent::setUp().
-     *
-     * @return Symfony\Component\HttpKernel\HttpKernel
      */
     public function setUp()
     {
