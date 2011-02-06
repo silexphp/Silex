@@ -239,7 +239,7 @@ class Framework extends HttpKernel
     public function run(Request $request = null)
     {
         if (null === $request) {
-            $request = new Request();
+            $request = Request::createFromGlobals();
         }
 
         $this->handle($request)->send();
