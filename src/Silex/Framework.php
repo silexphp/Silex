@@ -52,8 +52,8 @@ class Framework extends HttpKernel
         $dispatcher = new EventDispatcher();
         $dispatcher->connect('core.request', array($this, 'parseRequest'));
         $dispatcher->connect('core.request', array($this, 'runBeforeFilters'));
-        $dispatcher->connect('core.view', array($this, 'parseResponse'), -7);
-        $dispatcher->connect('core.view', array($this, 'runAfterFilters'), -8);
+        $dispatcher->connect('core.view', array($this, 'parseStringResponse'), -10);
+        $dispatcher->connect('core.response', array($this, 'runAfterFilters'));
         $dispatcher->connect('core.exception', array($this, 'handleException'));
         $resolver = new ControllerResolver();
 
@@ -308,14 +308,9 @@ class Framework extends HttpKernel
      *
      * @see __construct()
      */
-    public function parseResponse(Event $event, $response)
+    public function parseStringResponse(Event $event, $response)
     {
-        // convert return value into a response object
-        if (!$response instanceof Response) {
-            return new Response((string) $response);
-        }
-
-        return $response;
+        return new Response((string) $response);
     }
 
     /**
@@ -349,7 +344,7 @@ class Framework extends HttpKernel
         foreach ($this->handlers['error'] as $callback) {
             $result = $callback($exception);
             if (null !== $result && !$prevResult) {
-                $response = $this->parseResponse($event, $result);
+                $response = $this->parseStringResponse($event, $result);
                 $event->setProcessed(true);
                 $prevResult = $result;
             }

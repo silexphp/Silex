@@ -46,6 +46,60 @@ class BeforeAfterFilterTest extends \PHPUnit_Framework_TestCase
         $request = Request::create('/foo');
         $framework->handle($request);
 
-        $test->assertEquals(3, $i);
+        $this->assertEquals(3, $i);
+    }
+
+    public function testAfterFilterWithResponseObject()
+    {
+        $i = 0;
+
+        $framework = new Framework(array(
+            '/foo' => function() use(&$i) {
+                $i++;
+                return new Response('foo');
+            },
+        ));
+        $framework->after(function() use(&$i) {
+            $i++;
+        });
+
+        $request = Request::create('/foo');
+        $framework->handle($request);
+
+        $this->assertEquals(2, $i);
+    }
+
+    public function testMultipleFilters()
+    {
+        $i = 0;
+
+        $test = $this;
+
+        $framework = new Framework();
+        $framework->before(function() use(&$i, $test) {
+            $test->assertEquals(0, $i);
+            $i++;
+        });
+        $framework->before(function() use(&$i, $test) {
+            $test->assertEquals(1, $i);
+            $i++;
+        });
+        $framework->match('/foo', function() use(&$i, $test) {
+            $test->assertEquals(2, $i);
+            $i++;
+        });
+        $framework->after(function() use(&$i, $test) {
+            $test->assertEquals(3, $i);
+            $i++;
+        });
+        $framework->after(function() use(&$i, $test) {
+            $test->assertEquals(4, $i);
+            $i++;
+        });
+
+        $request = Request::create('/foo');
+        $framework->handle($request);
+
+        $this->assertEquals(5, $i);
     }
 }
