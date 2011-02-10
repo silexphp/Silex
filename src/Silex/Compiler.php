@@ -33,7 +33,13 @@ class Compiler
         $phar->startBuffering();
 
         $finder = new Finder();
-        $finder->files()->name('*.php')->exclude('tests')->in(__DIR__.'/..');
+        $finder->
+            files()->
+            name('*.php')->
+            exclude('tests')->
+            exclude('Bundle')->
+            in(__DIR__.'/..');
+
         foreach ($finder as $file) {
             $path = str_replace(realpath(__DIR__.'/../..').'/', '', realpath($file));
             $content = Kernel::stripComments(file_get_contents($file));
