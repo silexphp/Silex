@@ -310,7 +310,11 @@ class Framework extends HttpKernel
      */
     public function parseStringResponse(Event $event, $response)
     {
-        return new Response((string) $response);
+        if ($response instanceof Response) {
+            return $response;
+        } else {
+            return new Response((string) $response);
+        }
     }
 
     /**
