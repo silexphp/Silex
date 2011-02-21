@@ -29,7 +29,7 @@ use Symfony\Component\Routing\Matcher\UrlMatcher;
 class Framework extends HttpKernel
 {
     protected $routes;
-    protected $handlers = array('error' => array(), 'before' => array(), 'after' => array());
+    protected $errorHandlers = array();
     protected $request;
 
     /**
@@ -182,7 +182,7 @@ class Framework extends HttpKernel
      */
     public function before($callback)
     {
-        $this->handlers['before'][] = $callback;
+        $this->dispatcher->connect('silex.before', $callback);
 
         return $this;
     }
@@ -200,7 +200,7 @@ class Framework extends HttpKernel
      */
     public function after($callback)
     {
-        $this->handlers['after'][] = $callback;
+        $this->dispatcher->connect('silex.after', $callback);
 
         return $this;
     }
@@ -224,7 +224,7 @@ class Framework extends HttpKernel
      */
     public function error($callback)
     {
-        $this->handlers['error'][] = $callback;
+        $this->errorHandlers[] = $callback;
 
         return $this;
     }
@@ -296,9 +296,7 @@ class Framework extends HttpKernel
      */
     public function runBeforeFilters(Event $event)
     {
-        foreach ($this->handlers['before'] as $beforeFilter) {
-            $beforeFilter();
-        }
+        $this->dispatcher->notify(new Event(null, 'silex.before'));
     }
 
     /**
@@ -326,9 +324,7 @@ class Framework extends HttpKernel
      */
     public function runAfterFilters(Event $event, $response)
     {
-        foreach ($this->handlers['after'] as $afterFilter) {
-            $afterFilter();
-        }
+        $this->dispatcher->notify(new Event(null, 'silex.after'));
 
         return $response;
     }
@@ -344,8 +340,9 @@ class Framework extends HttpKernel
     public function handleException(Event $event)
     {
         $exception = $event->get('exception');
+
         $response = $prevResult = null;
-        foreach ($this->handlers['error'] as $callback) {
+        foreach ($this->errorHandlers as $callback) {
             $result = $callback($exception);
             if (null !== $result && !$prevResult) {
                 $response = $this->parseStringResponse($event, $result);
