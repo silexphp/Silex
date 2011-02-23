@@ -6,6 +6,7 @@ use Silex\Framework;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /*
@@ -147,8 +148,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     {
         $framework = new Framework(array(
             '/redirect' => function() {
-                $response = new Response();
-                $response->setRedirect('/target');
+                $response = new RedirectResponse('/target');
                 return $response;
             },
         ));

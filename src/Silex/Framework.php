@@ -52,7 +52,7 @@ class Framework extends HttpKernel
         $dispatcher = new EventDispatcher();
         $dispatcher->connect('core.request', array($this, 'parseRequest'));
         $dispatcher->connect('core.request', array($this, 'runBeforeFilters'));
-        $dispatcher->connect('core.view', array($this, 'parseStringResponse'), -10);
+        $dispatcher->connect('core.view', array($this, 'handleStringResponse'), -10);
         $dispatcher->connect('core.response', array($this, 'runAfterFilters'));
         $dispatcher->connect('core.exception', array($this, 'handleException'));
         $resolver = new ControllerResolver();
@@ -275,7 +275,7 @@ class Framework extends HttpKernel
      *
      * @see __construct()
      */
-    public function parseRequest(Event $event)
+    public function parseRequest(EventInterface $event)
     {
         $request = $event->get('request');
 
@@ -302,7 +302,7 @@ class Framework extends HttpKernel
      *
      * @see __construct()
      */
-    public function runBeforeFilters(Event $event)
+    public function runBeforeFilters(EventInterface $event)
     {
         $this->dispatcher->notify(new Event(null, 'silex.before'));
     }
@@ -310,16 +310,29 @@ class Framework extends HttpKernel
     /**
      * Handler for core.view
      *
-     * Converts string responses to Response objects.
+     * Calls parseStringResponse to handle string responses.
      *
      * @see __construct()
+     * @see parseStringResponse()
      */
-    public function parseStringResponse(Event $event, $response)
+    public function handleStringResponse(EventInterface $event)
     {
-        if ($response instanceof Response) {
-            return $response;
-        } else {
+        $response = $event->get('controller_value');
+        if ( ! $response instanceof Response) {
+            $event->setProcessed(true);
+            return $this->parseStringResponse($response);
+        }
+    }
+
+    /**
+     * Converts string responses to Response objects.
+     */
+    protected function parseStringResponse($response)
+    {
+        if ( ! $response instanceof Response) {
             return new Response((string) $response);
+        } else {
+            return $response;
         }
     }
 
@@ -330,7 +343,7 @@ class Framework extends HttpKernel
      *
      * @see __construct()
      */
-    public function runAfterFilters(Event $event, $response)
+    public function runAfterFilters(EventInterface $event, $response)
     {
         $this->dispatcher->notify(new Event(null, 'silex.after'));
 
@@ -345,14 +358,14 @@ class Framework extends HttpKernel
      *
      * @see error()
      */
-    public function handleException(Event $event)
+    public function handleException(EventInterface $event)
     {
         $errorEvent = new Event(null, 'silex.error', $event->all());
         $result = $this->dispatcher->notifyUntil($errorEvent);
 
         if ($errorEvent->isProcessed()) {
             $event->setProcessed();
-            $response = $this->parseStringResponse($event, $result);
+            $response = $this->parseStringResponse($result);
             return $response;
         }
     }
