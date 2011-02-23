@@ -6,8 +6,9 @@ use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\Controller\ControllerResolver;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventInterface;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
@@ -29,7 +30,6 @@ use Symfony\Component\Routing\Matcher\UrlMatcher;
 class Framework extends HttpKernel
 {
     protected $routes;
-    protected $errorHandlers = array();
     protected $request;
 
     /**
@@ -224,7 +224,15 @@ class Framework extends HttpKernel
      */
     public function error($callback)
     {
-        $this->errorHandlers[] = $callback;
+        $this->dispatcher->connect('silex.error', function(EventInterface $event) use ($callback) {
+            $exception = $event->get('exception');
+            $result = $callback($exception);
+
+            if (null !== $result) {
+                $event->setProcessed();
+                return $result;
+            }
+        });
 
         return $this;
     }
@@ -332,25 +340,20 @@ class Framework extends HttpKernel
     /**
      * Handler for core.exception
      *
-     * Executes all registered error handlers and sets the first response
-     * to be sent to the client.
+     * Executes registered error handlers until a response is returned,
+     * in which case it returns it to the client.
      *
      * @see error()
      */
     public function handleException(Event $event)
     {
-        $exception = $event->get('exception');
+        $errorEvent = new Event(null, 'silex.error', $event->all());
+        $result = $this->dispatcher->notifyUntil($errorEvent);
 
-        $response = $prevResult = null;
-        foreach ($this->errorHandlers as $callback) {
-            $result = $callback($exception);
-            if (null !== $result && !$prevResult) {
-                $response = $this->parseStringResponse($event, $result);
-                $event->setProcessed(true);
-                $prevResult = $result;
-            }
+        if ($errorEvent->isProcessed()) {
+            $event->setProcessed();
+            $response = $this->parseStringResponse($event, $result);
+            return $response;
         }
-
-        return $response;
     }
 }

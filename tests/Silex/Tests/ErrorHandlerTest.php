@@ -72,18 +72,22 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
 
         $framework->error(function($e) use (&$errors) {
             $errors++;
-            return new Response('foo exception handler');
         });
 
         $framework->error(function($e) use (&$errors) {
             $errors++;
-            return new Response('foo exception handler 2');
+            return new Response('foo exception handler');
+        });
+
+        $framework->error(function($e) use (&$errors) {
+            // should not execute
+            $errors++;
         });
 
         $request = Request::create('/foo');
         $this->checkRouteResponse($framework, '/foo', 'foo exception handler', 'should return the first response returned by an exception handler');
 
-        $this->assertEquals(3, $errors, 'should execute all error handlers');
+        $this->assertEquals(3, $errors, 'should execute error handlers until a response is returned');
     }
 
     public function testNoResponseErrorHandler()
