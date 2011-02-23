@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Silex framework.
+ *
+ * (c) Fabien Potencier <fabien.potencier@symfony-project.org>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Silex;
 
 use Symfony\Component\HttpKernel\HttpKernel;
@@ -12,15 +21,6 @@ use Symfony\Component\EventDispatcher\EventInterface;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
-
-/*
- * This file is part of the Silex framework.
- *
- * (c) Fabien Potencier <fabien.potencier@symfony-project.org>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
 
 /**
  * The Silex framework class.
