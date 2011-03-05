@@ -46,6 +46,10 @@ You can build the silex.phar file by running `php compile.php`.
 Read the documentation of Symfony2 for more information about how you can
 leverage Symfony2 features.
 
+## Slides
+
+ - [Silex - The Symfony2 Microframework](http://www.slideshare.net/IgorWiedler/silex-the-symfony2-microframework)
+
 ## License
 
 Silex is licensed under the MIT license.
