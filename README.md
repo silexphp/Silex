@@ -54,6 +54,6 @@ leverage Symfony2 features.
 
 Silex is licensed under the MIT license.
 
-[1]: http://symfony-reloaded.org/
+[1]: http://symfony.com
 [2]: http://github.com/fabpot/silex/blob/master/silex.phar
 [3]: https://github.com/sebastianbergmann/phpunit
