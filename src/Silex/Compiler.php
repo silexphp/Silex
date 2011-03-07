@@ -35,6 +35,7 @@ class Compiler
         $finder = new Finder();
         $finder->
             files()->
+            ignoreVCS(true)->
             name('*.php')->
             exclude('tests')->
             exclude('Bundle')->
