@@ -48,7 +48,7 @@ leverage Symfony2 features.
 
 ## Slides
 
- - [Silex - The Symfony2 Microframework](http://www.slideshare.net/IgorWiedler/silex-the-symfony2-microframework)
+ - [Silex - The Symfony2 Microframework][4]
 
 ## License
 
@@ -57,3 +57,4 @@ Silex is licensed under the MIT license.
 [1]: http://symfony.com
 [2]: http://github.com/fabpot/silex/blob/master/silex.phar
 [3]: https://github.com/sebastianbergmann/phpunit
+[3]: http://www.slideshare.net/IgorWiedler/silex-the-symfony2-microframework
