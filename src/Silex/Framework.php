@@ -34,20 +34,10 @@ class Framework extends HttpKernel
 
     /**
      * Constructor.
-     *
-     * Takes a route map argument (assoc array). The key is (optional) a pipe '|'
-     * delimited list of HTTP methods followed by a single space ' ', followed by
-     * the path pattern to match. The value is a callable.
-     *
-     * @param array $map Route map, mapping patterns to callables
      */
     public function __construct(array $map = null)
     {
         $this->routes = new RouteCollection();
-
-        if ($map) {
-            $this->parseRouteMap($map);
-        }
 
         $dispatcher = new EventDispatcher();
         $dispatcher->connect('core.request', array($this, 'parseRequest'));
@@ -80,7 +70,7 @@ class Framework extends HttpKernel
      * @param string $pattern Matched route pattern
      * @param mixed $to Callback that returns the response when matched
      * @param string $method Matched HTTP methods, multiple can be supplied,
-     *                       delimited by a pipe character '|', eg. 'GET|POST'. 
+     *                       delimited by a pipe character '|', eg. 'GET|POST'.
      *
      * @return $this
      */
@@ -251,23 +241,6 @@ class Framework extends HttpKernel
         }
 
         $this->handle($request)->send();
-    }
-
-    /**
-     * Parse a route map and create routes
-     *
-     * @see __construct()
-     */
-    protected function parseRouteMap(array $map) {
-        foreach ($map as $pattern => $to) {
-            $method = null;
-
-            if (false !== strpos($pattern, ' ')) {
-                list($method, $pattern) = explode(' ', $pattern, 2);
-            }
-
-            $this->match($pattern, $to, $method);
-        }
     }
 
     /**

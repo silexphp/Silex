@@ -25,11 +25,11 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
 {
     public function testNoErrorHandler()
     {
-        $framework = new Framework(array(
-            '/foo' => function() {
-                throw new \RuntimeException('foo exception');
-            },
-        ));
+        $framework = new Framework();
+
+        $framework->match('/foo', function() {
+            throw new \RuntimeException('foo exception');
+        });
 
         try {
             $request = Request::create('/foo');
@@ -42,11 +42,11 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testOneErrorHandler()
     {
-        $framework = new Framework(array(
-            '/foo' => function() {
-                throw new \RuntimeException('foo exception');
-            },
-        ));
+        $framework = new Framework();
+
+        $framework->match('/foo', function() {
+            throw new \RuntimeException('foo exception');
+        });
 
         $framework->error(function($e) {
             return new Response('foo exception handler');
@@ -58,11 +58,11 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testMultipleErrorHandlers()
     {
-        $framework = new Framework(array(
-            '/foo' => function() {
-                throw new \RuntimeException('foo exception');
-            },
-        ));
+        $framework = new Framework();
+
+        $framework->match('/foo', function() {
+            throw new \RuntimeException('foo exception');
+        });
 
         $errors = 0;
 
@@ -92,11 +92,11 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testNoResponseErrorHandler()
     {
-        $framework = new Framework(array(
-            '/foo' => function() {
-                throw new \RuntimeException('foo exception');
-            },
-        ));
+        $framework = new Framework();
+
+        $framework->match('/foo', function() {
+            throw new \RuntimeException('foo exception');
+        });
 
         $errors = 0;
 
@@ -117,11 +117,11 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testStringResponseErrorHandler()
     {
-        $framework = new Framework(array(
-            '/foo' => function() {
-                throw new \RuntimeException('foo exception');
-            },
-        ));
+        $framework = new Framework();
+
+        $framework->match('/foo', function() {
+            throw new \RuntimeException('foo exception');
+        });
 
         $framework->error(function($e) {
             return 'foo exception handler';
@@ -133,11 +133,11 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testErrorHandlerException()
     {
-        $framework = new Framework(array(
-            '/foo' => function() {
-                throw new \RuntimeException('foo exception');
-            },
-        ));
+        $framework = new Framework();
+
+        $framework->match('/foo', function() {
+            throw new \RuntimeException('foo exception');
+        });
 
         $framework->error(function($e) {
             throw new \RuntimeException('foo exception handler exception');

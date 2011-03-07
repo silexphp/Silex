@@ -27,109 +27,40 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 {
     public function testMapRouting()
     {
-        $framework = new Framework(array(
-            '/foo' => function() {
-                return 'foo';
-            },
-            '/bar' => function() {
-                return 'bar';
-            },
-            '/' => function() {
-                return 'root';
-            },
-        ));
+        $framework = new Framework();
+
+        $framework->match('/foo', function() {
+            return 'foo';
+        });
+
+        $framework->match('/bar', function() {
+            return 'bar';
+        });
+
+        $framework->match('/', function() {
+            return 'root';
+        });
 
         $this->checkRouteResponse($framework, '/foo', 'foo');
         $this->checkRouteResponse($framework, '/bar', 'bar');
         $this->checkRouteResponse($framework, '/', 'root');
     }
 
-    public function testMapRoutingMethods()
-    {
-        $framework = new Framework(array(
-            'GET /foo' => function() {
-                return 'foo';
-            },
-            'PUT|DELETE /bar' => function() {
-                return 'bar';
-            },
-            '/' => function() {
-                return 'root';
-            },
-        ));
-
-        // foo route
-        $this->checkRouteResponse($framework, '/foo', 'foo');
-
-        // bar route
-        $this->checkRouteResponse($framework, '/bar', 'bar', 'put');
-        $this->checkRouteResponse($framework, '/bar', 'bar', 'delete');
-
-        // root route
-        $this->checkRouteResponse($framework, '/', 'root');
-        $this->checkRouteResponse($framework, '/', 'root', 'post');
-        $this->checkRouteResponse($framework, '/', 'root', 'put');
-        $this->checkRouteResponse($framework, '/', 'root', 'delete');
-
-        try {
-            $request = Request::create('/bar');
-            $framework->handle($request);
-
-            $this->fail('Framework must reject HTTP GET method to /bar');
-        } catch (NotFoundHttpException $expected) {
-        }
-
-        try {
-            $request = Request::create('/bar', 'post');
-            $framework->handle($request);
-
-            $this->fail('Framework must reject HTTP POST method to /bar');
-        } catch (NotFoundHttpException $expected) {
-        }
-    }
-
-    public function testMapRoutingParameters()
-    {
-        $framework = new Framework(array(
-            '/hello' => function() {
-                return "Hello anon";
-            },
-            '/hello/{name}' => function($name) {
-                return "Hello $name";
-            },
-            '/goodbye/{name}' => function($name) {
-                return "Goodbye $name";
-            },
-            '/tell/{name}/{message}' => function($message, $name) {
-                return "Message for $name: $message";
-            },
-            '/' => function() {
-                return 'root';
-            },
-        ));
-
-        $this->checkRouteResponse($framework, '/hello', 'Hello anon');
-        $this->checkRouteResponse($framework, '/hello/alice', 'Hello alice');
-        $this->checkRouteResponse($framework, '/hello/bob', 'Hello bob');
-        $this->checkRouteResponse($framework, '/goodbye/alice', 'Goodbye alice');
-        $this->checkRouteResponse($framework, '/goodbye/bob', 'Goodbye bob');
-        $this->checkRouteResponse($framework, '/tell/bob/secret', 'Message for bob: secret');
-        $this->checkRouteResponse($framework, '/', 'root');
-    }
-
     public function testStatusCode()
     {
-        $framework = new Framework(array(
-            'PUT /created' => function() {
-                return new Response('', 201);
-            },
-            '/forbidden' => function() {
-                return new Response('', 403);
-            },
-            '/not_found' => function() {
-                return new Response('', 404);
-            },
-        ));
+        $framework = new Framework();
+
+        $framework->put('/created', function() {
+            return new Response('', 201);
+        });
+
+        $framework->match('/forbidden', function() {
+            return new Response('', 403);
+        });
+
+        $framework->match('/not_found', function() {
+            return new Response('', 404);
+        });
 
         $request = Request::create('/created', 'put');
         $response = $framework->handle($request);
@@ -146,12 +77,11 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
     public function testRedirect()
     {
-        $framework = new Framework(array(
-            '/redirect' => function() {
-                $response = new RedirectResponse('/target');
-                return $response;
-            },
-        ));
+        $framework = new Framework();
+
+        $framework->match('/redirect', function() {
+            return new RedirectResponse('/target');
+        });
 
         $request = Request::create('/redirect');
         $response = $framework->handle($request);
@@ -172,21 +102,27 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     public function testMethodRouting()
     {
         $framework = new Framework();
+
         $framework->match('/foo', function() {
             return 'foo';
         });
+
         $framework->match('/bar', function() {
             return 'bar';
         }, 'GET|POST');
+
         $framework->get('/resource', function() {
             return 'get resource';
         });
+
         $framework->post('/resource', function() {
             return 'post resource';
         });
+
         $framework->put('/resource', function() {
             return 'put resource';
         });
+
         $framework->delete('/resource', function() {
             return 'delete resource';
         });

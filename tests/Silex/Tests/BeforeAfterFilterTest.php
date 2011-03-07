@@ -30,14 +30,17 @@ class BeforeAfterFilterTest extends \PHPUnit_Framework_TestCase
         $test = $this;
 
         $framework = new Framework();
+
         $framework->before(function() use(&$i, $test) {
             $test->assertEquals(0, $i);
             $i++;
         });
+
         $framework->match('/foo', function() use(&$i, $test) {
             $test->assertEquals(1, $i);
             $i++;
         });
+
         $framework->after(function() use(&$i, $test) {
             $test->assertEquals(2, $i);
             $i++;
@@ -53,12 +56,13 @@ class BeforeAfterFilterTest extends \PHPUnit_Framework_TestCase
     {
         $i = 0;
 
-        $framework = new Framework(array(
-            '/foo' => function() use(&$i) {
-                $i++;
-                return new Response('foo');
-            },
-        ));
+        $framework = new Framework();
+
+        $framework->match('/foo', function() use (&$i) {
+            $i++;
+            return new Response('foo');
+        });
+
         $framework->after(function() use(&$i) {
             $i++;
         });
@@ -76,22 +80,27 @@ class BeforeAfterFilterTest extends \PHPUnit_Framework_TestCase
         $test = $this;
 
         $framework = new Framework();
+
         $framework->before(function() use(&$i, $test) {
             $test->assertEquals(0, $i);
             $i++;
         });
+
         $framework->before(function() use(&$i, $test) {
             $test->assertEquals(1, $i);
             $i++;
         });
+
         $framework->match('/foo', function() use(&$i, $test) {
             $test->assertEquals(2, $i);
             $i++;
         });
+
         $framework->after(function() use(&$i, $test) {
             $test->assertEquals(3, $i);
             $i++;
         });
+
         $framework->after(function() use(&$i, $test) {
             $test->assertEquals(4, $i);
             $i++;

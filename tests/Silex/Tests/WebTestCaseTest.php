@@ -23,14 +23,15 @@ class WebTestCaseTest extends WebTestCase
 {
     public function createApp()
     {
-        $app = new Framework(array(
-            '/hello' => function() {
-                return 'world';
-            },
-            '/html' => function() {
-                return '<h1>title</h1>';
-            },
-        ));
+        $app = new Framework();
+
+        $app->match('/hello', function() {
+            return 'world';
+        });
+
+        $app->match('/html', function() {
+            return '<h1>title</h1>';
+        });
 
         return $app;
     }
