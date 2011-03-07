@@ -38,7 +38,7 @@ class Compiler
             name('*.php')->
             exclude('tests')->
             exclude('Bundle')->
-            in(__DIR__.'/..');
+            in(__DIR__.'/../..');
 
         foreach ($finder as $file) {
             $path = str_replace(realpath(__DIR__.'/../..').'/', '', realpath($file));
@@ -64,7 +64,7 @@ class Compiler
         return <<<EOF
 <?php
 /*
- * This file is part of the Silex utility.
+ * This file is part of the Silex framework.
  *
  * (c) Fabien Potencier <fabien.potencier@symfony-project.org>
  *
@@ -72,7 +72,7 @@ class Compiler
  * with this source code in the file LICENSE.
  */
 
-require_once __DIR__.'/src/autoload.php';
+require_once __DIR__.'/autoload.php';
 
 __HALT_COMPILER();
 EOF;
