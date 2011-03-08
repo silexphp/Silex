@@ -250,22 +250,20 @@ class Framework extends HttpKernel
      */
     public function parseRequest(EventInterface $event)
     {
-        $request = $event->get('request');
+        $this->request = $event->get('request');
 
         $matcher = new UrlMatcher($this->routes, array(
-            'base_url'  => $request->getBaseUrl(),
-            'method'    => $request->getMethod(),
-            'host'      => $request->getHost(),
-            'is_secure' => $request->isSecure(),
+            'base_url'  => $this->request->getBaseUrl(),
+            'method'    => $this->request->getMethod(),
+            'host'      => $this->request->getHost(),
+            'is_secure' => $this->request->isSecure(),
         ));
 
-        if (false === $attributes = $matcher->match($request->getPathInfo())) {
+        if (false === $attributes = $matcher->match($this->request->getPathInfo())) {
             return false;
         }
 
-        $request->attributes->add($attributes);
-
-        $this->request = $request;
+        $this->request->attributes->add($attributes);
     }
 
     /**
