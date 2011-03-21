@@ -3,6 +3,7 @@
 namespace Silex\Tests;
 
 use Silex\Framework;
+use Symfony\Component\HttpFoundation\Request;
 
 /*
  * This file is part of the Silex framework.
@@ -47,5 +48,20 @@ class FrameworkTest extends \PHPUnit_Framework_TestCase
 
         $returnValue = $framework->error(function() {});
         $this->assertSame($framework, $returnValue, '->error() should return $this');
+    }
+
+    public function testGetRequest()
+    {
+        $framework = new Framework();
+
+        $framework->get('/', function() {
+            return 'root';
+        });
+
+        $request = Request::create('/');
+
+        $framework->handle($request);
+
+        $this->assertEquals($request, $framework->getRequest());
     }
 }
