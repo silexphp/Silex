@@ -1,10 +1,5 @@
 <?php
 
-namespace Silex\Tests;
-
-use Silex\Framework;
-use Symfony\Component\HttpFoundation\Request;
-
 /*
  * This file is part of the Silex framework.
  *
@@ -13,6 +8,11 @@ use Symfony\Component\HttpFoundation\Request;
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
+
+namespace Silex\Tests;
+
+use Silex\Framework;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Framework test cases.

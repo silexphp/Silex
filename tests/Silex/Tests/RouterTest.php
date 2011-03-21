@@ -1,14 +1,5 @@
 <?php
 
-namespace Silex\Tests;
-
-use Silex\Framework;
-
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
 /*
  * This file is part of the Silex framework.
  *
@@ -17,6 +8,15 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
+
+namespace Silex\Tests;
+
+use Silex\Framework;
+
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Router test cases.
@@ -136,13 +136,6 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $this->checkRouteResponse($framework, '/resource', 'delete resource', 'delete');
     }
 
-    protected function checkRouteResponse($framework, $path, $expectedContent, $method = 'get', $message = null)
-    {
-        $request = Request::create($path, $method);
-        $response = $framework->handle($request);
-        $this->assertEquals($expectedContent, $response->getContent(), $message);
-    }
-
     public function testRequestShouldBeStoredRegardlessOfRouting() {
         $framework = new Framework();
         $framework->get('/foo', function() use ($framework) {
@@ -156,5 +149,12 @@ class RouterTest extends \PHPUnit_Framework_TestCase
           $response = $framework->handle($request);
           $this->assertContains($path, $response->getContent());
         }
+    }
+
+    protected function checkRouteResponse($framework, $path, $expectedContent, $method = 'get', $message = null)
+    {
+        $request = Request::create($path, $method);
+        $response = $framework->handle($request);
+        $this->assertEquals($expectedContent, $response->getContent(), $message);
     }
 }
