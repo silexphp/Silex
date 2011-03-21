@@ -13,11 +13,13 @@ namespace Silex;
 
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\Controller\ControllerResolver;
+use Symfony\Component\HttpKernel\Event\KernelEvent;
+use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
+use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\EventDispatcher\EventInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
@@ -27,10 +29,11 @@ use Symfony\Component\Routing\Matcher\UrlMatcher;
  *
  * @author Fabien Potencier <fabien.potencier@symfony-project.org>
  */
-class Framework extends HttpKernel
+class Framework extends HttpKernel implements EventSubscriberInterface
 {
-    protected $routes;
-    protected $request;
+    private $dispatcher;
+    private $routes;
+    private $request;
 
     /**
      * Constructor.
@@ -39,15 +42,13 @@ class Framework extends HttpKernel
     {
         $this->routes = new RouteCollection();
 
-        $dispatcher = new EventDispatcher();
-        $dispatcher->connect('core.request', array($this, 'parseRequest'));
-        $dispatcher->connect('core.request', array($this, 'runBeforeFilters'));
-        $dispatcher->connect('core.view', array($this, 'handleStringResponse'), -10);
-        $dispatcher->connect('core.response', array($this, 'runAfterFilters'));
-        $dispatcher->connect('core.exception', array($this, 'handleException'));
+        $this->dispatcher = new EventDispatcher();
+        $this->dispatcher->addSubscriber($this);
+        $this->dispatcher->addListener(\Symfony\Component\HttpKernel\Events::onCoreView, $this, -10);
+
         $resolver = new ControllerResolver();
 
-        parent::__construct($dispatcher, $resolver);
+        parent::__construct($this->dispatcher, $resolver);
     }
 
     /**
@@ -172,7 +173,7 @@ class Framework extends HttpKernel
      */
     public function before($callback)
     {
-        $this->dispatcher->connect('silex.before', $callback);
+        $this->dispatcher->addListener(Events::onSilexBefore, $callback);
 
         return $this;
     }
@@ -190,7 +191,7 @@ class Framework extends HttpKernel
      */
     public function after($callback)
     {
-        $this->dispatcher->connect('silex.after', $callback);
+        $this->dispatcher->addListener(Events::onSilexAfter, $callback);
 
         return $this;
     }
@@ -202,9 +203,11 @@ class Framework extends HttpKernel
      * as an argument. If a controller throws an exception, an error handler
      * can return a specific response.
      *
-     * When an exception occurs, all registered error handlers will be called.
-     * The first response a handler returns (it may also return nothing) will
-     * then be served.
+     * When an exception occurs, all handlers will be called, until one returns
+     * something (a string or a Response object), at which point that will be
+     * returned to the client.
+     *
+     * For this reason you should add logging handlers before output handlers.
      *
      * This method is chainable.
      *
@@ -214,13 +217,12 @@ class Framework extends HttpKernel
      */
     public function error($callback)
     {
-        $this->dispatcher->connect('silex.error', function(EventInterface $event) use ($callback) {
-            $exception = $event->get('exception');
-            $result = $callback($exception);
+        $this->dispatcher->addListener(Events::onSilexError, function(GetResponseForErrorEvent $event) use ($callback) {
+            $exception = $event->getException();
+            $result = $callback->__invoke($exception);
 
             if (null !== $result) {
-                $event->setProcessed();
-                return $result;
+                $event->setStringResponse($result);
             }
         });
 
@@ -244,13 +246,11 @@ class Framework extends HttpKernel
     }
 
     /**
-     * Handler for core.request
-     *
-     * @see __construct()
+     * Handler for onCoreRequest.
      */
-    public function parseRequest(EventInterface $event)
+    public function onCoreRequest(KernelEvent $event)
     {
-        $this->request = $event->get('request');
+        $this->request = $event->getRequest();
 
         $matcher = new UrlMatcher($this->routes, array(
             'base_url'  => $this->request->getBaseUrl(),
@@ -259,85 +259,64 @@ class Framework extends HttpKernel
             'is_secure' => $this->request->isSecure(),
         ));
 
-        if (false === $attributes = $matcher->match($this->request->getPathInfo())) {
-            return false;
+        if (false !== $attributes = $matcher->match($this->request->getPathInfo())) {
+            $this->request->attributes->add($attributes);
         }
 
-        $this->request->attributes->add($attributes);
+        $this->dispatcher->dispatch(Events::onSilexBefore);
     }
 
     /**
-     * Handler for core.request
+     * Handles string responses.
      *
-     * Runs before filters right after the request comes in.
-     *
-     * @see __construct()
+     * Handler for onCoreView.
      */
-    public function runBeforeFilters(EventInterface $event)
+    public function onCoreView(GetResponseForControllerResultEvent $event)
     {
-        $this->dispatcher->notify(new Event(null, 'silex.before'));
+        $response = $event->getControllerResult();
+        $converter = new StringResponseConverter();
+        $event->setResponse($converter->convert($response));
     }
 
     /**
-     * Handler for core.view
-     *
-     * Calls parseStringResponse to handle string responses.
-     *
-     * @see __construct()
-     * @see parseStringResponse()
-     */
-    public function handleStringResponse(EventInterface $event)
-    {
-        $response = $event->get('controller_value');
-        if ( ! $response instanceof Response) {
-            $event->setProcessed(true);
-            return $this->parseStringResponse($response);
-        }
-    }
-
-    /**
-     * Converts string responses to Response objects.
-     */
-    protected function parseStringResponse($response)
-    {
-        if ( ! $response instanceof Response) {
-            return new Response((string) $response);
-        } else {
-            return $response;
-        }
-    }
-
-    /**
-     * Handler for core.view
-     *
      * Runs after filters.
      *
-     * @see __construct()
+     * Handler for onCoreResponse.
      */
-    public function runAfterFilters(EventInterface $event, $response)
+    public function onCoreResponse(Event $event)
     {
-        $this->dispatcher->notify(new Event(null, 'silex.after'));
-
-        return $response;
+        $this->dispatcher->dispatch(Events::onSilexAfter);
     }
 
     /**
-     * Handler for core.exception
-     *
      * Executes registered error handlers until a response is returned,
      * in which case it returns it to the client.
      *
+     * Handler for onCoreException.
+     *
      * @see error()
      */
-    public function handleException(EventInterface $event)
+    public function onCoreException(GetResponseForExceptionEvent $event)
     {
-        $errorEvent = new Event(null, 'silex.error', $event->all());
-        $result = $this->dispatcher->notifyUntil($errorEvent);
+        $errorEvent = new GetResponseForErrorEvent($this, $event->getRequest(), $event->getRequestType(), $event->getException());
+        $this->dispatcher->dispatch(Events::onSilexError, $errorEvent);
 
-        if ($errorEvent->isProcessed()) {
-            $event->setProcessed();
-            $response = $this->parseStringResponse($result);
-            return $response;
+        if ($errorEvent->hasResponse()) {
+            $event->setResponse($errorEvent->getResponse());
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    static public function getSubscribedEvents()
+    {
+        // onCoreView listener is added manually because it has lower priority
+
+        return array(
+            \Symfony\Component\HttpKernel\Events::onCoreRequest,
+            \Symfony\Component\HttpKernel\Events::onCoreResponse,
+            \Symfony\Component\HttpKernel\Events::onCoreException,
+        );
     }
 }
