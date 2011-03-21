@@ -35,7 +35,7 @@ class Framework extends HttpKernel
     /**
      * Constructor.
      */
-    public function __construct(array $map = null)
+    public function __construct()
     {
         $this->routes = new RouteCollection();
 
