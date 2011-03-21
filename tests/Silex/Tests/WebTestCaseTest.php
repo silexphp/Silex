@@ -8,7 +8,7 @@ use Silex\WebTestCase;
 /*
  * This file is part of the Silex framework.
  *
- * (c) Fabien Potencier <fabien.potencier@symfony-project.org>
+ * (c) Fabien Potencier <fabien.potencier@symfony.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -17,7 +17,7 @@ use Silex\WebTestCase;
 /**
  * Functional test cases.
  *
- * @author Fabien Potencier <fabien.potencier@symfony-project.org>
+ * @author Igor Wiedler <igor@wiedler.ch>
  */
 class WebTestCaseTest extends WebTestCase
 {

@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 /*
  * This file is part of the Silex framework.
  *
- * (c) Fabien Potencier <fabien.potencier@symfony-project.org>
+ * (c) Fabien Potencier <fabien.potencier@symfony.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Error handler test cases.
  *
- * @author Fabien Potencier <fabien.potencier@symfony-project.org>
+ * @author Igor Wiedler <igor@wiedler.ch>
  */
 class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
 {

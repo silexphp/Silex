@@ -3,7 +3,7 @@
 /*
  * This file is part of the Silex framework.
  *
- * (c) Fabien Potencier <fabien.potencier@symfony-project.org>
+ * (c) Fabien Potencier <fabien.potencier@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,7 +17,7 @@ use Symfony\Component\HttpKernel\Kernel;
 /**
  * The Compiler class compiles the Silex framework.
  *
- * @author Fabien Potencier <fabien.potencier@symfony-project.org>
+ * @author Fabien Potencier <fabien.potencier@symfony.com>
  */
 class Compiler
 {
@@ -67,7 +67,7 @@ class Compiler
 /*
  * This file is part of the Silex framework.
  *
- * (c) Fabien Potencier <fabien.potencier@symfony-project.org>
+ * (c) Fabien Potencier <fabien.potencier@symfony.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
