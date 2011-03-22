@@ -1,3 +1,18 @@
-[submodule "src/vendor/symfony"]
-	path = vendor/symfony
-	url = git://github.com/symfony/symfony.git
+[submodule "vendor/Symfony/Component/Finder"]
+	path = vendor/Symfony/Component/Finder
+	url = https://github.com/symfony/Finder
+[submodule "vendor/Symfony/Component/ClassLoader"]
+	path = vendor/Symfony/Component/ClassLoader
+	url = https://github.com/symfony/ClassLoader
+[submodule "vendor/Symfony/Component/HttpFoundation"]
+	path = vendor/Symfony/Component/HttpFoundation
+	url = https://github.com/symfony/HttpFoundation
+[submodule "vendor/Symfony/Component/HttpKernel"]
+	path = vendor/Symfony/Component/HttpKernel
+	url = https://github.com/symfony/HttpKernel
+[submodule "vendor/Symfony/Component/Routing"]
+	path = vendor/Symfony/Component/Routing
+	url = https://github.com/symfony/Routing
+[submodule "vendor/Symfony/Component/EventDispatcher"]
+	path = vendor/Symfony/Component/EventDispatcher
+	url = https://github.com/symfony/EventDispatcher
