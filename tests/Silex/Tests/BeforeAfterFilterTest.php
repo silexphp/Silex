@@ -11,7 +11,7 @@
 
 namespace Silex\Tests;
 
-use Silex\Framework;
+use Silex\Application;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,25 +29,25 @@ class BeforeAfterFilterTest extends \PHPUnit_Framework_TestCase
 
         $test = $this;
 
-        $framework = new Framework();
+        $application = new Application();
 
-        $framework->before(function() use(&$i, $test) {
+        $application->before(function() use(&$i, $test) {
             $test->assertEquals(0, $i);
             $i++;
         });
 
-        $framework->match('/foo', function() use(&$i, $test) {
+        $application->match('/foo', function() use(&$i, $test) {
             $test->assertEquals(1, $i);
             $i++;
         });
 
-        $framework->after(function() use(&$i, $test) {
+        $application->after(function() use(&$i, $test) {
             $test->assertEquals(2, $i);
             $i++;
         });
 
         $request = Request::create('/foo');
-        $framework->handle($request);
+        $application->handle($request);
 
         $this->assertEquals(3, $i);
     }
@@ -56,19 +56,19 @@ class BeforeAfterFilterTest extends \PHPUnit_Framework_TestCase
     {
         $i = 0;
 
-        $framework = new Framework();
+        $application = new Application();
 
-        $framework->match('/foo', function() use (&$i) {
+        $application->match('/foo', function() use (&$i) {
             $i++;
             return new Response('foo');
         });
 
-        $framework->after(function() use(&$i) {
+        $application->after(function() use(&$i) {
             $i++;
         });
 
         $request = Request::create('/foo');
-        $framework->handle($request);
+        $application->handle($request);
 
         $this->assertEquals(2, $i);
     }
@@ -79,35 +79,35 @@ class BeforeAfterFilterTest extends \PHPUnit_Framework_TestCase
 
         $test = $this;
 
-        $framework = new Framework();
+        $application = new Application();
 
-        $framework->before(function() use(&$i, $test) {
+        $application->before(function() use(&$i, $test) {
             $test->assertEquals(0, $i);
             $i++;
         });
 
-        $framework->before(function() use(&$i, $test) {
+        $application->before(function() use(&$i, $test) {
             $test->assertEquals(1, $i);
             $i++;
         });
 
-        $framework->match('/foo', function() use(&$i, $test) {
+        $application->match('/foo', function() use(&$i, $test) {
             $test->assertEquals(2, $i);
             $i++;
         });
 
-        $framework->after(function() use(&$i, $test) {
+        $application->after(function() use(&$i, $test) {
             $test->assertEquals(3, $i);
             $i++;
         });
 
-        $framework->after(function() use(&$i, $test) {
+        $application->after(function() use(&$i, $test) {
             $test->assertEquals(4, $i);
             $i++;
         });
 
         $request = Request::create('/foo');
-        $framework->handle($request);
+        $application->handle($request);
 
         $this->assertEquals(5, $i);
     }

@@ -29,7 +29,7 @@ use Symfony\Component\Routing\Matcher\UrlMatcher;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Framework extends HttpKernel implements EventSubscriberInterface
+class Application extends HttpKernel implements EventSubscriberInterface
 {
     private $dispatcher;
     private $routes;

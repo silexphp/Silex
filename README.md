@@ -4,9 +4,9 @@ Silex is a simple web framework to develop simple websites:
 
     require_once __DIR__.'/silex.phar';
 
-    use Silex\Framework;
+    use Silex\Application;
 
-    $app = new Framework();
+    $app = new Application();
 
     $app->get('/hello/{name}', function($name) {
         return "Hello $name";

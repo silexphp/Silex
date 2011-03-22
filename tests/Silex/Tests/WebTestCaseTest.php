@@ -11,7 +11,7 @@
 
 namespace Silex\Tests;
 
-use Silex\Framework;
+use Silex\Application;
 use Silex\WebTestCase;
 
 /**
@@ -23,7 +23,7 @@ class WebTestCaseTest extends WebTestCase
 {
     public function createApp()
     {
-        $app = new Framework();
+        $app = new Application();
 
         $app->match('/hello', function() {
             return 'world';
