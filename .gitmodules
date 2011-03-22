@@ -16,3 +16,12 @@
 [submodule "vendor/Symfony/Component/EventDispatcher"]
 	path = vendor/Symfony/Component/EventDispatcher
 	url = https://github.com/symfony/EventDispatcher
+[submodule "vendor/Symfony/Component/BrowserKit"]
+	path = vendor/Symfony/Component/BrowserKit
+	url = https://github.com/symfony/BrowserKit
+[submodule "vendor/Symfony/Component/DomCrawler"]
+	path = vendor/Symfony/Component/DomCrawler
+	url = https://github.com/symfony/DomCrawler
+[submodule "vendor/Symfony/Component/CssSelector"]
+	path = vendor/Symfony/Component/CssSelector
+	url = https://github.com/symfony/CssSelector
