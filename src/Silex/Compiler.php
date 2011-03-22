@@ -48,11 +48,11 @@ class Compiler
         ;
 
         foreach ($finder as $file) {
-            $path = str_replace(realpath(__DIR__.'/../..').'/', '', $file->getRealPath());
-            $content = Kernel::stripComments(file_get_contents($file));
-
-            $phar->addFromString($path, $content);
+            $this->addFile($phar, $file);
         }
+
+        $this->addFile($phar, new \SplFileInfo(__DIR__.'/../../LICENSE'), false);
+        $this->addFile($phar, new \SplFileInfo(__DIR__.'/../../autoload.php'));
 
         // Stubs
         $phar['_cli_stub.php'] = $this->getStub();
@@ -64,6 +64,17 @@ class Compiler
         // $phar->compressFiles(\Phar::GZ);
 
         unset($phar);
+    }
+
+    protected function addFile($phar, $file, $strip = true)
+    {
+        $path = str_replace(realpath(__DIR__.'/../..').'/', '', $file->getRealPath());
+        $content = file_get_contents($file);
+        if ($strip) {
+            $content = Kernel::stripComments(file_get_contents($file));
+        }
+
+        $phar->addFromString($path, $content);
     }
 
     protected function getStub()
