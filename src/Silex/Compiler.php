@@ -33,16 +33,19 @@ class Compiler
         $phar->startBuffering();
 
         $finder = new Finder();
-        $finder->
-            files()->
-            ignoreVCS(true)->
-            name('*.php')->
-            exclude('tests')->
-            exclude('Bundle')->
-            in(__DIR__.'/../..');
+        $finder->files()
+            ->ignoreVCS(true)
+            ->name('*.php')
+            ->in(__DIR__.'/..')
+            ->in(__DIR__.'/../../vendor/Symfony/Component/ClassLoader')
+            ->in(__DIR__.'/../../vendor/Symfony/Component/EventDispatcher')
+            ->in(__DIR__.'/../../vendor/Symfony/Component/HttpFoundation')
+            ->in(__DIR__.'/../../vendor/Symfony/Component/HttpKernel')
+            ->in(__DIR__.'/../../vendor/Symfony/Component/Routing')
+        ;
 
         foreach ($finder as $file) {
-            $path = str_replace(realpath(__DIR__.'/../..').'/', '', realpath($file));
+            $path = str_replace(realpath(__DIR__.'/../..').'/', '', $file->getRealPath());
             $content = Kernel::stripComments(file_get_contents($file));
 
             $phar->addFromString($path, $content);
