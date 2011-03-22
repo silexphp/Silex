@@ -16,6 +16,8 @@ use Symfony\Component\HttpKernel\Controller\ControllerResolver;
 use Symfony\Component\HttpKernel\Event\KernelEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -23,6 +25,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
+use Symfony\Component\Routing\Matcher\Exception\MethodNotAllowedException;
+use Symfony\Component\Routing\Matcher\Exception\NotFoundException;
 
 /**
  * The Silex framework class.
@@ -83,7 +87,7 @@ class Application extends HttpKernel implements EventSubscriberInterface
             $requirements['_method'] = $method;
         }
 
-        $routeName = (string) $method . $pattern;
+        $routeName = (string) $method.$pattern;
         $routeName = str_replace(array('{', '}'), '', $routeName);
         $routeName = str_replace(array('/', ':', '|'), '_', $routeName);
         $route = new Route($pattern, array('_controller' => $to), $requirements);
@@ -256,11 +260,20 @@ class Application extends HttpKernel implements EventSubscriberInterface
             'base_url'  => $this->request->getBaseUrl(),
             'method'    => $this->request->getMethod(),
             'host'      => $this->request->getHost(),
+            'port'      => $this->request->getPort(),
             'is_secure' => $this->request->isSecure(),
         ));
 
-        if (false !== $attributes = $matcher->match($this->request->getPathInfo())) {
+        try {
+            $attributes = $matcher->match($this->request->getPathInfo());
+
             $this->request->attributes->add($attributes);
+        } catch (NotFoundException $e) {
+            $message = sprintf('No route found for "%s %s"', $this->request->getMethod(), $this->request->getPathInfo());
+            throw new NotFoundHttpException('Not Found', $message, 0, $e);
+        } catch (MethodNotAllowedException $e) {
+            $message = sprintf('No route found for "%s %s": Method Not Allowed (Allow: %s)', $this->request->getMethod(), $this->request->getPathInfo(), strtoupper(implode(', ', $e->getAllowedMethods())));
+            throw new MethodNotAllowedHttpException($e->getAllowedMethods(), 'Method Not Allowed', $message, 0, $e);
         }
 
         $this->dispatcher->dispatch(Events::onSilexBefore);
