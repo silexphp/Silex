@@ -30,7 +30,7 @@ Silex works with PHP 5.3.2 or later.
 
 ## Installation
 
-Installing Silex is as easy as it can get. Build your **silex.php** (see "Build" section)  and you're done! 
+Installing Silex is as easy as it can get. Build your **silex.phar** (see "Build" section)  and you're done! 
 
 ## Test Suite
 
