@@ -22,6 +22,57 @@ Silex is a simple web framework to develop simple websites:
 
     $app->run();
 
+The same effect can be achieved by an route file an controller classes. Create
+at controller:
+
+    // src/MyProject/Controller/MyController.php
+
+    namespace MyProject\Controller;
+
+    class MyController
+    {
+        public function index()
+        {
+            return 'Index';
+        }
+
+        public function hello($name)
+        {
+            return 'Hello ' . $name;
+        }
+    }
+
+Create a routing file:
+
+    # config/routing.yml
+
+    _home:
+        pattern: /
+        defaults: { _controller: MyProject\Controller\MyController::index }
+
+    _hello:
+        pattern: /hello/{name}
+        defaults: { _controller: MyProject\Controller\MyController::hello }
+
+Add the namespace to autoloading:
+
+    // autoload.php
+
+    $loader->registerNamespaces(array(
+        // other namespaces
+        'MyProject' => __DIR__.'/src',
+    ));
+
+Now your website looks like this:
+
+    require_once __DIR__.'/silex.phar';
+
+    use Silex\Application;
+
+    $app = new Application();
+    $app->loadRoutes(__DIR__.'/config/routing.yml');
+    $app->run();
+
 Silex is based on [Symfony2][1].
 
 ## Requirements
