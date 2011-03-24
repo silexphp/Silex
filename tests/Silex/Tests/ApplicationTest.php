@@ -97,4 +97,20 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $application->getControllerCollection()->flush();
         $this->assertEquals(2, count($routeCollection->all()));
     }
+
+    public function testGetControllerCollection()
+    {
+        $application = new Application();
+
+        $application->get('/foo', function() {
+            return 'foo';
+        });
+
+        $application->get('/bar', function() {
+            return 'bar';
+        });
+
+        $controllerCollection = $application->getControllerCollection();
+        $this->assertInstanceOf('Silex\ControllerCollection', $controllerCollection);
+    }
 }
