@@ -27,6 +27,8 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\Matcher\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Matcher\Exception\NotFoundException;
+use Symfony\Component\Routing\Loader\YamlFileLoader;
+use Symfony\Component\Config\FileLocator;
 
 /**
  * The Silex framework class.
@@ -63,6 +65,18 @@ class Application extends HttpKernel implements EventSubscriberInterface
     public function getRequest()
     {
         return $this->request;
+    }
+
+    /**
+     * Maps routes by a yaml file.
+     *
+     * @param string $path Routing yaml file
+     */
+    public function loadRoutes($path)
+    {
+        $filelocator = new FileLocator($path);
+        $routeloader = new YamlFileLoader($filelocator);
+        $this->routes->addCollection($routeloader->load($path));
     }
 
     /**
