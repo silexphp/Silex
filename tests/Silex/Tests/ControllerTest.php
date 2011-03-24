@@ -31,7 +31,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
     /**
     * @expectedException Silex\Exception\ControllerFrozenException
     */
-    public function testFrozenControllerShouldThrowException()
+    public function testSetRouteNameOnFrozenControllerShouldThrowException()
     {
         $controller = new Controller(new Route('/foo'));
         $controller->setRouteName('foo');
