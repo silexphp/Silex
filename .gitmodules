@@ -25,3 +25,9 @@
 [submodule "vendor/Symfony/Component/CssSelector"]
 	path = vendor/Symfony/Component/CssSelector
 	url = https://github.com/symfony/CssSelector
+[submodule "vendor/Symfony/Component/Config"]
+	path = vendor/Symfony/Component/Config
+	url = https://github.com/symfony/Config
+[submodule "vendor/Symfony/Component/Yaml"]
+	path = vendor/Symfony/Component/Yaml
+	url = https://github.com/symfony/Yaml
