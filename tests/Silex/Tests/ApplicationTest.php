@@ -21,24 +21,29 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class ApplicationTest extends \PHPUnit_Framework_TestCase
 {
-    public function testFluidInterface()
+    public function testMatchReturnValue()
     {
         $application = new Application();
 
         $returnValue = $application->match('/foo', function() {});
-        $this->assertSame($application, $returnValue, '->match() should return $this');
+        $this->assertInstanceOf('Silex\Controller', $returnValue);
 
         $returnValue = $application->get('/foo', function() {});
-        $this->assertSame($application, $returnValue, '->get() should return $this');
+        $this->assertInstanceOf('Silex\Controller', $returnValue);
 
         $returnValue = $application->post('/foo', function() {});
-        $this->assertSame($application, $returnValue, '->post() should return $this');
+        $this->assertInstanceOf('Silex\Controller', $returnValue);
 
         $returnValue = $application->put('/foo', function() {});
-        $this->assertSame($application, $returnValue, '->put() should return $this');
+        $this->assertInstanceOf('Silex\Controller', $returnValue);
 
         $returnValue = $application->delete('/foo', function() {});
-        $this->assertSame($application, $returnValue, '->delete() should return $this');
+        $this->assertInstanceOf('Silex\Controller', $returnValue);
+    }
+
+    public function testFluidInterface()
+    {
+        $application = new Application();
 
         $returnValue = $application->before(function() {});
         $this->assertSame($application, $returnValue, '->before() should return $this');
@@ -63,5 +68,33 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $application->handle($request);
 
         $this->assertEquals($request, $application->getRequest());
+    }
+
+    public function testGetRouteCollectionWithNoRoutes()
+    {
+        $application = new Application();
+
+        $routeCollection = $application->getRouteCollection();
+        $this->assertInstanceOf('Symfony\Component\Routing\RouteCollection', $routeCollection);
+        $this->assertEquals(0, count($routeCollection->all()));
+    }
+
+    public function testGetRouteCollectionWithRoutes()
+    {
+        $application = new Application();
+
+        $application->get('/foo', function() {
+            return 'foo';
+        });
+
+        $application->get('/bar', function() {
+            return 'bar';
+        });
+
+        $routeCollection = $application->getRouteCollection();
+        $this->assertInstanceOf('Symfony\Component\Routing\RouteCollection', $routeCollection);
+        $this->assertEquals(0, count($routeCollection->all()));
+        $application->getControllerCollection()->flush();
+        $this->assertEquals(2, count($routeCollection->all()));
     }
 }

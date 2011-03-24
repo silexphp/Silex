@@ -22,8 +22,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Route;
+use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\Matcher\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Matcher\Exception\NotFoundException;
@@ -36,7 +36,8 @@ use Symfony\Component\Routing\Matcher\Exception\NotFoundException;
 class Application extends HttpKernel implements EventSubscriberInterface
 {
     private $dispatcher;
-    private $routes;
+    private $routeCollection;
+    private $controllerCollection;
     private $request;
 
     /**
@@ -44,7 +45,8 @@ class Application extends HttpKernel implements EventSubscriberInterface
      */
     public function __construct()
     {
-        $this->routes = new RouteCollection();
+        $this->routeCollection = new RouteCollection();
+        $this->controllerCollection = new ControllerCollection($this->routeCollection);
 
         $this->dispatcher = new EventDispatcher();
         $this->dispatcher->addSubscriber($this);
@@ -66,18 +68,36 @@ class Application extends HttpKernel implements EventSubscriberInterface
     }
 
     /**
+     * Get the collection of routes.
+     *
+     * @return Symfony\Component\Routing\RouteCollection
+     */
+    public function getRouteCollection()
+    {
+        return $this->routeCollection;
+    }
+
+    /**
+     * Get the collection of controllers.
+     *
+     * @return Silex\ControllerCollection
+     */
+    public function getControllerCollection()
+    {
+        return $this->controllerCollection;
+    }
+
+    /**
      * Map a pattern to a callable.
      *
      * You can optionally specify HTTP methods that should be matched.
-     *
-     * This method is chainable.
      *
      * @param string $pattern Matched route pattern
      * @param mixed $to Callback that returns the response when matched
      * @param string $method Matched HTTP methods, multiple can be supplied,
      *                       delimited by a pipe character '|', eg. 'GET|POST'.
      *
-     * @return $this
+     * @return Silex\Controller
      */
     public function match($pattern, $to, $method = null)
     {
@@ -87,81 +107,63 @@ class Application extends HttpKernel implements EventSubscriberInterface
             $requirements['_method'] = $method;
         }
 
-        $routeName = (string) $method.$pattern;
-        $routeName = str_replace(array('{', '}'), '', $routeName);
-        $routeName = str_replace(array('/', ':', '|'), '_', $routeName);
         $route = new Route($pattern, array('_controller' => $to), $requirements);
-        $this->routes->add($routeName, $route);
+        $controller = new Controller($route);
+        $this->controllerCollection->add($controller);
 
-        return $this;
+        return $controller;
     }
 
     /**
      * Map a GET request to a callable.
      *
-     * This method is chainable.
-     *
      * @param string $pattern Matched route pattern
      * @param mixed $to Callback that returns the response when matched
      *
-     * @return $this
+     * @return Silex\Controller
      */
     public function get($pattern, $to)
     {
-        $this->match($pattern, $to, 'GET');
-
-        return $this;
+        return $this->match($pattern, $to, 'GET');
     }
 
     /**
      * Map a POST request to a callable.
      *
-     * This method is chainable.
-     *
      * @param string $pattern Matched route pattern
      * @param mixed $to Callback that returns the response when matched
      *
-     * @return $this
+     * @return Silex\Controller
      */
     public function post($pattern, $to)
     {
-        $this->match($pattern, $to, 'POST');
-
-        return $this;
+        return $this->match($pattern, $to, 'POST');
     }
 
     /**
      * Map a PUT request to a callable.
      *
-     * This method is chainable.
-     *
      * @param string $pattern Matched route pattern
      * @param mixed $to Callback that returns the response when matched
      *
-     * @return $this
+     * @return Silex\Controller
      */
     public function put($pattern, $to)
     {
-        $this->match($pattern, $to, 'PUT');
-
-        return $this;
+        return $this->match($pattern, $to, 'PUT');
     }
 
     /**
      * Map a DELETE request to a callable.
      *
-     * This method is chainable.
-     *
      * @param string $pattern Matched route pattern
      * @param mixed $to Callback that returns the response when matched
      *
-     * @return $this
+     * @return Silex\Controller
      */
     public function delete($pattern, $to)
     {
-        $this->match($pattern, $to, 'DELETE');
-
-        return $this;
+        return $this->match($pattern, $to, 'DELETE');
     }
 
     /**
@@ -237,8 +239,6 @@ class Application extends HttpKernel implements EventSubscriberInterface
      * Handle the request and deliver the response.
      *
      * @param Request $request Request to process
-     *
-     * @return $this
      */
     public function run(Request $request = null)
     {
@@ -256,7 +256,9 @@ class Application extends HttpKernel implements EventSubscriberInterface
     {
         $this->request = $event->getRequest();
 
-        $matcher = new UrlMatcher($this->routes, array(
+        $this->controllerCollection->flush();
+
+        $matcher = new UrlMatcher($this->routeCollection, array(
             'base_url'  => $this->request->getBaseUrl(),
             'method'    => $this->request->getMethod(),
             'host'      => $this->request->getHost(),
