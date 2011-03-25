@@ -78,16 +78,6 @@ class Application extends HttpKernel implements EventSubscriberInterface
     }
 
     /**
-     * Get the collection of controllers.
-     *
-     * @return Silex\ControllerCollection
-     */
-    public function getControllerCollection()
-    {
-        return $this->controllerCollection;
-    }
-
-    /**
      * Map a pattern to a callable.
      *
      * You can optionally specify HTTP methods that should be matched.
@@ -233,6 +223,14 @@ class Application extends HttpKernel implements EventSubscriberInterface
         });
 
         return $this;
+    }
+
+    /**
+     * Flush the controller collection
+     */
+    public function flushControllerCollection()
+    {
+        $this->controllerCollection->flush();
     }
 
     /**

@@ -34,7 +34,7 @@ class FunctionalTest extends \PHPUnit_Framework_TestCase
         })
         ->setRouteName('foo_abc');
 
-        $application->getControllerCollection()->flush();
+        $application->flushControllerCollection();
         $routeCollection = $application->getRouteCollection();
         $this->assertInstanceOf('Symfony\Component\Routing\Route', $routeCollection->get('homepage'));
         $this->assertInstanceOf('Symfony\Component\Routing\Route', $routeCollection->get('foo_abc'));
