@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 class StringResponseConverter
 {
     /**
-     * Do the conversion
+     * Does the conversion
      *
      * @param $response The response string
      * @return A response object

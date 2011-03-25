@@ -37,7 +37,7 @@ class Controller
     }
 
     /**
-     * Get the controller's route.
+     * Gets the controller's route.
      */
     public function getRoute()
     {
@@ -45,7 +45,7 @@ class Controller
     }
 
     /**
-     * Get the controller's route name.
+     * Gets the controller's route name.
      */
     public function getRouteName()
     {
@@ -53,7 +53,7 @@ class Controller
     }
 
     /**
-     * Set the controller's route.
+     * Sets the controller's route.
      *
      * @param string $routeName
      */
@@ -67,7 +67,7 @@ class Controller
     }
 
     /**
-     * Freeze the controller.
+     * Freezes the controller.
      *
      * Once the controller is frozen, you can no longer change the route name
      */

@@ -35,7 +35,7 @@ abstract class WebTestCase extends BaseWebTestCase
     }
 
     /**
-     * Create the application (HttpKernel, most likely Framework).
+     * Creates the application (HttpKernel, most likely Framework).
      *
      * @return Symfony\Component\HttpKernel\HttpKernel
      */

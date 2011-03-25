@@ -58,7 +58,7 @@ class Application extends HttpKernel implements EventSubscriberInterface
     }
 
     /**
-     * Get the current request.
+     * Gets the current request.
      *
      * @return Symfony\Component\HttpFoundation\Request
      */
@@ -68,17 +68,17 @@ class Application extends HttpKernel implements EventSubscriberInterface
     }
 
     /**
-     * Get the collection of routes.
+     * Gets the collection of routes.
      *
      * @return Symfony\Component\Routing\RouteCollection
      */
-    public function getRouteCollection()
+    public function getRoutes()
     {
         return $this->routes;
     }
 
     /**
-     * Map a pattern to a callable.
+     * Maps a pattern to a callable.
      *
      * You can optionally specify HTTP methods that should be matched.
      *
@@ -105,7 +105,7 @@ class Application extends HttpKernel implements EventSubscriberInterface
     }
 
     /**
-     * Map a GET request to a callable.
+     * Maps a GET request to a callable.
      *
      * @param string $pattern Matched route pattern
      * @param mixed $to Callback that returns the response when matched
@@ -118,7 +118,7 @@ class Application extends HttpKernel implements EventSubscriberInterface
     }
 
     /**
-     * Map a POST request to a callable.
+     * Maps a POST request to a callable.
      *
      * @param string $pattern Matched route pattern
      * @param mixed $to Callback that returns the response when matched
@@ -131,7 +131,7 @@ class Application extends HttpKernel implements EventSubscriberInterface
     }
 
     /**
-     * Map a PUT request to a callable.
+     * Maps a PUT request to a callable.
      *
      * @param string $pattern Matched route pattern
      * @param mixed $to Callback that returns the response when matched
@@ -144,7 +144,7 @@ class Application extends HttpKernel implements EventSubscriberInterface
     }
 
     /**
-     * Map a DELETE request to a callable.
+     * Maps a DELETE request to a callable.
      *
      * @param string $pattern Matched route pattern
      * @param mixed $to Callback that returns the response when matched
@@ -157,7 +157,7 @@ class Application extends HttpKernel implements EventSubscriberInterface
     }
 
     /**
-     * Register a before filter.
+     * Registers a before filter.
      *
      * Before filters are run before any route has been matched.
      *
@@ -175,7 +175,7 @@ class Application extends HttpKernel implements EventSubscriberInterface
     }
 
     /**
-     * Register an after filter.
+     * Registers an after filter.
      *
      * After filters are run after the controller has been executed.
      *
@@ -193,7 +193,7 @@ class Application extends HttpKernel implements EventSubscriberInterface
     }
 
     /**
-     * Register an error handler.
+     * Registers an error handler.
      *
      * Error handlers are simple callables which take a single Exception
      * as an argument. If a controller throws an exception, an error handler
@@ -226,7 +226,7 @@ class Application extends HttpKernel implements EventSubscriberInterface
     }
 
     /**
-     * Flush the controller collection.
+     * Flushes the controller collection.
      */
     public function flush()
     {
@@ -234,7 +234,7 @@ class Application extends HttpKernel implements EventSubscriberInterface
     }
 
     /**
-     * Handle the request and deliver the response.
+     * Handles the request and deliver the response.
      *
      * @param Request $request Request to process
      */
@@ -248,7 +248,7 @@ class Application extends HttpKernel implements EventSubscriberInterface
     }
 
     /**
-     * Handler for onCoreRequest.
+     * Handles onCoreRequest events.
      */
     public function onCoreRequest(KernelEvent $event)
     {

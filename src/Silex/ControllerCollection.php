@@ -33,7 +33,7 @@ class ControllerCollection
     }
 
     /**
-     * Add a controller to the staging area.
+     * Adds a controller to the staging area.
      *
      * @param Controller $controller
      */
@@ -43,7 +43,7 @@ class ControllerCollection
     }
 
     /**
-     * Persist and freeze staged controllers.
+     * Persists and freezes staged controllers.
      */
     public function flush()
     {
