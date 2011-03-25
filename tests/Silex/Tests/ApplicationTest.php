@@ -94,7 +94,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $routeCollection = $application->getRouteCollection();
         $this->assertInstanceOf('Symfony\Component\Routing\RouteCollection', $routeCollection);
         $this->assertEquals(0, count($routeCollection->all()));
-        $application->flushControllerCollection();
+        $application->flush();
         $this->assertEquals(2, count($routeCollection->all()));
     }
 }

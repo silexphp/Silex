@@ -226,9 +226,9 @@ class Application extends HttpKernel implements EventSubscriberInterface
     }
 
     /**
-     * Flush the controller collection
+     * Flush the controller collection.
      */
-    public function flushControllerCollection()
+    public function flush()
     {
         $this->controllerCollection->flush();
     }
