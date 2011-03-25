@@ -36,8 +36,8 @@ use Symfony\Component\Routing\Matcher\Exception\NotFoundException;
 class Application extends HttpKernel implements EventSubscriberInterface
 {
     private $dispatcher;
-    private $routeCollection;
-    private $controllerCollection;
+    private $routes;
+    private $controllers;
     private $request;
 
     /**
@@ -45,8 +45,8 @@ class Application extends HttpKernel implements EventSubscriberInterface
      */
     public function __construct()
     {
-        $this->routeCollection = new RouteCollection();
-        $this->controllerCollection = new ControllerCollection($this->routeCollection);
+        $this->routes = new RouteCollection();
+        $this->controllers = new ControllerCollection($this->routes);
 
         $this->dispatcher = new EventDispatcher();
         $this->dispatcher->addSubscriber($this);
@@ -74,7 +74,7 @@ class Application extends HttpKernel implements EventSubscriberInterface
      */
     public function getRouteCollection()
     {
-        return $this->routeCollection;
+        return $this->routes;
     }
 
     /**
@@ -99,7 +99,7 @@ class Application extends HttpKernel implements EventSubscriberInterface
 
         $route = new Route($pattern, array('_controller' => $to), $requirements);
         $controller = new Controller($route);
-        $this->controllerCollection->add($controller);
+        $this->controllers->add($controller);
 
         return $controller;
     }
@@ -230,7 +230,7 @@ class Application extends HttpKernel implements EventSubscriberInterface
      */
     public function flush()
     {
-        $this->controllerCollection->flush();
+        $this->controllers->flush();
     }
 
     /**
@@ -254,9 +254,9 @@ class Application extends HttpKernel implements EventSubscriberInterface
     {
         $this->request = $event->getRequest();
 
-        $this->controllerCollection->flush();
+        $this->controllers->flush();
 
-        $matcher = new UrlMatcher($this->routeCollection, array(
+        $matcher = new UrlMatcher($this->routes, array(
             'base_url'  => $this->request->getBaseUrl(),
             'method'    => $this->request->getMethod(),
             'host'      => $this->request->getHost(),

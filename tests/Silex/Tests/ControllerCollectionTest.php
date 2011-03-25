@@ -28,40 +28,40 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetRouteCollectionWithNoRoutes()
     {
-        $routeCollection = new RouteCollection();
-        $controllerCollection = new ControllerCollection($routeCollection);
+        $routes = new RouteCollection();
+        $controllers = new ControllerCollection($routes);
 
-        $this->assertEquals(0, count($routeCollection->all()));
-        $controllerCollection->flush();
-        $this->assertEquals(0, count($routeCollection->all()));
+        $this->assertEquals(0, count($routes->all()));
+        $controllers->flush();
+        $this->assertEquals(0, count($routes->all()));
     }
 
     public function testGetRouteCollectionWithRoutes()
     {
-        $routeCollection = new RouteCollection();
-        $controllerCollection = new ControllerCollection($routeCollection);
-        $controllerCollection->add(new Controller(new Route('/foo')));
-        $controllerCollection->add(new Controller(new Route('/bar')));
+        $routes = new RouteCollection();
+        $controllers = new ControllerCollection($routes);
+        $controllers->add(new Controller(new Route('/foo')));
+        $controllers->add(new Controller(new Route('/bar')));
 
-        $this->assertEquals(0, count($routeCollection->all()));
-        $controllerCollection->flush();
-        $this->assertEquals(2, count($routeCollection->all()));
+        $this->assertEquals(0, count($routes->all()));
+        $controllers->flush();
+        $this->assertEquals(2, count($routes->all()));
     }
 
     public function testControllerFreezing()
     {
-        $routeCollection = new RouteCollection();
-        $controllerCollection = new ControllerCollection($routeCollection);
+        $routes = new RouteCollection();
+        $controllers = new ControllerCollection($routes);
 
         $fooController = new Controller(new Route('/foo'));
         $fooController->setRouteName('foo');
-        $controllerCollection->add($fooController);
+        $controllers->add($fooController);
 
         $barController = new Controller(new Route('/bar'));
         $barController->setRouteName('bar');
-        $controllerCollection->add($barController);
+        $controllers->add($barController);
 
-        $controllerCollection->flush();
+        $controllers->flush();
 
         try {
             $fooController->setRouteName('foo2');

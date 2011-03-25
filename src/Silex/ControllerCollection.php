@@ -25,11 +25,11 @@ use Symfony\Component\Routing\RouteCollection;
 class ControllerCollection
 {
     private $controllers = array();
-    private $routeCollection;
+    private $routes;
 
-    public function __construct(RouteCollection $routeCollection)
+    public function __construct(RouteCollection $routes)
     {
-        $this->routeCollection = $routeCollection;
+        $this->routes = $routes;
     }
 
     /**
@@ -48,7 +48,7 @@ class ControllerCollection
     public function flush()
     {
         foreach ($this->controllers as $controller) {
-            $this->routeCollection->add($controller->getRouteName(), $controller->getRoute());
+            $this->routes->add($controller->getRouteName(), $controller->getRoute());
             $controller->freeze();
         }
 
