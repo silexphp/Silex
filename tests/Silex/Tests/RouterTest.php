@@ -83,9 +83,17 @@ class RouterTest extends \PHPUnit_Framework_TestCase
             return new RedirectResponse('/target');
         });
 
+        $application->match('/redirect2', function() use ($application) {
+            return $application->redirect('/target2');
+        });
+
         $request = Request::create('/redirect');
         $response = $application->handle($request);
         $this->assertTrue($response->isRedirected('/target'));
+
+        $request = Request::create('/redirect2');
+        $response = $application->handle($request);
+        $this->assertTrue($response->isRedirected('/target2'));
     }
 
     /**

@@ -19,6 +19,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -231,6 +232,19 @@ class Application extends HttpKernel implements EventSubscriberInterface
     public function flush()
     {
         $this->controllers->flush();
+    }
+
+    /**
+     * Redirect
+     *
+     * @param string  $url    The URL to redirect to
+     * @param integer $status The status code (302 by default)
+     *
+     * @see Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function redirect($url, $status = 302)
+    {
+        return new RedirectResponse($url, $status);
     }
 
     /**
