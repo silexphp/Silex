@@ -37,6 +37,7 @@ class Compiler
             ->ignoreVCS(true)
             ->name('*.php')
             ->in(__DIR__.'/..')
+            ->in(__DIR__.'/../../vendor/pimple')
             ->in(__DIR__.'/../../vendor/Symfony/Component/ClassLoader')
             ->in(__DIR__.'/../../vendor/Symfony/Component/EventDispatcher')
             ->in(__DIR__.'/../../vendor/Symfony/Component/HttpFoundation')

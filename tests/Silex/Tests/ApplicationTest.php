@@ -67,14 +67,14 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
         $application->handle($request);
 
-        $this->assertEquals($request, $application->getRequest());
+        $this->assertEquals($request, $application['request']);
     }
 
     public function testgetRoutesWithNoRoutes()
     {
         $application = new Application();
 
-        $routes = $application->getRoutes();
+        $routes = $application['routes'];
         $this->assertInstanceOf('Symfony\Component\Routing\RouteCollection', $routes);
         $this->assertEquals(0, count($routes->all()));
     }
@@ -91,7 +91,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
             return 'bar';
         });
 
-        $routes = $application->getRoutes();
+        $routes = $application['routes'];
         $this->assertInstanceOf('Symfony\Component\Routing\RouteCollection', $routes);
         $this->assertEquals(0, count($routes->all()));
         $application->flush();

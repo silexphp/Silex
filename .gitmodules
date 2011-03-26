@@ -25,3 +25,6 @@
 [submodule "vendor/Symfony/Component/CssSelector"]
 	path = vendor/Symfony/Component/CssSelector
 	url = https://github.com/symfony/CssSelector
+[submodule "vendor/pimple"]
+	path = vendor/pimple
+	url = https://github.com/fabpot/Pimple

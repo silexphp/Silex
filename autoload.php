@@ -9,4 +9,7 @@ $loader->registerNamespaces(array(
     'Symfony' => __DIR__.'/vendor',
     'Silex'   => __DIR__.'/src',
 ));
+$loader->registerPrefixes(array(
+    'Pimple' => __DIR__.'/vendor/pimple/lib',
+));
 $loader->register();

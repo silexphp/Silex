@@ -19,6 +19,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Events as HttpKernelEvents;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -34,49 +35,37 @@ use Symfony\Component\Routing\Matcher\Exception\NotFoundException;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Application implements HttpKernelInterface, EventSubscriberInterface
+class Application extends \Pimple implements HttpKernelInterface, EventSubscriberInterface
 {
-    private $dispatcher;
-    private $routes;
-    private $controllers;
-    private $request;
-    private $kernel;
-
     /**
      * Constructor.
      */
     public function __construct()
     {
-        $this->routes = new RouteCollection();
-        $this->controllers = new ControllerCollection($this->routes);
+        $sc = $this;
 
-        $this->dispatcher = new EventDispatcher();
-        $this->dispatcher->addSubscriber($this);
-        $this->dispatcher->addListener(\Symfony\Component\HttpKernel\Events::onCoreView, $this, -10);
+        $this['routes'] = $this->asShared(function () {
+            return new RouteCollection();
+        });
+        $this['controllers'] = $this->asShared(function () use ($sc) {
+            return new ControllerCollection($sc['routes']);
+        });
 
-        $resolver = new ControllerResolver();
+        $this['dispatcher'] = $this->asShared(function () use ($sc) {
+            $dispatcher = new EventDispatcher();
+            $dispatcher->addSubscriber($sc);
+            $dispatcher->addListener(HttpKernelEvents::onCoreView, $sc, -10);
 
-        $this->kernel = new HttpKernel($this->dispatcher, $resolver);
-    }
+            return $dispatcher;
+        });
 
-    /**
-     * Gets the current request.
-     *
-     * @return Symfony\Component\HttpFoundation\Request
-     */
-    public function getRequest()
-    {
-        return $this->request;
-    }
+        $this['resolver'] = $this->asShared(function () {
+            return new ControllerResolver();
+        });
 
-    /**
-     * Gets the collection of routes.
-     *
-     * @return Symfony\Component\Routing\RouteCollection
-     */
-    public function getRoutes()
-    {
-        return $this->routes;
+        $this['kernel'] = $this->asShared(function () use ($sc) {
+            return new HttpKernel($sc['dispatcher'], $sc['resolver']);
+        });
     }
 
     /**
@@ -101,7 +90,7 @@ class Application implements HttpKernelInterface, EventSubscriberInterface
 
         $route = new Route($pattern, array('_controller' => $to), $requirements);
         $controller = new Controller($route);
-        $this->controllers->add($controller);
+        $this['controllers']->add($controller);
 
         return $controller;
     }
@@ -171,7 +160,7 @@ class Application implements HttpKernelInterface, EventSubscriberInterface
      */
     public function before($callback)
     {
-        $this->dispatcher->addListener(Events::onSilexBefore, $callback);
+        $this['dispatcher']->addListener(Events::onSilexBefore, $callback);
 
         return $this;
     }
@@ -189,7 +178,7 @@ class Application implements HttpKernelInterface, EventSubscriberInterface
      */
     public function after($callback)
     {
-        $this->dispatcher->addListener(Events::onSilexAfter, $callback);
+        $this['dispatcher']->addListener(Events::onSilexAfter, $callback);
 
         return $this;
     }
@@ -215,7 +204,7 @@ class Application implements HttpKernelInterface, EventSubscriberInterface
      */
     public function error($callback)
     {
-        $this->dispatcher->addListener(Events::onSilexError, function(GetResponseForErrorEvent $event) use ($callback) {
+        $this['dispatcher']->addListener(Events::onSilexError, function(GetResponseForErrorEvent $event) use ($callback) {
             $exception = $event->getException();
             $result = $callback->__invoke($exception);
 
@@ -232,7 +221,7 @@ class Application implements HttpKernelInterface, EventSubscriberInterface
      */
     public function flush()
     {
-        $this->controllers->flush();
+        $this['controllers']->flush();
     }
 
     /**
@@ -251,7 +240,7 @@ class Application implements HttpKernelInterface, EventSubscriberInterface
 
     function handle(Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true)
     {
-        return $this->kernel->handle($request, $type, $catch);
+        return $this['kernel']->handle($request, $type, $catch);
     }
 
     /**
@@ -259,31 +248,31 @@ class Application implements HttpKernelInterface, EventSubscriberInterface
      */
     public function onCoreRequest(KernelEvent $event)
     {
-        $this->request = $event->getRequest();
+        $this['request'] = $event->getRequest();
 
-        $this->controllers->flush();
+        $this['controllers']->flush();
 
-        $matcher = new UrlMatcher($this->routes, array(
-            'base_url'  => $this->request->getBaseUrl(),
-            'method'    => $this->request->getMethod(),
-            'host'      => $this->request->getHost(),
-            'port'      => $this->request->getPort(),
-            'is_secure' => $this->request->isSecure(),
+        $matcher = new UrlMatcher($this['routes'], array(
+            'base_url'  => $this['request']->getBaseUrl(),
+            'method'    => $this['request']->getMethod(),
+            'host'      => $this['request']->getHost(),
+            'port'      => $this['request']->getPort(),
+            'is_secure' => $this['request']->isSecure(),
         ));
 
         try {
-            $attributes = $matcher->match($this->request->getPathInfo());
+            $attributes = $matcher->match($this['request']->getPathInfo());
 
-            $this->request->attributes->add($attributes);
+            $this['request']->attributes->add($attributes);
         } catch (NotFoundException $e) {
-            $message = sprintf('No route found for "%s %s"', $this->request->getMethod(), $this->request->getPathInfo());
+            $message = sprintf('No route found for "%s %s"', $this['request']->getMethod(), $this['request']->getPathInfo());
             throw new NotFoundHttpException('Not Found', $message, 0, $e);
         } catch (MethodNotAllowedException $e) {
-            $message = sprintf('No route found for "%s %s": Method Not Allowed (Allow: %s)', $this->request->getMethod(), $this->request->getPathInfo(), strtoupper(implode(', ', $e->getAllowedMethods())));
+            $message = sprintf('No route found for "%s %s": Method Not Allowed (Allow: %s)', $this['request']->getMethod(), $this['request']->getPathInfo(), strtoupper(implode(', ', $e->getAllowedMethods())));
             throw new MethodNotAllowedHttpException($e->getAllowedMethods(), 'Method Not Allowed', $message, 0, $e);
         }
 
-        $this->dispatcher->dispatch(Events::onSilexBefore);
+        $this['dispatcher']->dispatch(Events::onSilexBefore);
     }
 
     /**
@@ -305,7 +294,7 @@ class Application implements HttpKernelInterface, EventSubscriberInterface
      */
     public function onCoreResponse(Event $event)
     {
-        $this->dispatcher->dispatch(Events::onSilexAfter);
+        $this['dispatcher']->dispatch(Events::onSilexAfter);
     }
 
     /**
@@ -319,7 +308,7 @@ class Application implements HttpKernelInterface, EventSubscriberInterface
     public function onCoreException(GetResponseForExceptionEvent $event)
     {
         $errorEvent = new GetResponseForErrorEvent($this, $event->getRequest(), $event->getRequestType(), $event->getException());
-        $this->dispatcher->dispatch(Events::onSilexError, $errorEvent);
+        $this['dispatcher']->dispatch(Events::onSilexError, $errorEvent);
 
         if ($errorEvent->hasResponse()) {
             $event->setResponse($errorEvent->getResponse());
@@ -334,9 +323,9 @@ class Application implements HttpKernelInterface, EventSubscriberInterface
         // onCoreView listener is added manually because it has lower priority
 
         return array(
-            \Symfony\Component\HttpKernel\Events::onCoreRequest,
-            \Symfony\Component\HttpKernel\Events::onCoreResponse,
-            \Symfony\Component\HttpKernel\Events::onCoreException,
+            HttpKernelEvents::onCoreRequest,
+            HttpKernelEvents::onCoreResponse,
+            HttpKernelEvents::onCoreException,
         );
     }
 }

@@ -139,10 +139,10 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     public function testRequestShouldBeStoredRegardlessOfRouting() {
         $application = new Application();
         $application->get('/foo', function() use ($application) {
-            return new Response($application->getRequest()->getRequestUri());
+            return new Response($application['request']->getRequestUri());
         });
         $application->error(function($e) use ($application) {
-            return new Response($application->getRequest()->getRequestUri());
+            return new Response($application['request']->getRequestUri());
         });
         foreach(array('/foo', '/bar') as $path) {
           $request = Request::create($path);
