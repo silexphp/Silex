@@ -21,6 +21,7 @@ use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Events as HttpKernelEvents;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -240,6 +241,19 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     public function flush()
     {
         $this['controllers']->flush();
+    }
+
+    /**
+     * Redirects the user to another URL.
+     *
+     * @param string  $url    The URL to redirect to
+     * @param integer $status The status code (302 by default)
+     *
+     * @see Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function redirect($url, $status = 302)
+    {
+        return new RedirectResponse($url, $status);
     }
 
     /**
