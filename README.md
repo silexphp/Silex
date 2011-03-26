@@ -39,7 +39,7 @@ You can run the [PHPUnit][3] test suite by running `phpunit`.
 
 ## Build
 
-You can build the silex.phar file by running `php compile.php`.
+You can build the `silex.phar` file by running `php compile`.
 
 ## More Information
 
