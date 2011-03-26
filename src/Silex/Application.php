@@ -29,6 +29,7 @@ use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\Matcher\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Matcher\Exception\NotFoundException;
+use Symfony\Component\ClassLoader\UniversalClassLoader;
 
 /**
  * The Silex framework class.
@@ -44,9 +45,17 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     {
         $sc = $this;
 
+        $this['autoloader'] = $this->asShared(function () {
+            $loader = new UniversalClassLoader();
+            $loader->register();
+
+            return $loader;
+        });
+
         $this['routes'] = $this->asShared(function () {
             return new RouteCollection();
         });
+
         $this['controllers'] = $this->asShared(function () use ($sc) {
             return new ControllerCollection($sc['routes']);
         });

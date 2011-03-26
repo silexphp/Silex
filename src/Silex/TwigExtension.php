@@ -25,5 +25,9 @@ class TwigExtension implements ExtensionInterface
         $app['twig.loader'] = $app->asShared(function () use ($app) {
             return new \Twig_Loader_Filesystem($app['twig.path']);
         });
+
+        if (isset($app['twig.class_path'])) {
+            $app['autoloader']->registerPrefix('Twig_', $app['twig.class_path']);
+        }
     }
 }
