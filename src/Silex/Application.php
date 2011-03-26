@@ -44,7 +44,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function __construct()
     {
-        $sc = $this;
+        $app = $this;
 
         $this['autoloader'] = $this->asShared(function () {
             $loader = new UniversalClassLoader();
@@ -57,14 +57,14 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             return new RouteCollection();
         });
 
-        $this['controllers'] = $this->asShared(function () use ($sc) {
-            return new ControllerCollection($sc['routes']);
+        $this['controllers'] = $this->asShared(function () use ($app) {
+            return new ControllerCollection($app['routes']);
         });
 
-        $this['dispatcher'] = $this->asShared(function () use ($sc) {
+        $this['dispatcher'] = $this->asShared(function () use ($app) {
             $dispatcher = new EventDispatcher();
-            $dispatcher->addSubscriber($sc);
-            $dispatcher->addListener(HttpKernelEvents::onCoreView, $sc, -10);
+            $dispatcher->addSubscriber($app);
+            $dispatcher->addListener(HttpKernelEvents::onCoreView, $app, -10);
 
             return $dispatcher;
         });
@@ -73,8 +73,8 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             return new ControllerResolver();
         });
 
-        $this['kernel'] = $this->asShared(function () use ($sc) {
-            return new HttpKernel($sc['dispatcher'], $sc['resolver']);
+        $this['kernel'] = $this->asShared(function () use ($app) {
+            return new HttpKernel($app['dispatcher'], $app['resolver']);
         });
     }
 
