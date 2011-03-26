@@ -12,6 +12,7 @@
 namespace Silex;
 
 use Symfony\Component\HttpKernel\HttpKernel;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\Controller\ControllerResolver;
 use Symfony\Component\HttpKernel\Event\KernelEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
@@ -33,12 +34,13 @@ use Symfony\Component\Routing\Matcher\Exception\NotFoundException;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Application extends HttpKernel implements EventSubscriberInterface
+class Application implements HttpKernelInterface, EventSubscriberInterface
 {
     private $dispatcher;
     private $routes;
     private $controllers;
     private $request;
+    private $kernel;
 
     /**
      * Constructor.
@@ -54,7 +56,7 @@ class Application extends HttpKernel implements EventSubscriberInterface
 
         $resolver = new ControllerResolver();
 
-        parent::__construct($this->dispatcher, $resolver);
+        $this->kernel = new HttpKernel($this->dispatcher, $resolver);
     }
 
     /**
@@ -245,6 +247,11 @@ class Application extends HttpKernel implements EventSubscriberInterface
         }
 
         $this->handle($request)->send();
+    }
+
+    function handle(Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true)
+    {
+        return $this->kernel->handle($request, $type, $catch);
     }
 
     /**
