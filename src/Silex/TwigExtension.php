@@ -18,6 +18,9 @@ class TwigExtension implements ExtensionInterface
         $app['twig'] = $app->share(function () use ($app) {
             $twig = new \Twig_Environment($app['twig.loader'], $app['twig.options']);
             $twig->addGlobal('app', $app);
+            if (isset($app['twig.configure'])) {
+                $app['twig.configure']($twig);
+            }
 
             return $twig;
         });
