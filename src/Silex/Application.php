@@ -78,6 +78,12 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         });
     }
 
+    /**
+     * Registers an extension.
+     *
+     * @param ExtensionInterface $extension An ExtensionInterface instance
+     * @param array              $values    An array of values that customizes the extension
+     */
     public function register(ExtensionInterface $extension, array $values = array())
     {
         foreach ($values as $key => $value) {
