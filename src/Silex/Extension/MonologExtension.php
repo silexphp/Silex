@@ -24,7 +24,7 @@ class MonologExtension implements ExtensionInterface
     public function register(Application $app)
     {
         $app['monolog'] = $app->share(function () use ($app) {
-            $log = new Logger('myapp');
+            $log = new Logger(isset($app['monolog.name']) ? $app['monolog.name'] : 'myapp');
 
             $app['monolog.configure']($log);
 
@@ -32,7 +32,8 @@ class MonologExtension implements ExtensionInterface
         });
 
         $app['monolog.configure'] = $app->protect(function ($log) use ($app) {
-            $log->pushHandler(new StreamHandler($app['monolog.logfile'], Logger::DEBUG));
+            $level = isset($app['monolog.level']) ? $app['monolog.level'] : Logger::DEBUG;
+            $log->pushHandler(new StreamHandler($app['monolog.logfile'], $level));
         });
 
         if (isset($app['monolog.class_path'])) {
