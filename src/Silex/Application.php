@@ -286,6 +286,8 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             'is_secure' => $this['request']->isSecure(),
         ));
 
+        $this['dispatcher']->dispatch(Events::onSilexBefore);
+
         try {
             $attributes = $matcher->match($this['request']->getPathInfo());
 
@@ -297,8 +299,6 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             $message = sprintf('No route found for "%s %s": Method Not Allowed (Allow: %s)', $this['request']->getMethod(), $this['request']->getPathInfo(), strtoupper(implode(', ', $e->getAllowedMethods())));
             throw new MethodNotAllowedHttpException($e->getAllowedMethods(), 'Method Not Allowed', $message, 0, $e);
         }
-
-        $this['dispatcher']->dispatch(Events::onSilexBefore);
     }
 
     /**
