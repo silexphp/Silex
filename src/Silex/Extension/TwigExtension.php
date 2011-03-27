@@ -19,7 +19,7 @@ class TwigExtension implements ExtensionInterface
     public function register(Application $app)
     {
         $app['twig'] = $app->share(function () use ($app) {
-            $twig = new \Twig_Environment($app['twig.loader'], $app['twig.options']);
+            $twig = new \Twig_Environment($app['twig.loader'], isset($app['twig.options']) ? $app['twig.options'] : array());
             $twig->addGlobal('app', $app);
             if (isset($app['twig.configure'])) {
                 $app['twig.configure']($twig);
@@ -29,7 +29,11 @@ class TwigExtension implements ExtensionInterface
         });
 
         $app['twig.loader'] = $app->share(function () use ($app) {
-            return new \Twig_Loader_Filesystem($app['twig.path']);
+            if (isset($app['twig.templates'])) {
+                return new \Twig_Loader_Array($app['twig.templates']);
+            } else {
+                return new \Twig_Loader_Filesystem($app['twig.path']);
+            }
         });
 
         if (isset($app['twig.class_path'])) {
