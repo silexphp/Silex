@@ -15,6 +15,7 @@ use Silex\Application;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Error handler test cases.
@@ -26,7 +27,6 @@ class BeforeAfterFilterTest extends \PHPUnit_Framework_TestCase
     public function testBeforeAndAfterFilter()
     {
         $i = 0;
-
         $test = $this;
 
         $application = new Application();
@@ -76,7 +76,6 @@ class BeforeAfterFilterTest extends \PHPUnit_Framework_TestCase
     public function testMultipleFilters()
     {
         $i = 0;
-
         $test = $this;
 
         $application = new Application();
@@ -110,5 +109,57 @@ class BeforeAfterFilterTest extends \PHPUnit_Framework_TestCase
         $application->handle($request);
 
         $this->assertEquals(5, $i);
+    }
+
+    public function testFiltersShouldFireOnException()
+    {
+        $i = 0;
+
+        $application = new Application();
+
+        $application->before(function() use(&$i) {
+            $i++;
+        });
+
+        $application->match('/foo', function() {
+            throw new \RuntimeException();
+        });
+
+        $application->after(function() use(&$i) {
+            $i++;
+        });
+
+        $application->error(function() {
+            return 'error handled';
+        });
+
+        $request = Request::create('/foo');
+        $application->handle($request);
+
+        $this->assertEquals(2, $i);
+    }
+
+    public function testFiltersShouldFireOnHttpException()
+    {
+        $i = 0;
+
+        $application = new Application();
+
+        $application->before(function() use(&$i) {
+            $i++;
+        });
+
+        $application->after(function() use(&$i) {
+            $i++;
+        });
+
+        $application->error(function() {
+            return 'error handled';
+        });
+
+        $request = Request::create('/nowhere');
+        $application->handle($request);
+
+        $this->assertEquals(2, $i);
     }
 }
