@@ -41,12 +41,12 @@ class MonologExtension implements ExtensionInterface
         }
 
         $app->before(function() use ($app) {
-            $app['monolog']->addInfo($app['request']->getMethod() . ' ' . $app['request']->getRequestUri());
+            $app['monolog']->addInfo($app['request']->getMethod().' '.$app['request']->getRequestUri());
         });
 
         $app->error(function(\Exception $e) use ($app) {
             if ($e instanceof BaseHttpException) {
-                $app['monolog']->addWarning($e->getStatusCode() . ' ' . $app['request']->getMethod() . ' ' . $app['request']->getRequestUri());
+                $app['monolog']->addWarning($e->getStatusCode().' '.$app['request']->getMethod().' '.$app['request']->getRequestUri());
             } else {
                 $app['monolog']->addError($e->getMessage());
             }
