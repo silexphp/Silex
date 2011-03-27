@@ -15,14 +15,14 @@ class TwigExtension implements ExtensionInterface
 {
     public function register(Application $app)
     {
-        $app['twig'] = $app->asShared(function () use ($app) {
+        $app['twig'] = $app->share(function () use ($app) {
             $twig = new \Twig_Environment($app['twig.loader'], $app['twig.options']);
             $twig->addGlobal('app', $app);
 
             return $twig;
         });
 
-        $app['twig.loader'] = $app->asShared(function () use ($app) {
+        $app['twig.loader'] = $app->share(function () use ($app) {
             return new \Twig_Loader_Filesystem($app['twig.path']);
         });
 
