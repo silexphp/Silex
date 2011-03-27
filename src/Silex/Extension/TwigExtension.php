@@ -9,7 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Silex;
+namespace Silex\Extension;
+
+use Silex\Application;
+use Silex\ExtensionInterface;
 
 class TwigExtension implements ExtensionInterface
 {
