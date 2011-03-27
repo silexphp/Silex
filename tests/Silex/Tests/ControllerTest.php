@@ -21,21 +21,21 @@ use Symfony\Component\Routing\Route;
  */
 class ControllerTest extends \PHPUnit_Framework_TestCase
 {
-    public function testSetRouteName()
+    public function testBind()
     {
         $controller = new Controller(new Route('/foo'));
-        $controller->setRouteName('foo');
+        $controller->bind('foo');
         $this->assertEquals('foo', $controller->getRouteName());
     }
 
     /**
     * @expectedException Silex\Exception\ControllerFrozenException
     */
-    public function testSetRouteNameOnFrozenControllerShouldThrowException()
+    public function testBindOnFrozenControllerShouldThrowException()
     {
         $controller = new Controller(new Route('/foo'));
-        $controller->setRouteName('foo');
+        $controller->bind('foo');
         $controller->freeze();
-        $controller->setRouteName('bar');
+        $controller->bind('bar');
     }
 }

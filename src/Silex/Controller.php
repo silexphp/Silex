@@ -33,7 +33,7 @@ class Controller
     public function __construct(Route $route)
     {
         $this->route = $route;
-        $this->setRouteName($this->defaultRouteName());
+        $this->bind($this->defaultRouteName());
     }
 
     /**
@@ -57,7 +57,7 @@ class Controller
      *
      * @param string $routeName
      */
-    public function setRouteName($routeName)
+    public function bind($routeName)
     {
         if ($this->isFrozen) {
             throw new ControllerFrozenException(sprintf('Calling %s on frozen %s instance.', __METHOD__, __CLASS__));

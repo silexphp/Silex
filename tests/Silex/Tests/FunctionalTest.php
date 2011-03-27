@@ -20,19 +20,19 @@ use Silex\Application;
  */
 class FunctionalTest extends \PHPUnit_Framework_TestCase
 {
-    public function testSetRouteName()
+    public function testBind()
     {
         $application = new Application();
 
         $application->get('/', function() {
             return 'hello';
         })
-        ->setRouteName('homepage');
+        ->bind('homepage');
 
         $application->get('/foo', function() {
             return 'foo';
         })
-        ->setRouteName('foo_abc');
+        ->bind('foo_abc');
 
         $application->flush();
         $routes = $application['routes'];

@@ -54,23 +54,23 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
         $controllers = new ControllerCollection($routes);
 
         $fooController = new Controller(new Route('/foo'));
-        $fooController->setRouteName('foo');
+        $fooController->bind('foo');
         $controllers->add($fooController);
 
         $barController = new Controller(new Route('/bar'));
-        $barController->setRouteName('bar');
+        $barController->bind('bar');
         $controllers->add($barController);
 
         $controllers->flush();
 
         try {
-            $fooController->setRouteName('foo2');
+            $fooController->bind('foo2');
             $this->fail();
         } catch (ControllerFrozenException $e) {
         }
 
         try {
-            $barController->setRouteName('bar2');
+            $barController->bind('bar2');
             $this->fail();
         } catch (ControllerFrozenException $e) {
         }
