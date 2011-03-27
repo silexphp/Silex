@@ -78,7 +78,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         });
     }
 
-    public function register(ExtensionInterface $extension, array $values)
+    public function register(ExtensionInterface $extension, array $values = array())
     {
         foreach ($values as $key => $value) {
             $this[$key] = $value;
