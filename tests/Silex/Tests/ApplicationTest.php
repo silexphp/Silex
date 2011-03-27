@@ -41,20 +41,6 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Silex\Controller', $returnValue);
     }
 
-    public function testFluidInterface()
-    {
-        $application = new Application();
-
-        $returnValue = $application->before(function() {});
-        $this->assertSame($application, $returnValue, '->before() should return $this');
-
-        $returnValue = $application->after(function() {});
-        $this->assertSame($application, $returnValue, '->after() should return $this');
-
-        $returnValue = $application->error(function() {});
-        $this->assertSame($application, $returnValue, '->error() should return $this');
-    }
-
     public function testGetRequest()
     {
         $application = new Application();

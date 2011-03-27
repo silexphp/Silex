@@ -180,14 +180,10 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      * This method is chainable.
      *
      * @param mixed $callback Before filter callback
-     *
-     * @return $this
      */
     public function before($callback)
     {
         $this['dispatcher']->addListener(Events::onSilexBefore, $callback);
-
-        return $this;
     }
 
     /**
@@ -198,14 +194,10 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      * This method is chainable.
      *
      * @param mixed $callback After filter callback
-     *
-     * @return $this
      */
     public function after($callback)
     {
         $this['dispatcher']->addListener(Events::onSilexAfter, $callback);
-
-        return $this;
     }
 
     /**
@@ -224,8 +216,6 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      * This method is chainable.
      *
      * @param mixed $callback Error handler callback, takes an Exception argument
-     *
-     * @return $this
      */
     public function error($callback)
     {
@@ -237,8 +227,6 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
                 $event->setStringResponse($result);
             }
         });
-
-        return $this;
     }
 
     /**
