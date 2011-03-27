@@ -23,15 +23,16 @@ class StringResponseConverter
     /**
      * Does the conversion
      *
-     * @param $response The response string
+     * @param  $response The response string
+     *
      * @return A response object
      */
     public function convert($response)
     {
-        if ( ! $response instanceof Response) {
+        if (!$response instanceof Response) {
             return new Response((string) $response);
-        } else {
-            return $response;
         }
+
+        return $response;
     }
 }
