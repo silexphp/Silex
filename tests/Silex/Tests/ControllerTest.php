@@ -24,7 +24,9 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
     public function testBind()
     {
         $controller = new Controller(new Route('/foo'));
-        $controller->bind('foo');
+        $ret = $controller->bind('foo');
+
+        $this->assertSame($ret, $controller);
         $this->assertEquals('foo', $controller->getRouteName());
     }
 
@@ -37,5 +39,14 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         $controller->bind('foo');
         $controller->freeze();
         $controller->bind('bar');
+    }
+
+    public function testAssert()
+    {
+        $controller = new Controller(new Route('/foo/{bar}'));
+        $ret = $controller->assert('bar', '\d+');
+
+        $this->assertSame($ret, $controller);
+        $this->assertEquals(array('bar' => '\d+'), $controller->getRoute()->getRequirements());
     }
 }

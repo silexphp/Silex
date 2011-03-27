@@ -64,6 +64,21 @@ class Controller
         }
 
         $this->routeName = $routeName;
+
+        return $this;
+    }
+
+    /**
+     * Sets the requirement for a route variable.
+     *
+     * @param string $variable The variable name
+     * @param string $regexp   The regexp to apply
+     */
+    public function assert($variable, $regexp)
+    {
+        $this->route->setRequirement($variable, $regexp);
+
+        return $this;
     }
 
     /**
