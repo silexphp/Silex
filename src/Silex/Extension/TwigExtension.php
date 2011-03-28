@@ -13,6 +13,7 @@ namespace Silex\Extension;
 
 use Silex\Application;
 use Silex\ExtensionInterface;
+use Symfony\Bridge\Twig\Extension\RoutingExtension;
 
 class TwigExtension implements ExtensionInterface
 {
@@ -23,6 +24,10 @@ class TwigExtension implements ExtensionInterface
             $twig->addGlobal('app', $app);
             if (isset($app['twig.configure'])) {
                 $app['twig.configure']($twig);
+            }
+
+            if (isset($app['url_generator']) && isset($app['symfony_bridges'])) {
+                $twig->addExtension(new RoutingExtension($app['url_generator']));
             }
 
             return $twig;
