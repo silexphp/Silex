@@ -37,11 +37,11 @@ class TranslationExtension implements ExtensionInterface
             return $translator;
         });
 
-        $app['translator.loader'] = $app->share(function() use ($app) {
+        $app['translator.loader'] = $app->share(function() {
             return new ArrayLoader();
         });
 
-        $app['translator.message_selector'] = $app->share(function() use ($app) {
+        $app['translator.message_selector'] = $app->share(function() {
             return new MessageSelector();
         });
 
