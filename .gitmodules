@@ -28,3 +28,6 @@
 [submodule "vendor/pimple"]
 	path = vendor/pimple
 	url = https://github.com/fabpot/Pimple
+[submodule "vendor/twig"]
+	path = vendor/twig
+	url = https://github.com/fabpot/Twig
