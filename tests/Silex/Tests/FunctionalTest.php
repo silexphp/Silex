@@ -22,20 +22,20 @@ class FunctionalTest extends \PHPUnit_Framework_TestCase
 {
     public function testBind()
     {
-        $application = new Application();
+        $app = new Application();
 
-        $application->get('/', function() {
+        $app->get('/', function() {
             return 'hello';
         })
         ->bind('homepage');
 
-        $application->get('/foo', function() {
+        $app->get('/foo', function() {
             return 'foo';
         })
         ->bind('foo_abc');
 
-        $application->flush();
-        $routes = $application['routes'];
+        $app->flush();
+        $routes = $app['routes'];
         $this->assertInstanceOf('Symfony\Component\Routing\Route', $routes->get('homepage'));
         $this->assertInstanceOf('Symfony\Component\Routing\Route', $routes->get('foo_abc'));
     }

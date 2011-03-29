@@ -27,72 +27,72 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 {
     public function testMapRouting()
     {
-        $application = new Application();
+        $app = new Application();
 
-        $application->match('/foo', function() {
+        $app->match('/foo', function() {
             return 'foo';
         });
 
-        $application->match('/bar', function() {
+        $app->match('/bar', function() {
             return 'bar';
         });
 
-        $application->match('/', function() {
+        $app->match('/', function() {
             return 'root';
         });
 
-        $this->checkRouteResponse($application, '/foo', 'foo');
-        $this->checkRouteResponse($application, '/bar', 'bar');
-        $this->checkRouteResponse($application, '/', 'root');
+        $this->checkRouteResponse($app, '/foo', 'foo');
+        $this->checkRouteResponse($app, '/bar', 'bar');
+        $this->checkRouteResponse($app, '/', 'root');
     }
 
     public function testStatusCode()
     {
-        $application = new Application();
+        $app = new Application();
 
-        $application->put('/created', function() {
+        $app->put('/created', function() {
             return new Response('', 201);
         });
 
-        $application->match('/forbidden', function() {
+        $app->match('/forbidden', function() {
             return new Response('', 403);
         });
 
-        $application->match('/not_found', function() {
+        $app->match('/not_found', function() {
             return new Response('', 404);
         });
 
         $request = Request::create('/created', 'put');
-        $response = $application->handle($request);
+        $response = $app->handle($request);
         $this->assertEquals(201, $response->getStatusCode());
 
         $request = Request::create('/forbidden');
-        $response = $application->handle($request);
+        $response = $app->handle($request);
         $this->assertEquals(403, $response->getStatusCode());
 
         $request = Request::create('/not_found');
-        $response = $application->handle($request);
+        $response = $app->handle($request);
         $this->assertEquals(404, $response->getStatusCode());
     }
 
     public function testRedirect()
     {
-        $application = new Application();
+        $app = new Application();
 
-        $application->match('/redirect', function() {
+        $app->match('/redirect', function() {
             return new RedirectResponse('/target');
         });
 
-        $application->match('/redirect2', function() use ($application) {
-            return $application->redirect('/target2');
+        $app->match('/redirect2', function() use ($app) {
+            return $app->redirect('/target2');
         });
 
         $request = Request::create('/redirect');
-        $response = $application->handle($request);
+        $response = $app->handle($request);
         $this->assertTrue($response->isRedirected('/target'));
 
         $request = Request::create('/redirect2');
-        $response = $application->handle($request);
+        $response = $app->handle($request);
         $this->assertTrue($response->isRedirected('/target2'));
     }
 
@@ -101,68 +101,68 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     */
     public function testMissingRoute()
     {
-        $application = new Application();
+        $app = new Application();
 
         $request = Request::create('/baz');
-        $application->handle($request);
+        $app->handle($request);
     }
 
     public function testMethodRouting()
     {
-        $application = new Application();
+        $app = new Application();
 
-        $application->match('/foo', function() {
+        $app->match('/foo', function() {
             return 'foo';
         });
 
-        $application->match('/bar', function() {
+        $app->match('/bar', function() {
             return 'bar';
         }, 'GET|POST');
 
-        $application->get('/resource', function() {
+        $app->get('/resource', function() {
             return 'get resource';
         });
 
-        $application->post('/resource', function() {
+        $app->post('/resource', function() {
             return 'post resource';
         });
 
-        $application->put('/resource', function() {
+        $app->put('/resource', function() {
             return 'put resource';
         });
 
-        $application->delete('/resource', function() {
+        $app->delete('/resource', function() {
             return 'delete resource';
         });
 
-        $this->checkRouteResponse($application, '/foo', 'foo');
-        $this->checkRouteResponse($application, '/bar', 'bar');
-        $this->checkRouteResponse($application, '/bar', 'bar', 'post');
-        $this->checkRouteResponse($application, '/resource', 'get resource');
-        $this->checkRouteResponse($application, '/resource', 'post resource', 'post');
-        $this->checkRouteResponse($application, '/resource', 'put resource', 'put');
-        $this->checkRouteResponse($application, '/resource', 'delete resource', 'delete');
+        $this->checkRouteResponse($app, '/foo', 'foo');
+        $this->checkRouteResponse($app, '/bar', 'bar');
+        $this->checkRouteResponse($app, '/bar', 'bar', 'post');
+        $this->checkRouteResponse($app, '/resource', 'get resource');
+        $this->checkRouteResponse($app, '/resource', 'post resource', 'post');
+        $this->checkRouteResponse($app, '/resource', 'put resource', 'put');
+        $this->checkRouteResponse($app, '/resource', 'delete resource', 'delete');
     }
 
     public function testRequestShouldBeStoredRegardlessOfRouting() {
-        $application = new Application();
-        $application->get('/foo', function() use ($application) {
-            return new Response($application['request']->getRequestUri());
+        $app = new Application();
+        $app->get('/foo', function() use ($app) {
+            return new Response($app['request']->getRequestUri());
         });
-        $application->error(function($e) use ($application) {
-            return new Response($application['request']->getRequestUri());
+        $app->error(function($e) use ($app) {
+            return new Response($app['request']->getRequestUri());
         });
         foreach(array('/foo', '/bar') as $path) {
           $request = Request::create($path);
-          $response = $application->handle($request);
+          $response = $app->handle($request);
           $this->assertContains($path, $response->getContent());
         }
     }
 
-    protected function checkRouteResponse($application, $path, $expectedContent, $method = 'get', $message = null)
+    protected function checkRouteResponse($app, $path, $expectedContent, $method = 'get', $message = null)
     {
         $request = Request::create($path, $method);
-        $response = $application->handle($request);
+        $response = $app->handle($request);
         $this->assertEquals($expectedContent, $response->getContent(), $message);
     }
 }

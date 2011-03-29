@@ -12,6 +12,7 @@
 namespace Silex;
 
 use Silex\Exception\ControllerFrozenException;
+
 use Symfony\Component\Routing\Route;
 
 /**

@@ -15,6 +15,7 @@ use Silex\Application;
 use Silex\Controller;
 use Silex\ControllerCollection;
 use Silex\Exception\ControllerFrozenException;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;

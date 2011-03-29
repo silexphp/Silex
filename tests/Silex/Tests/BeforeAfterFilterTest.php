@@ -29,25 +29,25 @@ class BeforeAfterFilterTest extends \PHPUnit_Framework_TestCase
         $i = 0;
         $test = $this;
 
-        $application = new Application();
+        $app = new Application();
 
-        $application->before(function() use(&$i, $test) {
+        $app->before(function() use (&$i, $test) {
             $test->assertEquals(0, $i);
             $i++;
         });
 
-        $application->match('/foo', function() use(&$i, $test) {
+        $app->match('/foo', function() use (&$i, $test) {
             $test->assertEquals(1, $i);
             $i++;
         });
 
-        $application->after(function() use(&$i, $test) {
+        $app->after(function() use (&$i, $test) {
             $test->assertEquals(2, $i);
             $i++;
         });
 
         $request = Request::create('/foo');
-        $application->handle($request);
+        $app->handle($request);
 
         $this->assertEquals(3, $i);
     }
@@ -56,19 +56,19 @@ class BeforeAfterFilterTest extends \PHPUnit_Framework_TestCase
     {
         $i = 0;
 
-        $application = new Application();
+        $app = new Application();
 
-        $application->match('/foo', function() use (&$i) {
+        $app->match('/foo', function() use (&$i) {
             $i++;
             return new Response('foo');
         });
 
-        $application->after(function() use(&$i) {
+        $app->after(function() use (&$i) {
             $i++;
         });
 
         $request = Request::create('/foo');
-        $application->handle($request);
+        $app->handle($request);
 
         $this->assertEquals(2, $i);
     }
@@ -78,35 +78,35 @@ class BeforeAfterFilterTest extends \PHPUnit_Framework_TestCase
         $i = 0;
         $test = $this;
 
-        $application = new Application();
+        $app = new Application();
 
-        $application->before(function() use(&$i, $test) {
+        $app->before(function() use (&$i, $test) {
             $test->assertEquals(0, $i);
             $i++;
         });
 
-        $application->before(function() use(&$i, $test) {
+        $app->before(function() use (&$i, $test) {
             $test->assertEquals(1, $i);
             $i++;
         });
 
-        $application->match('/foo', function() use(&$i, $test) {
+        $app->match('/foo', function() use (&$i, $test) {
             $test->assertEquals(2, $i);
             $i++;
         });
 
-        $application->after(function() use(&$i, $test) {
+        $app->after(function() use (&$i, $test) {
             $test->assertEquals(3, $i);
             $i++;
         });
 
-        $application->after(function() use(&$i, $test) {
+        $app->after(function() use (&$i, $test) {
             $test->assertEquals(4, $i);
             $i++;
         });
 
         $request = Request::create('/foo');
-        $application->handle($request);
+        $app->handle($request);
 
         $this->assertEquals(5, $i);
     }
@@ -115,26 +115,26 @@ class BeforeAfterFilterTest extends \PHPUnit_Framework_TestCase
     {
         $i = 0;
 
-        $application = new Application();
+        $app = new Application();
 
-        $application->before(function() use(&$i) {
+        $app->before(function() use (&$i) {
             $i++;
         });
 
-        $application->match('/foo', function() {
+        $app->match('/foo', function() {
             throw new \RuntimeException();
         });
 
-        $application->after(function() use(&$i) {
+        $app->after(function() use (&$i) {
             $i++;
         });
 
-        $application->error(function() {
+        $app->error(function() {
             return 'error handled';
         });
 
         $request = Request::create('/foo');
-        $application->handle($request);
+        $app->handle($request);
 
         $this->assertEquals(2, $i);
     }
@@ -143,22 +143,22 @@ class BeforeAfterFilterTest extends \PHPUnit_Framework_TestCase
     {
         $i = 0;
 
-        $application = new Application();
+        $app = new Application();
 
-        $application->before(function() use(&$i) {
+        $app->before(function() use (&$i) {
             $i++;
         });
 
-        $application->after(function() use(&$i) {
+        $app->after(function() use (&$i) {
             $i++;
         });
 
-        $application->error(function() {
+        $app->error(function() {
             return 'error handled';
         });
 
         $request = Request::create('/nowhere');
-        $application->handle($request);
+        $app->handle($request);
 
         $this->assertEquals(2, $i);
     }

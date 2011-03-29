@@ -13,6 +13,7 @@ namespace Silex\Extension;
 
 use Silex\Application;
 use Silex\ExtensionInterface;
+
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 

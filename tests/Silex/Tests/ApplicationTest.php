@@ -12,6 +12,7 @@
 namespace Silex\Tests;
 
 use Silex\Application;
+
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -23,64 +24,64 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 {
     public function testMatchReturnValue()
     {
-        $application = new Application();
+        $app = new Application();
 
-        $returnValue = $application->match('/foo', function() {});
+        $returnValue = $app->match('/foo', function() {});
         $this->assertInstanceOf('Silex\Controller', $returnValue);
 
-        $returnValue = $application->get('/foo', function() {});
+        $returnValue = $app->get('/foo', function() {});
         $this->assertInstanceOf('Silex\Controller', $returnValue);
 
-        $returnValue = $application->post('/foo', function() {});
+        $returnValue = $app->post('/foo', function() {});
         $this->assertInstanceOf('Silex\Controller', $returnValue);
 
-        $returnValue = $application->put('/foo', function() {});
+        $returnValue = $app->put('/foo', function() {});
         $this->assertInstanceOf('Silex\Controller', $returnValue);
 
-        $returnValue = $application->delete('/foo', function() {});
+        $returnValue = $app->delete('/foo', function() {});
         $this->assertInstanceOf('Silex\Controller', $returnValue);
     }
 
     public function testGetRequest()
     {
-        $application = new Application();
+        $app = new Application();
 
-        $application->get('/', function() {
+        $app->get('/', function() {
             return 'root';
         });
 
         $request = Request::create('/');
 
-        $application->handle($request);
+        $app->handle($request);
 
-        $this->assertEquals($request, $application['request']);
+        $this->assertEquals($request, $app['request']);
     }
 
     public function testgetRoutesWithNoRoutes()
     {
-        $application = new Application();
+        $app = new Application();
 
-        $routes = $application['routes'];
+        $routes = $app['routes'];
         $this->assertInstanceOf('Symfony\Component\Routing\RouteCollection', $routes);
         $this->assertEquals(0, count($routes->all()));
     }
 
     public function testgetRoutesWithRoutes()
     {
-        $application = new Application();
+        $app = new Application();
 
-        $application->get('/foo', function() {
+        $app->get('/foo', function() {
             return 'foo';
         });
 
-        $application->get('/bar', function() {
+        $app->get('/bar', function() {
             return 'bar';
         });
 
-        $routes = $application['routes'];
+        $routes = $app['routes'];
         $this->assertInstanceOf('Symfony\Component\Routing\RouteCollection', $routes);
         $this->assertEquals(0, count($routes->all()));
-        $application->flush();
+        $app->flush();
         $this->assertEquals(2, count($routes->all()));
     }
 }

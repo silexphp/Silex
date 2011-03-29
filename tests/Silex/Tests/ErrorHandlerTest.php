@@ -25,15 +25,15 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
 {
     public function testNoErrorHandler()
     {
-        $application = new Application();
+        $app = new Application();
 
-        $application->match('/foo', function() {
+        $app->match('/foo', function() {
             throw new \RuntimeException('foo exception');
         });
 
         try {
             $request = Request::create('/foo');
-            $application->handle($request);
+            $app->handle($request);
             $this->fail('->handle() should not catch exceptions where no error handler was supplied');
         } catch (\RuntimeException $e) {
             $this->assertEquals('foo exception', $e->getMessage());
@@ -42,71 +42,71 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testOneErrorHandler()
     {
-        $application = new Application();
+        $app = new Application();
 
-        $application->match('/foo', function() {
+        $app->match('/foo', function() {
             throw new \RuntimeException('foo exception');
         });
 
-        $application->error(function($e) {
+        $app->error(function($e) {
             return new Response('foo exception handler');
         });
 
         $request = Request::create('/foo');
-        $this->checkRouteResponse($application, '/foo', 'foo exception handler');
+        $this->checkRouteResponse($app, '/foo', 'foo exception handler');
     }
 
     public function testMultipleErrorHandlers()
     {
-        $application = new Application();
+        $app = new Application();
 
-        $application->match('/foo', function() {
+        $app->match('/foo', function() {
             throw new \RuntimeException('foo exception');
         });
 
         $errors = 0;
 
-        $application->error(function($e) use (&$errors) {
+        $app->error(function($e) use (&$errors) {
             $errors++;
         });
 
-        $application->error(function($e) use (&$errors) {
+        $app->error(function($e) use (&$errors) {
             $errors++;
         });
 
-        $application->error(function($e) use (&$errors) {
+        $app->error(function($e) use (&$errors) {
             $errors++;
             return new Response('foo exception handler');
         });
 
-        $application->error(function($e) use (&$errors) {
+        $app->error(function($e) use (&$errors) {
             // should not execute
             $errors++;
         });
 
         $request = Request::create('/foo');
-        $this->checkRouteResponse($application, '/foo', 'foo exception handler', 'should return the first response returned by an exception handler');
+        $this->checkRouteResponse($app, '/foo', 'foo exception handler', 'should return the first response returned by an exception handler');
 
         $this->assertEquals(3, $errors, 'should execute error handlers until a response is returned');
     }
 
     public function testNoResponseErrorHandler()
     {
-        $application = new Application();
+        $app = new Application();
 
-        $application->match('/foo', function() {
+        $app->match('/foo', function() {
             throw new \RuntimeException('foo exception');
         });
 
         $errors = 0;
 
-        $application->error(function($e) use (&$errors) {
+        $app->error(function($e) use (&$errors) {
             $errors++;
         });
 
         try {
             $request = Request::create('/foo');
-            $application->handle($request);
+            $app->handle($request);
             $this->fail('->handle() should not catch exceptions where an empty error handler was supplied');
         } catch (\RuntimeException $e) {
             $this->assertEquals('foo exception', $e->getMessage());
@@ -117,45 +117,45 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testStringResponseErrorHandler()
     {
-        $application = new Application();
+        $app = new Application();
 
-        $application->match('/foo', function() {
+        $app->match('/foo', function() {
             throw new \RuntimeException('foo exception');
         });
 
-        $application->error(function($e) {
+        $app->error(function($e) {
             return 'foo exception handler';
         });
 
         $request = Request::create('/foo');
-        $this->checkRouteResponse($application, '/foo', 'foo exception handler', 'should accept a string response from the error handler');
+        $this->checkRouteResponse($app, '/foo', 'foo exception handler', 'should accept a string response from the error handler');
     }
 
     public function testErrorHandlerException()
     {
-        $application = new Application();
+        $app = new Application();
 
-        $application->match('/foo', function() {
+        $app->match('/foo', function() {
             throw new \RuntimeException('foo exception');
         });
 
-        $application->error(function($e) {
+        $app->error(function($e) {
             throw new \RuntimeException('foo exception handler exception');
         });
 
         try {
             $request = Request::create('/foo');
-            $this->checkRouteResponse($application, '/foo', 'foo exception handler', 'should accept a string response from the error handler');
+            $this->checkRouteResponse($app, '/foo', 'foo exception handler', 'should accept a string response from the error handler');
             $this->fail('->handle() should not catch exceptions thrown from an error handler');
         } catch (\RuntimeException $e) {
             $this->assertEquals('foo exception handler exception', $e->getMessage());
         }
     }
 
-    protected function checkRouteResponse($application, $path, $expectedContent, $method = 'get', $message = null)
+    protected function checkRouteResponse($app, $path, $expectedContent, $method = 'get', $message = null)
     {
         $request = Request::create($path, $method);
-        $response = $application->handle($request);
+        $response = $app->handle($request);
         $this->assertEquals($expectedContent, $response->getContent(), $message);
     }
 }

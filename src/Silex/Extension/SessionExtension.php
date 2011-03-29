@@ -13,6 +13,7 @@ namespace Silex\Extension;
 
 use Silex\Application;
 use Silex\ExtensionInterface;
+
 use Symfony\Component\HttpFoundation\SessionStorage\NativeSessionStorage;
 use Symfony\Component\HttpFoundation\Session;
 use Symfony\Component\HttpKernel\Events as HttpKernelEvents;
