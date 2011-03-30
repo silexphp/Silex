@@ -1,0 +1,81 @@
+Internals
+=========
+
+This chapter will tell you a bit about how Silex works
+internally.
+
+Silex
+-----
+
+Application
+~~~~~~~~~~~
+
+The application is the main interface to Silex. It
+implements Symfony2's ``HttpKernelInterface``, so you can
+pass a ``Request`` to the ``handle`` method and it will
+return a ``Response``.
+
+It extends the ``Pimple`` service container, allowing
+for flexibility on the outside as well as the inside. you
+could replace any service, and you are also able to read
+them.
+
+The application makes strong use of the ``EventDispatcher``
+to hook into the Symfony2 HttpKernel events. This allows
+fetching the ``Request``, converting string responses into
+``Response`` objects and handling Exceptions. We also use it
+to dispatch some custom events like before/after filters and
+errors.
+
+Controller
+~~~~~~~~~~
+
+The Symfony2 ``Route`` is actually quite powerful. Routes
+can be named, which allows for URL generation. They can
+also have requirements for the variable parts. In order
+to allow settings these through a nice interface the
+``match`` method (which is used by ``get``, ``post``, etc.)
+returns an instance of the ``Controller``, which wraps
+a route.
+
+ControllerCollection
+~~~~~~~~~~~~~~~~~~~~
+
+One of the goals of exposing the ``RouteCollection`` was
+to make it mutable, so extensions could add stuff to it.
+The challenge here is the fact that routes know nothing
+about their name. The name only has meaning in context
+of the ``RouteCollection`` and cannot be changed.
+
+To solve this challenge we came up with a staging area
+for routes. The ``ControllerCollection`` holds the
+controllers until ``flush`` is called, at which point
+the routes are added to the ``RouteCollection``. Also,
+the controllers are frozen. This means that they can
+no longer be modified and will throw an Exception if
+you try to do so.
+
+Unfortunately no good way for flushing implicitly
+could be found, which is why flushing is now always
+explicit. The Application will flush, but if you want
+to read the ``ControllerCollection`` before the
+request takes place, you will have to call flush
+first.
+
+The ``Application`` provides a shortcut ``flush``
+method for flushing the ``ControllerCollection``.
+
+Symfony2
+--------
+
+Following Symfony2 components are used by Silex:
+
+* **ClassLoader**: For autoloading classes.
+
+* **HttpFoundation**: For ``Request`` and ``Response``.
+
+* **HttpKernel**: Because we need a heart.
+
+* **Routing**: For matching defined routes.
+
+* **EventDispatcher**: For hooking into the HttpKernel.
