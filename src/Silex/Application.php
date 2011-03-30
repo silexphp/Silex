@@ -294,10 +294,10 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             $this['request']->attributes->add($attributes);
         } catch (NotFoundException $e) {
             $message = sprintf('No route found for "%s %s"', $this['request']->getMethod(), $this['request']->getPathInfo());
-            throw new NotFoundHttpException('Not Found', $message, 0, $e);
+            throw new NotFoundHttpException($message, $e);
         } catch (MethodNotAllowedException $e) {
             $message = sprintf('No route found for "%s %s": Method Not Allowed (Allow: %s)', $this['request']->getMethod(), $this['request']->getPathInfo(), strtoupper(implode(', ', $e->getAllowedMethods())));
-            throw new MethodNotAllowedHttpException($e->getAllowedMethods(), 'Method Not Allowed', $message, 0, $e);
+            throw new MethodNotAllowedHttpException($e->getAllowedMethods(), $message, $e);
         }
     }
 
