@@ -15,7 +15,7 @@ use Silex\Application;
 use Silex\ExtensionInterface;
 
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
-use Symfony\Bridge\Twig\Extension\TranslationExtension;
+use Symfony\Bridge\Twig\Extension\TranslationExtension as TwigTranslationExtension;
 
 class TwigExtension implements ExtensionInterface
 {
@@ -34,7 +34,7 @@ class TwigExtension implements ExtensionInterface
                 }
 
                 if (isset($app['translator'])) {
-                    $twig->addExtension(new TranslationExtension($app['translator']));
+                    $twig->addExtension(new TwigTranslationExtension($app['translator']));
                 }
             }
 
