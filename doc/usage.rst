@@ -177,7 +177,7 @@ set up a message and send that message.
 The current ``request`` service is retrieved using the array key syntax.
 You can find more information about services in the *Services* chapter.
 The request is an instance of ``Symfony\Component\HttpFoundation\Request``,
-so you can fetch variables using the ``get`` method.
+so you can fetch variables using the request's ``get`` method.
 
 Instead of returning a string we are returning an instance of
 ``Symfony\Component\HttpFoundation\Response``. This allows setting an HTTP
@@ -189,16 +189,92 @@ status code, in this case it is set to ``201 Created``.
     responses with status code ``200 Ok``.
 
 Other methods
-~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~
 
 You can create controllers for most HTTP methods. Just call one of these
 methods on your application: ``get``, ``post``, ``put``, ``delete``. You
 can also call ``match``, which will match all methods.
 
+::
+
+    $app->put('/blog', function() {
+        ...
+    });
+
 .. note::
 
     The order in which the routes are defined is significant. The first
     matching route will be used, so place more generic routes at the bottom.
+
+Route variables
+~~~~~~~~~~~~~~~
+
+As has been before you can define variable parts in a route like this::
+
+    $app->get('/blog/show/{id}', function($id) {
+        ...
+    });
+
+It is also possible to have more than one variable part, just make sure the
+closure arguments match the names of the variable parts.
+
+::
+
+    $app->get('/blog/show/{postId}/{commentId}', function($postId, $commentId) {
+        ...
+    });
+
+While it's not suggested, you could also do this (note the switched arguments)::
+
+    $app->get('/blog/show/{postId}/{commentId}', function($commentId, $postId) {
+        ...
+    });
+
+In some cases you may want to only match certain expressions. You can define
+requirements using regular expressions by calling ``assert`` on the
+``Controller`` object, which is returned by the routing methods.
+
+The following will make sure the ``id`` argument is numeric, since ``\d+``
+matches any amount of digits::
+
+    $app->get('/blog/show/{id}', function($id) {
+        ...
+    })
+    ->assert('id', '\d+');
+
+You can also chain these calls::
+
+    $app->get('/blog/show/{postId}/{commentId}', function($postId, $commentId) {
+        ...
+    })
+    ->assert('postId', '\d+')
+    ->assert('commentId', '\d+');
+
+Named routes
+~~~~~~~~~~~~~~~
+
+Certain extensions (such as ``UrlGenerator``) can make use of named routes.
+By default Silex will generate a route name for you, that cannot really be
+used. You can give a route a name by calling ``bind`` on the ``Controller``
+object that is returned by the routing methods.
+
+::
+
+    $app->get('/', function() {
+        ...
+    })
+    ->bind('homepage');
+
+    $app->get('/blog/show/{id}', function($id) {
+        ...
+    })
+    ->bind('blog_post');
+
+
+.. note::
+
+    It only makes sense to name routes if you use extensions that make use
+    of the ``RouteCollection``.
 
 Before and after filters
 ------------------------

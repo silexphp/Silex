@@ -140,6 +140,8 @@ directory.
 
 **Usage**
 
+The Twig extension provides a ``twig`` service.
+
 ::
 
     $app->get('/hello/{name}', function($name) use ($app) {
@@ -149,6 +151,15 @@ directory.
     });
 
 This will render a file named ``views/hello.twig``.
+
+It also registers the application as a global named
+``app``. So you can access any services from within your
+view. For example to access ``$app['request']->getHost()``,
+just put this in your template:
+
+.. code-block:: jinja
+
+    {{ app.request.host }}
 
 Creating an extension
 ---------------------
