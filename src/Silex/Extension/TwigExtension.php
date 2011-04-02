@@ -24,9 +24,6 @@ class TwigExtension implements ExtensionInterface
         $app['twig'] = $app->share(function () use ($app) {
             $twig = new \Twig_Environment($app['twig.loader'], isset($app['twig.options']) ? $app['twig.options'] : array());
             $twig->addGlobal('app', $app);
-            if (isset($app['twig.configure'])) {
-                $app['twig.configure']($twig);
-            }
 
             if (isset($app['symfony_bridges'])) {
                 if (isset($app['url_generator'])) {
@@ -36,6 +33,10 @@ class TwigExtension implements ExtensionInterface
                 if (isset($app['translator'])) {
                     $twig->addExtension(new TwigTranslationExtension($app['translator']));
                 }
+            }
+
+            if (isset($app['twig.configure'])) {
+                $app['twig.configure']($twig);
             }
 
             return $twig;
