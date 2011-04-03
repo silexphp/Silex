@@ -1,5 +1,5 @@
-Twig
-====
+TwigExtension
+=============
 
 The *TwigExtension* provides integration with the `Twig
 <http://www.twig-project.org/>`_ template engine.

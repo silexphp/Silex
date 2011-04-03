@@ -1,6 +1,5 @@
-
-Monolog
-=======
+MonologExtension
+================
 
 The *MonologExtension* provides a default logging mechanism
 through Jordi Boggiano's `Monolog <https://github.com/Seldaek/monolog>`_

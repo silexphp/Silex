@@ -1,5 +1,5 @@
-UrlGenerator
-============
+UrlGeneratorExtension
+=====================
 
 The *UrlGeneratorExtension* provides a service for generating
 URLs for named routes.
