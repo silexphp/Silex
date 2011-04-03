@@ -10,18 +10,20 @@ Loading extensions
 In order to load and use an extension, you must register it
 on the application. ::
 
-    use Acme\GodExtension;
+    use Acme\DatabaseExtension;
 
     $app = new Application();
 
-    $app->register(new GodExtension());
+    $app->register(new DatabaseExtension());
 
 You can also provide some parameters as a second argument.
 
 ::
 
-    $app->register(new GodExtension(), array(
-        'god.deity' => 'thor',
+    $app->register(new DatabaseExtension(), array(
+        'database.dsn'      => 'mysql:host=localhost;dbname=myapp',
+        'database.user'     => 'root',
+        'database.password' => 'secret_root_password',
     ));
 
 Included extensions
@@ -104,20 +106,20 @@ classes using the ``UniversalClassLoader``.
 As described in the *Services* chapter, there is an
 *autoloader* service that you can use for this.
 
-Here is an example of how to use it::
+Here is an example of how to use it (based on `Buzz <https://github.com/kriswallsmith/Buzz>`_)::
 
     namespace Acme;
 
     use Silex\ExtensionInterface;
 
-    class GodExtension implements ExtensionInterface
+    class BuzzExtension implements ExtensionInterface
     {
         public function register(Application $app)
         {
-            $app['god'] = $app->share(function() { ... });
+            $app['buzz'] = $app->share(function() { ... });
 
-            if (isset($app['god.class_path'])) {
-                $app['autoloader']->registerPrefix('God_', $app['god.class_path']);
+            if (isset($app['buzz.class_path'])) {
+                $app['autoloader']->registerNamespace('Buzz', $app['buzz.class_path']);
             }
         }
     }
@@ -125,6 +127,12 @@ Here is an example of how to use it::
 This allows you to simply provide the class  path as an
 option when registering the extension::
 
-    $app->register(new GodExtension(), array(
-        'god.class_path' => __DIR__.'/vendor/god/src',
+    $app->register(new BuzzExtension(), array(
+        'buzz.class_path' => __DIR__.'/vendor/buzz/lib',
     ));
+
+.. note::
+
+    For libraries that do not use PHP 5.3 namespaces you can use ``registerPrefix``
+    instead of ``registerNamespace``, which will use an underscore as directory
+    delimiter.
