@@ -84,4 +84,25 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $app->flush();
         $this->assertEquals(2, count($routes->all()));
     }
+
+    /**
+    * @dataProvider escapeProvider
+    */
+    public function testEscape($expected, $text)
+    {
+        $app = new Application();
+
+        $this->assertEquals($expected, $app->escape($text));
+    }
+
+    public function escapeProvider()
+    {
+        return array(
+            array('&lt;', '<'),
+            array('&gt;', '>'),
+            array('&quot;', '"'),
+            array("'", "'"),
+            array('abc', 'abc'),
+        );
+    }
 }
