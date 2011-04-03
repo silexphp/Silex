@@ -50,6 +50,11 @@ directory.
         'twig.class_path' => __DIR__.'/vendor/twig/lib',
     ));
 
+.. note::
+
+    Twig is not compiled into the ``silex.phar`` file. You have to
+    add your own copy of Twig to your application.
+
 Usage
 -----
 
