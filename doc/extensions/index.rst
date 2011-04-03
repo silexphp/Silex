@@ -6,3 +6,4 @@ Silex
 
     monolog
     twig
+    url_generator
