@@ -32,9 +32,18 @@ class MonologExtension implements ExtensionInterface
         });
 
         $app['monolog.configure'] = $app->protect(function ($log) use ($app) {
-            $level = isset($app['monolog.level']) ? $app['monolog.level'] : Logger::DEBUG;
-            $log->pushHandler(new StreamHandler($app['monolog.logfile'], $level));
+            $log->pushHandler($app['monolog.handler']);
         });
+
+        $app['monolog.handler'] = function() use ($app) {
+            return new StreamHandler($app['monolog.logfile'], $app['monolog.level']);
+        };
+
+        if (!isset($app['monolog.level'])) {
+            $app['monolog.level'] = function() {
+                return Logger::DEBUG;
+            };
+        }
 
         if (isset($app['monolog.class_path'])) {
             $app['autoloader']->registerNamespace('Monolog', $app['monolog.class_path']);

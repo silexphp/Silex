@@ -31,3 +31,6 @@
 [submodule "vendor/twig"]
 	path = vendor/twig
 	url = https://github.com/fabpot/Twig
+[submodule "vendor/monolog"]
+	path = vendor/monolog
+	url = https://github.com/Seldaek/monolog.git
