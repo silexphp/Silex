@@ -21,11 +21,6 @@ Parameters
 * **twig.class_path** (optional): Path to where the Twig
   library is located.
 
-* **symfony_bridges** (optional): Set this to true if you want
-  to integrate the ``UrlGeneratorExtension`` and the
-  ``TranslationExtension`` with Twig. This requires loading
-  Symfony2 ``Bridge`` classes which include those Twig extensions.
-
 Services
 --------
 
