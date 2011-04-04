@@ -51,7 +51,7 @@ To solve this challenge we came up with a staging area
 for routes. The ``ControllerCollection`` holds the
 controllers until ``flush`` is called, at which point
 the routes are added to the ``RouteCollection``. Also,
-the controllers are frozen. This means that they can
+the controllers are then frozen. This means that they can
 no longer be modified and will throw an Exception if
 you try to do so.
 
@@ -60,7 +60,7 @@ could be found, which is why flushing is now always
 explicit. The Application will flush, but if you want
 to read the ``ControllerCollection`` before the
 request takes place, you will have to call flush
-first.
+yourself.
 
 The ``Application`` provides a shortcut ``flush``
 method for flushing the ``ControllerCollection``.
@@ -79,3 +79,6 @@ Following Symfony2 components are used by Silex:
 * **Routing**: For matching defined routes.
 
 * **EventDispatcher**: For hooking into the HttpKernel.
+
+For more information, `check out the Symfony website
+<http://symfony.com/>`_.

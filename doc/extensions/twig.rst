@@ -24,14 +24,14 @@ Parameters
 Services
 --------
 
-* **twig**: The ``Twig_Environment`` instance, you will only
-  need to use this.
+* **twig**: The ``Twig_Environment`` instance. The main way of
+  interacting with Twig.
 
-* **twig.configure**: Protected closure that takes the twig
+* **twig.configure**: Protected closure that takes the Twig
   environment as an argument. You can use it to add more
   custom globals.
 
-* **twig.loader**: The loader for twig templates which uses
+* **twig.loader**: The loader for Twig templates which uses
   the ``twig.path`` and the ``twig.templates`` options. You
   can also replace the loader completely.
 

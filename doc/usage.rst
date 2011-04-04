@@ -209,7 +209,7 @@ can also call ``match``, which will match all methods.
 Route variables
 ~~~~~~~~~~~~~~~
 
-As has been before you can define variable parts in a route like this::
+As has been show before you can define variable parts in a route like this::
 
     $app->get('/blog/show/{id}', function($id) {
         ...
