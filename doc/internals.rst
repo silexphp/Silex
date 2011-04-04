@@ -11,16 +11,20 @@ Application
 ~~~~~~~~~~~
 
 The application is the main interface to Silex. It
-implements Symfony2's ``HttpKernelInterface``, so you can
-pass a ``Request`` to the ``handle`` method and it will
-return a ``Response``.
+implements Symfony2's `HttpKernelInterface
+<http://api.symfony.com/2.0/Symfony/Component/HttpKernel/HttpKernelInterface.html>`_,
+so you can pass a `Request
+<http://api.symfony.com/2.0/Symfony/Component/HttpFoundation/Request.html>`_
+to the ``handle`` method and it will return a `Response
+<http://api.symfony.com/2.0/Symfony/Component/HttpFoundation/Response.html>`_.
 
 It extends the ``Pimple`` service container, allowing
 for flexibility on the outside as well as the inside. you
 could replace any service, and you are also able to read
 them.
 
-The application makes strong use of the ``EventDispatcher``
+The application makes strong use of the `EventDispatcher
+<http://api.symfony.com/2.0/Symfony/Component/EventDispatcher/EventDispatcher.html>`_
 to hook into the Symfony2 HttpKernel events. This allows
 fetching the ``Request``, converting string responses into
 ``Response`` objects and handling Exceptions. We also use it
@@ -30,7 +34,9 @@ errors.
 Controller
 ~~~~~~~~~~
 
-The Symfony2 ``Route`` is actually quite powerful. Routes
+The Symfony2 `Route
+<http://api.symfony.com/2.0/Symfony/Component/Routing/Route.html>`_
+is actually quite powerful. Routes
 can be named, which allows for URL generation. They can
 also have requirements for the variable parts. In order
 to allow settings these through a nice interface the
@@ -41,8 +47,9 @@ a route.
 ControllerCollection
 ~~~~~~~~~~~~~~~~~~~~
 
-One of the goals of exposing the ``RouteCollection`` was
-to make it mutable, so extensions could add stuff to it.
+One of the goals of exposing the `RouteCollection
+<http://api.symfony.com/2.0/Symfony/Component/Routing/RouteCollection.html>`_
+was to make it mutable, so extensions could add stuff to it.
 The challenge here is the fact that routes know nothing
 about their name. The name only has meaning in context
 of the ``RouteCollection`` and cannot be changed.

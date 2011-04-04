@@ -176,16 +176,19 @@ set up a message and send that message.
 
 The current ``request`` service is retrieved using the array key syntax.
 You can find more information about services in the *Services* chapter.
-The request is an instance of ``Symfony\Component\HttpFoundation\Request``,
+The request is an instance of `Request
+<http://api.symfony.com/2.0/Symfony/Component/HttpFoundation/Request.html>`_,
 so you can fetch variables using the request's ``get`` method.
 
 Instead of returning a string we are returning an instance of
-``Symfony\Component\HttpFoundation\Response``. This allows setting an HTTP
+`Response
+<http://api.symfony.com/2.0/Symfony/Component/HttpFoundation/Response.html>`_.
+This allows setting an HTTP
 status code, in this case it is set to ``201 Created``.
 
 .. note::
 
-    Silex always uses ``Response`` internally, it converts strings to
+    Silex always uses a ``Response`` internally, it converts strings to
     responses with status code ``200 Ok``.
 
 Other methods
