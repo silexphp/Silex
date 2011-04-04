@@ -4,9 +4,7 @@ Silex is a simple web framework to develop simple websites:
 
     require_once __DIR__.'/silex.phar';
 
-    use Silex\Application;
-
-    $app = new Application();
+    $app = new Silex\Application();
 
     $app->get('/hello/{name}', function($name) {
         return "Hello $name";
@@ -17,7 +15,7 @@ Silex is a simple web framework to develop simple websites:
     });
 
     $app->error(function($e) {
-        return "An error occured<br />" . $e->getMessage();
+        return "An error occured<br />".$e->getMessage();
     });
 
     $app->run();
@@ -43,8 +41,7 @@ You can build the `silex.phar` file by running `php compile`.
 
 ## More Information
 
-Read the documentation of Symfony2 for more information about how you can
-leverage Symfony2 features.
+Read the [documentation][5] for more information.
 
 ## Slides
 
@@ -55,6 +52,7 @@ leverage Symfony2 features.
 Silex is licensed under the MIT license.
 
 [1]: http://symfony.com
-[2]: http://github.com/fabpot/silex/blob/master/silex.phar
+[2]: http://silex-project.org/get/silex.phar
 [3]: https://github.com/sebastianbergmann/phpunit
 [4]: http://www.slideshare.net/IgorWiedler/silex-the-symfony2-microframework
+[5]: http://silex-project.org/documentation

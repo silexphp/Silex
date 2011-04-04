@@ -4,7 +4,7 @@ from pygments.lexers.web import PhpLexer
 
 sys.path.append(os.path.abspath('_exts'))
 
-extensions = ['configurationblock']
+extensions = []
 master_doc = 'index'
 highlight_language = 'php'
 

@@ -10,3 +10,4 @@ Silex
     extensions
     internals
     contributing
+    extensions/index
