@@ -27,7 +27,7 @@ The use statement aliases ``Silex\Application`` to ``Application``.
 One other thing you have to do is configure your web server. If you
 are using apache you can use a ``.htaccess`` file for this.
 
-.. code-block:: text
+.. code-block:: apache
 
     <IfModule mod_rewrite.c>
     	RewriteEngine On
@@ -254,7 +254,7 @@ You can also chain these calls::
     ->assert('commentId', '\d+');
 
 Named routes
-~~~~~~~~~~~~~~~
+~~~~~~~~~~~~
 
 Certain extensions (such as ``UrlGenerator``) can make use of named routes.
 By default Silex will generate a route name for you, that cannot really be
