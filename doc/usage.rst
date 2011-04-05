@@ -346,3 +346,26 @@ you can create by calling the ``redirect`` method::
     });
 
 This will redirect from ``/`` to ``/hello``.
+
+Pitfalls
+--------
+
+There are some things that can go wrong. Here we will try and outline the
+most frequent ones.
+
+PHP configuration
+~~~~~~~~~~~~~~~~~
+
+Certain PHP distributions have restrictive default Phar settings. Setting
+the following may help.
+
+.. code-block:: ini
+
+		phar.readonly = Off
+		phar.require_hash = Off
+
+If you are on Suhosin you will also have to set this:
+
+.. code-block:: ini
+
+		suhosin.executor.include.whitelist = phar
