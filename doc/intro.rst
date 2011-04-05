@@ -20,7 +20,7 @@ Silex aims to be:
 In a nutshell, you define controllers and map them to routes, all in one
 step.
 
-Let's go! ::
+**Let's go!** ::
 
     require_once __DIR__.'/silex.phar';
 
