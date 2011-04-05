@@ -17,7 +17,8 @@ to services instead of creating them from within the service or
 relying on globals. This generally leads to code that is decoupled,
 re-usable, flexible and testable.
 
-Here is an example::
+Here is an example of a class that takes a ``User`` object and stores
+it as a file in JSON format::
 
     class JsonUserPersister
     {
