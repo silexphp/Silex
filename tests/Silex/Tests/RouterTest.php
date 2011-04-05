@@ -159,6 +159,20 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    public function testTrailingSlashBehavior()
+    {
+        $app = new Application();
+        $app->get('/foo/', function() use ($app) {
+            return new Response('ok');
+        });
+
+        $request = Request::create('/foo');
+        $response = $app->handle($request);
+
+        $this->assertEquals(301, $response->getStatusCode());
+        $this->assertEquals('/foo/', $response->headers->get('Location'));
+    }
+
     protected function checkRouteResponse($app, $path, $expectedContent, $method = 'get', $message = null)
     {
         $request = Request::create($path, $method);

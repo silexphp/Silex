@@ -27,10 +27,10 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
-use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\Matcher\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Matcher\Exception\NotFoundException;
 use Symfony\Component\ClassLoader\UniversalClassLoader;
+use Silex\RedirectableUrlMatcher;
 
 /**
  * The Silex framework class.
@@ -278,7 +278,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
 
         $this['controllers']->flush();
 
-        $matcher = new UrlMatcher($this['routes'], array(
+        $matcher = new RedirectableUrlMatcher($this['routes'], array(
             'base_url'  => $this['request']->getBaseUrl(),
             'method'    => $this['request']->getMethod(),
             'host'      => $this['request']->getHost(),
