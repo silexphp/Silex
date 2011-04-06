@@ -50,4 +50,24 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($ret, $controller);
         $this->assertEquals(array('bar' => '\d+'), $controller->getRoute()->getRequirements());
     }
+
+    /**
+     * @dataProvider provideRouteAndExpectedRouteName
+     */
+    public function testDefaultRouteNameGeneration(Route $route, $expectedRouteName)
+    {
+        $controller = new Controller($route);
+
+        $this->assertEquals($expectedRouteName, $controller->getRouteName());
+    }
+
+    public function provideRouteAndExpectedRouteName()
+    {
+        return array(
+            array(new Route('/Invalid%Symbols#Stripped', array(), array('_method' => 'POST')), 'POST_InvalidSymbolsStripped'),
+            array(new Route('/post/{id}', array(), array('_method' => 'GET')), 'GET_post_id'),
+            array(new Route('/colon:pipe|dashes-escaped'), '_colon_pipe_dashes_escaped'),
+            array(new Route('/underscores_and.periods'), '_underscores_and.periods'),
+        );
+    }
 }

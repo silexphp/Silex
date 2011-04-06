@@ -98,8 +98,8 @@ class Controller
         $method = isset($requirements['_method']) ? $requirements['_method'] : '';
 
         $routeName = $method.$this->route->getPattern();
-        $routeName = str_replace(array('{', '}'), '', $routeName);
-        $routeName = str_replace(array('/', ':', '|'), '_', $routeName);
+        $routeName = str_replace(array('/', ':', '|', '-'), '_', $routeName);
+        $routeName = preg_replace('/[^a-z0-9A-Z_.]+/', '', $routeName);
 
         return $routeName;
     }
