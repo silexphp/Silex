@@ -30,13 +30,17 @@ class SessionExtension implements ExtensionInterface
             return new Session($app['session.storage']);
         });
 
-        $app['session.storage'] = $app->share(function () use ($app) {
-            return new NativeSessionStorage($app['session.storage.options']);
-        });
+        if (!isset($app['session.storage'])) {
+            $app['session.storage'] = $app->share(function () use ($app) {
+                return new NativeSessionStorage($app['session.storage.options']);
+            });
+        }
+
+        if (!isset($app['session.storage.options'])) {
+            $app['session.storage.options'] = array();
+        }
 
         $app['dispatcher']->addListener(HttpKernelEvents::onCoreRequest, $this, -255);
-
-        $app['session.storage.options'] = array();
     }
 
     public function onCoreRequest($event)
