@@ -32,6 +32,7 @@ Included extensions
 There are a few extensions that you get out of the box.
 All of these are within the ``Silex\Extension`` namespace.
 
+* :doc:`DoctrineOrmExtension <extensions/doctrine_orm>`
 * :doc:`MonologExtension <extensions/monolog>`
 * :doc:`TwigExtension <extensions/twig>`
 * :doc:`UrlGeneratorExtension <extensions/url_generator>`
