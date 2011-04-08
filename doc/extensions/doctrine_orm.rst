@@ -31,7 +31,7 @@ These above are simple examples. Full `documentation <http://www.doctrine-projec
 
 .. code-block:: php
     'doctrine.orm.entities' => array(
-        array('type' => 'xml', 'path' => '/path/to/yml/files'),
+        array('type' => 'yml', 'path' => '/path/to/yml/files'),
 
         array('type' => 'annotation', 'path' => array(
             '/path/to/Entities',
@@ -56,7 +56,7 @@ Default behavior will search annotated ``Entities`` in the ``Entity`` directory.
 * **doctrine.orm.proxies_namespace** (optional): Namespace of generated
   doctrine Proxies. Default is ``DoctrineProxy``.
 
-* **doctrine.orm.auto_generate_proxies** (optional): Tell Doctrine wether it should generate proxies automaitcally. Default is ``true``.
+* **doctrine.orm.auto_generate_proxies** (optional): Tell Doctrine wether it should generate proxies automatically. Default is ``true``.
 
 * **doctrine.orm.class_path** (optional): Path to where the
   Doctrine\ORM library is located.
@@ -70,7 +70,7 @@ Default behavior will search annotated ``Entities`` in the ``Entity`` directory.
 Services
 --------
 
-* **doctrine.orm.em**: The ``doctrine\ORM\EntityManager`` instance.
+* **doctrine.orm.em**: The ``Doctrine\ORM\EntityManager`` instance.
 
   Example usage::
 
