@@ -29,7 +29,7 @@ use Doctrine\Common\Cache\ArrayCache;
 use Silex\Application;
 use Silex\ExtensionInterface;
 
-class DoctrineOrmExtension implements ExtensionInterface
+class DoctrineExtension implements ExtensionInterface
 {
     public function register(Application $app)
     {

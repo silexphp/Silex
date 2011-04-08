@@ -1,7 +1,7 @@
-DoctrineOrmExtension
+DoctrineExtension
 ================
 
-The *DoctrineOrmExtension* provides a default `Doctrine2 <http://www.doctrine-project.org>`_ DBAL Connection and an EntityManager.
+The *DoctrineExtension* provides a default `Doctrine2 <http://www.doctrine-project.org>`_ DBAL Connection and an EntityManager.
 
 Parameters
 ----------
@@ -99,9 +99,9 @@ Registering
 
 .. code-block:: php
 
-    use Silex\Extension\DoctrineOrmExtension;
+    use Silex\Extension\DoctrineExtension;
 
-    $app->register(new DoctrineOrmExtension(), array(
+    $app->register(new DoctrineExtension(), array(
         'doctrine.dbal.connection_options' => array(,
             'driver' => 'pdo_sqlite',
             'path' => ':memory'

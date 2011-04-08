@@ -12,7 +12,7 @@
 namespace Silex\Tests;
 
 use Silex\Application;
-use Silex\Extension\DoctrineOrmExtension;
+use Silex\Extension\DoctrineExtension;
 
 use Doctrine\DBAL\Connection;
 
@@ -22,11 +22,11 @@ use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\ORM\Mapping\Driver\YamlDriver;
 
 /**
- * DoctrineOrmExtension test cases.
+ * DoctrineExtension test cases.
  *
  * @author Florian Klein <florian.klein@knplabs.com>
  */
-class doctrineOrmExtensionTest extends \PHPUnit_Framework_TestCase
+class DoctrineExtensionTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
@@ -39,7 +39,7 @@ class doctrineOrmExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->register(new DoctrineOrmExtension(), array(
+        $app->register(new DoctrineExtension(), array(
             'doctrine.common.class_path'    => __DIR__.'/../../../../vendor/doctrine-common/lib',
             'doctrine.dbal.class_path'    => __DIR__.'/../../../../vendor/doctrine-dbal/lib',
             'doctrine.orm.class_path'    => __DIR__.'/../../../../vendor/doctrine/lib',
@@ -84,7 +84,7 @@ class doctrineOrmExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->register(new DoctrineOrmExtension(), array(
+        $app->register(new DoctrineExtension(), array(
             'doctrine.common.class_path'    => __DIR__.'/../../../../vendor/doctrine-common/lib',
             'doctrine.dbal.class_path'    => __DIR__.'/../../../../vendor/doctrine-dbal/lib',
             'doctrine.dbal.connection_options' => array(
@@ -103,7 +103,7 @@ class doctrineOrmExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->register(new DoctrineOrmExtension(), array(
+        $app->register(new DoctrineExtension(), array(
             'doctrine.common.class_path'    => __DIR__.'/../../../../vendor/doctrine-common/lib',
             'doctrine.orm.class_path'    => __DIR__.'/../../../../vendor/doctrine/lib',
             'doctrine.orm' => true
