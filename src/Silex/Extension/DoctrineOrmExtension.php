@@ -43,7 +43,7 @@ class DoctrineOrmExtension implements ExtensionInterface
         }
 
         $self = $this;
-        $app['doctrine.orm.entity_manager'] = $app->share(function() use($app, $self) {
+        $app['doctrine.orm.em'] = $app->share(function() use($app, $self) {
 
             if (!isset($app['doctrine.orm.connection_options'])) {
                 throw new \InvalidArgumentException('The "doctrine.orm.connection_options" parameter must be defined');
@@ -55,14 +55,11 @@ class DoctrineOrmExtension implements ExtensionInterface
             return $em;
         });
 
-        foreach(array('Common', 'DBAL') as $vendor) {
+        foreach(array('Common', 'DBAL', 'ORM') as $vendor) {
             $key = sprintf('doctrine.%s.class_path', strtolower($vendor));
             if (isset($app[$key])) {
                 $app['autoloader']->registerNamespace(sprintf('Doctrine\%s', $vendor), $app[$key]);
             }
-        }
-        if (isset($app['doctrine.orm.class_path'])) {
-            $app['autoloader']->registerNamespace('Doctrine\ORM', $app['doctrine.orm.class_path']);
         }
     }
 
