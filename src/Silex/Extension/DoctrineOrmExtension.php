@@ -11,8 +11,13 @@
 
 namespace Silex\Extension;
 
+use Doctrine\Common\EventManager;
+
+use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Configuration as DBALConfiguration;
+
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Configuration;
+use Doctrine\ORM\Configuration as ORMConfiguration;
 use Doctrine\ORM\Mapping\Driver\DriverChain;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\ORM\Mapping\Driver\XmlDriver;
@@ -28,6 +33,54 @@ class DoctrineOrmExtension implements ExtensionInterface
 {
     public function register(Application $app)
     {
+        // @TODO should we throw an Exception if orm is activated but not dbal ?
+        if (isset($app['doctrine.dbal.connection_options'])) {
+            $this->loadDoctrineDbal($app);
+            if (isset($app['doctrine.orm']) and true === $app['doctrine.orm']) {
+                $this->setOrmDefaults($app);
+                $this->loadDoctrineOrm($app);
+            }
+        }
+
+        foreach(array('Common', 'DBAL', 'ORM') as $vendor) {
+            $key = sprintf('doctrine.%s.class_path', strtolower($vendor));
+            if (isset($app[$key])) {
+                $app['autoloader']->registerNamespace(sprintf('Doctrine\%s', $vendor), $app[$key]);
+            }
+        }
+    }
+
+    private function loadDoctrineDbal(Application $app)
+    {
+        $self = $this;
+        $app['doctrine.dbal.connection'] = $app->share(function() use($self, $app) {
+
+            if (!isset($app['doctrine.dbal.connection_options'])) {
+                throw new \InvalidArgumentException('The "doctrine.orm.connection_options" parameter must be defined');
+            }
+            $config = new DBALConfiguration;
+            $eventManager = new EventManager;
+            $conn = DriverManager::getConnection($app['doctrine.dbal.connection_options'], $config, $eventManager);
+
+            return $conn;
+        });
+    }
+
+    private function loadDoctrineOrm(Application $app)
+    {
+        $self = $this;
+        $app['doctrine.orm.em'] = $app->share(function() use($self, $app) {
+
+            $connection = $app['doctrine.dbal.connection'];
+            $config = $self->getOrmConfig($app);
+            $em = EntityManager::create($connection, $config);
+
+            return $em;
+        });
+    }
+
+    private function setOrmDefaults(Application $app)
+    {
         $defaults = array(
             'entities' => array(
                 array('type' => 'annotation', 'path' => 'Entity', 'namespace' => 'Entity')
@@ -41,51 +94,34 @@ class DoctrineOrmExtension implements ExtensionInterface
                 $app['doctrine.orm.'.$key] = $value;
             }
         }
-
-        $self = $this;
-        $app['doctrine.orm.em'] = $app->share(function() use($app, $self) {
-
-            if (!isset($app['doctrine.orm.connection_options'])) {
-                throw new \InvalidArgumentException('The "doctrine.orm.connection_options" parameter must be defined');
-            }
-            $connectionOptions = $app['doctrine.orm.connection_options'];
-            $config = $self->getConfig($app);
-            $em = EntityManager::create($connectionOptions, $config);
-
-            return $em;
-        });
-
-        foreach(array('Common', 'DBAL', 'ORM') as $vendor) {
-            $key = sprintf('doctrine.%s.class_path', strtolower($vendor));
-            if (isset($app[$key])) {
-                $app['autoloader']->registerNamespace(sprintf('Doctrine\%s', $vendor), $app[$key]);
-            }
-        }
     }
 
-    public function getConfig(Application $app)
+    public function getOrmConfig(Application $app)
     {
-        $config = new Configuration;
+        $config = new ORMConfiguration;
 
         $cache = new ApcCache;
         $config->setMetadataCacheImpl($cache);
         $config->setQueryCacheImpl($cache);
 
-        $chain = new DriverChain();
+        $chain = new DriverChain;
         foreach((array)$app['doctrine.orm.entities'] as $entity) {
             switch($entity['type']) {
                 case 'annotation':
-                    $reader = new AnnotationReader();
+                    $reader = new AnnotationReader;
                     $reader->setAnnotationNamespaceAlias('Doctrine\\ORM\\Mapping\\', 'orm');
-                    $chain->addDriver(new AnnotationDriver($reader, (array)$entity['path']), $entity['namespace']);
+                    $driver = new AnnotationDriver($reader, (array)$entity['path']);
+                    $chain->addDriver($driver, $entity['namespace']);
                     break;
                 case 'yml':
                     $driver = new YamlDriver((array)$entity['path']);
                     $driver->setFileExtension('.yml');
-                    $chain->addDriver($driver);
+                    $chain->addDriver($driver, $entity['namespace']);
                     break;
                 case 'xml':
-                    $chain->addDriver(new XmlDriver((array)$entity['path']));
+                    $driver = new XmlDriver((array)$entity['path'], $entity['namespace']);
+                    $driver->setFileExtension('.xml');
+                    $chain->addDriver($driver, $entity['namespace']);
                     break;
                 default:
                     throw new \InvalidArgumentException(sprintf('"%s" is not a recognized driver', $type));

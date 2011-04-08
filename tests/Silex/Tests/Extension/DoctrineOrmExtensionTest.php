@@ -14,9 +14,12 @@ namespace Silex\Tests;
 use Silex\Application;
 use Silex\Extension\DoctrineOrmExtension;
 
+use Doctrine\DBAL\Connection;
+
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\Driver\DriverChain;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+use Doctrine\ORM\Mapping\Driver\YamlDriver;
 
 /**
  * DoctrineOrmExtension test cases.
@@ -32,7 +35,7 @@ class doctrineOrmExtensionTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testRegister()
+    public function testRegisterORM()
     {
         $app = new Application();
 
@@ -40,21 +43,73 @@ class doctrineOrmExtensionTest extends \PHPUnit_Framework_TestCase
             'doctrine.common.class_path'    => __DIR__.'/../../../../vendor/doctrine-common/lib',
             'doctrine.dbal.class_path'    => __DIR__.'/../../../../vendor/doctrine-dbal/lib',
             'doctrine.orm.class_path'    => __DIR__.'/../../../../vendor/doctrine/lib',
-            'doctrine.orm.connection_options' => array(
+            'doctrine.dbal.connection_options' => array(
+                'driver' => 'pdo_sqlite',
+                'path' => ':memory',
+            ),
+            'doctrine.orm' => true,
+            'doctrine.orm.entities' => array(
+                array('type' => 'yml', 'path' => '/path/to/yml/files', 'namespace' => 'My\\Entity'),
+                array('type' => 'annotation', 'path' => '/path/to/another/dir/with/entities', 'namespace' => 'Acme\\Entity'),
+                array('type' => 'xml', 'path' => '/path/to/xml/files', 'namespace' => 'Your\\Entity'),
+                array('type' => 'annotation', 'path' => array(
+                    '/path/to/Entities',
+                    '/path/to/another/dir/for/the/same/namespace'
+                ), 'namespace' => 'Entity'),
+            )
+        ));
+
+        $this->assertTrue($app['doctrine.orm.em'] instanceof EntityManager);
+
+        $driver = $app['doctrine.orm.em']->getConfiguration()->getMetadataDriverImpl();
+        $this->assertTrue($driver instanceof DriverChain);
+
+        $drivers = $driver->getDrivers();
+        $annotationDriver = $drivers['Entity'];
+        $this->assertTrue($annotationDriver instanceof AnnotationDriver);
+
+        $this->assertEquals(array(
+            '/path/to/Entities',
+            '/path/to/another/dir/for/the/same/namespace'
+        ), $drivers['Entity']->getPaths());
+
+        $drivers = $driver->getDrivers();
+        $ymlDriver = $drivers['My\\Entity'];
+        $this->assertTrue($ymlDriver instanceof YamlDriver);
+
+        $this->assertEquals(array('/path/to/yml/files'), $drivers['My\\Entity']->getPaths());
+    }
+
+    public function testRegisterDBAL()
+    {
+        $app = new Application();
+
+        $app->register(new DoctrineOrmExtension(), array(
+            'doctrine.common.class_path'    => __DIR__.'/../../../../vendor/doctrine-common/lib',
+            'doctrine.dbal.class_path'    => __DIR__.'/../../../../vendor/doctrine-dbal/lib',
+            'doctrine.dbal.connection_options' => array(
                 'driver' => 'pdo_sqlite',
                 'path' => ':memory',
             ),
         ));
 
-        $this->assertTrue($app['doctrine.orm.entity_manager'] instanceof EntityManager);
+        $this->assertFalse(isset($app['doctrine.orm.em']));
 
-        $driver = $app['doctrine.orm.entity_manager']->getConfiguration()->getMetadataDriverImpl();
-        $this->assertTrue($driver instanceof DriverChain);
+        $conn = $app['doctrine.dbal.connection'];
+        $this->assertTrue($conn instanceof Connection);
+    }
 
-        $annotationDriver = array_pop($driver->getDrivers());
-        $this->assertTrue($annotationDriver instanceof AnnotationDriver);
+    public function testRegisterORMButNotDBAL()
+    {
+        $app = new Application();
 
-        $namespace = array_pop(array_keys($driver->getDrivers()));
-        $this->assertEquals('Entity', $namespace);
+        $app->register(new DoctrineOrmExtension(), array(
+            'doctrine.common.class_path'    => __DIR__.'/../../../../vendor/doctrine-common/lib',
+            'doctrine.orm.class_path'    => __DIR__.'/../../../../vendor/doctrine/lib',
+            'doctrine.orm' => true
+        ));
+
+        $this->assertFalse(isset($app['doctrine.orm.em']));
+        $this->assertFalse(isset($app['doctrine.dbal.connection']));
     }
 }

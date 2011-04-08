@@ -1,15 +1,15 @@
-doctrineOrmExtension
+DoctrineOrmExtension
 ================
 
-The *DoctrineOrmExtension* provides a default `Doctrine2 <http://www.doctrine-project.org>`_ EntityManager.
+The *DoctrineOrmExtension* provides a default `Doctrine2 <http://www.doctrine-project.org>`_ DBAL Connection and an EntityManager.
 
 Parameters
 ----------
 
-* **doctrine.orm.connection_options**: an array of connection parameters for DBAL of the form:
+* **doctrine.dbal.connection_options**: an array of connection parameters for DBAL of the form:
 
 .. code-block:: php
-    'doctrine.orm.connection_options' => array(
+    'doctrine.dbal.connection_options' => array(
         'driver' => 'pdo_sqlite',
         'path' => ':memory'
     ),
@@ -17,7 +17,7 @@ Parameters
 or:
 .. code-block:: php
 
-    'doctrine.orm.connection_options' => array(
+    'doctrine.dbal.connection_options' => array(
         'driver' => 'pdo_mysql',
         'dbname' => 'my_database_name',
         'host' => 'localhost',
@@ -25,13 +25,17 @@ or:
         'password' => null
     ),
 
+This parameter activates the ``doctrine.dbal.connection`` service.
+
 These above are simple examples. Full `documentation <http://www.doctrine-project.org/docs/dbal/2.0/en/reference/configuration.html>`_ is available.
+
+* **doctrine.orm** (optional): an boolean to activate the ``doctrine.orm.em`` service. Defaults to ``false``.
 
 * **doctrine.orm.entities** (optional): an array of mapping configurations of the form:
 
 .. code-block:: php
     'doctrine.orm.entities' => array(
-        array('type' => 'yml', 'path' => '/path/to/yml/files'),
+        array('type' => 'yml', 'path' => '/path/to/yml/files', 'namespace' => 'My\\Entity'),
 
         array('type' => 'annotation', 'path' => array(
             '/path/to/Entities',
@@ -40,7 +44,7 @@ These above are simple examples. Full `documentation <http://www.doctrine-projec
 
         array('type' => 'annotation', 'path' => '/path/to/another/dir/with/entities', 'namespace' => 'Acme\\Entity'),
 
-        array('type' => 'xml', 'path' => '/path/to/xml/files')
+        array('type' => 'xml', 'path' => '/path/to/xml/files', 'namespace' => 'Your\\Entity')
     )
 
 This is an advanced configuration example which replaces the default one:
@@ -70,11 +74,24 @@ Default behavior will search annotated ``Entities`` in the ``Entity`` directory.
 Services
 --------
 
+* **doctrine.dbal.connection**: The ``Doctrine\DBAL\Connection`` instance.
 * **doctrine.orm.em**: The ``Doctrine\ORM\EntityManager`` instance.
 
-  Example usage::
 
-    $category = $app['doctrine.orm.em']->getRepository('Entity\Category')->findOneBy(array('name' => 'Category A'));
+Usage
+-----
+
+* DBAL
+
+.. code-block:: php
+
+    $categories = $conn->query('SELECT * FROM category')->fetchAll();
+
+* ORM
+
+.. code-block:: php
+
+    $category = $app['doctrine.orm.em']->getRepository('Acme\Entity\Category')->findOneBy(array('name' => 'Category A'));
 
 
 Registering
@@ -85,8 +102,13 @@ Registering
     use Silex\Extension\DoctrineOrmExtension;
 
     $app->register(new DoctrineOrmExtension(), array(
-        'monolog.connection_options' => array(,
+        'doctrine.dbal.connection_options' => array(,
             'driver' => 'pdo_sqlite',
             'path' => ':memory'
-        )
+        ),
+        'doctrine.orm' => true
     ));
+
+    // if you want to autoload your entities, use the autoloader service:
+    $app['autoloader']->registerNamespace('Entity', __DIR__);
+
