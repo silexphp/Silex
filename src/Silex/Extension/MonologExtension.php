@@ -17,7 +17,7 @@ use Monolog\Handler\StreamHandler;
 use Silex\Application;
 use Silex\ExtensionInterface;
 
-use Symfony\Component\HttpKernel\Exception\BaseHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class MonologExtension implements ExtensionInterface
 {
@@ -54,7 +54,7 @@ class MonologExtension implements ExtensionInterface
         });
 
         $app->error(function(\Exception $e) use ($app) {
-            if ($e instanceof BaseHttpException) {
+            if ($e instanceof HttpException) {
                 $app['monolog']->addWarning($e->getStatusCode().' '.$app['request']->getMethod().' '.$app['request']->getRequestUri());
             } else {
                 $app['monolog']->addError($e->getMessage());
