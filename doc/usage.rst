@@ -310,7 +310,7 @@ You can also check for specific errors by using ``instanceof``, and handle
 them differently::
 
     use Symfony\Component\HttpFoundation\Response;
-    use Symfony\Component\HttpKernel\Exception\BaseHttpException;
+    use Symfony\Component\HttpKernel\Exception\HttpException;
     use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
     $app->error(function(\Exception $e) {
@@ -318,7 +318,7 @@ them differently::
             return new Response('The requested page could not be found.', 404);
         }
 
-        $code = ($e instanceof BaseHttpException) ? $e->getStatusCode() : 500;
+        $code = ($e instanceof HttpException) ? $e->getStatusCode() : 500;
         return new Response('We are sorry, but something went terribly wrong.', $code);
     });
 
