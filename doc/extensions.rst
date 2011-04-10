@@ -105,7 +105,7 @@ or the PEAR Naming Convention, it is possible to autoload
 classes using the ``UniversalClassLoader``.
 
 As described in the *Services* chapter, there is an
-*autoloader* service that you can use for this.
+*autoloader* service which can be used for this.
 
 Here is an example of how to use it (based on `Buzz <https://github.com/kriswallsmith/Buzz>`_)::
 

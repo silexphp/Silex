@@ -17,7 +17,8 @@ to services instead of creating them from within the service or
 relying on globals. This generally leads to code that is decoupled,
 re-usable, flexible and testable.
 
-Here is an example::
+Here is an example of a class that takes a ``User`` object and stores
+it as a file in JSON format::
 
     class JsonUserPersister
     {
@@ -97,8 +98,8 @@ Service definitions
 
 Defining services is no different than defining parameters.
 You just set an array key on the container to be a closure.
-The difference is, when you retrieve the service, the
-closure is executed. This allows for lazy service creation.
+However, when you retrieve the service, the closure is executed.
+This allows for lazy service creation.
 
 ::
 
@@ -180,15 +181,16 @@ from being executed, by using the ``protect`` method.
 Note that protected closures do not get access to
 the container.
 
-Predefined services
--------------------
+Core services
+-------------
 
 Silex defines a range of services which can be used
 or replaced. You probably don't want to mess with most
 of them.
 
 * **request**: Contains the current request object,
-  which is an instance of ``Symfony\Component\HttpFoundation\Request``.
+  which is an instance of `Request
+  <http://api.symfony.com/2.0/Symfony/Component/HttpFoundation/Request.html>`_.
   It gives you access to ``GET``, ``POST`` parameters
   and lots more!
 
@@ -197,7 +199,8 @@ of them.
     $id = $app['request']->get('id');
 
 * **autoloader**: This service provides you with a
-  ``Symfony\Component\ClassLoader\UniversalClassLoader``
+  `UniversalClassLoader
+  <http://api.symfony.com/2.0/Symfony/Component/ClassLoader/UniversalClassLoader.html>`_
   that is already registered. You can register prefixes
   and namespaces on it.
 
@@ -205,7 +208,8 @@ of them.
 
     $app['autoloader']->registerPrefix('Twig_', $app['twig.class_path']);
 
-* **routes**: The ``Symfony\Component\Routing\RouteCollection``
+* **routes**: The `RouteCollection
+  <http://api.symfony.com/2.0/Symfony/Component/Routing/RouteCollection.html>`_
   that is used internally. You can add, modify, read
   routes.
 
@@ -213,15 +217,18 @@ of them.
   that is used internally. Check the *Internals*
   chapter for more information.
 
-* **dispatcher**: The ``Symfony\Component\EventDispatcher\EventDispatcher``
+* **dispatcher**: The `EventDispatcher
+  <http://api.symfony.com/2.0/Symfony/Component/EventDispatcher/EventDispatcher.html>`_
   that is used internally. It is the core of the Symfony2
   system and is used quite a bit by Silex.
 
-* **resolver**: The ``Symfony\Component\HttpKernel\Controller\ControllerResolver``
+* **resolver**: The `ControllerResolver
+  <http://api.symfony.com/2.0/Symfony/Component/HttpKernel/Controller/ControllerResolver.html>`_
   that is used internally. It takes care of executing the
   controller with the right arguments.
 
-* **kernel**: The ``Symfony\Component\HttpKernel\HttpKernel``
+* **kernel**: The `HttpKernel
+  <http://api.symfony.com/2.0/Symfony/Component/HttpKernel/HttpKernel.html>`_
   that is used internally. The HttpKernel is the heart of
   Symfony2, it takes a Request as input and returns a
   Response as output.

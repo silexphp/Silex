@@ -27,7 +27,7 @@ The use statement aliases ``Silex\Application`` to ``Application``.
 One other thing you have to do is configure your web server. If you
 are using apache you can use a ``.htaccess`` file for this.
 
-.. code-block:: text
+.. code-block:: apache
 
     <IfModule mod_rewrite.c>
     	RewriteEngine On
@@ -176,16 +176,19 @@ set up a message and send that message.
 
 The current ``request`` service is retrieved using the array key syntax.
 You can find more information about services in the *Services* chapter.
-The request is an instance of ``Symfony\Component\HttpFoundation\Request``,
+The request is an instance of `Request
+<http://api.symfony.com/2.0/Symfony/Component/HttpFoundation/Request.html>`_,
 so you can fetch variables using the request's ``get`` method.
 
 Instead of returning a string we are returning an instance of
-``Symfony\Component\HttpFoundation\Response``. This allows setting an HTTP
+`Response
+<http://api.symfony.com/2.0/Symfony/Component/HttpFoundation/Response.html>`_.
+This allows setting an HTTP
 status code, in this case it is set to ``201 Created``.
 
 .. note::
 
-    Silex always uses ``Response`` internally, it converts strings to
+    Silex always uses a ``Response`` internally, it converts strings to
     responses with status code ``200 Ok``.
 
 Other methods
@@ -209,7 +212,7 @@ can also call ``match``, which will match all methods.
 Route variables
 ~~~~~~~~~~~~~~~
 
-As has been before you can define variable parts in a route like this::
+As has been show before you can define variable parts in a route like this::
 
     $app->get('/blog/show/{id}', function($id) {
         ...
@@ -251,7 +254,7 @@ You can also chain these calls::
     ->assert('commentId', '\d+');
 
 Named routes
-~~~~~~~~~~~~~~~
+~~~~~~~~~~~~
 
 Certain extensions (such as ``UrlGenerator``) can make use of named routes.
 By default Silex will generate a route name for you, that cannot really be
@@ -343,3 +346,26 @@ you can create by calling the ``redirect`` method::
     });
 
 This will redirect from ``/`` to ``/hello``.
+
+Pitfalls
+--------
+
+There are some things that can go wrong. Here we will try and outline the
+most frequent ones.
+
+PHP configuration
+~~~~~~~~~~~~~~~~~
+
+Certain PHP distributions have restrictive default Phar settings. Setting
+the following may help.
+
+.. code-block:: ini
+
+		phar.readonly = Off
+		phar.require_hash = Off
+
+If you are on Suhosin you will also have to set this:
+
+.. code-block:: ini
+
+		suhosin.executor.include.whitelist = phar

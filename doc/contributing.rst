@@ -14,6 +14,10 @@ steps.
 
 * Send a pull request. Bonus points for topic branches.
 
+If you have a big change or would like to discuss something,
+please join us on the `mailing list
+<http://groups.google.com/group/silex-php>`.
+
 .. note::
 
     Any code you contribute must be licensed under the MIT
