@@ -14,12 +14,6 @@ namespace Silex\Tests;
 use Silex\Application;
 use Silex\Extension\DoctrineExtension;
 
-use Doctrine\DBAL\Connection;
-
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Mapping\Driver\DriverChain;
-use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
-use Doctrine\ORM\Mapping\Driver\YamlDriver;
 
 /**
  * DoctrineExtension test cases.
@@ -59,14 +53,14 @@ class DoctrineExtensionTest extends \PHPUnit_Framework_TestCase
             )
         ));
 
-        $this->assertTrue($app['doctrine.orm.em'] instanceof EntityManager);
+        $this->assertInstanceOf('Doctrine\ORM\EntityManager', $app['doctrine.orm.em']);
 
         $driver = $app['doctrine.orm.em']->getConfiguration()->getMetadataDriverImpl();
-        $this->assertTrue($driver instanceof DriverChain);
+        $this->assertInstanceOf('Doctrine\ORM\Mapping\Driver\DriverChain', $driver);
 
         $drivers = $driver->getDrivers();
         $annotationDriver = $drivers['Entity'];
-        $this->assertTrue($annotationDriver instanceof AnnotationDriver);
+        $this->assertInstanceOf('Doctrine\ORM\Mapping\Driver\AnnotationDriver', $annotationDriver);
 
         $this->assertEquals(array(
             '/path/to/Entities',
@@ -75,7 +69,7 @@ class DoctrineExtensionTest extends \PHPUnit_Framework_TestCase
 
         $drivers = $driver->getDrivers();
         $ymlDriver = $drivers['My\\Entity'];
-        $this->assertTrue($ymlDriver instanceof YamlDriver);
+        $this->assertInstanceOf('Doctrine\ORM\Mapping\Driver\YamlDriver', $ymlDriver);
 
         $this->assertEquals(array('/path/to/yml/files'), $drivers['My\\Entity']->getPaths());
     }
@@ -96,7 +90,7 @@ class DoctrineExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(isset($app['doctrine.orm.em']));
 
         $conn = $app['doctrine.dbal.connection'];
-        $this->assertTrue($conn instanceof Connection);
+        $this->assertInstanceOf('Doctrine\DBAL\Connection', $conn);
     }
 
     public function testRegisterORMButNotDBAL()
