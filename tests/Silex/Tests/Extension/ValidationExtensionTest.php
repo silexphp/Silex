@@ -32,14 +32,14 @@ class ValidationExtensionTest extends \PHPUnit_Framework_TestCase
         if (!is_dir(__DIR__.'/../../../../vendor/Symfony/Component/Validator')) {
             $this->markTestSkipped('Symfony/Component/Validator submodule was not installed.');
         }
-		$loader = new UniversalClassLoader();
-		$loader->registerNamespace('Silex', array(__DIR__.'/../../../', __DIR__.'/../../../../src'));
-		$loader->register();
-		$this->app = new Application();
+        $loader = new UniversalClassLoader();
+        $loader->registerNamespace('Silex', array(__DIR__.'/../../../', __DIR__.'/../../../../src'));
+        $loader->register();
+        $this->app = new Application();
     }
     public function testRegister()
     {
-		$app = $this->app;
+        $app = $this->app;
         $app->register(new ValidationExtension());
 
         $this->assertInstanceOf('Symfony\Component\Validator\Validator', $app['validator']);
@@ -53,9 +53,9 @@ class ValidationExtensionTest extends \PHPUnit_Framework_TestCase
         $author = new Author;
         $author->setFirstName($request->get('firstName'));
         $author->setLastName($request->get('lastName'));
-		$rs = $app['validator']->validate($author);
-		$this->assertEquals(1, count($rs));
-		$this->assertRegExp('/Last Name should not be blank/', $rs->__toString());
+        $rs = $app['validator']->validate($author);
+        $this->assertEquals(1, count($rs));
+        $this->assertRegExp('/Last Name should not be blank/', $rs->__toString());
     }
     public function testAnnotationValidate()
     {
@@ -68,7 +68,7 @@ class ValidationExtensionTest extends \PHPUnit_Framework_TestCase
         $reader->setFirstName($request->get('firstName'));
         $reader->setLastName($request->get('lastName'));
         $rs = $app['validator']->validate($reader);
-		$this->assertEquals(1, count($rs));
-		$this->assertRegExp('/Last Name should not be blank/', $rs->__toString());
+        $this->assertEquals(1, count($rs));
+        $this->assertRegExp('/Last Name should not be blank/', $rs->__toString());
     }
 }

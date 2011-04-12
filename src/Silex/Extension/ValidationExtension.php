@@ -22,7 +22,7 @@ use Symfony\Component\Validator\ConstraintValidatorFactory;
 
 class ValidationExtension implements ExtensionInterface
 {
-	protected $constraints = array();
+    protected $constraints = array();
     public function register(Application $app)
     {
         $app['validator'] = $app->share(function () use ($app) {
@@ -43,12 +43,12 @@ class ValidationExtension implements ExtensionInterface
         if (isset($app['validation.class_path'])) {
             $app['autoloader']->registerNamespace('Symfony\\Component\\Validation', $app['validation.class_path']);
         }
-        
+
         if (isset($app['validation.use_annotation']) && $app['validation.use_annotation'] === true) {
             $app['autoloader']->registerNamespace('Doctrine', __DIR__.'/../../../vendor/doctrine/common/lib');
             $app['validator.mapping.class_metadata_factory'] = $app->share(function () use ($app) {
                 return new ClassMetadataFactory(new AnnotationLoader());
-            });           
+            });
         }
     }
 }
