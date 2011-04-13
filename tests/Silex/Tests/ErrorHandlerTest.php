@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
 {
-    public function testNoErrorHandler()
+    public function testDefaultErrorHandler()
     {
         $app = new Application();
 
@@ -31,13 +31,18 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
             throw new \RuntimeException('foo exception');
         });
 
-        try {
-            $request = Request::create('/foo');
-            $app->handle($request);
-            $this->fail('->handle() should not catch exceptions where no error handler was supplied');
-        } catch (\RuntimeException $e) {
-            $this->assertEquals('foo exception', $e->getMessage());
-        }
+        $request = Request::create('/foo');
+        $response = $app->handle($request);
+        $this->assertEquals(500, $response->getStatusCode());
+    }
+
+    public function testDefaultErrorHandlerWithMissingRoute()
+    {
+        $app = new Application();
+
+        $request = Request::create('/bar');
+        $response = $app->handle($request);
+        $this->assertEquals(404, $response->getStatusCode());
     }
 
     public function testOneErrorHandler()
@@ -104,13 +109,9 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
             $errors++;
         });
 
-        try {
-            $request = Request::create('/foo');
-            $app->handle($request);
-            $this->fail('->handle() should not catch exceptions where an empty error handler was supplied');
-        } catch (\RuntimeException $e) {
-            $this->assertEquals('foo exception', $e->getMessage());
-        }
+        $request = Request::create('/foo');
+        $response = $app->handle($request);
+        $this->assertEquals(500, $response->getStatusCode());
 
         $this->assertEquals(1, $errors, 'should execute the error handler');
     }

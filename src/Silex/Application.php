@@ -69,6 +69,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             $dispatcher = new EventDispatcher();
             $dispatcher->addSubscriber($app);
             $dispatcher->addListener(HttpKernelEvents::onCoreView, $app, -10);
+            $dispatcher->addSubscriber(new DefaultErrorHandler(), -255);
 
             return $dispatcher;
         });

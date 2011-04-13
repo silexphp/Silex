@@ -96,17 +96,6 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($response->isRedirected('/target2'));
     }
 
-    /**
-    * @expectedException Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-    */
-    public function testMissingRoute()
-    {
-        $app = new Application();
-
-        $request = Request::create('/baz');
-        $app->handle($request);
-    }
-
     public function testMethodRouting()
     {
         $app = new Application();
