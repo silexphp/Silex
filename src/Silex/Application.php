@@ -177,8 +177,6 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      *
      * Before filters are run before any route has been matched.
      *
-     * This method is chainable.
-     *
      * @param mixed $callback Before filter callback
      */
     public function before($callback)
@@ -190,8 +188,6 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      * Registers an after filter.
      *
      * After filters are run after the controller has been executed.
-     *
-     * This method is chainable.
      *
      * @param mixed $callback After filter callback
      */
@@ -212,8 +208,6 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      * returned to the client.
      *
      * For this reason you should add logging handlers before output handlers.
-     *
-     * This method is chainable.
      *
      * @param mixed $callback Error handler callback, takes an Exception argument
      */
