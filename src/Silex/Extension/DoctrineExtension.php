@@ -11,8 +11,6 @@
 
 namespace Silex\Extension;
 
-use Doctrine\Common\EventManager;
-
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Configuration as DBALConfiguration;
 
@@ -25,6 +23,7 @@ use Doctrine\ORM\Mapping\Driver\YamlDriver;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Cache\ApcCache;
 use Doctrine\Common\Cache\ArrayCache;
+use Doctrine\Common\EventManager;
 
 use Silex\Application;
 use Silex\ExtensionInterface;
@@ -35,6 +34,7 @@ class DoctrineExtension implements ExtensionInterface
     {
         // @TODO should we throw an Exception if orm is activated but not dbal ?
         if (isset($app['doctrine.dbal.connection_options'])) {
+            $this->loadDoctrineConfiguration($app);
             $this->loadDoctrineDbal($app);
             if (isset($app['doctrine.orm']) and true === $app['doctrine.orm']) {
                 $this->setOrmDefaults($app);
@@ -52,14 +52,19 @@ class DoctrineExtension implements ExtensionInterface
 
     private function loadDoctrineDbal(Application $app)
     {
-        $self = $this;
-        $app['doctrine.dbal.connection'] = $app->share(function() use($self, $app) {
+        $app['doctrine.dbal.event_manager'] = $app->share(function() {
+            $eventManager = new EventManager;
+
+            return $eventManager;
+        });
+
+        $app['doctrine.dbal.connection'] = $app->share(function() use($app) {
 
             if (!isset($app['doctrine.dbal.connection_options'])) {
                 throw new \InvalidArgumentException('The "doctrine.orm.connection_options" parameter must be defined');
             }
-            $config = new DBALConfiguration;
-            $eventManager = new EventManager;
+            $config = $app['doctrine.configuration'];
+            $eventManager = $app['doctrine.dbal.event_manager'];
             $conn = DriverManager::getConnection($app['doctrine.dbal.connection_options'], $config, $eventManager);
 
             return $conn;
@@ -72,7 +77,7 @@ class DoctrineExtension implements ExtensionInterface
         $app['doctrine.orm.em'] = $app->share(function() use($self, $app) {
 
             $connection = $app['doctrine.dbal.connection'];
-            $config = $self->getOrmConfig($app);
+            $config = $app['doctrine.configuration'];
             $em = EntityManager::create($connection, $config);
 
             return $em;
@@ -96,45 +101,52 @@ class DoctrineExtension implements ExtensionInterface
         }
     }
 
-    public function getOrmConfig(Application $app)
+    public function loadDoctrineConfiguration(Application $app)
     {
-        $config = new ORMConfiguration;
+        $app['doctrine.configuration'] = $app->share(function() use($app) {
 
-        $cache = new ApcCache;
-        $config->setMetadataCacheImpl($cache);
-        $config->setQueryCacheImpl($cache);
+            if (isset($app['doctrine.orm']) and true === $app['doctrine.orm']) {
+                $config = new ORMConfiguration;
+                $cache = new ApcCache;
+                $config->setMetadataCacheImpl($cache);
+                $config->setQueryCacheImpl($cache);
 
-        $chain = new DriverChain;
-        foreach((array)$app['doctrine.orm.entities'] as $entity) {
-            switch($entity['type']) {
-                case 'annotation':
-                    $reader = new AnnotationReader;
-                    $reader->setAnnotationNamespaceAlias('Doctrine\\ORM\\Mapping\\', 'orm');
-                    $driver = new AnnotationDriver($reader, (array)$entity['path']);
-                    $chain->addDriver($driver, $entity['namespace']);
-                    break;
-                case 'yml':
-                    $driver = new YamlDriver((array)$entity['path']);
-                    $driver->setFileExtension('.yml');
-                    $chain->addDriver($driver, $entity['namespace']);
-                    break;
-                case 'xml':
-                    $driver = new XmlDriver((array)$entity['path'], $entity['namespace']);
-                    $driver->setFileExtension('.xml');
-                    $chain->addDriver($driver, $entity['namespace']);
-                    break;
-                default:
-                    throw new \InvalidArgumentException(sprintf('"%s" is not a recognized driver', $type));
-                    break;
+                $chain = new DriverChain;
+                foreach((array)$app['doctrine.orm.entities'] as $entity) {
+                    switch($entity['type']) {
+                        case 'annotation':
+                            $reader = new AnnotationReader;
+                            $reader->setAnnotationNamespaceAlias('Doctrine\\ORM\\Mapping\\', 'orm');
+                            $driver = new AnnotationDriver($reader, (array)$entity['path']);
+                            $chain->addDriver($driver, $entity['namespace']);
+                            break;
+                        case 'yml':
+                            $driver = new YamlDriver((array)$entity['path']);
+                            $driver->setFileExtension('.yml');
+                            $chain->addDriver($driver, $entity['namespace']);
+                            break;
+                        case 'xml':
+                            $driver = new XmlDriver((array)$entity['path'], $entity['namespace']);
+                            $driver->setFileExtension('.xml');
+                            $chain->addDriver($driver, $entity['namespace']);
+                            break;
+                        default:
+                            throw new \InvalidArgumentException(sprintf('"%s" is not a recognized driver', $type));
+                            break;
+                    }
+                }
+                $config->setMetadataDriverImpl($chain);
+
+                $config->setProxyDir($app['doctrine.orm.proxies_dir']);
+                $config->setProxyNamespace($app['doctrine.orm.proxies_namespace']);
+                $config->setAutoGenerateProxyClasses($app['doctrine.orm.auto_generate_proxies']);
             }
-        }
-        $config->setMetadataDriverImpl($chain);
+            else {
+                $config = new DBALConfiguration;
+            }
 
-        $config->setProxyDir($app['doctrine.orm.proxies_dir']);
-        $config->setProxyNamespace($app['doctrine.orm.proxies_namespace']);
-        $config->setAutoGenerateProxyClasses($app['doctrine.orm.auto_generate_proxies']);
-
-        return $config;
+            return $config;
+        });
     }
 }
 

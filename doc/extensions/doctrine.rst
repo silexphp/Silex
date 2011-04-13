@@ -99,6 +99,8 @@ Services
 --------
 
 * **doctrine.dbal.connection**: The ``Doctrine\DBAL\Connection`` instance.
+* **doctrine.dbal.event_manager**: The ``Doctrine\DBAL\EventManager`` instance.
+* **doctrine.configuration**: The ``Doctrine\ORM\Configuration`` instance or ``Doctrine\DBAL\Configuration`` if ``doctrine.orm`` is false.
 * **doctrine.orm.em**: The ``Doctrine\ORM\EntityManager`` instance.
 
 
@@ -116,5 +118,18 @@ Usage
 .. code-block:: php
 
     $category = $app['doctrine.orm.em']->getRepository('Acme\Entity\Category')->findOneBy(array('name' => 'Category A'));
+
+
+* Event subscribers, Behaviors
+
+This is an example of how to add a Timestampable behavior to Doctrine. ( http://gediminasm.org/article/timestampable-behavior-extension-for-doctrine-2 )
+
+.. code-block:: php
+
+    // if you need autoloading of external lib
+    $app['autoloader']->registerNamespace('Gedmo', __DIR__.'/vendor/Gedmo/DoctrineExtensions/lib');
+
+    $timestampableListener = new \Gedmo\Timestampable\TimestampableListener(); 
+    $app['doctrine.dbal.event_manager']->addEventSubscriber($timestampableListener);
 
 

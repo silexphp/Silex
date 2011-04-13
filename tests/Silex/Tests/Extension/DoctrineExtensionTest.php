@@ -55,6 +55,11 @@ class DoctrineExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('Doctrine\ORM\EntityManager', $app['doctrine.orm.em']);
 
+        $config = $app['doctrine.configuration'];
+        $this->assertInstanceOf('Doctrine\ORM\Configuration', $config);
+        $this->assertSame($app['doctrine.orm.em']->getConfiguration(), $config);
+        $this->assertSame(spl_object_hash($app['doctrine.orm.em']->getConfiguration()), spl_object_hash($config));
+
         $driver = $app['doctrine.orm.em']->getConfiguration()->getMetadataDriverImpl();
         $this->assertInstanceOf('Doctrine\ORM\Mapping\Driver\DriverChain', $driver);
 
@@ -91,6 +96,14 @@ class DoctrineExtensionTest extends \PHPUnit_Framework_TestCase
 
         $conn = $app['doctrine.dbal.connection'];
         $this->assertInstanceOf('Doctrine\DBAL\Connection', $conn);
+        $eventManager = $app['doctrine.dbal.event_manager'];
+        $this->assertInstanceOf('Doctrine\Common\EventManager', $eventManager);
+
+        $config = $app['doctrine.configuration'];
+        $this->assertInstanceOf('Doctrine\DBAL\Configuration', $config);
+
+        $this->assertSame($app['doctrine.dbal.connection']->getConfiguration(), $config);
+        $this->assertSame(spl_object_hash($app['doctrine.dbal.connection']->getConfiguration()), spl_object_hash($config));
     }
 
     public function testRegisterORMButNotDBAL()
