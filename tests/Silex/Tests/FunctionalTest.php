@@ -14,7 +14,7 @@ namespace Silex\Tests;
 use Silex\Application;
 
 /**
- * Controller test cases.
+ * Functional test cases.
  *
  * @author Igor Wiedler <igor@wiedler.ch>
  */

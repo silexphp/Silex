@@ -60,15 +60,7 @@ A route pattern consists of:
   only ``GET`` and ``POST`` are used, but it is possible to use the
   others as well.
 
-The controller can be any PHP callable, so either of::
-
-    'functionName'
-
-    array('Class', 'staticMethodName')
-
-    array($object, 'methodName')
-
-But the encouraged way of defining controllers is a closure is this::
+The controller is defined using a closure like this::
 
     function() {
         // do something
@@ -86,6 +78,10 @@ closure in a function and import local variables of that function.
     ``Closure`` class, we will not make a distinction here.
 
 The return value of the closure becomes the content of the page.
+
+There is also an alternate way for defining controllers using a
+class method. The syntax for that is ``ClassName::methodName``.
+Static methods are also possible.
 
 Example GET route
 ~~~~~~~~~~~~~~~~~

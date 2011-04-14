@@ -173,10 +173,41 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('/foo/', $response->headers->get('Location'));
     }
 
+    public function testClassNameControllerSyntax()
+    {
+        $app = new Application();
+
+        $app->get('/foo', 'Silex\Tests\MyController::getFoo');
+
+        $this->checkRouteResponse($app, '/foo', 'foo');
+    }
+
+    public function testClassNameControllerSyntaxWithStaticMethod()
+    {
+        $app = new Application();
+
+        $app->get('/bar', 'Silex\Tests\MyController::getBar');
+
+        $this->checkRouteResponse($app, '/bar', 'bar');
+    }
+
     protected function checkRouteResponse($app, $path, $expectedContent, $method = 'get', $message = null)
     {
         $request = Request::create($path, $method);
         $response = $app->handle($request);
         $this->assertEquals($expectedContent, $response->getContent(), $message);
+    }
+}
+
+class MyController
+{
+    public function getFoo()
+    {
+        return 'foo';
+    }
+
+    static public function getBar()
+    {
+        return 'bar';
     }
 }
