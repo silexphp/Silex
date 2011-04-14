@@ -16,7 +16,8 @@ on the application. ::
 
     $app->register(new DatabaseExtension());
 
-You can also provide some parameters as a second argument.
+You can also provide some parameters as a second argument. These
+will be set **before** the extension is registered.
 
 ::
 
@@ -26,6 +27,33 @@ You can also provide some parameters as a second argument.
         'database.password' => 'secret_root_password',
     ));
 
+Conventions
+-----------
+
+You need to watch out in what order you do certain things when
+interacting with extensions. Just keep to these rules:
+
+* Class paths (for the autoloader) must be defined **before**
+  the extension is registered. Passing it as a second argument
+  to ``Application::register`` qualifies too, because it sets
+  the passed parameters first.
+
+  *Reason: The extension will set up the autoloader at
+  extension register time. If the class path is not set
+  at that point, no autoloader can be registered.*
+
+* Overriding existing services must occur **after** the
+  extension is registered.
+
+  *Reason: If the services already exist, the extension
+  will overwrite it.*
+
+* You can set parameters any time before the service is
+  accessed.
+
+Make sure to stick to this behavior when creating your
+own extensions.
+
 Included extensions
 -------------------
 
@@ -33,6 +61,7 @@ There are a few extensions that you get out of the box.
 All of these are within the ``Silex\Extension`` namespace.
 
 * :doc:`MonologExtension <extensions/monolog>`
+* :doc:`SessionExtension <extensions/session>`
 * :doc:`TwigExtension <extensions/twig>`
 * :doc:`UrlGeneratorExtension <extensions/url_generator>`
 
