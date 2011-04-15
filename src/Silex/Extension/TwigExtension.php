@@ -14,8 +14,9 @@ namespace Silex\Extension;
 use Silex\Application;
 use Silex\ExtensionInterface;
 
-use Symfony\Bridge\Twig\Extension\RoutingExtension;
+use Symfony\Bridge\Twig\Extension\RoutingExtension as TwigRoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension as TwigTranslationExtension;
+use Symfony\Bridge\Twig\Extension\FormExtension as TwigFormExtension;
 
 class TwigExtension implements ExtensionInterface
 {
@@ -27,11 +28,15 @@ class TwigExtension implements ExtensionInterface
 
             if (isset($app['symfony_bridges'])) {
                 if (isset($app['url_generator'])) {
-                    $twig->addExtension(new RoutingExtension($app['url_generator']));
+                    $twig->addExtension(new TwigRoutingExtension($app['url_generator']));
                 }
 
                 if (isset($app['translator'])) {
                     $twig->addExtension(new TwigTranslationExtension($app['translator']));
+                }
+
+                if (isset($app['form.factory'])) {
+                    $twig->addExtension(new TwigFormExtension(array('widgets.html.twig')));
                 }
             }
 
