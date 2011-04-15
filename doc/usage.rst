@@ -343,6 +343,43 @@ you can create by calling the ``redirect`` method::
 
 This will redirect from ``/`` to ``/hello``.
 
+Security
+--------
+
+Make sure to protect your application against attacks.
+
+Escaping
+~~~~~~~~
+
+When outputting any user input (either route variables GET/POST variables
+obtained from the request), you will have to make sure to escape it
+correctly, to prevent Cross-Site-Scripting attacks.
+
+* **Escaping HTML**: PHP provides the ``htmlspecialchars`` function for this.
+  Silex provides a shortcut ``escape`` method::
+
+      $app->get('/name', function() use ($app) {
+          $name = $app['request']->get('name');
+          return "You provided the name {$app->escape($name)}.";
+      });
+
+  If you use the Twig template engine you should use its escaping or even
+  auto-escaping mechanisms.
+
+* **Escaping JSON**: If you want to provide data in JSON format you should
+  use the PHP ``json_encode`` function::
+
+      use Symfony\Component\HttpFoundation\Response;
+
+      $app->get('/name.json', function() use ($app) {
+          $name = $app['request']->get('name');
+          return new Response(
+              json_encode(array('name' => $name)),
+              200,
+              array('Content-Type' => 'application/json')
+          );
+      });
+
 Pitfalls
 --------
 
