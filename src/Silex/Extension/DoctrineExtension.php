@@ -46,7 +46,7 @@ class DoctrineExtension implements ExtensionInterface
         }
 
         if (isset($app['db.common.class_path'])) {
-            $app['autoloader']->registerNamespace('Doctrine\\DBAL', $app['db.common.class_path']);
+            $app['autoloader']->registerNamespace('Doctrine\\Common', $app['db.common.class_path']);
         }
     }
 }
