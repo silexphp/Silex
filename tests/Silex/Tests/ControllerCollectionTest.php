@@ -49,6 +49,15 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(2, count($routes->all()));
     }
 
+    public function testAll()
+    {
+        $controllers = new ControllerCollection(new RouteCollection());
+        $controllers->add($c1 = new Controller(new Route('/foo')));
+        $controllers->add($c2 = new Controller(new Route('/bar')));
+
+        $this->assertEquals(array($c1, $c2), $controllers->all());
+    }
+
     public function testControllerFreezing()
     {
         $routes = new RouteCollection();

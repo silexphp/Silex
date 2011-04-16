@@ -54,4 +54,14 @@ class ControllerCollection
 
         $this->controllers = array();
     }
+
+    /**
+     * Gets all controllers.
+     *
+     * @return array An array of Controllers
+     */
+    public function all()
+    {
+        return $this->controllers;
+    }
 }
