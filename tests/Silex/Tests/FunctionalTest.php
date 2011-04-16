@@ -12,6 +12,8 @@
 namespace Silex\Tests;
 
 use Silex\Application;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Functional test cases.
@@ -38,5 +40,33 @@ class FunctionalTest extends \PHPUnit_Framework_TestCase
         $routes = $app['routes'];
         $this->assertInstanceOf('Symfony\Component\Routing\Route', $routes->get('homepage'));
         $this->assertInstanceOf('Symfony\Component\Routing\Route', $routes->get('foo_abc'));
+    }
+
+    public function testMount()
+    {
+        $mounted = new Application();
+        $mounted->get('/{name}', function ($name) { return new Response($name); });
+
+        $app = new Application();
+        $app->mount('/hello', $mounted);
+
+        $response = $app->handle(Request::create('/hello/Silex'));
+        $this->assertEquals('Silex', $response->getContent());
+    }
+
+    public function testLazyMount()
+    {
+        $mounted = function (Request $request, $prefix) {
+            $mounted = new Application();
+            $mounted->get('/{name}', function ($name) { return new Response($name); });
+
+            return $mounted($request, $prefix);
+        };
+
+        $app = new Application();
+        $app->mount('/hello', $mounted);
+
+        $response = $app->handle(Request::create('/hello/Silex'));
+        $this->assertEquals('Silex', $response->getContent());
     }
 }

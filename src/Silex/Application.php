@@ -256,6 +256,18 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     }
 
     /**
+     * Mounts an application under the given route prefix.
+     *
+     * @param string               $prefix The route prefix
+     * @param Application|\Closure $app    An Application instance or a Closure that returns an Application instance
+     */
+    public function mount($prefix, $app)
+    {
+        $prefix = rtrim($prefix, '/');
+        $this->match($prefix.'/{path}', $app)->assert('path', '.*')->value('prefix', $prefix);
+    }
+
+    /**
      * Handles the request and deliver the response.
      *
      * @param Request $request Request to process
@@ -272,6 +284,21 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     public function handle(Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true)
     {
         return $this['kernel']->handle($request, $type, $catch);
+    }
+
+    /**
+     * Handles a Request when this application has been mounted under a prefix.
+     *
+     * @param Request $request A Request instance
+     * @param string  $path    The path info (without the prefix)
+     */
+    public function __invoke(Request $request, $prefix)
+    {
+        foreach ($this['controllers']->all() as $controller) {
+            $controller->getRoute()->setPattern(rtrim($prefix, '/').$controller->getRoute()->getPattern());
+        }
+
+        return $this->handle($request);
     }
 
     /**

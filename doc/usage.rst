@@ -12,7 +12,7 @@ controller definitions, call the ``run`` method on your application.
 
 ::
 
-    require __DIR__.'/silex.phar';
+    require_once __DIR__.'/silex.phar';
 
     use Silex\Application;
 
@@ -379,6 +379,43 @@ correctly, to prevent Cross-Site-Scripting attacks.
               array('Content-Type' => 'application/json')
           );
       });
+
+Reusing applications
+--------------------
+
+To make your applications reusable, return the ``$app`` variable instead of
+calling the ``run()`` method::
+
+    // blog.php
+    require_once __DIR__.'/silex.phar';
+
+    $app = new Silex\Application();
+
+    // define your blog app
+    $app->get('/post/{id}', function ($id) { ... });
+
+    // return the app instance
+    return $app;
+
+Running this application can now be done like this::
+
+    $app = require __DIR__.'/blog.php';
+    $app->run();
+
+This pattern allows you to easily "mount" this application under any other
+one::
+
+    $blog = require __DIR__.'/blog.php';
+
+    $app = new Application();
+    $app->mount('/blog', $blog);
+
+    // define your main app
+
+    $app->run();
+
+Now, blog posts are available under the ``/blog/post/{id}`` route, along side
+any other routes you might have defined.
 
 Pitfalls
 --------
