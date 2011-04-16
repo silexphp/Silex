@@ -269,7 +269,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         $this->handle($request)->send();
     }
 
-    function handle(Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true)
+    public function handle(Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true)
     {
         return $this['kernel']->handle($request, $type, $catch);
     }
