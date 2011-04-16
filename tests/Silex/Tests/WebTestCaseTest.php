@@ -21,7 +21,7 @@ use Silex\WebTestCase;
  */
 class WebTestCaseTest extends WebTestCase
 {
-    public function createApp()
+    public function createApplication()
     {
         $app = new Application();
 
