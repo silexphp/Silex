@@ -83,6 +83,19 @@ class Controller
     }
 
     /**
+     * Sets the default value for a route variable.
+     *
+     * @param string $variable The variable name
+     * @param mixed  $default  The default value
+     */
+    public function value($variable, $default)
+    {
+        $this->route->setDefault($variable, $default);
+
+        return $this;
+    }
+
+    /**
      * Freezes the controller.
      *
      * Once the controller is frozen, you can no longer change the route name
