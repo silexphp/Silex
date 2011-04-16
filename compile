@@ -3,7 +3,11 @@
 
 require_once __DIR__.'/autoload.php';
 
+use Silex\Versioning;
 use Silex\Compiler;
+
+$update = new Versioning();
+$update->putVersion();
 
 $compiler = new Compiler();
 $compiler->compile();

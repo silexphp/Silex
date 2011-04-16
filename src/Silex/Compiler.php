@@ -53,6 +53,7 @@ class Compiler
         }
 
         $this->addFile($phar, new \SplFileInfo(__DIR__.'/../../LICENSE'), false);
+        $this->addFile($phar, new \SplFileInfo(__DIR__.'/../../version.xml'), false);
         $this->addFile($phar, new \SplFileInfo(__DIR__.'/../../autoload.php'));
 
         // Stubs

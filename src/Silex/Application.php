@@ -31,6 +31,7 @@ use Symfony\Component\Routing\Matcher\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Matcher\Exception\NotFoundException;
 use Symfony\Component\ClassLoader\UniversalClassLoader;
 use Silex\RedirectableUrlMatcher;
+use Silex\Versioning;
 
 /**
  * The Silex framework class.
@@ -75,6 +76,10 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
 
         $this['kernel'] = $this->share(function () use ($app) {
             return new HttpKernel($app['dispatcher'], $app['resolver']);
+        });
+
+        $this['versioning'] = $this->share(function() use ($app) {
+            return new Versioning();
         });
     }
 
