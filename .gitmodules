@@ -34,3 +34,9 @@
 [submodule "vendor/monolog"]
 	path = vendor/monolog
 	url = https://github.com/Seldaek/monolog.git
+[submodule "vendor/Symfony/Component/Console"]
+	path = vendor/Symfony/Component/Console
+	url = https://github.com/symfony/Console
+[submodule "vendor/Symfony/Component/Process"]
+	path = vendor/Symfony/Component/Process
+	url = https://github.com/symfony/Process

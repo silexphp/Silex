@@ -39,6 +39,8 @@ use Silex\RedirectableUrlMatcher;
  */
 class Application extends \Pimple implements HttpKernelInterface, EventSubscriberInterface
 {
+    const VERSION = '@package_version@';
+
     /**
      * Constructor.
      */

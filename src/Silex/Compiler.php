@@ -13,6 +13,7 @@ namespace Silex;
 
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\Process\Process;
 
 /**
  * The Compiler class compiles the Silex framework.
@@ -36,6 +37,7 @@ class Compiler
         $finder->files()
             ->ignoreVCS(true)
             ->name('*.php')
+            ->notName('Compiler.php')
             ->in(__DIR__.'/..')
             ->in(__DIR__.'/../../vendor/pimple')
             ->in(__DIR__.'/../../vendor/Symfony/Component/ClassLoader')
@@ -46,6 +48,7 @@ class Compiler
             ->in(__DIR__.'/../../vendor/Symfony/Component/BrowserKit')
             ->in(__DIR__.'/../../vendor/Symfony/Component/CssSelector')
             ->in(__DIR__.'/../../vendor/Symfony/Component/DomCrawler')
+            ->in(__DIR__.'/../../vendor/Symfony/Component/Console')
         ;
 
         foreach ($finder as $file) {
@@ -56,8 +59,8 @@ class Compiler
         $this->addFile($phar, new \SplFileInfo(__DIR__.'/../../autoload.php'));
 
         // Stubs
-        $phar['_cli_stub.php'] = $this->getStub();
-        $phar['_web_stub.php'] = $this->getStub();
+        $phar['_cli_stub.php'] = $this->getCliStub();
+        $phar['_web_stub.php'] = $this->getWebStub();
         $phar->setDefaultStub('_cli_stub.php', '_web_stub.php');
 
         $phar->stopBuffering();
@@ -75,10 +78,38 @@ class Compiler
             $content = Kernel::stripComments(file_get_contents($file));
         }
 
+        $process = new Process('git rev-parse --short HEAD');
+        if ($process->run() > 0) {
+            throw new \RuntimeException('The git binary cannot be found.');
+        }
+        $content = str_replace('@package_version@', $process->getOutput(), $content);
+
         $phar->addFromString($path, $content);
     }
 
-    protected function getStub()
+    protected function getCliStub()
+    {
+        return <<<EOF
+<?php
+/*
+ * This file is part of the Silex framework.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+require_once __DIR__.'/autoload.php';
+
+\$console = require_once __DIR__.'/src/console.php';
+\$console->run();
+
+__HALT_COMPILER();
+EOF;
+    }
+
+    protected function getWebStub()
     {
         return <<<EOF
 <?php
