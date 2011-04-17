@@ -77,7 +77,7 @@ class Compiler
             $content = Kernel::stripComments($content);
         }
 
-        $process = new Process('git rev-parse --short HEAD');
+        $process = new Process('git log --pretty="%h %ci" -n1 HEAD');
         if ($process->run() > 0) {
             throw new \RuntimeException('The git binary cannot be found.');
         }
