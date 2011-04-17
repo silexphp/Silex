@@ -12,6 +12,7 @@
 namespace Silex\Tests;
 
 use Silex\Application;
+use Silex\LazyApplication;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -68,5 +69,29 @@ class FunctionalTest extends \PHPUnit_Framework_TestCase
 
         $response = $app->handle(Request::create('/hello/Silex'));
         $this->assertEquals('Silex', $response->getContent());
+    }
+
+    public function testLazyMountWithAnExternalFile()
+    {
+        $tmp = sys_get_temp_dir().'/SilexLazyApp.php';
+        file_put_contents($tmp, <<<'EOF'
+<?php
+
+$app = new Silex\Application();
+$app->get('/{name}', function ($name) { return new Symfony\Component\HttpFoundation\Response($name); });
+
+return $app;
+EOF
+        );
+
+        $mounted = new LazyApplication($tmp);
+
+        $app = new Application();
+        $app->mount('/hello', $mounted);
+
+        $response = $app->handle(Request::create('/hello/Silex'));
+        $this->assertEquals('Silex', $response->getContent());
+
+        unlink($tmp);
     }
 }
