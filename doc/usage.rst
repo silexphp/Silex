@@ -407,7 +407,7 @@ one::
 
     $blog = require __DIR__.'/blog.php';
 
-    $app = new Application();
+    $app = new Silex\Application();
     $app->mount('/blog', $blog);
 
     // define your main app

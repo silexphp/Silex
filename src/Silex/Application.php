@@ -264,7 +264,11 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     public function mount($prefix, $app)
     {
         $prefix = rtrim($prefix, '/');
-        $this->match($prefix.'/{path}', $app)->assert('path', '.*')->value('prefix', $prefix);
+
+        $this
+            ->match($prefix.'/{path}', $app)
+            ->assert('path', '.*')
+            ->value('prefix', $prefix);
     }
 
     /**
