@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Silex\Tests;
+namespace Silex\Tests\Extension;
 
 use Silex\Application;
 use Silex\Extension\UrlGeneratorExtension;

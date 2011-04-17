@@ -72,7 +72,7 @@ class Compiler
         $path = str_replace(realpath(__DIR__.'/../..').'/', '', $file->getRealPath());
         $content = file_get_contents($file);
         if ($strip) {
-            $content = Kernel::stripComments(file_get_contents($file));
+            $content = Kernel::stripComments($content);
         }
 
         $phar->addFromString($path, $content);

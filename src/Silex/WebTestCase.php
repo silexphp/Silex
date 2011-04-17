@@ -31,15 +31,15 @@ abstract class WebTestCase extends BaseWebTestCase
      */
     public function setUp()
     {
-        $this->app = $this->createApp();
+        $this->app = $this->createApplication();
     }
 
     /**
-     * Creates the application (HttpKernel, most likely Framework).
+     * Creates the application.
      *
      * @return Symfony\Component\HttpKernel\HttpKernel
      */
-    abstract public function createApp();
+    abstract public function createApplication();
 
     /**
      * Creates a Client.
