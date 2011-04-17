@@ -380,6 +380,30 @@ correctly, to prevent Cross-Site-Scripting attacks.
           );
       });
 
+Console
+-------
+
+Silex includes a lightweight console for updating to the latest
+version.
+
+To find out which version of Silex you are using, just invoke
+``silex.phar`` on the command-line without any arguments:
+
+.. code-block:: text
+
+    $ php silex.phar
+    Silex version 1ee6b36
+
+To update ``silex.phar`` to the latest version, invoke the ``update``
+command:
+
+.. code-block:: text
+
+    $ php silex.phar update
+
+This will automatically download a new ``silex.phar`` from
+``silex-project.org`` and replace the existing one.
+
 Pitfalls
 --------
 
