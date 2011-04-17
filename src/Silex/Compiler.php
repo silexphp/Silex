@@ -22,11 +22,19 @@ use Symfony\Component\Process\Process;
  */
 class Compiler
 {
+    protected $version;
+
     public function compile($pharFile = 'silex.phar')
     {
         if (file_exists($pharFile)) {
             unlink($pharFile);
         }
+
+        $process = new Process('git log --pretty="%h %ci" -n1 HEAD');
+        if ($process->run() > 0) {
+            throw new \RuntimeException('The git binary cannot be found.');
+        }
+        $this->version = trim($process->getOutput());
 
         $phar = new \Phar($pharFile, 0, 'Silex');
         $phar->setSignatureAlgorithm(\Phar::SHA1);
@@ -77,11 +85,7 @@ class Compiler
             $content = Kernel::stripComments($content);
         }
 
-        $process = new Process('git log --pretty="%h %ci" -n1 HEAD');
-        if ($process->run() > 0) {
-            throw new \RuntimeException('The git binary cannot be found.');
-        }
-        $content = str_replace('@package_version@', $process->getOutput(), $content);
+        $content = str_replace('@package_version@', $this->version, $content);
 
         $phar->addFromString($path, $content);
     }
