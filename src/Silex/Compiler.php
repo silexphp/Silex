@@ -105,29 +105,31 @@ class Compiler
 
 require_once __DIR__.'/autoload.php';
 
-$command = isset($argv[1]) ? $argv[1] : null;
+if ('cli' === php_sapi_name()) {
+    $command = isset($argv[1]) ? $argv[1] : null;
 
-switch ($command) {
-    case 'update':
-        $remoteFilename = 'http://silex-project.org/get/silex.phar';
-        $localFilename = getcwd().'/silex.phar';
+    switch ($command) {
+        case 'update':
+            $remoteFilename = 'http://silex-project.org/get/silex.phar';
+            $localFilename = getcwd().'/silex.phar';
 
-        file_put_contents($localFilename, file_get_contents($remoteFilename));
-        break;
+            file_put_contents($localFilename, file_get_contents($remoteFilename));
+            break;
 
-    case 'check':
-        $latest = trim(file_get_contents('http://silex-project.org/get/version'));
+        case 'check':
+            $latest = trim(file_get_contents('http://silex-project.org/get/version'));
 
-        if ($latest != Silex\Application::VERSION) {
-            printf("A newer Silex version is available (%s).\n", $latest);
-        } else {
-            print("You are using the latest Silex version.\n");
-        }
-        break;
+            if ($latest != Silex\Application::VERSION) {
+                printf("A newer Silex version is available (%s).\n", $latest);
+            } else {
+                print("You are using the latest Silex version.\n");
+            }
+            break;
 
-    default:
-        printf("Silex version %s\n", Silex\Application::VERSION);
-        break;
+        default:
+            printf("Silex version %s\n", Silex\Application::VERSION);
+            break;
+    }
 }
 
 __HALT_COMPILER();
