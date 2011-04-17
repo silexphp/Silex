@@ -392,7 +392,13 @@ To find out which version of Silex you are using, just invoke
 .. code-block:: text
 
     $ php silex.phar
-    Silex version 1ee6b36
+    Silex version 0a243d3 2011-04-17 14:49:31 +0200
+
+To check that your are using the latest version, run the ``check`` command:
+
+.. code-block:: text
+
+    $ php silex.phar check
 
 To update ``silex.phar`` to the latest version, invoke the ``update``
 command:

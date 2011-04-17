@@ -115,8 +115,18 @@ switch ($command) {
         file_put_contents($localFilename, file_get_contents($remoteFilename));
         break;
 
+    case 'check':
+        $latest = trim(file_get_contents('http://silex-project.org/get/version'));
+
+        if ($latest != Silex\Application::VERSION) {
+            printf("A newer Silex version is available (%s).\n", $latest);
+        } else {
+            print("You are using the latest Silex version.\n");
+        }
+        break;
+
     default:
-        echo "Silex version ".Silex\Application::VERSION."\n";
+        printf("Silex version %s\n", Silex\Application::VERSION);
         break;
 }
 
