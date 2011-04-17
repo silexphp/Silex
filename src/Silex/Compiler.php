@@ -66,8 +66,8 @@ class Compiler
         $this->addFile($phar, new \SplFileInfo(__DIR__.'/../../autoload.php'));
 
         // Stubs
-        $phar['_cli_stub.php'] = $this->getCliStub();
-        $phar['_web_stub.php'] = $this->getWebStub();
+        $phar['_cli_stub.php'] = $this->getStub();
+        $phar['_web_stub.php'] = $this->getStub();
         $phar->setDefaultStub('_cli_stub.php', '_web_stub.php');
 
         $phar->stopBuffering();
@@ -90,7 +90,7 @@ class Compiler
         $phar->addFromString($path, $content);
     }
 
-    protected function getCliStub()
+    protected function getStub()
     {
         return <<<'EOF'
 <?php
@@ -131,25 +131,6 @@ if ('cli' === php_sapi_name()) {
             break;
     }
 }
-
-__HALT_COMPILER();
-EOF;
-    }
-
-    protected function getWebStub()
-    {
-        return <<<EOF
-<?php
-/*
- * This file is part of the Silex framework.
- *
- * (c) Fabien Potencier <fabien@symfony.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
-
-require_once __DIR__.'/autoload.php';
 
 __HALT_COMPILER();
 EOF;
