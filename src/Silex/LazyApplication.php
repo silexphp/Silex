@@ -29,10 +29,10 @@ class LazyApplication
     /**
      * Constructor.
      *
-     * The $app argument is the path to a Silex app file.
+     * The $appPath argument is the path to a Silex app file.
      * This file must return a Silex application.
      *
-     * @param string $app The absolute path to a Silex app file
+     * @param string $appPath The absolute path to a Silex app file
      */
     public function __construct($appPath)
     {
