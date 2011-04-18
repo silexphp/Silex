@@ -420,7 +420,7 @@ any other routes you might have defined.
 If you mount many applications, you might want to avoid the overhead of
 loading them all on each request by using the ``LazyApplication`` wrapper::
 
-    $blog = new LazyApplication(__DIR__.'/blog.php');
+    $blog = new Silex\LazyApplication(__DIR__.'/blog.php');
 
 Console
 -------
