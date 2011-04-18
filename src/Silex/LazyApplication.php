@@ -45,6 +45,10 @@ class LazyApplication
             $this->app = require $this->appPath;
         }
 
+        if (!$this->app instanceof Application) {
+            throw new \InvalidArgumentException('The provided path did not return a Silex\Application on inclusion.');
+        }
+
         return $this->app;
     }
 }

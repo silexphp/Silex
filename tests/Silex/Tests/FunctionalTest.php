@@ -109,4 +109,21 @@ EOF
 
         unlink($tmp);
     }
+
+    public function testLazyMountWithAnInvalidExternalFile()
+    {
+        $tmp = sys_get_temp_dir().'/SilexInvalidLazyApp.php';
+        file_put_contents($tmp, '');
+
+        $mounted = new LazyApplication($tmp);
+
+        $app = new Application();
+        $app->mount('/hello', $mounted);
+
+        try {
+            $app->handle(Request::create('/hello/Silex'));
+            $this->fail('Invalid LazyApplications should throw an exception.');
+        } catch (\InvalidArgumentException $e) {
+        }
+    }
 }
