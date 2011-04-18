@@ -217,7 +217,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     {
         $this['dispatcher']->addListener(Events::onSilexError, function(GetResponseForErrorEvent $event) use ($callback) {
             $exception = $event->getException();
-            $result = $callback->__invoke($exception);
+            $result = $callback($exception);
 
             if (null !== $result) {
                 $event->setStringResponse($result);
@@ -255,6 +255,34 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     public function escape($text)
     {
         return htmlspecialchars($text, ENT_COMPAT, 'UTF-8');
+    }
+
+    /**
+     * Mounts an application under the given route prefix.
+     *
+     * @param string               $prefix The route prefix
+     * @param Application|\Closure $app    An Application instance or a Closure that returns an Application instance
+     */
+    public function mount($prefix, $app)
+    {
+        $mountHandler = function (Request $request, $prefix) use ($app) {
+            if (is_callable($app)) {
+                $app = $app();
+            }
+
+            foreach ($app['controllers']->all() as $controller) {
+                $controller->getRoute()->setPattern(rtrim($prefix, '/').$controller->getRoute()->getPattern());
+            }
+
+            return $app->handle($request);
+        };
+
+        $prefix = rtrim($prefix, '/');
+
+        $this
+            ->match($prefix.'/{path}', $mountHandler)
+            ->assert('path', '.*')
+            ->value('prefix', $prefix);
     }
 
     /**
