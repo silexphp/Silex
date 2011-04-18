@@ -215,7 +215,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     {
         $this['dispatcher']->addListener(Events::onSilexError, function(GetResponseForErrorEvent $event) use ($callback) {
             $exception = $event->getException();
-            $result = $callback->__invoke($exception);
+            $result = $callback($exception);
 
             if (null !== $result) {
                 $event->setStringResponse($result);
@@ -263,10 +263,22 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function mount($prefix, $app)
     {
+        $mountHandler = function (Request $request, $prefix) use ($app) {
+            if (is_callable($app)) {
+                $app = $app();
+            }
+
+            foreach ($app['controllers']->all() as $controller) {
+                $controller->getRoute()->setPattern(rtrim($prefix, '/').$controller->getRoute()->getPattern());
+            }
+
+            return $app->handle($request);
+        };
+
         $prefix = rtrim($prefix, '/');
 
         $this
-            ->match($prefix.'/{path}', $app)
+            ->match($prefix.'/{path}', $mountHandler)
             ->assert('path', '.*')
             ->value('prefix', $prefix);
     }
@@ -288,21 +300,6 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     public function handle(Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true)
     {
         return $this['kernel']->handle($request, $type, $catch);
-    }
-
-    /**
-     * Handles a Request when this application has been mounted under a prefix.
-     *
-     * @param Request $request A Request instance
-     * @param string  $path    The path info (without the prefix)
-     */
-    public function __invoke(Request $request, $prefix)
-    {
-        foreach ($this['controllers']->all() as $controller) {
-            $controller->getRoute()->setPattern(rtrim($prefix, '/').$controller->getRoute()->getPattern());
-        }
-
-        return $this->handle($request);
     }
 
     /**

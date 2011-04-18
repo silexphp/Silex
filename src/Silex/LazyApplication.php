@@ -37,17 +37,14 @@ class LazyApplication
     }
 
     /**
-     * Handles a Request when this application has been mounted under a prefix.
-     *
-     * @param Request $request A Request instance
-     * @param string  $path    The path info (without the prefix)
+     * Returns the application.
      */
-    public function __invoke(Request $request, $prefix)
+    public function __invoke()
     {
         if (!$this->app) {
             $this->app = require $this->appPath;
         }
 
-        return $this->app->__invoke($request, $prefix);
+        return $this->app;
     }
 }

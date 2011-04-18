@@ -57,15 +57,14 @@ class FunctionalTest extends \PHPUnit_Framework_TestCase
 
     public function testLazyMount()
     {
-        $mounted = function (Request $request, $prefix) {
+        $mountedFactory = function () {
             $mounted = new Application();
             $mounted->get('/{name}', function ($name) { return new Response($name); });
-
-            return $mounted($request, $prefix);
+            return $mounted;
         };
 
         $app = new Application();
-        $app->mount('/hello', $mounted);
+        $app->mount('/hello', $mountedFactory);
 
         $response = $app->handle(Request::create('/hello/Silex'));
         $this->assertEquals('Silex', $response->getContent());
