@@ -20,6 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class LazyApplication
 {
+    protected $appPath;
     protected $app;
 
     /**
@@ -30,9 +31,9 @@ class LazyApplication
      *
      * @param string $app The absolute path to a Silex app file
      */
-    public function __construct($app)
+    public function __construct($appPath)
     {
-        $this->app = $app;
+        $this->appPath = $appPath;
     }
 
     /**
@@ -43,8 +44,8 @@ class LazyApplication
      */
     public function __invoke(Request $request, $prefix)
     {
-        if (!$this->app instanceof Application) {
-            $this->app = require $this->app;
+        if (!$this->app) {
+            $this->app = require $this->appPath;
         }
 
         return $this->app->__invoke($request, $prefix);
