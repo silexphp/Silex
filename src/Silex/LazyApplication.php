@@ -16,6 +16,9 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * A Lazy application wrapper.
  *
+ * Acts as a closure, so it can be used as a lazy app
+ * factory for Silex\Application::mount().
+ *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class LazyApplication
