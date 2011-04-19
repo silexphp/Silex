@@ -115,6 +115,15 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             $requirements['_method'] = $method;
         }
 
+        // if user provided array of actions as second argument - create action collection
+        if (is_array($to) && !is_callable($to)) {
+            $collection = new ActionCollection();
+            foreach ($to as $action) {
+                $collection->add($action);
+            }
+            $to = $collection;
+        }
+
         $route = new Route($pattern, array('_controller' => $to), $requirements);
         $controller = new Controller($route);
         $this['controllers']->add($controller);

@@ -42,6 +42,25 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Silex\Controller', $returnValue);
     }
 
+    public function testActionCollection()
+    {
+        $app = new Application();
+
+        $action1Called = false;
+        $action1 = function() use(&$action1Called) {
+            $action1Called = true;
+        };
+
+        $app->get('/', array($action1, function() {
+            return 'Hello, world!';
+        }));
+
+        $request = Request::create('/');
+
+        $this->assertEquals('Hello, world!', $app->handle($request)->getContent());
+        $this->assertTrue($action1Called);
+    }
+
     public function testGetRequest()
     {
         $app = new Application();
