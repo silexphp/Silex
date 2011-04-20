@@ -53,11 +53,11 @@ class RedirectableUrlMatcher extends UrlMatcher implements RedirectableUrlMatche
     /**
      * @see RedirectableUrlMatcherInterface::match()
      */
-    public function redirect($pathinfo, $route)
+    public function redirect($path, $route, $scheme = null)
     {
         return array(
             '_controller' => function ($url) { return new RedirectResponse($url, 301); },
-            'url' => $this->context['base_url'].$pathinfo,
+            'url' => $this->context->getBaseUrl().$path,
         );
     }
 }

@@ -22,13 +22,8 @@ class UrlGeneratorExtension implements ExtensionInterface
     {
         $app['url_generator'] = $app->share(function() use ($app) {
             $app->flush();
-            return new UrlGenerator($app['routes'], array(
-                'base_url'  => $app['request']->getBaseUrl(),
-                'method'    => $app['request']->getMethod(),
-                'host'      => $app['request']->getHost(),
-                'port'      => $app['request']->getPort(),
-                'is_secure' => $app['request']->isSecure(),
-            ));
+
+            return new UrlGenerator($app['routes'], $app['request_context']);
         });
     }
 }

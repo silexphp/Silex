@@ -27,6 +27,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
+use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Matcher\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Matcher\Exception\NotFoundException;
 use Symfony\Component\ClassLoader\UniversalClassLoader;
@@ -310,16 +311,17 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     public function onCoreRequest(KernelEvent $event)
     {
         $this['request'] = $event->getRequest();
+        $this['request_context'] = new RequestContext(
+            $this['request']->getBaseUrl(),
+            $this['request']->getMethod(),
+            $this['request']->getHost(),
+            $this['request']->getPort(),
+            $this['request']->getScheme()
+        );
 
         $this['controllers']->flush();
 
-        $matcher = new RedirectableUrlMatcher($this['routes'], array(
-            'base_url'  => $this['request']->getBaseUrl(),
-            'method'    => $this['request']->getMethod(),
-            'host'      => $this['request']->getHost(),
-            'port'      => $this['request']->getPort(),
-            'is_secure' => $this['request']->isSecure(),
-        ));
+        $matcher = new RedirectableUrlMatcher($this['routes'], $this['request_context']);
 
         $this['dispatcher']->dispatch(Events::onSilexBefore);
 
