@@ -15,6 +15,7 @@ use Silex\Application;
 use Silex\LazyApplication;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
  * Functional test cases.
@@ -121,7 +122,7 @@ EOF
         $app->mount('/hello', $mounted);
 
         try {
-            $app->handle(Request::create('/hello/Silex'));
+            $app->handle(Request::create('/hello/Silex'), HttpKernelInterface::MASTER_REQUEST, false);
             $this->fail('Invalid LazyApplications should throw an exception.');
         } catch (\InvalidArgumentException $e) {
         }
