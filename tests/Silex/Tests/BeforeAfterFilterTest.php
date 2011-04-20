@@ -162,4 +162,22 @@ class BeforeAfterFilterTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(2, $i);
     }
+
+    public function testRequestShouldBePopulatedOnBefore() {
+        $app = new Application();
+
+        $app->before(function () use ($app) {
+            $app['locale'] = $app['request']->get('locale');
+        });
+
+        $app->match('/foo/{locale}', function () use ($app) {
+            return $app['locale'];
+        });
+
+        $request = Request::create('/foo/en');
+        $this->assertEquals('en', $app->handle($request)->getContent());
+
+        $request = Request::create('/foo/de');
+        $this->assertEquals('de', $app->handle($request)->getContent());
+    }
 }

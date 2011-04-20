@@ -28,6 +28,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\Routing\Matcher\Exception\Exception as MatcherException;
 use Symfony\Component\Routing\Matcher\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Matcher\Exception\NotFoundException;
 use Symfony\Component\ClassLoader\UniversalClassLoader;
@@ -323,19 +324,27 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
 
         $matcher = new RedirectableUrlMatcher($this['routes'], $this['request_context']);
 
-        $this['dispatcher']->dispatch(Events::onSilexBefore);
-
         try {
             $attributes = $matcher->match($this['request']->getPathInfo());
 
             $this['request']->attributes->add($attributes);
-        } catch (NotFoundException $e) {
-            $message = sprintf('No route found for "%s %s"', $this['request']->getMethod(), $this['request']->getPathInfo());
-            throw new NotFoundHttpException($message, $e);
-        } catch (MethodNotAllowedException $e) {
-            $message = sprintf('No route found for "%s %s": Method Not Allowed (Allow: %s)', $this['request']->getMethod(), $this['request']->getPathInfo(), strtoupper(implode(', ', $e->getAllowedMethods())));
-            throw new MethodNotAllowedHttpException($e->getAllowedMethods(), $message, $e);
+        } catch (MatcherException $e) {
+            // make sure onSilexBefore event is dispatched
+
+            $this['dispatcher']->dispatch(Events::onSilexBefore);
+
+            if ($e instanceof NotFoundException) {
+                $message = sprintf('No route found for "%s %s"', $this['request']->getMethod(), $this['request']->getPathInfo());
+                throw new NotFoundHttpException($message, $e);
+            } else if ($e instanceof MethodNotAllowedException) {
+                $message = sprintf('No route found for "%s %s": Method Not Allowed (Allow: %s)', $this['request']->getMethod(), $this['request']->getPathInfo(), strtoupper(implode(', ', $e->getAllowedMethods())));
+                throw new MethodNotAllowedHttpException($e->getAllowedMethods(), $message, $e);
+            }
+
+            throw $e;
         }
+
+        $this['dispatcher']->dispatch(Events::onSilexBefore);
     }
 
     /**
