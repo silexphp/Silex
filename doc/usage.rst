@@ -33,7 +33,6 @@ are using apache you can use a ``.htaccess`` file for this.
     	RewriteEngine On
     	#RewriteBase /path/to/app
     	RewriteCond %{REQUEST_FILENAME} !-f
-    	RewriteCond %{REQUEST_FILENAME} !-d
     	RewriteRule ^(.*)$ index.php [QSA,L]
     </IfModule>
 
