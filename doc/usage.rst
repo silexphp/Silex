@@ -30,10 +30,12 @@ are using apache you can use a ``.htaccess`` file for this.
 .. code-block:: apache
 
     <IfModule mod_rewrite.c>
-    	RewriteEngine On
-    	#RewriteBase /path/to/app
-    	RewriteCond %{REQUEST_FILENAME} !-f
-    	RewriteRule ^(.*)$ index.php [QSA,L]
+        Options -MultiViews
+
+        RewriteEngine On
+        #RewriteBase /path/to/app
+        RewriteCond %{REQUEST_FILENAME} !-f
+        RewriteRule ^(.*)$ index.php [QSA,L]
     </IfModule>
 
 .. note::
