@@ -39,7 +39,7 @@ class ValidationExtension implements ExtensionInterface
         });
 
         if (isset($app['validation.class_path'])) {
-            $app['autoloader']->registerNamespace('Symfony\\Component\\Validation', $app['validation.class_path']);
+            $app['autoloader']->registerNamespace('Symfony\\Component\\Validator', $app['validation.class_path']);
         }
     }
 }
