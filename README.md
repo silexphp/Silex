@@ -8,7 +8,7 @@ Silex is a simple web framework to develop simple websites based on
 
     $app = new Silex\Application();
 
-    $app->get('/hello/{name}', function($name) {
+    $app->get('/hello/{name}', function ($name) {
         return "Hello $name";
     });
 

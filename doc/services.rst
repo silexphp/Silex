@@ -103,7 +103,7 @@ This allows for lazy service creation.
 
 ::
 
-    $app['some_service'] = function() {
+    $app['some_service'] = function () {
         return new Service();
     };
 
@@ -121,7 +121,7 @@ You may want to use the same instance of a service across all
 of your code. In order to do that you can make a *shared*
 service. ::
 
-    $app['some_service'] = $app->share(function() {
+    $app['some_service'] = $app->share(function () {
         return new Service();
     });
 
@@ -138,7 +138,7 @@ fetching services the current service depends on.
 Because of this, the container is passed to the closure as
 an argument. ::
 
-    $app['some_service'] = function($app) {
+    $app['some_service'] = function ($app) {
         return new Service($app['some_other_service'], $app['some_service.config']);
     };
 
@@ -168,7 +168,7 @@ from being executed, by using the ``protect`` method.
 
 ::
 
-    $app['closure_parameter'] = $app->protect(function($a, $b) {
+    $app['closure_parameter'] = $app->protect(function ($a, $b) {
         return $a + $b;
     });
 

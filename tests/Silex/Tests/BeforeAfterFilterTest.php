@@ -31,17 +31,17 @@ class BeforeAfterFilterTest extends \PHPUnit_Framework_TestCase
 
         $app = new Application();
 
-        $app->before(function() use (&$i, $test) {
+        $app->before(function () use (&$i, $test) {
             $test->assertEquals(0, $i);
             $i++;
         });
 
-        $app->match('/foo', function() use (&$i, $test) {
+        $app->match('/foo', function () use (&$i, $test) {
             $test->assertEquals(1, $i);
             $i++;
         });
 
-        $app->after(function() use (&$i, $test) {
+        $app->after(function () use (&$i, $test) {
             $test->assertEquals(2, $i);
             $i++;
         });
@@ -58,12 +58,12 @@ class BeforeAfterFilterTest extends \PHPUnit_Framework_TestCase
 
         $app = new Application();
 
-        $app->match('/foo', function() use (&$i) {
+        $app->match('/foo', function () use (&$i) {
             $i++;
             return new Response('foo');
         });
 
-        $app->after(function() use (&$i) {
+        $app->after(function () use (&$i) {
             $i++;
         });
 
@@ -80,27 +80,27 @@ class BeforeAfterFilterTest extends \PHPUnit_Framework_TestCase
 
         $app = new Application();
 
-        $app->before(function() use (&$i, $test) {
+        $app->before(function () use (&$i, $test) {
             $test->assertEquals(0, $i);
             $i++;
         });
 
-        $app->before(function() use (&$i, $test) {
+        $app->before(function () use (&$i, $test) {
             $test->assertEquals(1, $i);
             $i++;
         });
 
-        $app->match('/foo', function() use (&$i, $test) {
+        $app->match('/foo', function () use (&$i, $test) {
             $test->assertEquals(2, $i);
             $i++;
         });
 
-        $app->after(function() use (&$i, $test) {
+        $app->after(function () use (&$i, $test) {
             $test->assertEquals(3, $i);
             $i++;
         });
 
-        $app->after(function() use (&$i, $test) {
+        $app->after(function () use (&$i, $test) {
             $test->assertEquals(4, $i);
             $i++;
         });
@@ -117,19 +117,19 @@ class BeforeAfterFilterTest extends \PHPUnit_Framework_TestCase
 
         $app = new Application();
 
-        $app->before(function() use (&$i) {
+        $app->before(function () use (&$i) {
             $i++;
         });
 
-        $app->match('/foo', function() {
+        $app->match('/foo', function () {
             throw new \RuntimeException();
         });
 
-        $app->after(function() use (&$i) {
+        $app->after(function () use (&$i) {
             $i++;
         });
 
-        $app->error(function() {
+        $app->error(function () {
             return 'error handled';
         });
 
@@ -145,15 +145,15 @@ class BeforeAfterFilterTest extends \PHPUnit_Framework_TestCase
 
         $app = new Application();
 
-        $app->before(function() use (&$i) {
+        $app->before(function () use (&$i) {
             $i++;
         });
 
-        $app->after(function() use (&$i) {
+        $app->after(function () use (&$i) {
             $i++;
         });
 
-        $app->error(function() {
+        $app->error(function () {
             return 'error handled';
         });
 

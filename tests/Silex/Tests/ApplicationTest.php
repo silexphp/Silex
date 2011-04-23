@@ -26,19 +26,19 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $returnValue = $app->match('/foo', function() {});
+        $returnValue = $app->match('/foo', function () {});
         $this->assertInstanceOf('Silex\Controller', $returnValue);
 
-        $returnValue = $app->get('/foo', function() {});
+        $returnValue = $app->get('/foo', function () {});
         $this->assertInstanceOf('Silex\Controller', $returnValue);
 
-        $returnValue = $app->post('/foo', function() {});
+        $returnValue = $app->post('/foo', function () {});
         $this->assertInstanceOf('Silex\Controller', $returnValue);
 
-        $returnValue = $app->put('/foo', function() {});
+        $returnValue = $app->put('/foo', function () {});
         $this->assertInstanceOf('Silex\Controller', $returnValue);
 
-        $returnValue = $app->delete('/foo', function() {});
+        $returnValue = $app->delete('/foo', function () {});
         $this->assertInstanceOf('Silex\Controller', $returnValue);
     }
 
@@ -46,7 +46,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->get('/', function() {
+        $app->get('/', function () {
             return 'root';
         });
 
@@ -70,11 +70,11 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->get('/foo', function() {
+        $app->get('/foo', function () {
             return 'foo';
         });
 
-        $app->get('/bar', function() {
+        $app->get('/bar', function () {
             return 'bar';
         });
 

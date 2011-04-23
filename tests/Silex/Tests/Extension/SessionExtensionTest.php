@@ -30,16 +30,16 @@ class SessionExtensionTest extends \PHPUnit_Framework_TestCase
 
         $app->register(new SessionExtension());
 
-        $app['session.storage'] = $app->share(function() use ($app) {
+        $app['session.storage'] = $app->share(function () use ($app) {
             return new ArraySessionStorage();
         });
 
-        $app->get('/login', function() use ($app) {
+        $app->get('/login', function () use ($app) {
             $app['session']->set('logged_in', true);
             return 'Logged in successfully.';
         });
 
-        $app->get('/account', function() use ($app) {
+        $app->get('/account', function () use ($app) {
             if (!$app['session']->get('logged_in')) {
                 return 'You are not in.';
             }

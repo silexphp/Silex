@@ -29,15 +29,15 @@ class DoctrineExtension implements ExtensionInterface
             'password' => null,
         ), isset($app['db.options']) ? $app['db.options'] : array());
 
-        $app['db'] = $app->share(function() use($app) {
+        $app['db'] = $app->share(function () use($app) {
             return DriverManager::getConnection($app['db.options'], $app['db.config'], $app['db.event_manager']);
         });
 
-        $app['db.config'] = $app->share(function() {
+        $app['db.config'] = $app->share(function () {
             return new Configuration();
         });
 
-        $app['db.event_manager'] = $app->share(function() {
+        $app['db.event_manager'] = $app->share(function () {
             return new EventManager();
         });
 

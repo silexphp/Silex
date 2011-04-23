@@ -217,7 +217,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function error($callback)
     {
-        $this['dispatcher']->addListener(Events::onSilexError, function(GetResponseForErrorEvent $event) use ($callback) {
+        $this['dispatcher']->addListener(Events::onSilexError, function (GetResponseForErrorEvent $event) use ($callback) {
             $exception = $event->getException();
             $result = $callback($exception);
 

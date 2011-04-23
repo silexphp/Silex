@@ -39,7 +39,7 @@ class TwigExtensionTest extends \PHPUnit_Framework_TestCase
             'twig.class_path'   => __DIR__.'/../../../../vendor/twig/lib',
         ));
 
-        $app->get('/hello/{name}', function($name) use ($app) {
+        $app->get('/hello/{name}', function ($name) use ($app) {
             return $app['twig']->render('hello', array('name' => $name));
         });
 

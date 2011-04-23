@@ -36,17 +36,17 @@ The UrlGenerator extension provides a ``url_generator`` service.
 
 ::
 
-    $app->get('/', function() {
+    $app->get('/', function () {
         return 'welcome to the homepage';
     })
     ->bind('homepage');
 
-    $app->get('/hello/{name}', function($name) {
+    $app->get('/hello/{name}', function ($name) {
         return "Hello $name!";
     })
     ->bind('hello');
 
-    $app->get('/navigation', function() use ($app) {
+    $app->get('/navigation', function () use ($app) {
         return '<a href="'.$app['url_generator']->generate('homepage').'">Home</a>'.
                ' | '.
                '<a href="'.$app['url_generator']->generate('hello', array('name' => 'Igor')).'">Hello Igor</a>';

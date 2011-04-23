@@ -22,7 +22,7 @@ class TranslationExtension implements ExtensionInterface
 {
     public function register(Application $app)
     {
-        $app['translator'] = $app->share(function() use ($app) {
+        $app['translator'] = $app->share(function () use ($app) {
             $translator = new Translator(isset($app['locale']) ? $app['locale'] : 'en', $app['translator.message_selector']);
 
             if (isset($app['locale_fallback'])) {
@@ -37,11 +37,11 @@ class TranslationExtension implements ExtensionInterface
             return $translator;
         });
 
-        $app['translator.loader'] = $app->share(function() {
+        $app['translator.loader'] = $app->share(function () {
             return new ArrayLoader();
         });
 
-        $app['translator.message_selector'] = $app->share(function() {
+        $app['translator.message_selector'] = $app->share(function () {
             return new MessageSelector();
         });
 

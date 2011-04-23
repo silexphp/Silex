@@ -27,12 +27,12 @@ class FunctionalTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->get('/', function() {
+        $app->get('/', function () {
             return 'hello';
         })
         ->bind('homepage');
 
-        $app->get('/foo', function() {
+        $app->get('/foo', function () {
             return 'foo';
         })
         ->bind('foo_abc');
@@ -71,7 +71,7 @@ class FunctionalTest extends \PHPUnit_Framework_TestCase
 
         $app = new Application();
         $app->mount('/hello', $mountedFactory);
-        $app->get('/main', function() {
+        $app->get('/main', function () {
             return new Response('main app');
         });
 

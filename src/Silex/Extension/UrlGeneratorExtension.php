@@ -20,7 +20,7 @@ class UrlGeneratorExtension implements ExtensionInterface
 {
     public function register(Application $app)
     {
-        $app['url_generator'] = $app->share(function() use ($app) {
+        $app['url_generator'] = $app->share(function () use ($app) {
             $app->flush();
 
             return new UrlGenerator($app['routes'], $app['request_context']);

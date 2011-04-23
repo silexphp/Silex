@@ -36,7 +36,7 @@ example that authenticates a user and creates a session for him::
 
     use Symfony\Component\HttpFoundation\Response;
 
-    $app->get('/login', function() use ($app) {
+    $app->get('/login', function () use ($app) {
         $username = $app['request']->server->get('PHP_AUTH_USER', false);
         $password = $app['request']->server->get('PHP_AUTH_PW');
 
@@ -51,7 +51,7 @@ example that authenticates a user and creates a session for him::
         return $response;
     });
 
-    $app->get('/account', function() use ($app) {
+    $app->get('/account', function () use ($app) {
         if (null === $user = $app['session']->get('user')) {
             return $app->redirect('/login');
         }

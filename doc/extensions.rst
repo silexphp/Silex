@@ -92,7 +92,7 @@ Here is an example of such an extension::
     {
         public function register(Application $app)
         {
-            $app['hello'] = $app->protect(function($name) use ($app) {
+            $app['hello'] = $app->protect(function ($name) use ($app) {
                 $default = ($app['hello.default_name']) ? $app['hello.default_name'] : '';
                 $name = $name ?: $default;
                 return "Hello $name";
@@ -115,7 +115,7 @@ You can now use this extension as follows::
         'hello.default_name' => 'Igor',
     ));
 
-    $app->get('/hello', function() use ($app) {
+    $app->get('/hello', function () use ($app) {
         $name = $app['request']->get('name');
         return $app['hello']($name);
     });
@@ -146,7 +146,7 @@ Here is an example of how to use it (based on `Buzz <https://github.com/kriswall
     {
         public function register(Application $app)
         {
-            $app['buzz'] = $app->share(function() { ... });
+            $app['buzz'] = $app->share(function () { ... });
 
             if (isset($app['buzz.class_path'])) {
                 $app['autoloader']->registerNamespace('Buzz', $app['buzz.class_path']);

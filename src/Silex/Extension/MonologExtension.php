@@ -35,12 +35,12 @@ class MonologExtension implements ExtensionInterface
             $log->pushHandler($app['monolog.handler']);
         });
 
-        $app['monolog.handler'] = function() use ($app) {
+        $app['monolog.handler'] = function () use ($app) {
             return new StreamHandler($app['monolog.logfile'], $app['monolog.level']);
         };
 
         if (!isset($app['monolog.level'])) {
-            $app['monolog.level'] = function() {
+            $app['monolog.level'] = function () {
                 return Logger::DEBUG;
             };
         }
@@ -49,11 +49,11 @@ class MonologExtension implements ExtensionInterface
             $app['autoloader']->registerNamespace('Monolog', $app['monolog.class_path']);
         }
 
-        $app->before(function() use ($app) {
+        $app->before(function () use ($app) {
             $app['monolog']->addInfo($app['request']->getMethod().' '.$app['request']->getRequestUri());
         });
 
-        $app->error(function(\Exception $e) use ($app) {
+        $app->error(function (\Exception $e) use ($app) {
             if ($e instanceof HttpException) {
                 $app['monolog']->addWarning($e->getStatusCode().' '.$app['request']->getMethod().' '.$app['request']->getRequestUri());
             } else {

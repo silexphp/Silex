@@ -26,7 +26,7 @@ step.
 
     $app = new Silex\Application();
 
-    $app->get('/hello/{name}', function($name) {
+    $app->get('/hello/{name}', function ($name) {
         return "Hello $name";
     });
 

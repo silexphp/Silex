@@ -27,7 +27,7 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->match('/foo', function() {
+        $app->match('/foo', function () {
             throw new \RuntimeException('foo exception');
         });
 
@@ -44,11 +44,11 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->match('/foo', function() {
+        $app->match('/foo', function () {
             throw new \RuntimeException('foo exception');
         });
 
-        $app->error(function($e) {
+        $app->error(function ($e) {
             return new Response('foo exception handler');
         });
 
@@ -60,26 +60,26 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->match('/foo', function() {
+        $app->match('/foo', function () {
             throw new \RuntimeException('foo exception');
         });
 
         $errors = 0;
 
-        $app->error(function($e) use (&$errors) {
+        $app->error(function ($e) use (&$errors) {
             $errors++;
         });
 
-        $app->error(function($e) use (&$errors) {
+        $app->error(function ($e) use (&$errors) {
             $errors++;
         });
 
-        $app->error(function($e) use (&$errors) {
+        $app->error(function ($e) use (&$errors) {
             $errors++;
             return new Response('foo exception handler');
         });
 
-        $app->error(function($e) use (&$errors) {
+        $app->error(function ($e) use (&$errors) {
             // should not execute
             $errors++;
         });
@@ -94,13 +94,13 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->match('/foo', function() {
+        $app->match('/foo', function () {
             throw new \RuntimeException('foo exception');
         });
 
         $errors = 0;
 
-        $app->error(function($e) use (&$errors) {
+        $app->error(function ($e) use (&$errors) {
             $errors++;
         });
 
@@ -119,11 +119,11 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->match('/foo', function() {
+        $app->match('/foo', function () {
             throw new \RuntimeException('foo exception');
         });
 
-        $app->error(function($e) {
+        $app->error(function ($e) {
             return 'foo exception handler';
         });
 
@@ -135,11 +135,11 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->match('/foo', function() {
+        $app->match('/foo', function () {
             throw new \RuntimeException('foo exception');
         });
 
-        $app->error(function($e) {
+        $app->error(function ($e) {
             throw new \RuntimeException('foo exception handler exception');
         });
 

@@ -29,10 +29,10 @@ class UrlGeneratorExtensionTest extends \PHPUnit_Framework_TestCase
 
         $app->register(new UrlGeneratorExtension());
 
-        $app->get('/hello/{name}', function($name) {})
+        $app->get('/hello/{name}', function ($name) {})
             ->bind('hello');
 
-        $app->get('/', function() use ($app) {
+        $app->get('/', function () use ($app) {
             return $app['url_generator']->generate('hello', array('name' => 'john'));
         });
 

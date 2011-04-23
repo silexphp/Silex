@@ -63,7 +63,7 @@ A route pattern consists of:
 
 The controller is defined using a closure like this::
 
-    function() {
+    function () {
         // do something
     }
 
@@ -98,7 +98,7 @@ Here is an example definition of a ``GET`` route::
         ),
     );
 
-    $app->get('/blog', function() use ($blogPosts) {
+    $app->get('/blog', function () use ($blogPosts) {
         $output = '';
         foreach ($blogPosts as $post) {
             $output .= $post['title'];
@@ -121,7 +121,7 @@ posts::
 
     use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-    $app->get('/blog/show/{id}', function($id) use ($blogPosts) {
+    $app->get('/blog/show/{id}', function ($id) use ($blogPosts) {
         if (!isset($blogPosts[$id])) {
             throw new NotFoundHttpException();
         }
@@ -152,7 +152,7 @@ feedback form. We will use `Swift Mailer
 
     use Symfony\Component\HttpFoundation\Response;
 
-    $app->post('/feedback', function() use ($app) {
+    $app->post('/feedback', function () use ($app) {
         $request = $app['request'];
 
         $message = \Swift_Message::newInstance()
@@ -197,7 +197,7 @@ can also call ``match``, which will match all methods.
 
 ::
 
-    $app->put('/blog', function() {
+    $app->put('/blog', function () {
         ...
     });
 
@@ -211,7 +211,7 @@ Route variables
 
 As has been show before you can define variable parts in a route like this::
 
-    $app->get('/blog/show/{id}', function($id) {
+    $app->get('/blog/show/{id}', function ($id) {
         ...
     });
 
@@ -220,13 +220,13 @@ closure arguments match the names of the variable parts.
 
 ::
 
-    $app->get('/blog/show/{postId}/{commentId}', function($postId, $commentId) {
+    $app->get('/blog/show/{postId}/{commentId}', function ($postId, $commentId) {
         ...
     });
 
 While it's not suggested, you could also do this (note the switched arguments)::
 
-    $app->get('/blog/show/{postId}/{commentId}', function($commentId, $postId) {
+    $app->get('/blog/show/{postId}/{commentId}', function ($commentId, $postId) {
         ...
     });
 
@@ -240,14 +240,14 @@ requirements using regular expressions by calling ``assert`` on the
 The following will make sure the ``id`` argument is numeric, since ``\d+``
 matches any amount of digits::
 
-    $app->get('/blog/show/{id}', function($id) {
+    $app->get('/blog/show/{id}', function ($id) {
         ...
     })
     ->assert('id', '\d+');
 
 You can also chain these calls::
 
-    $app->get('/blog/show/{postId}/{commentId}', function($postId, $commentId) {
+    $app->get('/blog/show/{postId}/{commentId}', function ($postId, $commentId) {
         ...
     })
     ->assert('postId', '\d+')
@@ -261,7 +261,7 @@ the ``Controller`` object.
 
 ::
 
-    $app->get('/{pageName}', function($pageName) {
+    $app->get('/{pageName}', function ($pageName) {
         ...
     })
     ->value('pageName', 'index');
@@ -279,12 +279,12 @@ object that is returned by the routing methods.
 
 ::
 
-    $app->get('/', function() {
+    $app->get('/', function () {
         ...
     })
     ->bind('homepage');
 
-    $app->get('/blog/show/{id}', function($id) {
+    $app->get('/blog/show/{id}', function ($id) {
         ...
     })
     ->bind('blog_post');
@@ -301,11 +301,11 @@ Before and after filters
 Silex allows you to run code before and after every request. This happens
 through before and after filters. All you need to do is pass a closure::
 
-    $app->before(function() {
+    $app->before(function () {
         // set up
     });
 
-    $app->after(function() {
+    $app->after(function () {
         // tear down
     });
 
@@ -321,7 +321,7 @@ which takes an ``Exception`` argument and returns a response::
 
     use Symfony\Component\HttpFoundation\Response;
 
-    $app->error(function(\Exception $e) {
+    $app->error(function (\Exception $e) {
         return new Response('We are sorry, but something went terribly wrong.', 500);
     });
 
@@ -332,7 +332,7 @@ them differently::
     use Symfony\Component\HttpKernel\Exception\HttpException;
     use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-    $app->error(function(\Exception $e) {
+    $app->error(function (\Exception $e) {
         if ($e instanceof NotFoundHttpException) {
             return new Response('The requested page could not be found.', 404);
         }
@@ -357,7 +357,7 @@ Redirects
 You can redirect to another page by returning a redirect response, which
 you can create by calling the ``redirect`` method::
 
-    $app->get('/', function() use ($app) {
+    $app->get('/', function () use ($app) {
         return $app->redirect('/hello');
     });
 
@@ -378,7 +378,7 @@ correctly, to prevent Cross-Site-Scripting attacks.
 * **Escaping HTML**: PHP provides the ``htmlspecialchars`` function for this.
   Silex provides a shortcut ``escape`` method::
 
-      $app->get('/name', function() use ($app) {
+      $app->get('/name', function () use ($app) {
           $name = $app['request']->get('name');
           return "You provided the name {$app->escape($name)}.";
       });
@@ -391,7 +391,7 @@ correctly, to prevent Cross-Site-Scripting attacks.
 
       use Symfony\Component\HttpFoundation\Response;
 
-      $app->get('/name.json', function() use ($app) {
+      $app->get('/name.json', function () use ($app) {
           $name = $app['request']->get('name');
           return new Response(
               json_encode(array('name' => $name)),

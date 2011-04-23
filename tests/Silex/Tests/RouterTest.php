@@ -29,15 +29,15 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->match('/foo', function() {
+        $app->match('/foo', function () {
             return 'foo';
         });
 
-        $app->match('/bar', function() {
+        $app->match('/bar', function () {
             return 'bar';
         });
 
-        $app->match('/', function() {
+        $app->match('/', function () {
             return 'root';
         });
 
@@ -50,15 +50,15 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->put('/created', function() {
+        $app->put('/created', function () {
             return new Response('', 201);
         });
 
-        $app->match('/forbidden', function() {
+        $app->match('/forbidden', function () {
             return new Response('', 403);
         });
 
-        $app->match('/not_found', function() {
+        $app->match('/not_found', function () {
             return new Response('', 404);
         });
 
@@ -79,11 +79,11 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->match('/redirect', function() {
+        $app->match('/redirect', function () {
             return new RedirectResponse('/target');
         });
 
-        $app->match('/redirect2', function() use ($app) {
+        $app->match('/redirect2', function () use ($app) {
             return $app->redirect('/target2');
         });
 
@@ -111,27 +111,27 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->match('/foo', function() {
+        $app->match('/foo', function () {
             return 'foo';
         });
 
-        $app->match('/bar', function() {
+        $app->match('/bar', function () {
             return 'bar';
         }, 'GET|POST');
 
-        $app->get('/resource', function() {
+        $app->get('/resource', function () {
             return 'get resource';
         });
 
-        $app->post('/resource', function() {
+        $app->post('/resource', function () {
             return 'post resource';
         });
 
-        $app->put('/resource', function() {
+        $app->put('/resource', function () {
             return 'put resource';
         });
 
-        $app->delete('/resource', function() {
+        $app->delete('/resource', function () {
             return 'delete resource';
         });
 
@@ -146,10 +146,10 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
     public function testRequestShouldBeStoredRegardlessOfRouting() {
         $app = new Application();
-        $app->get('/foo', function() use ($app) {
+        $app->get('/foo', function () use ($app) {
             return new Response($app['request']->getRequestUri());
         });
-        $app->error(function($e) use ($app) {
+        $app->error(function ($e) use ($app) {
             return new Response($app['request']->getRequestUri());
         });
         foreach(array('/foo', '/bar') as $path) {
@@ -162,7 +162,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     public function testTrailingSlashBehavior()
     {
         $app = new Application();
-        $app->get('/foo/', function() use ($app) {
+        $app->get('/foo/', function () use ($app) {
             return new Response('ok');
         });
 

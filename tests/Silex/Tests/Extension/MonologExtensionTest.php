@@ -40,19 +40,19 @@ class MonologExtensionTest extends \PHPUnit_Framework_TestCase
             'monolog.class_path'    => __DIR__.'/../../../../vendor/monolog/src',
         ));
 
-        $app['monolog.handler'] = $app->share(function() use ($app) {
+        $app['monolog.handler'] = $app->share(function () use ($app) {
             return new TestHandler($app['monolog.level']);
         });
 
-        $app->get('/log', function() use ($app) {
+        $app->get('/log', function () use ($app) {
             $app['monolog']->addDebug('logging a message');
         });
 
-        $app->get('/error', function() {
+        $app->get('/error', function () {
             throw new \RuntimeException('very bad error');
         });
 
-        $app->error(function(\Exception $e) {
+        $app->error(function (\Exception $e) {
             return 'error handled';
         });
 

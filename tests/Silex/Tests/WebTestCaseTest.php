@@ -25,11 +25,11 @@ class WebTestCaseTest extends WebTestCase
     {
         $app = new Application();
 
-        $app->match('/hello', function() {
+        $app->match('/hello', function () {
             return 'world';
         });
 
-        $app->match('/html', function() {
+        $app->match('/html', function () {
             return '<h1>title</h1>';
         });
 
