@@ -230,6 +230,9 @@ While it's not suggested, you could also do this (note the switched arguments)::
         ...
     });
 
+Requirements
+~~~~~~~~~~~~
+
 In some cases you may want to only match certain expressions. You can define
 requirements using regular expressions by calling ``assert`` on the
 ``Controller`` object, which is returned by the routing methods.
@@ -249,6 +252,22 @@ You can also chain these calls::
     })
     ->assert('postId', '\d+')
     ->assert('commentId', '\d+');
+
+Default values
+~~~~~~~~~~~~~~
+
+You can define a default value for any route variable by calling ``value`` on
+the ``Controller`` object.
+
+::
+
+    $app->get('/{pageName}', function($pageName) {
+        ...
+    })
+    ->value('pageName', 'index');
+
+This will allow matching ``/``, in which case the ``pageName`` variable will
+have the value ``index``.
 
 Named routes
 ~~~~~~~~~~~~
