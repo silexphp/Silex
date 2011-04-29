@@ -29,6 +29,11 @@ are using apache you can use a ``.htaccess`` file for this.
 
 .. code-block:: apache
 
+    <Files "silex.phar">
+        Order Allow,Deny
+        Deny from All
+    </Files>
+
     <IfModule mod_rewrite.c>
         Options -MultiViews
 
