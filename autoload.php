@@ -1,6 +1,8 @@
 <?php
 
-require_once __DIR__.'/vendor/Symfony/Component/ClassLoader/UniversalClassLoader.php';
+if(false === class_exists('\Symfony\Component\ClassLoader\UniversalClassLoader')) {
+    require_once __DIR__.'/vendor/Symfony/Component/ClassLoader/UniversalClassLoader.php';
+}
 
 use Symfony\Component\ClassLoader\UniversalClassLoader;
 
