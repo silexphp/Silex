@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Mapping\ClassMetadataFactory;
 use Symfony\Component\Validator\Mapping\Loader\StaticMethodLoader;
 use Symfony\Component\Validator\ConstraintValidatorFactory;
 
-class ValidationExtension implements ExtensionInterface
+class ValidatorExtension implements ExtensionInterface
 {
     public function register(Application $app)
     {
