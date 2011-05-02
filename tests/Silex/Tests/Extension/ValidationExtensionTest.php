@@ -21,30 +21,28 @@ use Silex\Extension\ValidationExtension;
 */
 class ValidationExtensionTest extends \PHPUnit_Framework_TestCase
 {
-    private $app;
     public function setUp()
     {
         if (!is_dir(__DIR__.'/../../../../vendor/Symfony/Component/Validator')) {
             $this->markTestSkipped('Symfony/Component/Validator submodule was not installed.');
         }
-        $this->app = new Application();
     }
     public function testRegister()
     {
-        $app = $this->app;
+        $app = new Application();
         $app->register(new ValidationExtension());
         $this->assertInstanceOf('Symfony\Component\Validator\Validator', $app['validator']);
     }
     public function testCallValidateValue()
     {
-        $app = $this->app;
+        $app = new Application();
         $app->register(new ValidationExtension());
         // see more constraints: http://api.symfony.com/2.0/Symfony/Component/Validator/Constraints.html
         $url = 'htt://symfony.com';
-        $violationList = $app['validator']->validateValue($url, new \Symfony\Component\Validator\Constraints\Url());
-        $this->assertEquals(1, $violationList->count());
-        foreach ($violationList as $violation) {
-            $this->assertEquals($violation->getMessage(), 'This value is not a valid URL');
+        $violatios = $app['validator']->validateValue($url, new \Symfony\Component\Validator\Constraints\Url());
+        $this->assertEquals(1, $violations->count());
+        foreach ($violations as $violation) {
+            $this->assertEquals('This value is not a valid URL', $violation->getMessage());
         }
     }
 }
