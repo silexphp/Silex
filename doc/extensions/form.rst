@@ -1,37 +1,39 @@
 FormExtension
 =================
 
-The *Form Extension* provides integration with the `Symfony/Form
-<https://github.com/symfony/Form>`_ component.
+The *FormExtension* provides a service for building form in
+your application with the Symfony2 Form component.
 
 Parameters
 ----------
 
-* **form.class_path** : Path to where
-  Symfony Form is located.
+* **form.csrf_secret** (optional): The secret value used for generating the CSRF token. It uses to secure the CSRF token.
+
+* **form.storage_secret** (optional): The temp dir where the secret is store.
+
+* **form.class_path**: Path to where
+  Symfony2 Form component is located.
 
 Services
 --------
 
-* **form.factory** : The ``Symfony\Component\Form\FormFactory`` instance.
+* **form.factory**: An instance of `FormFactory
+  <http://api.symfony.com/2.0/Symfony/Component/Form/FormFactory.html>`_,
+  that is used for build a form.
 
-* **form.csrf_provider** (optional): CSRF Provider object.
+* **form.csrf_provider**: An instance of an implementation of the `CsrfProviderInterface
+  <http://api.symfony.com/2.0/Symfony/Component/Form/Extension/Csrf/CsrfProvider/CsrfProviderInterface.html>`_,
+  defaults to a `DefaultCsrfProvider
+  <http://api.symfony.com/2.0/Symfony/Component/Form/Extension/Csrf/CsrfProvider/DefaultCsrfProvider.html>`_.
 
-* **form.storage** (optional): TemporaryStorage object.
-
-* **form.class_path** : Path to where
-  Symfony Form is located
+* **form.storage**: An isntance of `TemporaryStorage
+  <http://api.symfony.com/2.0/Symfony/Component/HttpFoundation/File/TemporaryStorage.html>`_
 
 Registering
 -----------
 
-Make sure you place a copy of :
- * `Symfony/TwigBridge <https://github.com/symfony/TwigBridge>`_
- in ``vendor/symfony/Symfony/Bridge/Twig``
- * `Symfony/Form <https://github.com/symfony/Form>`_
- in ``vendor/symfony/Symfony/Component``
- * `Symfony/Translation <https://github.com/symfony/Translation>`_
- in ``vendor/symfony/Symfony/Component``
+Make sure you place a copy of `Symfony/symfony
+<https://github.com/symfony/symfony>`_ in ``vendor/symfony``
 
 ::
 
@@ -40,27 +42,22 @@ Make sure you place a copy of :
     use Silex\Extension\FormExtension;
 
     $app->register(new SymfonyBridgesExtension(), array(
-        'symfony_bridges.class_path' => __DIR__ . '/vendor/symfony'
+        'symfony_bridges.class_path' => __DIR__ . '/vendor/symfony/src'
     ));
 
     $app->register(new TranslationExtension(), array(
-        'translation.class_path' => __DIR__ . '/vendor/symfony',
-        'translator.messages' => array()
+        'translation.class_path' => __DIR__ . '/vendor/symfony/src',
+        'translator.messages'    => array()
     ));
 
     $app->register(new FormExtension(), array(
-        'form.class_path' => __DIR__ . '/vendor/symfony'
+        'form.class_path' => __DIR__ . '/vendor/symfony/src'
     ));
-
-    .. note::
-
-        TwigBridge, Form and Translation are not compiled into the ``silex.phar`` file. You have to
-        add your own copy of them to your application.
 
 Usage
 -----
 
-The Form extension provides a ``form.factory`` service. Here is a usage
+The FormExtension provides a ``form.factory`` service. Here is a usage
 example::
 
     $app->get('/', function ($id) use ($app) {
