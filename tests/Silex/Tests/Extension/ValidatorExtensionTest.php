@@ -12,14 +12,14 @@
 namespace Silex\Tests;
 
 use Silex\Application;
-use Silex\Extension\ValidationExtension;
+use Silex\Extension\ValidatorExtension;
 
 /**
-* ValidationExtension test cases.
+* ValidatorExtension test cases.
 *
 * @author Masao Maeda <brt.river@gmail.com>
 */
-class ValidationExtensionTest extends \PHPUnit_Framework_TestCase
+class ValidatorExtensionTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
@@ -30,13 +30,13 @@ class ValidationExtensionTest extends \PHPUnit_Framework_TestCase
     public function testRegister()
     {
         $app = new Application();
-        $app->register(new ValidationExtension());
+        $app->register(new ValidatorExtension());
         $this->assertInstanceOf('Symfony\Component\Validator\Validator', $app['validator']);
     }
     public function testCallValidateValue()
     {
         $app = new Application();
-        $app->register(new ValidationExtension());
+        $app->register(new ValidatorExtension());
         // see more constraints: http://api.symfony.com/2.0/Symfony/Component/Validator/Constraints.html
         $url = 'htt://symfony.com';
         $violatios = $app['validator']->validateValue($url, new \Symfony\Component\Validator\Constraints\Url());
