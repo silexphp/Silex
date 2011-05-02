@@ -58,6 +58,7 @@ the ``Silex\Provider`` namespace:
 * :doc:`UrlGeneratorServiceProvider <providers/url_generator>`
 * :doc:`ValidatorServiceProvider <providers/validator>`
 * :doc:`HttpCacheServiceProvider <providers/http_cache>`
+* :doc:`FormServiceProvider <providers/form>`
 
 Third party providers
 ~~~~~~~~~~~~~~~~~~~~~
