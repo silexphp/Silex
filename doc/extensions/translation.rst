@@ -88,3 +88,44 @@ The above example will result in following routes:
 * ``/fr/hello/igor`` will return ``Bonjour igor``.
 
 * ``/it/hello/igor`` will return ``Hello igor`` (because of the fallback).
+
+Recipes
+-------
+
+YAML-based language files
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Having your translation in PHP files can be inconvenient. This recipe will
+show you how to load translations from external YAML files.
+
+First you will need the ``Config`` and ``Yaml`` components from Symfony2. Also
+make sure you register them with the autoloader. You can just clone the entire
+Symfony2 repository into ``vendor/symfony``.
+
+::
+
+    $app['autoloader']->registerNamespace('Symfony', __DIR__.'/vendor/symfony/src');
+
+Next, you have to create the language mappings in YAML files. A naming you can
+use is ``locales/en.yml``. Just do the mapping in this file as follows:
+
+.. code-block:: yaml
+
+    hello: Hello %name%
+    goodbye: Goodbye %name%
+
+Repeat this for all of your languages. Then set up the ``translator.messages`` to map
+languages to files::
+
+    $app['translator.messages'] = array(
+        'en' => __DIR__.'/locales/en.yml',
+        'de' => __DIR__.'/locales/de.yml',
+        'fr' => __DIR__.'/locales/fr.yml',
+    );
+
+Finally override the ``translator.loader`` to use a ``YamlFileLoader`` instead of the
+default ``ArrayLoader``::
+
+    $app['translator.loader'] = new Symfony\Component\Translation\Loader\YamlFileLoader();
+
+And that's all you need to load translations from YAML files.
