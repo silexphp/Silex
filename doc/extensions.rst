@@ -64,6 +64,7 @@ All of these are within the ``Silex\Extension`` namespace.
 * :doc:`MonologExtension <extensions/monolog>`
 * :doc:`SessionExtension <extensions/session>`
 * :doc:`TwigExtension <extensions/twig>`
+* :doc:`TranslationExtension <extensions/translation>`
 * :doc:`UrlGeneratorExtension <extensions/url_generator>`
 
 Creating an extension
