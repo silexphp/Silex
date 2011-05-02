@@ -37,6 +37,9 @@ Services
 Registering
 -----------
 
+Make sure you place a copy of the Symfony2 Translation component in
+``vendor/symfony/src``. You can simply clone the whole Symfony2 into vendor.
+
 ::
 
     use Silex\Extension\TranslationExtension;
