@@ -26,14 +26,14 @@ Services
   defaults to a `DefaultCsrfProvider
   <http://api.symfony.com/2.0/Symfony/Component/Form/Extension/Csrf/CsrfProvider/DefaultCsrfProvider.html>`_.
 
-* **form.storage**: An isntance of `TemporaryStorage
+* **form.storage**: An instance of `TemporaryStorage
   <http://api.symfony.com/2.0/Symfony/Component/HttpFoundation/File/TemporaryStorage.html>`_
 
 Registering
 -----------
 
 Make sure you place a copy of `Symfony/symfony
-<https://github.com/symfony/symfony>`_ in ``vendor/symfony``
+<https://github.com/symfony/symfony>`_ in `vendor/symfony`
 
 ::
 
