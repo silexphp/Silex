@@ -38,8 +38,8 @@ class ValidationExtension implements ExtensionInterface
             return new ConstraintValidatorFactory();
         });
 
-        if (isset($app['validation.class_path'])) {
-            $app['autoloader']->registerNamespace('Symfony\\Component\\Validator', $app['validation.class_path']);
+        if (isset($app['validator.class_path'])) {
+            $app['autoloader']->registerNamespace('Symfony\\Component\\Validator', $app['validator.class_path']);
         }
     }
 }
