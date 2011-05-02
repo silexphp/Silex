@@ -9,3 +9,4 @@ Silex
     session
     twig
     url_generator
+    validator
