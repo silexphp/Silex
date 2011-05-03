@@ -66,6 +66,7 @@ All of these are within the ``Silex\Extension`` namespace.
 * :doc:`TwigExtension <extensions/twig>`
 * :doc:`TranslationExtension <extensions/translation>`
 * :doc:`UrlGeneratorExtension <extensions/url_generator>`
+* :doc:`ValidatorExtension <extensions/validator>`
 
 Creating an extension
 ---------------------

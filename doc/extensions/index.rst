@@ -10,3 +10,4 @@ Silex
     translation
     twig
     url_generator
+    validator
