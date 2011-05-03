@@ -7,10 +7,13 @@ your application with the Symfony2 Form component.
 Parameters
 ----------
 
-* **form.secret** (optional): The secret value used for generating the CSRF token. It uses to secure the CSRF token.
+* **form.secret**: This secret value is used for generating and validating the CSRF token
+  for a specific page. It is very important for you to set this value to a static randomly
+  generated value, to prevent hijacking of your forms.
   Defaults to md5(__DIR__).
 
-* **form.tmp_dir** (optional): The temp dir where the secret is store.
+* **form.tmp_dir** (optional): The temp dir where the temporary files are stored.
+  Defaults to PHP's temp directory.
 
 * **form.class_path**: Path to where
   Symfony2 Form component is located.
