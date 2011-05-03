@@ -17,15 +17,15 @@ use Symfony\Component\HttpFoundation\File\TemporaryStorage;
 use Symfony\Component\Form\Extension\Csrf\CsrfProvider\DefaultCsrfProvider;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\Extension\Core\CoreExtension;
-use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
+use Symfony\Component\Form\Extension\Validator\ValidatorExtension as FormValidatorExtension;
 use Symfony\Component\Form\Extension\Csrf\CsrfExtension;
 
 class FormExtension implements ExtensionInterface
 {
     public function register(Application $app)
     {
-        $app['form.csrf_secret'] = '12345';
-        $app['form.storage_secret'] = 'abcdef';
+        $app['form.secret'] = md5(__DIR__);
+        $app['form.tmp_dir'] = sys_get_temp_dir();
 
         $app['form.factory'] = $app->share(function () use ($app) {
             $extensions = array(
@@ -34,18 +34,18 @@ class FormExtension implements ExtensionInterface
             );
 
             if (isset($app['validator'])) {
-                $extensions[] = new ValidatorExtension($app['validator']);
+                $extensions[] = new FormValidatorExtension($app['validator']);
             }
 
             return new FormFactory($extensions);
         });
 
         $app['form.csrf_provider'] = $app->share(function () use ($app) {
-            return new DefaultCsrfProvider($app['form.csrf_secret']);
+            return new DefaultCsrfProvider($app['form.secret']);
         });
 
         $app['form.storage'] = $app->share(function () use ($app) {
-            return new TemporaryStorage($app['form.storage_secret']);
+            return new TemporaryStorage($app['form.secret'], $app['form.tmp_dir']);
         });
 
         if (isset($app['form.class_path'])) {
