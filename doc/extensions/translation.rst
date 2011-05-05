@@ -42,9 +42,7 @@ Make sure you place a copy of the Symfony2 Translation component in
 
 ::
 
-    use Silex\Extension\TranslationExtension;
-
-    $app->register(new TranslationExtension(), array(
+    $app->register(new Silex\Extension\TranslationExtension(), array(
         'locale_fallback'           => 'en',
         'translation.class_path'    => __DIR__.'/vendor/symfony/src',
     ));

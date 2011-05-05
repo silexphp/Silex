@@ -24,9 +24,7 @@ Registering
 
 ::
 
-    use Silex\Extension\SessionExtension;
-
-    $app->register(new SessionExtension());
+    $app->register(new Silex\Extension\SessionExtension());
 
 Usage
 -----

@@ -37,9 +37,7 @@ Make sure you place a copy of the Symfony2 Validator component in
 
 ::
 
-    use Silex\Extension\ValidatorExtension;
-
-    $app->register(new ValidatorExtension(), array(
+    $app->register(new Silex\Extension\ValidatorExtension(), array(
         'validator.class_path'    => __DIR__.'/vendor/symfony/src',
     ));
 

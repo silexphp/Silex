@@ -48,9 +48,7 @@ directory.
 
 ::
 
-    use Silex\Extension\MonologExtension;
-
-    $app->register(new MonologExtension(), array(
+    $app->register(new Silex\Extension\MonologExtension(), array(
         'monolog.logfile'       => __DIR__.'/development.log',
         'monolog.class_path'    => __DIR__.'/vendor/monolog/src',
     ));
