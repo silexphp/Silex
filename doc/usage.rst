@@ -486,11 +486,22 @@ the following may help.
 
 .. code-block:: ini
 
-		phar.readonly = Off
-		phar.require_hash = Off
+    phar.readonly = Off
+    phar.require_hash = Off
 
 If you are on Suhosin you will also have to set this:
 
 .. code-block:: ini
 
-		suhosin.executor.include.whitelist = phar
+    suhosin.executor.include.whitelist = phar
+
+Phar-Stub bug
+~~~~~~~~~~~~~
+
+Some PHP installations have a bug that throws a ``PharException`` when trying
+to include the Phar. It will also tell you that ``Silex\Application`` could not
+be found. A workaround is using the following include line::
+
+    require_once 'phar://'.__DIR__.'/silex.phar/autoload.php';
+
+The exact cause of this issue could not be determined yet.
