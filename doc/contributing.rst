@@ -16,7 +16,7 @@ steps.
 
 If you have a big change or would like to discuss something,
 please join us on the `mailing list
-<http://groups.google.com/group/silex-php>`.
+<http://groups.google.com/group/silex-php>`_.
 
 .. note::
 
