@@ -14,9 +14,7 @@ controller definitions, call the ``run`` method on your application.
 
     require_once __DIR__.'/silex.phar';
 
-    use Silex\Application;
-
-    $app = new Application();
+    $app = new Silex\Application();
 
     // definitions
 

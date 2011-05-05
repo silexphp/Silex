@@ -43,9 +43,7 @@ directory.
 
 ::
 
-    use Silex\Extension\TwigExtension;
-
-    $app->register(new TwigExtension(), array(
+    $app->register(new Silex\Extension\TwigExtension(), array(
         'twig.path'       => __DIR__.'/views',
         'twig.class_path' => __DIR__.'/vendor/twig/lib',
     ));
