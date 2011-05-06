@@ -8,6 +8,7 @@ Silex
     usage
     services
     extensions
+    testing
     internals
     contributing
     extensions/index
