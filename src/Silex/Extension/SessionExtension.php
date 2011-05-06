@@ -36,7 +36,9 @@ class SessionExtension implements ExtensionInterface
 
         $app['dispatcher']->addListener(HttpKernelEvents::onCoreRequest, $this, -255);
 
-        $app['session.storage.options'] = array();
+        if (!isset($app['session.storage.options'])) {
+            $app['session.storage.options'] = array();
+        }
     }
 
     public function onCoreRequest($event)
