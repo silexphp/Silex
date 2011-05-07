@@ -59,6 +59,7 @@ There are a few extensions that you get out of the box.
 All of these are within the ``Silex\Extension`` namespace.
 
 * :doc:`DoctrineExtension <extensions/doctrine>`
+* :doc:`FormExtension <extensions/form>`
 * :doc:`MonologExtension <extensions/monolog>`
 * :doc:`SessionExtension <extensions/session>`
 * :doc:`TwigExtension <extensions/twig>`

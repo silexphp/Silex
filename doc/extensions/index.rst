@@ -5,6 +5,7 @@ Silex
     :maxdepth: 2
 
     doctrine
+    form
     monolog
     session
     translation
