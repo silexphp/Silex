@@ -503,3 +503,34 @@ be found. A workaround is using the following include line::
     require_once 'phar://'.__DIR__.'/silex.phar/autoload.php';
 
 The exact cause of this issue could not be determined yet.
+
+IIS configuration
+-----------------
+
+If you are using the Internet Information Services from Windows, you can use
+this sample ``web.config`` file:
+
+.. code-block:: xml
+
+    <?xml version="1.0"?>
+    <configuration>
+        <system.webServer>
+            <defaultDocument>
+                <files>
+                    <clear />
+                    <add value="index.php" />
+                </files>
+            </defaultDocument>
+            <rewrite>
+                <rules>
+                    <rule name="Silex Front Controller" stopProcessing="true">
+                        <match url="^(.*)$" ignoreCase="false" />
+                        <conditions logicalGrouping="MatchAll">
+                            <add input="{REQUEST_FILENAME}" matchType="IsFile" ignoreCase="false" negate="true" />
+                        </conditions>
+                        <action type="Rewrite" url="index.php" appendQueryString="true" />
+                    </rule>
+                </rules>
+            </rewrite>
+        </system.webServer>
+    </configuration>
