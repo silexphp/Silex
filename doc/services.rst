@@ -206,6 +206,9 @@ of them.
 
     $app['autoloader']->registerPrefix('Twig_', $app['twig.class_path']);
 
+  For more information, check out the `Symfony autoloader documentation
+  <http://symfony.com/doc/2.0/cookbook/tools/autoloader.html>`_.
+
 * **routes**: The `RouteCollection
   <http://api.symfony.com/2.0/Symfony/Component/Routing/RouteCollection.html>`_
   that is used internally. You can add, modify, read
