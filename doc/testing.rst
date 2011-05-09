@@ -136,7 +136,9 @@ Configuration
 
 The suggested way to configure PHPUnit is to create a ``phpunit.xml.dist``
 file, a ``tests`` folder and your tests in ``tests/YourApp/Tests/YourTest.php``.
-The ``phpunit.xml.dist`` file should look like this::
+The ``phpunit.xml.dist`` file should look like this:
+
+.. code-block:: xml
 
     <?xml version="1.0" encoding="UTF-8"?>
     <phpunit backupGlobals="false"
