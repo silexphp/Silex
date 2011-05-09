@@ -29,9 +29,8 @@ class DefaultErrorHandler implements EventSubscriberInterface
 {
     public function onSilexError(GetResponseForErrorEvent $event)
     {
+        $app = $event->getKernel();
         $exception = $event->getException();
-
-        $isLocal = in_array($event->getRequest()->server->get('REMOTE_ADDR'), array('127.0.0.1', '::1'));
 
         $title = 'Whoops, looks like something went wrong.';
         if ($exception instanceof NotFoundHttpException) {
@@ -39,13 +38,13 @@ class DefaultErrorHandler implements EventSubscriberInterface
         }
 
         $error = $trace = '';
-        if ($isLocal) {
+        if ($app['is_local']) {
             $error = $exception->getMessage();
             $trace = preg_replace('#phar://.*/silex\.phar/#', '', $exception->getTraceAsString());
         }
 
         $response = new Response(
-            $this->renderLayout($isLocal, $title, $error, $trace),
+            $this->renderLayout($app['is_local'], $title, $error, $trace),
             $exception instanceof HttpException ? $exception->getStatusCode() : 500
         );
 
