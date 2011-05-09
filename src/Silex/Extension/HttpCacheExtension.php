@@ -13,7 +13,7 @@ namespace Silex\Extension;
 
 use Silex\Application;
 use Silex\ExtensionInterface;
-use Symfony\Component\HttpKernel\HttpCache\HttpCache;
+use Silex\HttpCache;
 use Symfony\Component\HttpKernel\HttpCache\Esi;
 use Symfony\Component\HttpKernel\HttpCache\Store;
 

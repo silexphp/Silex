@@ -40,9 +40,9 @@ setting Response HTTP cache headers::
     });
 
 This extension allows you to use the Symfony2 reverse proxy natively with
-Silex applications by using the `http_cache` service to handle the Request::
+Silex applications by using the `http_cache` service::
 
-    $app['http_cache']->handle()->send();
+    $app['http_cache']->run();
 
 The extension also provide `ESI
 <http://www.doctrine-project.org/docs/dbal/2.0/en/>`_ support::
@@ -69,7 +69,7 @@ The extension also provide `ESI
         ));
     });
 
-    $app['http_cache']->handle()->send();
+    $app['http_cache']->run();
 
 For more information, consult the `Symfony2 HTTP Cache documentation
 <http://symfony.com/doc/current/book/http_cache.html>`_.
