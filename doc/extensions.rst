@@ -87,6 +87,7 @@ Here is an example of such an extension::
 
     namespace Acme;
 
+    use Silex\Application;
     use Silex\ExtensionInterface;
 
     class HelloExtension implements ExtensionInterface
@@ -139,6 +140,7 @@ Here is an example of how to use it (based on `Buzz <https://github.com/kriswall
 
     namespace Acme;
 
+    use Silex\Application;
     use Silex\ExtensionInterface;
 
     class BuzzExtension implements ExtensionInterface
