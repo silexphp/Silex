@@ -31,7 +31,7 @@ Services
 
 * **session.storage**: A service that is used for persistence of the
   session data. Defaults to a `NativeSessionStorage
-  <http://api.symfony.com/2.0/Symfony/Component/HttpFoundation/SessionStorage/NativeSessionStorage.html`_.
+  <http://api.symfony.com/2.0/Symfony/Component/HttpFoundation/SessionStorage/NativeSessionStorage.html>`_.
 
 Registering
 -----------
