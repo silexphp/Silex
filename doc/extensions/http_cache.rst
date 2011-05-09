@@ -31,7 +31,7 @@ Usage
 -----
 
 Silex already supports any Reverse Proxy like Varnish out of the box by
-setting Response HTTP cache headers:
+setting Response HTTP cache headers::
 
     $app->get('/', function() {
         return new Response('Foo', 200, array(
