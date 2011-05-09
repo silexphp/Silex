@@ -65,6 +65,7 @@ All of these are within the ``Silex\Extension`` namespace.
 * :doc:`TranslationExtension <extensions/translation>`
 * :doc:`UrlGeneratorExtension <extensions/url_generator>`
 * :doc:`ValidatorExtension <extensions/validator>`
+* :doc:`HttpCacheExtension <extensions/http_cache>`
 
 Creating an extension
 ---------------------
