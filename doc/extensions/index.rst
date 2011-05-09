@@ -2,7 +2,7 @@ Silex
 =====
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
 
     doctrine
     monolog
@@ -11,3 +11,4 @@ Silex
     twig
     url_generator
     validator
+    http_cache
