@@ -69,6 +69,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             $dispatcher = new EventDispatcher();
             $dispatcher->addSubscriber($app);
             $dispatcher->addListener(HttpKernelEvents::onCoreView, $app, -10);
+            $dispatcher->addSubscriber(new DefaultErrorHandler(), -255);
 
             return $dispatcher;
         });
@@ -80,6 +81,10 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         $this['kernel'] = $this->share(function () use ($app) {
             return new HttpKernel($app['dispatcher'], $app['resolver']);
         });
+
+        $this['is_local'] = function ($app) {
+            return in_array($app['request']->server->get('REMOTE_ADDR'), array('127.0.0.1', '::1'));
+        };
     }
 
     /**

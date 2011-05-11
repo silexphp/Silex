@@ -234,6 +234,11 @@ of them.
   Symfony2, it takes a Request as input and returns a
   Response as output.
 
+* **is_local**: Returns whether or not the application is running locally.
+  When it is, full error messages and stack traces will be printed. You can
+  override this service (or set it as a parameter) when debugging a remotely
+  hosted application.
+
 .. note::
 
-    All of these Silex core services are shared.
+    All of these Silex core services (except for ``is_local``) are shared.
