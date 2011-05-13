@@ -60,6 +60,15 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array('bar' => 'foo'), $controller->getRoute()->getDefaults());
     }
 
+    public function testConvert()
+    {
+        $controller = new Controller(new Route('/foo/{bar}'));
+        $ret = $controller->convert('bar', $func = function ($bar) { return $bar; });
+
+        $this->assertSame($ret, $controller);
+        $this->assertEquals(array('bar' => $func), $controller->getRoute()->getOption('_converters'));
+    }
+
     /**
      * @dataProvider provideRouteAndExpectedRouteName
      */

@@ -96,6 +96,21 @@ class Controller
     }
 
     /**
+     * Sets a converter for a route variable.
+     *
+     * @param string $variable The variable name
+     * @param mixed  $callback A PHP callback that converts the original value
+     */
+    public function convert($variable, $callback)
+    {
+        $converters = $this->route->getOption('_converters');
+        $converters[$variable] = $callback;
+        $this->route->setOption('_converters', $converters);
+
+        return $this;
+    }
+
+    /**
      * Freezes the controller.
      *
      * Once the controller is frozen, you can no longer change the route name

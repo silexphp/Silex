@@ -228,6 +228,41 @@ While it's not suggested, you could also do this (note the switched arguments)::
         ...
     });
 
+Route variables converters
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Before injecting the route variables into the controller, you can apply some
+converters::
+
+    $app->get('/user/{id}', function ($id) {
+        // ...
+    })->convert('id', function ($id) { return (int) $id; });
+
+This is useful when you want to convert route variables to objects as it
+allows to reuse the conversion code across different controllers::
+
+    $userProvider = function ($id) {
+        return new User($id);
+    };
+
+    $app->get('/user/{user}', function (User $user) {
+        // ...
+    })->convert('user', $userProvider);
+
+    $app->get('/user/{user}/edit', function (User $user) {
+        // ...
+    })->convert('user', $userProvider);
+
+The converter callback also receives the ``Request`` as its second argument::
+
+    $callback = function ($post, Request $request) {
+        return new Post($request->attributes->get('slug'));
+    };
+
+    $app->get('/blog/{id}/{slug}', function (Post $post) {
+        // ...
+    })->convert('post', $callback);
+
 Requirements
 ~~~~~~~~~~~~
 
