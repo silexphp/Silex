@@ -39,7 +39,7 @@ class ValidatorExtensionTest extends \PHPUnit_Framework_TestCase
         $app->register(new ValidatorExtension());
         // see more constraints: http://api.symfony.com/2.0/Symfony/Component/Validator/Constraints.html
         $url = 'htt://symfony.com';
-        $violatios = $app['validator']->validateValue($url, new \Symfony\Component\Validator\Constraints\Url());
+        $violations = $app['validator']->validateValue($url, new \Symfony\Component\Validator\Constraints\Url());
         $this->assertEquals(1, $violations->count());
         foreach ($violations as $violation) {
             $this->assertEquals('This value is not a valid URL', $violation->getMessage());
