@@ -47,7 +47,7 @@ class Compiler
             ->name('*.php')
             ->notName('Compiler.php')
             ->in(__DIR__.'/..')
-            ->in(__DIR__.'/../../vendor/pimple')
+            ->in(__DIR__.'/../../vendor/pimple/lib')
             ->in(__DIR__.'/../../vendor/Symfony/Component/ClassLoader')
             ->in(__DIR__.'/../../vendor/Symfony/Component/EventDispatcher')
             ->in(__DIR__.'/../../vendor/Symfony/Component/HttpFoundation')
