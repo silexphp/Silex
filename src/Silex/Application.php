@@ -80,6 +80,19 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         $this['kernel'] = $this->share(function () use ($app) {
             return new HttpKernel($app['dispatcher'], $app['resolver']);
         });
+
+        $this['shared_services.apply'] = $this->protect(function($destination_app) use($app) {
+            if (isset($app['shared_services']))
+            {
+                foreach($app['shared_services'] as $service)
+                {
+                    if (is_callable($app[$service]))
+                        $destination_app[$service] = $app->protect($app[$service]);
+                    else
+                        $destination_app[$service] = $app[$service];
+                }
+            }
+        });
     }
 
     /**
@@ -267,9 +280,16 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function mount($prefix, $app)
     {
-        $mountHandler = function (Request $request, $prefix) use ($app) {
+        $parent_app = $this;
+        $mountHandler = function (Request $request, $prefix) use ($app, $parent_app) {
             if (is_callable($app)) {
                 $app = $app();
+            }
+
+            if (isset($parent_app['shared_services']))
+            {
+              $parent_app['shared_services.apply']($app);
+              $app['shared_services.apply'] = $app->protect($parent_app['shared_services.apply']);
             }
 
             foreach ($app['controllers']->all() as $controller) {
