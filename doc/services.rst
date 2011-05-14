@@ -237,9 +237,6 @@ of them.
 * **request_context**: The request context is a simplified representation
   of the request that is used by the Router and the UrlGenerator.
 
-* **request_context.factory**: Is used internally to create a RequestContext
-  from a Request.
-
 .. note::
 
     All of these Silex core services are shared.

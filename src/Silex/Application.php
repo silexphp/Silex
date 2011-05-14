@@ -27,6 +27,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
+use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Matcher\Exception\Exception as MatcherException;
 use Symfony\Component\Routing\Matcher\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Matcher\Exception\NotFoundException;
@@ -78,10 +79,6 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
 
         $this['kernel'] = $this->share(function () use ($app) {
             return new HttpKernel($app['dispatcher'], $app['resolver']);
-        });
-
-        $this['request_context.factory'] = $this->share(function () {
-            return new RequestContextFactory();
         });
 
         $this['request.http_port'] = 80;
@@ -319,7 +316,14 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     {
         $this['request'] = $event->getRequest();
 
-        $this['request_context'] = $this['request_context.factory']->create($this['request'], $this['request.http_port'], $this['request.https_port']);
+        $this['request_context'] = new RequestContext(
+            $this['request']->getBaseUrl(),
+            $this['request']->getMethod(),
+            $this['request']->getHost(),
+            $this['request']->getScheme(),
+            !$this['request']->isSecure() ? $this['request']->getPort() : $this['request.http_port'],
+            $this['request']->isSecure() ? $this['request']->getPort() : $this['request.https_port']
+        );
 
         $this['controllers']->flush();
 
