@@ -196,6 +196,9 @@ of them.
 
     $id = $app['request']->get('id');
 
+  This is only available when a request is being served, you can only access it
+  from within a controller, before filter, after filter or error handler.
+
 * **autoloader**: This service provides you with a
   `UniversalClassLoader
   <http://api.symfony.com/2.0/Symfony/Component/ClassLoader/UniversalClassLoader.html>`_
@@ -234,6 +237,31 @@ of them.
   Symfony2, it takes a Request as input and returns a
   Response as output.
 
+* **request_context**: The request context is a simplified representation
+  of the request that is used by the Router and the UrlGenerator.
+
+* **request_context.factory**: Is used internally to create a RequestContext
+  from a Request.
+
 .. note::
 
     All of these Silex core services are shared.
+
+Core parameters
+---------------
+
+* **request.http_port** (optional): Allows you to override the default port
+  for non-HTTPS URLs. If the current request is HTTP, it will always use the
+  current port.
+
+  Defaults to 80.
+
+  This parameter can be used by the ``UrlGeneratorExtension``.
+
+* **request.https_port** (optional): Allows you to override the default port
+  for HTTPS URLs. If the current request is HTTPS, it will always use the
+  current port.
+
+  Defaults to 443.
+
+  This parameter can be used by the ``UrlGeneratorExtension``.
