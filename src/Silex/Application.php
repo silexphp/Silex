@@ -81,6 +81,9 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         $this['kernel'] = $this->share(function () use ($app) {
             return new HttpKernel($app['dispatcher'], $app['resolver']);
         });
+
+        $this['request.http_port'] = 80;
+        $this['request.https_port'] = 443;
     }
 
     /**
@@ -313,12 +316,14 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     public function onCoreRequest(KernelEvent $event)
     {
         $this['request'] = $event->getRequest();
+
         $this['request_context'] = new RequestContext(
             $this['request']->getBaseUrl(),
             $this['request']->getMethod(),
             $this['request']->getHost(),
-            $this['request']->getPort(),
-            $this['request']->getScheme()
+            $this['request']->getScheme(),
+            !$this['request']->isSecure() ? $this['request']->getPort() : $this['request.http_port'],
+            $this['request']->isSecure() ? $this['request']->getPort() : $this['request.https_port']
         );
 
         $this['controllers']->flush();
