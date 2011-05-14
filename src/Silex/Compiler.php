@@ -36,7 +36,7 @@ class Compiler
         }
         $this->version = trim($process->getOutput());
 
-        $phar = new \Phar($pharFile, 0, 'Silex');
+        $phar = new \Phar($pharFile, 0, 'silex.phar');
         $phar->setSignatureAlgorithm(\Phar::SHA1);
 
         $phar->startBuffering();
@@ -66,9 +66,7 @@ class Compiler
         $this->addFile($phar, new \SplFileInfo(__DIR__.'/../../autoload.php'));
 
         // Stubs
-        $phar['_cli_stub.php'] = $this->getStub();
-        $phar['_web_stub.php'] = $this->getStub();
-        $phar->setDefaultStub('_cli_stub.php', '_web_stub.php');
+        $phar->setStub($this->getStub());
 
         $phar->stopBuffering();
 
@@ -103,7 +101,9 @@ class Compiler
  * with this source code in the file LICENSE.
  */
 
-require_once __DIR__.'/autoload.php';
+Phar::mapPhar('silex.phar');
+
+require_once 'phar://silex.phar/autoload.php';
 
 if ('cli' === php_sapi_name()) {
     $command = isset($argv[1]) ? $argv[1] : null;
