@@ -37,3 +37,6 @@
 [submodule "vendor/Symfony/Component/Process"]
 	path = vendor/Symfony/Component/Process
 	url = https://github.com/symfony/Process
+[submodule "vendor/Symfony/Component/Validator"]
+	path = vendor/Symfony/Component/Validator
+	url = https://github.com/symfony/Validator
