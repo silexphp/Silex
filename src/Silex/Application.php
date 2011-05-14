@@ -17,6 +17,7 @@ use Symfony\Component\HttpKernel\Controller\ControllerResolver;
 use Symfony\Component\HttpKernel\Event\KernelEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Events as HttpKernelEvents;
@@ -348,6 +349,22 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     }
 
     /**
+     * Handles converters.
+     *
+     * @param FilterControllerEvent $event A FilterControllerEvent instance
+     */
+    public function onCoreController(FilterControllerEvent $event)
+    {
+        $request = $event->getRequest();
+        $route = $this['routes']->get($request->attributes->get('_route'));
+        if ($route && $converters = $route->getOption('_converters')) {
+            foreach ($converters as $name => $callback) {
+                $request->attributes->set($name, call_user_func($callback, $request->attributes->get($name, null), $request));
+            }
+        }
+    }
+
+    /**
      * Handles string responses.
      *
      * Handler for onCoreView.
@@ -396,6 +413,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
 
         return array(
             HttpKernelEvents::onCoreRequest,
+            HttpKernelEvents::onCoreController,
             HttpKernelEvents::onCoreResponse,
             HttpKernelEvents::onCoreException,
         );

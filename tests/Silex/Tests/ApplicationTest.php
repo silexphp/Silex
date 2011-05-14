@@ -85,6 +85,25 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(2, count($routes->all()));
     }
 
+    public function testOnCoreController()
+    {
+        $app = new Application();
+
+        $app->get('/foo/{foo}', function (\ArrayObject $foo) {
+            return $foo['foo'];
+        })->convert('foo', function ($foo) { return new \ArrayObject(array('foo' => $foo)); });
+
+        $response = $app->handle(Request::create('/foo/bar'));
+        $this->assertEquals('bar', $response->getContent());
+
+        $app->get('/foo/{foo}/{bar}', function (\ArrayObject $foo) {
+            return $foo['foo'];
+        })->convert('foo', function ($foo, Request $request) { return new \ArrayObject(array('foo' => $foo.$request->attributes->get('bar'))); });
+
+        $response = $app->handle(Request::create('/foo/foo/bar'));
+        $this->assertEquals('foobar', $response->getContent());
+    }
+
     /**
     * @dataProvider escapeProvider
     */
