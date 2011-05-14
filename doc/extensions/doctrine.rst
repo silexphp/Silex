@@ -24,10 +24,10 @@ Parameters
   * **host**: The host of the database to connect to. Defaults to
     localhost.
 
-  * **user**: The host of the database to connect to. Defaults to
+  * **user**: The user of the database to connect to. Defaults to
     root.
 
-  * **password**: The host of the database to connect to.
+  * **password**: The password of the database to connect to.
 
   * **path**: Only relevant for ``pdo_sqlite``, specifies the path to
     the SQLite database.
