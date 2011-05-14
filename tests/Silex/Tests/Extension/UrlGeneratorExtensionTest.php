@@ -70,20 +70,37 @@ class UrlGeneratorExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('https://localhost:81/hello/john', $url);
     }
 
+    public function testUrlGenerationWithHttp()
+    {
+        $app = new Application();
+
+        $app->register(new UrlGeneratorExtension());
+
+        $app->get('/insecure', function () {})
+            ->bind('insecure_page')
+            ->requireHttp();
+
+        $app['request'] = Request::create('https://localhost/');
+        $app['request_context'] = $app['request_context.factory']->create($app['request']);
+
+        $url = $app['url_generator']->generate('insecure_page');
+        $this->assertEquals('http://localhost/insecure', $url);
+    }
+
     public function testUrlGenerationWithHttps()
     {
         $app = new Application();
 
         $app->register(new UrlGeneratorExtension());
 
-        $app->get('/hello/{name}', function ($name) {})
-            ->bind('hello')
-            ->requireSecure();
+        $app->get('/secure', function () {})
+            ->bind('secure_page')
+            ->requireHttps();
 
         $app['request'] = Request::create('http://localhost/');
         $app['request_context'] = $app['request_context.factory']->create($app['request']);
 
-        $url = $app['url_generator']->generate('hello', array('name' => 'john'));
-        $this->assertEquals('https://localhost/hello/john', $url);
+        $url = $app['url_generator']->generate('secure_page');
+        $this->assertEquals('https://localhost/secure', $url);
     }
 }

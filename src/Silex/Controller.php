@@ -96,9 +96,19 @@ class Controller
     }
 
     /**
+     * Sets the requirement of HTTP (no HTTPS) on this controller.
+     */
+    public function requireHttp()
+    {
+        $this->route->setRequirement('_scheme', 'http');
+
+        return $this;
+    }
+
+    /**
      * Sets the requirement of HTTPS on this controller.
      */
-    public function requireSecure()
+    public function requireHttps()
     {
         $this->route->setRequirement('_scheme', 'https');
 
