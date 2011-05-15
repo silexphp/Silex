@@ -481,12 +481,12 @@ Console
 Silex includes a lightweight console for updating to the latest
 version.
 
-To find out which version of Silex you are using, just invoke
-``silex.phar`` on the command-line without any arguments:
+To find out which version of Silex you are using, invoke ``silex.phar`` on the
+command-line with ``version`` as an argument:
 
 .. code-block:: text
 
-    $ php silex.phar
+    $ php silex.phar version
     Silex version 0a243d3 2011-04-17 14:49:31 +0200
 
 To check that your are using the latest version, run the ``check`` command:
