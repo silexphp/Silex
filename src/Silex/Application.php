@@ -29,9 +29,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RequestContext;
-use Symfony\Component\Routing\Matcher\Exception\Exception as MatcherException;
-use Symfony\Component\Routing\Matcher\Exception\MethodNotAllowedException;
-use Symfony\Component\Routing\Matcher\Exception\NotFoundException;
+use Symfony\Component\Routing\Exception\Exception as RoutingException;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
+use Symfony\Component\Routing\Exception\NotFoundException;
 use Symfony\Component\ClassLoader\UniversalClassLoader;
 use Silex\RedirectableUrlMatcher;
 
@@ -334,7 +334,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             $attributes = $matcher->match($this['request']->getPathInfo());
 
             $this['request']->attributes->add($attributes);
-        } catch (MatcherException $e) {
+        } catch (RoutingException $e) {
             // make sure onSilexBefore event is dispatched
 
             $this['dispatcher']->dispatch(Events::onSilexBefore);
