@@ -29,9 +29,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RequestContext;
-use Symfony\Component\Routing\Exception\Exception as RoutingException;
+use Symfony\Component\Routing\Exception\ExceptionInterface as RoutingException;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
-use Symfony\Component\Routing\Exception\NotFoundException;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\ClassLoader\UniversalClassLoader;
 use Silex\RedirectableUrlMatcher;
 
@@ -339,7 +339,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
 
             $this['dispatcher']->dispatch(Events::onSilexBefore);
 
-            if ($e instanceof NotFoundException) {
+            if ($e instanceof ResourceNotFoundException) {
                 $message = sprintf('No route found for "%s %s"', $this['request']->getMethod(), $this['request']->getPathInfo());
                 throw new NotFoundHttpException($message, $e);
             } else if ($e instanceof MethodNotAllowedException) {
