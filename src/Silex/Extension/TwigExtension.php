@@ -47,7 +47,7 @@ class TwigExtension implements ExtensionInterface
             return $twig;
         });
 
-        $app['twig.loader'] = $app->share(function () use ($app) {
+        $app['twig.loader'] = isset($app['twig.loader']) ?: $app->share(function () use ($app) {
             if (isset($app['twig.templates'])) {
                 return new \Twig_Loader_Array($app['twig.templates']);
             } else {
