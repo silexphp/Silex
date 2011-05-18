@@ -47,13 +47,15 @@ class TwigExtension implements ExtensionInterface
             return $twig;
         });
 
-        $app['twig.loader'] = $app->share(function () use ($app) {
-            if (isset($app['twig.templates'])) {
-                return new \Twig_Loader_Array($app['twig.templates']);
-            } else {
-                return new \Twig_Loader_Filesystem($app['twig.path']);
-            }
-        });
+        if (!isset($app['twig.loader'])) {
+            $app['twig.loader'] = $app->share(function () use ($app) {
+                if (isset($app['twig.templates'])) {
+                    return new \Twig_Loader_Array($app['twig.templates']);
+                } else {
+                    return new \Twig_Loader_Filesystem($app['twig.path']);
+                }
+            });
+        }
 
         if (isset($app['twig.class_path'])) {
             $app['autoloader']->registerPrefix('Twig_', $app['twig.class_path']);
