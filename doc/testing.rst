@@ -77,7 +77,8 @@ use it by making your test extend it::
 
     To make your application testable, you need to make sure you follow "Reusing
     applications" instructions from :doc:`usage`.
-    If you want to test single file app use Symfony2's Reqeuest instead.
+    
+    
 
 For your WebTestCase, you will have to implement a ``createApplication``
 method, which returns your application. It will probably look like this::
