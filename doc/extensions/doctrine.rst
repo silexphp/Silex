@@ -55,7 +55,7 @@ Services
 Registering
 -----------
 
-Make sure you place a copy of*Doctrine DBAL* in ``vendor/doctrine-dbal``
+Make sure you place a copy of *Doctrine DBAL* in ``vendor/doctrine-dbal``
 and *Doctrine Common* in ``vendor/doctrine-common``.
 
 ::
