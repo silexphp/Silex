@@ -541,9 +541,10 @@ The exact cause of this issue could not be determined yet.
 
 ioncube loader bug
 ~~~~~~~~~~~~~~~~~~
+
 Ioncube loader is an extension that can decode PHP encoded file. Unfortunately
 it is not working well with phar archive. If you installed this extension, you
-must disabled it by commenting or removing this line in you php.ini file:
+must disable it by commenting or removing this line in you php.ini file:
 
 .. code-block:: ini
 
