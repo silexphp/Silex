@@ -4,15 +4,19 @@ Silex, a simple Web Framework
 Silex is a simple web framework to develop simple websites based on
 [Symfony2][1] components:
 
-    require_once __DIR__.'/silex.phar';
 
-    $app = new Silex\Application();
+```php
+<?php
+require_once __DIR__.'/silex.phar';
 
-    $app->get('/hello/{name}', function ($name) {
-        return "Hello $name";
-    });
+$app = new Silex\Application();
 
-    $app->run();
+$app->get('/hello/{name}', function ($name) {
+  return "Hello $name";
+});
+
+$app->run();
+```
 
 Silex works with PHP 5.3.2 or later.
 
