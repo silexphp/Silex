@@ -83,5 +83,47 @@ example::
                 "<p>{$post['body']}</p>";
     });
 
+
+Using multiple databases
+------------------------
+
+The Doctrine extension can allow access to multiple databases.  In order
+configure these data sources you must remove the **db.options** from 
+your extension registration, and replace it with an array named **dbs**.
+
+Each key of the dbs array should contain a configuration of options.
+
+Here is an example using multiple database connections::
+
+    $app->register(new Silex\Extension\DoctrineExtension(), array(
+        'dbs' => array (
+            'sqlite' => array(
+                'driver'    => 'pdo_sqlite',
+                'path'      => __DIR__.'/app.db',
+            ),
+            'mysql' => array(
+                'driver'    => 'pdo_mysql',
+                'dbname'    => 'my_database',
+                'user'      => 'my_username',
+                'password'  => 'my_password',
+            ),
+        ),
+        'db.dbal.class_path'    => __DIR__.'/vendor/doctrine-dbal/lib',
+        'db.common.class_path'  => __DIR__.'/vendor/doctrine-common/lib',
+    ));
+
+    $app->get('/joined/{searchOne}/{searchTwo}, function ($searchOne, $searchTwo) use ($app)) {
+        $sqliteQuery = "SELECT * FROM table_one WHERE id = ?";
+        $one = $app['sqlite']->fetchAssoc($sqliteQuery, array((int) $searchOne));
+        
+        $mysqlQuery = "SELECT * FROM table_two WHERE id = ?";
+        $two = $app['sqlite']->fetchAssoc($mysqlQuery, array((int) $searchTwo));
+        
+        return  "<h1>{$one['column_from_sqlite']}</h1>".
+                "<p>{$two['column_from_mysql']}</p>";
+        
+    });
+
+
 For more information, consult the `Doctrine DBAL documentation
 <http://www.doctrine-project.org/docs/dbal/2.0/en/>`_.
