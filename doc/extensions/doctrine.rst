@@ -117,7 +117,7 @@ Here is an example using multiple database connections::
         $one = $app['sqlite']->fetchAssoc($sqliteQuery, array((int) $searchOne));
         
         $mysqlQuery = "SELECT * FROM table_two WHERE id = ?";
-        $two = $app['sqlite']->fetchAssoc($mysqlQuery, array((int) $searchTwo));
+        $two = $app['mysql']->fetchAssoc($mysqlQuery, array((int) $searchTwo));
         
         return  "<h1>{$one['column_from_sqlite']}</h1>".
                 "<p>{$two['column_from_mysql']}</p>";

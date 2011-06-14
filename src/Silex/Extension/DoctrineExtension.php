@@ -42,7 +42,7 @@ class DoctrineExtension implements ExtensionInterface
             $app['db.event_manager'] = $app->share(function () {
                 return new EventManager();
             });
-        } elseif (isset($app['dbs']) AND is_array($app['dbs'])) {
+        } elseif (isset($app['dbs']) && is_array($app['dbs'])) {
             foreach ($app['dbs'] as $connectionName => $connectionOptions) {
                 $app[$connectionName] = $app->share(function () use($app, $connectionOptions, $connectionName) {
                     return DriverManager::getConnection($connectionOptions, $app[$connectionName.'.config'], $app[$connectionName.'.event_manager']);
