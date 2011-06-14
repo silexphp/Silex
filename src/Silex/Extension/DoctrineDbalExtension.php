@@ -22,29 +22,9 @@ class DoctrineDbalExtension implements ExtensionInterface
     public function register(Application $app)
     {
         if (isset($app['dbal.options'])) {
-            $options = array_replace(array(
-                'driver'   => 'pdo_mysql',
-                'dbname'   => null,
-                'host'     => 'localhost',
-                'user'     => 'root',
-                'password' => null,
-            ), isset($app['dbal.options']) ? $app['dbal.options'] : array());
-
-            $app['dbal.connection.default.options'] = $options;
-            $app['dbal.connection.default'] = $app->share(function () use ($app, $options, $connection) {
-                return DriverManager::getConnection($options, $app['dbal.connection.default.config'], $app['dbal.connection.'.$connection.'.event_manager']);
-            });
-            $app['dbal.connection.default.config'] = $app->share(function () {
-                return new Configuration();
-            });
-
-            $app['dbal.connection.default.event_manager'] = $app->share(function () {
-                return new EventManager();
-            });
-            $app['dbal'] = $app->share(function() use ($app, $connection) {
-                return $app['dbal.connection.default'];
-            });
-        } elseif (isset($app['dbal.dbs']) && is_array($app['dbal.dbs'])) {
+			$app['dbal.dbs'] = array('default' => $app['dbal.options']);
+        } 
+		if (isset($app['dbal.dbs']) && is_array($app['dbal.dbs'])) {
             $firstConnection = true; 
             foreach ($app['dbal.dbs'] as $connection => $options) {
 
