@@ -21,7 +21,6 @@ class DoctrineExtension implements ExtensionInterface
 {
     public function register(Application $app)
     {
-        
         if (isset($app['db.options'])) {
             $app['db.options'] = array_replace(array(
                 'driver'   => 'pdo_mysql',
@@ -58,7 +57,6 @@ class DoctrineExtension implements ExtensionInterface
         } else {
             throw new Exception ('DoctrineExtension requires options to be configured.');
         }
-        
 
         if (isset($app['db.dbal.class_path'])) {
             $app['autoloader']->registerNamespace('Doctrine\\DBAL', $app['db.dbal.class_path']);
