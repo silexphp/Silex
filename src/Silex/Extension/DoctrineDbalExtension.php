@@ -22,7 +22,7 @@ class DoctrineDbalExtension implements ExtensionInterface
     public function register(Application $app)
     {
         if (isset($app['dbal.options'])) {
-            $app['dbal.options'] = array_replace(array(
+            $options = array_replace(array(
                 'driver'   => 'pdo_mysql',
                 'dbname'   => null,
                 'host'     => 'localhost',
@@ -30,16 +30,19 @@ class DoctrineDbalExtension implements ExtensionInterface
                 'password' => null,
             ), isset($app['dbal.options']) ? $app['dbal.options'] : array());
 
-            $app['dbal'] = $app->share(function () use ($app) {
-                return DriverManager::getConnection($app['dbal.options'], $app['dbal.config'], $app['dbal.event_manager']);
+            $app['dbal.connection.default.options'] = $options;
+            $app['dbal.connection.default'] = $app->share(function () use ($app, $options, $connection) {
+                return DriverManager::getConnection($options, $app['dbal.connection.default.config'], $app['dbal.connection.'.$connection.'.event_manager']);
             });
-
-            $app['dbal.config'] = $app->share(function () {
+            $app['dbal.connection.default.config'] = $app->share(function () {
                 return new Configuration();
             });
 
-            $app['dbal.event_manager'] = $app->share(function () {
+            $app['dbal.connection.default.event_manager'] = $app->share(function () {
                 return new EventManager();
+            });
+            $app['dbal'] = $app->share(function() use ($app, $connection) {
+                return $app['dbal.connection.default'];
             });
         } elseif (isset($app['dbal.dbs']) && is_array($app['dbal.dbs'])) {
             $firstConnection = true; 
