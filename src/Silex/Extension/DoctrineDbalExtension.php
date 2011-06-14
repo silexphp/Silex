@@ -22,10 +22,10 @@ class DoctrineDbalExtension implements ExtensionInterface
     public function register(Application $app)
     {
         if (isset($app['dbal.options'])) {
-			$app['dbal.dbs'] = array('default' => $app['dbal.options']);
-        } 
-		if (isset($app['dbal.dbs']) && is_array($app['dbal.dbs'])) {
-            $firstConnection = true; 
+            $app['dbal.dbs'] = array('default' => $app['dbal.options']);
+        }
+        if (isset($app['dbal.dbs']) && is_array($app['dbal.dbs'])) {
+            $firstConnection = true;
             foreach ($app['dbal.dbs'] as $connection => $options) {
 
                 $app['dbal.connection.'.$connection.'.options'] = $options;
