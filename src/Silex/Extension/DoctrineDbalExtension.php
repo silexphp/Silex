@@ -42,7 +42,7 @@ class DoctrineDbalExtension implements ExtensionInterface
                 return new EventManager();
             });
         } elseif (isset($app['dbal.dbs']) && is_array($app['dbal.dbs'])) {
-            $firstConnection = false; 
+            $firstConnection = true; 
             foreach ($app['dbal.dbs'] as $connection => $options) {
 
                 $app['dbal.connection.'.$connection.'.options'] = $options;
@@ -58,9 +58,15 @@ class DoctrineDbalExtension implements ExtensionInterface
                 });
 
                 if ($firstConnection) {
-                    $app['dbal'] = $app['dbal.connection.'.$connection];
-                    $app['dbal.config'] = $app['dbal.connection.'.$connection.'.config'];
-                    $app['dbal.event_manager'] = $app['dbal.connection.'.$connection.'.event_manager'];
+                    $app['dbal'] = $app->share(function () use ($app, $options, $connection) {
+                        return DriverManager::getConnection($options, $app['dbal.connection.'.$connection.'.config'], $app['dbal.connection.'.$connection.'.event_manager']);
+                    });
+                    $app['dbal.config'] = $app->share(function () {
+                        return new Configuration();
+                    });
+                    $app['dbal.event_manager'] =     $app->share(function () {
+                        return new EventManager();
+                    });
                 }
                 $firstConnection = false;
             }
