@@ -31,7 +31,7 @@ class DoctrineExtension implements ExtensionInterface
                 'password' => null,
             ), isset($app['db.options']) ? $app['db.options'] : array());
 
-            $app['db'] = $app->share(function () use($app) {
+            $app['db'] = $app->share(function () use ($app) {
                 return DriverManager::getConnection($app['db.options'], $app['db.config'], $app['db.event_manager']);
             });
 
@@ -44,7 +44,7 @@ class DoctrineExtension implements ExtensionInterface
             });
         } elseif (isset($app['dbs']) && is_array($app['dbs'])) {
             foreach ($app['dbs'] as $connectionName => $connectionOptions) {
-                $app[$connectionName] = $app->share(function () use($app, $connectionOptions, $connectionName) {
+                $app[$connectionName] = $app->share(function () use ($app, $connectionOptions, $connectionName) {
                     return DriverManager::getConnection($connectionOptions, $app[$connectionName.'.config'], $app[$connectionName.'.event_manager']);
                 });
                 $app[$connectionName.'.config'] = $app->share(function () {
