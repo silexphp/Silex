@@ -11,7 +11,7 @@ The *DoctrineExtension* provides integration with the `Doctrine DBAL
 Parameters
 ----------
 
-* **db.options**: Array of Doctrine DBAL options.
+* **dbal.options**: Array of Doctrine DBAL options.
 
   These options are available:
 
@@ -35,22 +35,22 @@ Parameters
   These and additional options are described in detail in the `Doctrine DBAL
   configuration documentation <http://www.doctrine-project.org/docs/dbal/2.0/en/reference/configuration.html>`_.
 
-* **db.dbal.class_path** (optional): Path to where the
+* **dbal.dbal.class_path** (optional): Path to where the
   Doctrine DBAL is located.
 
-* **db.common.class_path** (optional): Path to where
+* **dbal.common.class_path** (optional): Path to where
   Doctrine Common is located.
 
 Services
 --------
 
-* **db**: The database connection, instance of
+* **dbal**: The database connection, instance of
   ``Doctrine\DBAL\Connection``.
 
-* **db.config**: Configuration object for Doctrine. Defaults to
+* **dbal.config**: Configuration object for Doctrine. Defaults to
   an empty ``Doctrine\DBAL\Configuration``.
 
-* **db.event_manager**: Event Manager for Doctrine.
+* **dbal.event_manager**: Event Manager for Doctrine.
 
 Registering
 -----------
@@ -61,12 +61,12 @@ and *Doctrine Common* in ``vendor/doctrine-common``.
 ::
 
     $app->register(new Silex\Extension\DoctrineExtension(), array(
-        'db.options'            => array(
+        'dbal.options'            => array(
             'driver'    => 'pdo_sqlite',
             'path'      => __DIR__.'/app.db',
         ),
-        'db.dbal.class_path'    => __DIR__.'/vendor/doctrine-dbal/lib',
-        'db.common.class_path'  => __DIR__.'/vendor/doctrine-common/lib',
+        'dbal.dbal.class_path'    => __DIR__.'/vendor/doctrine-dbal/lib',
+        'dbal.common.class_path'  => __DIR__.'/vendor/doctrine-common/lib',
     ));
 
 Usage
@@ -77,7 +77,7 @@ example::
 
     $app->get('/blog/show/{id}', function ($id) use ($app) {
         $sql = "SELECT * FROM posts WHERE id = ?";
-        $post = $app['db']->fetchAssoc($sql, array((int) $id));
+        $post = $app['dbal']->fetchAssoc($sql, array((int) $id));
 
         return  "<h1>{$post['title']}</h1>".
                 "<p>{$post['body']}</p>";
@@ -96,7 +96,7 @@ Each key of the dbs array should contain a configuration of options.
 Here is an example using multiple database connections::
 
     $app->register(new Silex\Extension\DoctrineExtension(), array(
-        'dbs' => array (
+        'dbal.dbs' => array (
             'sqlite' => array(
                 'driver'    => 'pdo_sqlite',
                 'path'      => __DIR__.'/app.db',
@@ -108,8 +108,8 @@ Here is an example using multiple database connections::
                 'password'  => 'my_password',
             ),
         ),
-        'db.dbal.class_path'    => __DIR__.'/vendor/doctrine-dbal/lib',
-        'db.common.class_path'  => __DIR__.'/vendor/doctrine-common/lib',
+        'dbal.dbal.class_path'    => __DIR__.'/vendor/doctrine-dbal/lib',
+        'dbal.common.class_path'  => __DIR__.'/vendor/doctrine-common/lib',
     ));
 
     $app->get('/joined/{searchOne}/{searchTwo}, function ($searchOne, $searchTwo) use ($app)) {
@@ -123,7 +123,6 @@ Here is an example using multiple database connections::
                 "<p>{$two['column_from_mysql']}</p>";
         
     });
-
 
 For more information, consult the `Doctrine DBAL documentation
 <http://www.doctrine-project.org/docs/dbal/2.0/en/>`_.
