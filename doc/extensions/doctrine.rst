@@ -32,6 +32,10 @@ Parameters
   * **path**: Only relevant for ``pdo_sqlite``, specifies the path to
     the SQLite database.
 
+  * **default**: (optional) When using multiple databases, allows you 
+    to set the default connection to one other than the first 
+    connection
+
   These and additional options are described in detail in the `Doctrine DBAL
   configuration documentation <http://www.doctrine-project.org/docs/dbal/2.0/en/reference/configuration.html>`_.
 
@@ -93,7 +97,7 @@ your extension registration, and replace it with an array named **dbs**.
 
 Each key of the dbs array should contain a configuration of options.
 
-Here is an example using multiple database connections::
+Registering multiple database connections::
 
     $app->register(new Silex\Extension\DoctrineExtension(), array(
         'dbal.dbs' => array (
@@ -101,8 +105,16 @@ Here is an example using multiple database connections::
                 'driver'    => 'pdo_sqlite',
                 'path'      => __DIR__.'/app.db',
             ),
-            'mysql' => array(
+            'mysql_read' => array(
                 'driver'    => 'pdo_mysql',
+                'host'      => 'mysql_read.someplace.tld'
+                'dbname'    => 'my_database',
+                'user'      => 'my_username',
+                'password'  => 'my_password',
+            ),
+            'mysql_write' => array(
+                'driver'    => 'pdo_mysql',
+                'host'      => 'mysql_write.someplace.tld'
                 'dbname'    => 'my_database',
                 'user'      => 'my_username',
                 'password'  => 'my_password',
@@ -112,12 +124,25 @@ Here is an example using multiple database connections::
         'dbal.common.class_path'  => __DIR__.'/vendor/doctrine-common/lib',
     ));
 
+By default, the first connection registered is the default.  This can simply be accessed as you would if there was only one connection.  Given the above DB registration these two lines are equal:
+
+	$app['dbal']->fetchAssoc('SELECT * FROM table');
+	
+	$app['dbal.connection.sqlite']->fetchAssoc('SELECT * FROM table');
+
+The default connection can be selected by setting the **default** option toggle.
+
+Using multiple connections::
+
     $app->get('/joined/{searchOne}/{searchTwo}, function ($searchOne, $searchTwo) use ($app)) {
         $sqliteQuery = "SELECT * FROM table_one WHERE id = ?";
-        $one = $app['db_sqlite']->fetchAssoc($sqliteQuery, array((int) $searchOne));
+        $one = $app['dbal.connection.sqlite']->fetchAssoc($sqliteQuery, array((int) $searchOne));
         
         $mysqlQuery = "SELECT * FROM table_two WHERE id = ?";
-        $two = $app['db_mysql']->fetchAssoc($mysqlQuery, array((int) $searchTwo));
+        $two = $app['dbal.connection.mysql_read']->fetchAssoc($mysqlQuery, array((int) $searchTwo));
+
+        $mysqlUpdate = "UPDATE table_two SET value = ? WHERE id = ?";
+        $app['dbal.connection.mysql_write']->execute($mysqlUpdate, array((int) $searchTwo, 'newValue'));
         
         return  "<h1>{$one['column_from_sqlite']}</h1>".
                 "<p>{$two['column_from_mysql']}</p>";
