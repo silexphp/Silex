@@ -43,14 +43,14 @@ class DoctrineExtension implements ExtensionInterface
             });
         } elseif (isset($app['dbs']) && is_array($app['dbs'])) {
             foreach ($app['dbs'] as $connectionName => $connectionOptions) {
-                $app[$connectionName] = $app->share(function () use ($app, $connectionOptions, $connectionName) {
-                    return DriverManager::getConnection($connectionOptions, $app[$connectionName.'.config'], $app[$connectionName.'.event_manager']);
+                $app['db_'.$connectionName] = $app->share(function () use ($app, $connectionOptions, $connectionName) {
+                    return DriverManager::getConnection($connectionOptions, $app['db_'.$connectionName.'.config'], $app['db_'.$connectionName.'.event_manager']);
                 });
-                $app[$connectionName.'.config'] = $app->share(function () {
+                $app['db_'.$connectionName.'.config'] = $app->share(function () {
                     return new Configuration();
                 });
 
-                $app[$connectionName.'.event_manager'] = $app->share(function () {
+                $app['db_'.$connectionName.'.event_manager'] = $app->share(function () {
                     return new EventManager();
                 });
             }

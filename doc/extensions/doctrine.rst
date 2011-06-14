@@ -114,10 +114,10 @@ Here is an example using multiple database connections::
 
     $app->get('/joined/{searchOne}/{searchTwo}, function ($searchOne, $searchTwo) use ($app)) {
         $sqliteQuery = "SELECT * FROM table_one WHERE id = ?";
-        $one = $app['sqlite']->fetchAssoc($sqliteQuery, array((int) $searchOne));
+        $one = $app['db_sqlite']->fetchAssoc($sqliteQuery, array((int) $searchOne));
         
         $mysqlQuery = "SELECT * FROM table_two WHERE id = ?";
-        $two = $app['mysql']->fetchAssoc($mysqlQuery, array((int) $searchTwo));
+        $two = $app['db_mysql']->fetchAssoc($mysqlQuery, array((int) $searchTwo));
         
         return  "<h1>{$one['column_from_sqlite']}</h1>".
                 "<p>{$two['column_from_mysql']}</p>";
