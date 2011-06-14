@@ -57,15 +57,9 @@ class DoctrineDbalExtension implements ExtensionInterface
                     return new EventManager();
                 });
 
-                if ($firstConnection) {
-                    $app['dbal'] = $app->share(function () use ($app, $options, $connection) {
-                        return DriverManager::getConnection($options, $app['dbal.connection.'.$connection.'.config'], $app['dbal.connection.'.$connection.'.event_manager']);
-                    });
-                    $app['dbal.config'] = $app->share(function () {
-                        return new Configuration();
-                    });
-                    $app['dbal.event_manager'] =     $app->share(function () {
-                        return new EventManager();
+                if ($firstConnection || (isset($options['default']) && $options['default'])) {
+                    $app['dbal'] = $app->share(function() use ($app, $connection) {
+                        return $app['dbal.connection.'.$connection];
                     });
                 }
                 $firstConnection = false;
