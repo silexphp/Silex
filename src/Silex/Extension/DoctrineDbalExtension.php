@@ -71,8 +71,6 @@ class DoctrineDbalExtension implements ExtensionInterface
                 $firstConnection = false;
             }
             unset($app['dbal.dbs']);
-        } else {
-            throw new Exception ('DoctrineDbalExtension requires options to be configured.');
         }
 
         if (isset($app['dbal.dbal.class_path'])) {
