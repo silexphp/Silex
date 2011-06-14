@@ -41,9 +41,9 @@ class DoctrineDbalExtension implements ExtensionInterface
                 });
 
                 if ($firstConnection || !empty($options['default'])) {
-                    $app['dbal'] = $app->share(function() use ($app, $connection) {
+                    $app['dbal'] = function() use ($app, $connection) {
                         return $app['dbal.connection.'.$connection];
-                    });
+                    };
                 }
                 $firstConnection = false;
             }
