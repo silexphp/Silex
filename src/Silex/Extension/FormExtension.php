@@ -13,7 +13,6 @@ namespace Silex\Extension;
 
 use Silex\Application;
 use Silex\ExtensionInterface;
-use Symfony\Component\HttpFoundation\File\TemporaryStorage;
 use Symfony\Component\Form\Extension\Csrf\CsrfProvider\DefaultCsrfProvider;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\Extension\Core\CoreExtension;
@@ -25,11 +24,10 @@ class FormExtension implements ExtensionInterface
     public function register(Application $app)
     {
         $app['form.secret'] = md5(__DIR__);
-        $app['form.tmp_dir'] = sys_get_temp_dir();
 
         $app['form.factory'] = $app->share(function () use ($app) {
             $extensions = array(
-                new CoreExtension($app['form.storage']),
+                new CoreExtension(),
                 new CsrfExtension($app['form.csrf_provider']),
             );
 
@@ -42,10 +40,6 @@ class FormExtension implements ExtensionInterface
 
         $app['form.csrf_provider'] = $app->share(function () use ($app) {
             return new DefaultCsrfProvider($app['form.secret']);
-        });
-
-        $app['form.storage'] = $app->share(function () use ($app) {
-            return new TemporaryStorage($app['form.secret'], $app['form.tmp_dir']);
         });
 
         if (isset($app['form.class_path'])) {

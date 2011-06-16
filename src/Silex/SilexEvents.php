@@ -14,9 +14,9 @@ namespace Silex;
 /**
  * @author Igor Wiedler <igor@wiedler.ch>
  */
-final class Events
+final class SilexEvents
 {
-    const onSilexBefore = 'onSilexBefore';
-    const onSilexAfter = 'onSilexAfter';
-    const onSilexError = 'onSilexError';
+    const BEFORE = 'onSilexBefore';
+    const AFTER  = 'onSilexAfter';
+    const ERROR  = 'onSilexError';
 }

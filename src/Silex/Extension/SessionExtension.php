@@ -16,7 +16,7 @@ use Silex\ExtensionInterface;
 
 use Symfony\Component\HttpFoundation\SessionStorage\NativeSessionStorage;
 use Symfony\Component\HttpFoundation\Session;
-use Symfony\Component\HttpKernel\Events as HttpKernelEvents;
+use Symfony\Component\HttpKernel\CoreEvents;
 
 class SessionExtension implements ExtensionInterface
 {
@@ -34,7 +34,7 @@ class SessionExtension implements ExtensionInterface
             return new NativeSessionStorage($app['session.storage.options']);
         });
 
-        $app['dispatcher']->addListener(HttpKernelEvents::onCoreRequest, $this, -255);
+        $app['dispatcher']->addListener(CoreEvents::REQUEST, array($this, 'onCoreRequest'), -255);
 
         if (!isset($app['session.storage.options'])) {
             $app['session.storage.options'] = array();

@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Events as HttpKernelEvents;
+use Symfony\Component\HttpKernel\CoreEvents;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\EventDispatcher\Event;
@@ -69,7 +69,6 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         $this['dispatcher'] = $this->share(function () use ($app) {
             $dispatcher = new EventDispatcher();
             $dispatcher->addSubscriber($app);
-            $dispatcher->addListener(HttpKernelEvents::onCoreView, $app, -10);
 
             return $dispatcher;
         });
@@ -189,7 +188,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function before($callback)
     {
-        $this['dispatcher']->addListener(Events::onSilexBefore, $callback);
+        $this['dispatcher']->addListener(SilexEvents::BEFORE, $callback);
     }
 
     /**
@@ -201,7 +200,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function after($callback)
     {
-        $this['dispatcher']->addListener(Events::onSilexAfter, $callback);
+        $this['dispatcher']->addListener(SilexEvents::AFTER, $callback);
     }
 
     /**
@@ -221,7 +220,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function error($callback)
     {
-        $this['dispatcher']->addListener(Events::onSilexError, function (GetResponseForErrorEvent $event) use ($callback) {
+        $this['dispatcher']->addListener(SilexEvents::ERROR, function (GetResponseForErrorEvent $event) use ($callback) {
             $exception = $event->getException();
             $result = $callback($exception);
 
@@ -337,7 +336,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         } catch (RoutingException $e) {
             // make sure onSilexBefore event is dispatched
 
-            $this['dispatcher']->dispatch(Events::onSilexBefore);
+            $this['dispatcher']->dispatch(SilexEvents::BEFORE);
 
             if ($e instanceof ResourceNotFoundException) {
                 $message = sprintf('No route found for "%s %s"', $this['request']->getMethod(), $this['request']->getPathInfo());
@@ -350,7 +349,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             throw $e;
         }
 
-        $this['dispatcher']->dispatch(Events::onSilexBefore);
+        $this['dispatcher']->dispatch(SilexEvents::BEFORE);
     }
 
     /**
@@ -388,7 +387,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function onCoreResponse(Event $event)
     {
-        $this['dispatcher']->dispatch(Events::onSilexAfter);
+        $this['dispatcher']->dispatch(SilexEvents::AFTER);
     }
 
     /**
@@ -402,7 +401,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     public function onCoreException(GetResponseForExceptionEvent $event)
     {
         $errorEvent = new GetResponseForErrorEvent($this, $event->getRequest(), $event->getRequestType(), $event->getException());
-        $this['dispatcher']->dispatch(Events::onSilexError, $errorEvent);
+        $this['dispatcher']->dispatch(SilexEvents::ERROR, $errorEvent);
 
         if ($errorEvent->hasResponse()) {
             $event->setResponse($errorEvent->getResponse());
@@ -417,10 +416,11 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         // onCoreView listener is added manually because it has lower priority
 
         return array(
-            HttpKernelEvents::onCoreRequest,
-            HttpKernelEvents::onCoreController,
-            HttpKernelEvents::onCoreResponse,
-            HttpKernelEvents::onCoreException,
+            CoreEvents::REQUEST    => 'onCoreRequest',
+            CoreEvents::CONTROLLER => 'onCoreController',
+            CoreEvents::RESPONSE   => 'onCoreResponse',
+            CoreEvents::EXCEPTION  => 'onCoreException',
+            CoreEvents::VIEW       => array('onCoreView', -10),
         );
     }
 }
