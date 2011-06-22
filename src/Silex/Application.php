@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\CoreEvents;
+use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\EventDispatcher\Event;
@@ -310,9 +310,9 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     }
 
     /**
-     * Handles onCoreRequest events.
+     * Handles onKernelRequest events.
      */
-    public function onCoreRequest(KernelEvent $event)
+    public function onKernelRequest(KernelEvent $event)
     {
         $this['request'] = $event->getRequest();
 
@@ -357,7 +357,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      *
      * @param FilterControllerEvent $event A FilterControllerEvent instance
      */
-    public function onCoreController(FilterControllerEvent $event)
+    public function onKernelController(FilterControllerEvent $event)
     {
         $request = $event->getRequest();
         $route = $this['routes']->get($request->attributes->get('_route'));
@@ -371,9 +371,9 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     /**
      * Handles string responses.
      *
-     * Handler for onCoreView.
+     * Handler for onKernelView.
      */
-    public function onCoreView(GetResponseForControllerResultEvent $event)
+    public function onKernelView(GetResponseForControllerResultEvent $event)
     {
         $response = $event->getControllerResult();
         $converter = new StringResponseConverter();
@@ -383,9 +383,9 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     /**
      * Runs after filters.
      *
-     * Handler for onCoreResponse.
+     * Handler for onKernelResponse.
      */
-    public function onCoreResponse(Event $event)
+    public function onKernelResponse(Event $event)
     {
         $this['dispatcher']->dispatch(SilexEvents::AFTER);
     }
@@ -394,11 +394,11 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      * Executes registered error handlers until a response is returned,
      * in which case it returns it to the client.
      *
-     * Handler for onCoreException.
+     * Handler for onKernelException.
      *
      * @see error()
      */
-    public function onCoreException(GetResponseForExceptionEvent $event)
+    public function onKernelException(GetResponseForExceptionEvent $event)
     {
         $errorEvent = new GetResponseForErrorEvent($this, $event->getRequest(), $event->getRequestType(), $event->getException());
         $this['dispatcher']->dispatch(SilexEvents::ERROR, $errorEvent);
@@ -413,14 +413,14 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     static public function getSubscribedEvents()
     {
-        // onCoreView listener is added manually because it has lower priority
+        // onKernelView listener is added manually because it has lower priority
 
         return array(
-            CoreEvents::REQUEST    => 'onCoreRequest',
-            CoreEvents::CONTROLLER => 'onCoreController',
-            CoreEvents::RESPONSE   => 'onCoreResponse',
-            CoreEvents::EXCEPTION  => 'onCoreException',
-            CoreEvents::VIEW       => array('onCoreView', -10),
+            KernelEvents::REQUEST    => 'onKernelRequest',
+            KernelEvents::CONTROLLER => 'onKernelController',
+            KernelEvents::RESPONSE   => 'onKernelResponse',
+            KernelEvents::EXCEPTION  => 'onKernelException',
+            KernelEvents::VIEW       => array('onKernelView', -10),
         );
     }
 }

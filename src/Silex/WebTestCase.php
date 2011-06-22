@@ -19,7 +19,7 @@ use Symfony\Component\HttpKernel\Test\WebTestCase as BaseWebTestCase;
  *
  * @author Igor Wiedler <igor@wiedler.ch>
  */
-abstract class WebTestCase extends BaseWebTestCase
+abstract class WebTestCase extends \PHPUnit_Framework_TestCase
 {
     protected $app;
 
