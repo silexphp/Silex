@@ -36,7 +36,7 @@ class TwigExtension implements ExtensionInterface
                 }
 
                 if (isset($app['form.factory'])) {
-                    $twig->addExtension(new TwigFormExtension(array('div_layout.html.twig')));
+                    $twig->addExtension(new TwigFormExtension(array('form_div_layout.html.twig')));
                 }
             }
 
