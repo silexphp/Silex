@@ -15,6 +15,7 @@ use Silex\Application;
 use Silex\ExtensionInterface;
 
 use Symfony\Component\HttpFoundation\SessionStorage\NativeSessionStorage;
+use Symfony\Component\HttpFoundation\SessionStorage\FilesystemStorage;
 use Symfony\Component\HttpFoundation\Session;
 use Symfony\Component\HttpKernel\KernelEvents;
 
@@ -31,7 +32,11 @@ class SessionExtension implements ExtensionInterface
         });
 
         $app['session.storage'] = $app->share(function () use ($app) {
-            return new NativeSessionStorage($app['session.storage.options']);
+            if (php_sapi_name() == 'cli') {
+                return new FilesystemStorage($app['session.storage.options']);
+            } else {
+                return new NativeSessionStorage($app['session.storage.options']);
+            }
         });
 
         $app['dispatcher']->addListener(KernelEvents::REQUEST, array($this, 'onKernelRequest'), -255);
