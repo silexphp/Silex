@@ -16,7 +16,7 @@ namespace Silex;
  */
 final class SilexEvents
 {
-    const BEFORE = 'onSilexBefore';
-    const AFTER  = 'onSilexAfter';
-    const ERROR  = 'onSilexError';
+    const BEFORE = 'silex.before';
+    const AFTER  = 'silex.after';
+    const ERROR  = 'silex.error';
 }
