@@ -109,7 +109,7 @@ if ('cli' === php_sapi_name() && isset($argv[1])) {
     switch ($argv[1]) {
         case 'update':
             $remoteFilename = 'http://silex-project.org/get/silex.phar';
-            $localFilename = getcwd().'/silex.phar';
+            $localFilename = __DIR__.'/silex.phar';
 
             file_put_contents($localFilename, file_get_contents($remoteFilename));
             break;
