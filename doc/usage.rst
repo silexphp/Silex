@@ -539,6 +539,18 @@ be found. A workaround is using the following include line::
 
 The exact cause of this issue could not be determined yet.
 
+ioncube loader bug
+~~~~~~~~~~~~~~~~~~
+
+Ioncube loader is an extension that can decode PHP encoded file. Unfortunately
+it is not working well with phar archive. If you installed this extension, you
+must disable it by commenting or removing this line in you php.ini file:
+
+.. code-block:: ini
+
+    zend_extension = /usr/lib/php5/20090626+lfs/ioncube_loader_lin_5.3.so
+
+
 IIS configuration
 -----------------
 
