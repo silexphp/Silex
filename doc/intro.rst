@@ -27,7 +27,7 @@ step.
     $app = new Silex\Application();
 
     $app->get('/hello/{name}', function ($name) {
-        return "Hello $name";
+        return 'Hello ' . htmlspecialchars($name);
     });
 
     $app->run();
