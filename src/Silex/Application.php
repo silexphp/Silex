@@ -257,9 +257,9 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      * @param string $text The input text to be escaped
      * @return string Escaped text
      */
-    public function escape($text)
+    public function escape($text, $flags = ENT_COMPAT, $charset = 'UTF-8', $doubleEncode = true)
     {
-        return htmlspecialchars($text, ENT_COMPAT, 'UTF-8');
+        return htmlspecialchars($text, $flags, $charset, $doubleEncode);
     }
 
     /**
