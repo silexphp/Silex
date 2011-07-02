@@ -96,9 +96,10 @@ Here is an example of such an extension::
         public function register(Application $app)
         {
             $app['hello'] = $app->protect(function ($name) use ($app) {
-                $default = ($app['hello.default_name']) ? $app['hello.default_name'] : '';
+                $default = $app['hello.default_name'] ? $app['hello.default_name'] : '';
                 $name = $name ?: $default;
-                return "Hello $name";
+
+                return 'Hello '.$app->escape($name);
             });
         }
     }
@@ -118,6 +119,7 @@ You can now use this extension as follows::
 
     $app->get('/hello', function () use ($app) {
         $name = $app['request']->get('name');
+
         return $app['hello']($name);
     });
 
