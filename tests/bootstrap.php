@@ -14,3 +14,8 @@ if (file_exists($file = __DIR__.'/../autoload.php')) {
 } elseif (file_exists($file = __DIR__.'/../autoload.php.dist')) {
     require_once $file;
 }
+
+if (!class_exists('Twig_Autoloader')) {
+    require_once __DIR__ . '/../vendor/twig/lib/Twig/Autoloader.php';
+    Twig_Autoloader::register();
+}

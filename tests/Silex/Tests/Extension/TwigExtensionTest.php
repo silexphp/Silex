@@ -47,4 +47,21 @@ class TwigExtensionTest extends \PHPUnit_Framework_TestCase
         $response = $app->handle($request);
         $this->assertEquals('Hello john!', $response->getContent());
     }
+
+    public function testRegisterWithOtherEnvironmentClass()
+    {
+        $app = new Application();
+
+        $app->register(new TwigExtension(), array(
+            'twig.templates'    => array('hello' => 'Hello {{ name }}!'),
+            'twig.class_path'   => __DIR__.'/../../../../vendor/twig/lib',
+            'twig.environment_class' => '\\Silex\\Tests\\Extension\\Environment'
+        ));
+
+        $this->assertInstanceof('\\Silex\\Tests\\Extension\\Environment', $app['twig']);
+    }
+}
+
+class Environment extends \Twig_Environment {
+
 }

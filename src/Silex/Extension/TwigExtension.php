@@ -23,7 +23,8 @@ class TwigExtension implements ExtensionInterface
     public function register(Application $app)
     {
         $app['twig'] = $app->share(function () use ($app) {
-            $twig = new \Twig_Environment($app['twig.loader'], isset($app['twig.options']) ? $app['twig.options'] : array());
+            $twigEnvironmentClass = isset($app['twig.environment_class']) ? $app['twig.environment_class'] : '\\Twig_Environment';
+            $twig = new $twigEnvironmentClass($app['twig.loader'], isset($app['twig.options']) ? $app['twig.options'] : array());
             $twig->addGlobal('app', $app);
 
             if (isset($app['symfony_bridges'])) {
