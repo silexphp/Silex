@@ -15,7 +15,6 @@ use Silex\Application;
 use Silex\ExtensionInterface;
 
 use Symfony\Component\HttpFoundation\SessionStorage\NativeSessionStorage;
-use Symfony\Component\HttpFoundation\Session;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 class SessionExtension implements ExtensionInterface
@@ -27,7 +26,9 @@ class SessionExtension implements ExtensionInterface
         $this->app = $app;
 
         $app['session'] = $app->share(function () use ($app) {
-            return new Session($app['session.storage']);
+            $class_name = isset($app['session.class_name']) ? $app['session.class_name'] : 'Symfony\Component\HttpFoundation\Session';
+
+            return new $class_name($app['session.storage']);
         });
 
         $app['session.storage'] = $app->share(function () use ($app) {

@@ -18,6 +18,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\SessionStorage\ArraySessionStorage;
 
 /**
+ * Extended Session for test
+ **/
+class MySession extends \Symfony\Component\HttpFoundation\Session
+{
+}
+
+/**
  * SessionExtension test cases.
  *
  * @author Igor Wiedler <igor@wiedler.ch>
@@ -54,5 +61,13 @@ class SessionExtensionTest extends \PHPUnit_Framework_TestCase
         $request = Request::create('/account');
         $response = $app->handle($request);
         $this->assertEquals('This is your account.', $response->getContent());
+    }
+
+    public function testOwnSession()
+    {
+        $app = new Application();
+
+        $app->register(new SessionExtension(), array('session.class_name' => 'Silex\Tests\Extension\MySession'));
+        $this->assertTrue($app['session'] instanceof \Silex\Tests\Extension\MySession);
     }
 }
