@@ -129,7 +129,7 @@ if ('cli' === php_sapi_name() && basename(__FILE__) === $argv[0] && isset($argv[
             break;
 
         default:
-            printf("Unkown command '%s' (available commands: version, check, and update).\n", $argv[1]);
+            printf("Unknown command '%s' (available commands: version, check, and update).\n", $argv[1]);
     }
 
     exit(0);
