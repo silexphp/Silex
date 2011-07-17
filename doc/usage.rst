@@ -20,8 +20,6 @@ controller definitions, call the ``run`` method on your application.
 
     $app->run();
 
-The use statement aliases ``Silex\Application`` to ``Application``.
-
 One other thing you have to do is configure your web server. If you
 are using apache you can use a ``.htaccess`` file for this.
 
