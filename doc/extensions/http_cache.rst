@@ -44,8 +44,7 @@ Silex applications by using the `http_cache` service::
 
     $app['http_cache']->run();
 
-The extension also provide `ESI
-<http://www.doctrine-project.org/docs/dbal/2.0/en/>`_ support::
+The extension also provide ESI support::
 
     $app->get('/', function() {
         return new Response(<<<EOF
