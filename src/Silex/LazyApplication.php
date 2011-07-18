@@ -54,8 +54,9 @@ class LazyApplication
             throw new \InvalidArgumentException('The provided path did not return a Silex\Application on inclusion.');
         }
 
-        if (null !== $this->configurator) {
-            $this->configurator->__invoke($app);
+        if (null !== $this->configurator && !isset($this->app['silex.configured'])) {
+            $this->configurator->__invoke($this->app);
+            $this->app['silex.configured'] = true;
         }
 
         return $this->app;
