@@ -25,6 +25,7 @@ class LazyApplication
 {
     protected $appPath;
     protected $app;
+    protected $configurator;
 
     /**
      * Constructor.
@@ -34,9 +35,10 @@ class LazyApplication
      *
      * @param string $appPath The absolute path to a Silex app file
      */
-    public function __construct($appPath)
+    public function __construct($appPath, \Closure $configurator = null)
     {
         $this->appPath = $appPath;
+        $this->configurator = $configurator;
     }
 
     /**
@@ -50,6 +52,10 @@ class LazyApplication
 
         if (!$this->app instanceof Application) {
             throw new \InvalidArgumentException('The provided path did not return a Silex\Application on inclusion.');
+        }
+
+        if (null !== $this->configurator) {
+            $this->configurator->__invoke($app);
         }
 
         return $this->app;

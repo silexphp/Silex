@@ -473,6 +473,16 @@ loading them all on each request by using the ``LazyApplication`` wrapper::
 
     $blog = new Silex\LazyApplication(__DIR__.'/blog.php');
 
+You can also pass a configurator to a ``LazyApplication`` in the form of a ``Closure``
+that will take the ``$app``, allowing you to alter in any needed way (for example
+you could inject a service into it)::
+
+    $configurator = function ($app) use ($service) {
+       $app['service'] = $service;
+    };
+
+    $blog = new Silex\LazyApplication(__DIR__.'/blog.php', $configurator);
+
 Console
 -------
 
