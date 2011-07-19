@@ -262,3 +262,8 @@ Core parameters
   Defaults to 443.
 
   This parameter can be used by the ``UrlGeneratorExtension``.
+
+* **debug** (optional): Returns whether or not the application is running in
+  debug mode.
+
+  Defaults to false.
