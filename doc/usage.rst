@@ -40,6 +40,21 @@ are using apache you can use a ``.htaccess`` file for this.
     ``RewriteBase`` statement and adjust the path to point to your directory,
     relative from the webroot.
 
+Debugging
+---------
+
+To ease debugging, enable the debug mode and register the Error extension::
+
+    require_once __DIR__.'/silex.phar';
+
+    $app = new Silex\Application();
+    $app['debug'] = true;
+    $app->register(new Silex\Extension\ErrorExtension());
+
+    // definitions
+
+    $app->run();
+
 Routing
 -------
 

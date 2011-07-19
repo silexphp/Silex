@@ -83,6 +83,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
 
         $this['request.http_port'] = 80;
         $this['request.https_port'] = 443;
+        $this['debug'] = false;
     }
 
     /**

@@ -58,6 +58,7 @@ Included extensions
 There are a few extensions that you get out of the box.
 All of these are within the ``Silex\Extension`` namespace.
 
+* :doc:`ErrorExtension <extensions/error>`
 * :doc:`DoctrineExtension <extensions/doctrine>`
 * :doc:`MonologExtension <extensions/monolog>`
 * :doc:`SessionExtension <extensions/session>`
