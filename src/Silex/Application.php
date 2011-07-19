@@ -66,9 +66,16 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             return new ControllerCollection($app['routes']);
         });
 
+        $this['exception_handler'] = $this->share(function () {
+            return new ExceptionHandler();
+        });
+
         $this['dispatcher'] = $this->share(function () use ($app) {
             $dispatcher = new EventDispatcher();
             $dispatcher->addSubscriber($app);
+            if (isset($app['exception_handler'])) {
+                $dispatcher->addSubscriber($app['exception_handler']);
+            }
 
             return $dispatcher;
         });
@@ -83,6 +90,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
 
         $this['request.http_port'] = 80;
         $this['request.https_port'] = 443;
+        $this['debug'] = false;
     }
 
     /**
