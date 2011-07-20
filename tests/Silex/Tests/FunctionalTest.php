@@ -118,6 +118,7 @@ EOF
         $mounted = new LazyApplication($tmp);
 
         $app = new Application();
+        unset($app['exception_handler']);
         $app->mount('/hello', $mounted);
 
         try {

@@ -347,6 +347,13 @@ If some part of your code throws an exception you will want to display
 some kind of error page to the user. This is what error handlers do. You
 can also use them to do additional things, such as logging.
 
+.. note::
+
+    Silex comes with a default error handler that displays a detailed error
+    message with the stack trace when **debug** is true, and a simple error
+    message otherwise. Error handlers registered via the ``error()`` method
+    always take precedence.
+
 To register an error handler, pass a closure to the ``error`` method
 which takes an ``Exception`` argument and returns a response::
 
@@ -360,7 +367,7 @@ You can also check for specific errors by using ``instanceof``, and handle
 them differently::
 
     use Symfony\Component\HttpFoundation\Response;
-    use Symfony\Component\HttpKernel\Exception\HttpException;
+    use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
     use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
     $app->error(function (\Exception $e) {
@@ -368,7 +375,8 @@ them differently::
             return new Response('The requested page could not be found.', 404);
         }
 
-        $code = ($e instanceof HttpException) ? $e->getStatusCode() : 500;
+        $code = $e instanceof HttpExceptionInterface ? $e->getStatusCode() : 500;
+
         return new Response('We are sorry, but something went terribly wrong.', $code);
     });
 
