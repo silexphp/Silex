@@ -40,7 +40,9 @@ class ExceptionHandler implements EventSubscriberInterface
                 $title = 'Sorry, the page you are looking for could not be found.';
             }
 
-            $response = new Response(sprintf('<!DOCTYPE html><html><head><meta charset="utf-8"><title>%s</title></head><body><h1>%s</h1></body></html>', $title, $title), $code);
+            $css = 'html{background:#eee;padding:10px}body{font:11px Verdana,Arial,sans-serif;color:#333}#content{width:800px;margin:0 auto}#error{background-color:#fff;padding:10px 28px;margin-bottom:20px;border-radius:16px;border:1px solid #ccc}h1{font:30px Georgia,"Times New Roman",Times,serif}';
+            $html = sprintf('<!DOCTYPE html><html><head><meta charset="utf-8"><title>%s</title><style>%s</style></head><body><div id="content"><div id="error"><h1>%s</h1></div></div></body></html>', $title, $css, $title);
+            $response = new Response($html, $code);
         }
 
         $event->setResponse($response);
