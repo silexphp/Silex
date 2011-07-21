@@ -354,13 +354,6 @@ If some part of your code throws an exception you will want to display
 some kind of error page to the user. This is what error handlers do. You
 can also use them to do additional things, such as logging.
 
-.. note::
-
-    Silex comes with a default error handler that displays a detailed error
-    message with the stack trace when **debug** is true, and a simple error
-    message otherwise. Error handlers registered via the ``error()`` method
-    always take precedence.
-
 To register an error handler, pass a closure to the ``error`` method
 which takes an ``Exception`` argument and returns a response::
 
@@ -395,6 +388,24 @@ once a response is returned, the following handlers are ignored.
     Silex ships with an extension for `Monolog <https://github.com/Seldaek/monolog>`_
     which handles logging of errors. Check out the *Extensions* chapter
     for details.
+
+.. tip::
+
+    Silex comes with a default error handler that displays a detailed error
+    message with the stack trace when **debug** is true, and a simple error
+    message otherwise. Error handlers registered via the ``error()`` method
+    always take precedence but you can keep the nice error messages when debug
+    is turned on like this::
+
+        use Symfony\Component\HttpFoundation\Response;
+
+        $app->error(function (\Exception $e, $code) {
+            if ($app['debug']) {
+                return;
+            }
+
+            // logic to handle the error and return a Response
+        });
 
 Redirects
 ---------
