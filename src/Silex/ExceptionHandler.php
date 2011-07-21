@@ -14,7 +14,6 @@ namespace Silex;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Debug\ExceptionHandler as DebugExceptionHandler;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -37,7 +36,7 @@ class ExceptionHandler implements EventSubscriberInterface
             $response = new Response($handler->getErrorMessage($exception), $code);
         } else {
             $title = 'Whoops, looks like something went wrong.';
-            if ($exception instanceof NotFoundHttpException) {
+            if (404 == $code) {
                 $title = 'Sorry, the page you are looking for could not be found.';
             }
 
