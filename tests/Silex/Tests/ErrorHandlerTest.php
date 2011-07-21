@@ -15,6 +15,7 @@ use Silex\Application;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Error handler test cases.
@@ -97,16 +98,24 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->match('/foo', function () {
+        $app->match('/500', function () {
             throw new \RuntimeException('foo exception');
         });
 
-        $app->error(function ($e) {
-            return new Response('foo exception handler');
+        $app->match('/404', function () {
+            throw new NotFoundHttpException('foo exception');
         });
 
-        $request = Request::create('/foo');
-        $this->checkRouteResponse($app, '/foo', 'foo exception handler');
+        $app->error(function ($e, $code) {
+            return new Response('foo exception handler', $code);
+        });
+
+        $response = $this->checkRouteResponse($app, '/500', 'foo exception handler');
+        $this->assertEquals(500, $response->getStatusCode());
+
+        $request = Request::create('/404');
+        $response = $app->handle($request);
+        $this->assertEquals(404, $response->getStatusCode());
     }
 
     public function testMultipleErrorHandlers()
@@ -211,5 +220,7 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
         $request = Request::create($path, $method);
         $response = $app->handle($request);
         $this->assertEquals($expectedContent, $response->getContent(), $message);
+
+        return $response;
     }
 }

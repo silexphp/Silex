@@ -366,25 +366,24 @@ which takes an ``Exception`` argument and returns a response::
 
     use Symfony\Component\HttpFoundation\Response;
 
-    $app->error(function (\Exception $e) {
-        return new Response('We are sorry, but something went terribly wrong.', 500);
+    $app->error(function (\Exception $e, $code) {
+        return new Response('We are sorry, but something went terribly wrong.', $code);
     });
 
-You can also check for specific errors by using ``instanceof``, and handle
-them differently::
+You can also check for specific errors by using the ``$code`` argument, and
+handle them differently::
 
     use Symfony\Component\HttpFoundation\Response;
-    use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
-    use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-    $app->error(function (\Exception $e) {
-        if ($e instanceof NotFoundHttpException) {
-            return new Response('The requested page could not be found.', 404);
+    $app->error(function (\Exception $e, $code) {
+        switch ($code) {
+            case 404:
+                $message = 'The requested page could not be found.';
+            default:
+                $message = 'We are sorry, but something went terribly wrong.';
         }
 
-        $code = $e instanceof HttpExceptionInterface ? $e->getStatusCode() : 500;
-
-        return new Response('We are sorry, but something went terribly wrong.', $code);
+        return new Response($message, $code);
     });
 
 If you want to set up logging you can use a separate error handler for that.

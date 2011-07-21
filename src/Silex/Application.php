@@ -20,6 +20,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -230,7 +231,9 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     {
         $this['dispatcher']->addListener(SilexEvents::ERROR, function (GetResponseForErrorEvent $event) use ($callback) {
             $exception = $event->getException();
-            $result = $callback($exception);
+            $code = $exception instanceof HttpExceptionInterface ? $exception->getStatusCode() : 500;
+
+            $result = $callback($exception, $code);
 
             if (null !== $result) {
                 $event->setStringResponse($result);
