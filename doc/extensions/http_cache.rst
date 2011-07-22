@@ -73,11 +73,11 @@ The extension also provide ESI support::
 For more information, consult the `Symfony2 HTTP Cache documentation
 <http://symfony.com/doc/current/book/http_cache.html>`_.
 
-
 Configuring you're dev. environment 
 -----------------------------------
-When setting up caching, please make sure that the following settings has been 
-configured properly as well, otherwise Silex and the caching module support might 
+
+When setting up caching, please make sure that the following settings have been 
+configured properly as well, otherwise Silex and the caching extension support might 
 not work properly.
 
 * **PHP**: session.cache_limiter
