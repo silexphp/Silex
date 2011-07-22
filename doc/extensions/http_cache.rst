@@ -76,7 +76,7 @@ For more information, consult the `Symfony2 HTTP Cache documentation
 
 Configuring you're dev. environment 
 -----------------------------------
-When setting up caching, please make sure that the following criterias has been 
+When setting up caching, please make sure that the following settings has been 
 configured properly as well, otherwise Silex and the caching module support might 
 not work properly.
 
@@ -84,13 +84,13 @@ not work properly.
 This should be set to an empty value, otherwise, PHP will send anti-caching headers.
 In MAMP and WAMP, the default setting of this is to send anti-caching headers.
 
-_For MAMP_ the default configuration file is located under 
-/Applications/MAMP/conf/phpX.X/php.ini where X.X is the PHP version you're using.
+For MAMP: the default configuration file is located under 
+_/Applications/MAMP/conf/phpX.X/php.ini where X.X is the PHP version you're using._
 
-_For WAMP_ the default configuration file is located uder
-C:\wamp\conf\phpX.X\php.ini where X.X is the PHP version you're using.
+For WAMP: the default configuration file is located under:
+_C:\wamp\conf\phpX.X\php.ini where X.X is the PHP version you're using._
 
 * **Apache**: mod_cache, mod_disk_cach, mod_mem_cache
-Verify you're Apache configuration for caching is set up properly 
-as well, otherwise you might or might not get caching headers outputted as expected.
+Verify you're Apache configuration set up properly so that Apache won't override any 
+of you're caching directives.
 
