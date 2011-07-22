@@ -44,8 +44,7 @@ Silex applications by using the `http_cache` service::
 
     $app['http_cache']->run();
 
-The extension also provide `ESI
-<http://www.doctrine-project.org/docs/dbal/2.0/en/>`_ support::
+The extension also provide ESI support::
 
     $app->get('/', function() {
         return new Response(<<<EOF
@@ -73,3 +72,25 @@ The extension also provide `ESI
 
 For more information, consult the `Symfony2 HTTP Cache documentation
 <http://symfony.com/doc/current/book/http_cache.html>`_.
+
+
+Configuring you're dev. environment
+-----------------------------------
+When setting up caching, please make sure that the following criterias has been 
+configured properly as well, otherwise Silex and the caching module support might 
+not work properly.
+
+* **PHP**: session.cache_limiter
+This should be set to an empty value, otherwise, PHP will send anti-caching headers.
+In MAMP and WAMP, the default setting of this is to send anti-caching headers.
+
+_For MAMP_ the default configuration file is located under 
+/Applications/MAMP/conf/phpX.X/php.ini where X.X is the PHP version you're using.
+
+_For WAMP_ the default configuration file is located uder
+C:\wamp\conf\phpX.X\php.ini where X.X is the PHP version you're using.
+
+* **Apache**: mod_cache, mod_disk_cach, mod_mem_cache
+Verify you're Apache configuration for caching is set up properly 
+as well, otherwise you might or might not get caching headers outputted as expected.
+
