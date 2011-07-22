@@ -84,10 +84,12 @@ not work properly.
 This should be set to an empty value, otherwise, PHP will send anti-caching headers.
 In MAMP and WAMP, the default setting of this is to send anti-caching headers.
 
-For MAMP: the default configuration file is located under 
+For MAMP: the default configuration file is located under:
+
 _/Applications/MAMP/conf/phpX.X/php.ini where X.X is the PHP version you're using._
 
 For WAMP: the default configuration file is located under:
+
 _C:\wamp\conf\phpX.X\php.ini where X.X is the PHP version you're using._
 
 * **Apache**: mod_cache, mod_disk_cach, mod_mem_cache
