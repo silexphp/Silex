@@ -85,12 +85,10 @@ This should be set to an empty value, otherwise, PHP will send anti-caching head
 In MAMP and WAMP, the default setting of this is to send anti-caching headers.
 
 For MAMP: the default configuration file is located under:
-
-_/Applications/MAMP/conf/phpX.X/php.ini where X.X is the PHP version you're using._
+/Applications/MAMP/conf/phpX.X/php.ini where X.X is the PHP version you're using.
 
 For WAMP: the default configuration file is located under:
-
-_C:\wamp\conf\phpX.X\php.ini where X.X is the PHP version you're using._
+C:\wamp\conf\phpX.X\php.ini where X.X is the PHP version you're using.
 
 * **Apache**: mod_cache, mod_disk_cach, mod_mem_cache
 Verify you're Apache configuration set up properly so that Apache won't override any 
