@@ -50,7 +50,8 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
 
         $request = Request::create('/foo');
         $response = $app->handle($request);
-        $this->assertContains('<title>foo exception (500 Internal Server Error)</title>', $response->getContent());
+
+        $this->assertContains('foo exception', $response->getContent());
         $this->assertEquals(500, $response->getStatusCode());
     }
 
@@ -72,7 +73,7 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
 
         $request = Request::create('/foo');
         $response = $app->handle($request);
-        $this->assertContains('<title>No route found for "GET /foo" (500 Internal Server Error)</title>', $response->getContent());
+        $this->assertContains('No route found for "GET /foo"', $response->getContent());
         $this->assertEquals(404, $response->getStatusCode());
     }
 
