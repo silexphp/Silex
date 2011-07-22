@@ -74,7 +74,7 @@ For more information, consult the `Symfony2 HTTP Cache documentation
 <http://symfony.com/doc/current/book/http_cache.html>`_.
 
 
-Configuring you're dev. environment
+Configuring you're dev. environment 
 -----------------------------------
 When setting up caching, please make sure that the following criterias has been 
 configured properly as well, otherwise Silex and the caching module support might 
