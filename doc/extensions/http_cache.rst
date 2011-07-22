@@ -91,6 +91,6 @@ For WAMP: the default configuration file is located under:
 C:\\wamp\\conf\\phpX.X\\php.ini where X.X is the PHP version you're using.
 
 * **Apache**: mod_cache, mod_disk_cach, mod_mem_cache
-Verify you're Apache configuration set up properly so that Apache won't override any 
-of you're caching directives.
+Verify that your Apache configuration is set up properly so that Apache won't override any 
+of your caching directives.
 
