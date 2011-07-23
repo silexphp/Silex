@@ -122,11 +122,9 @@ Dynamic routing
 Now, you can create another controller for viewing individual blog
 posts::
 
-    use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
-    $app->get('/blog/show/{id}', function ($id) use ($blogPosts) {
+    $app->get('/blog/show/{id}', function ($id) use ($app, $blogPosts) {
         if (!isset($blogPosts[$id])) {
-            throw new NotFoundHttpException();
+            $app->abort(404, "Post $id does not exist.");
         }
 
         $post = $blogPosts[$id];
@@ -406,6 +404,17 @@ once a response is returned, the following handlers are ignored.
 
             // logic to handle the error and return a Response
         });
+
+The error handlers are also called when you use ``abort`` to abort a request
+early::
+
+    $app->get('/blog/show/{id}', function ($id) use ($app, $blogPosts) {
+        if (!isset($blogPosts[$id])) {
+            $app->abort(404, "Post $id does not exist.");
+        }
+
+        return new Response(...);
+    });
 
 Redirects
 ---------

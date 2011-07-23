@@ -14,8 +14,6 @@ namespace Silex\Extension;
 use Silex\Application;
 use Silex\ExtensionInterface;
 
-use Symfony\Component\Routing\Generator\UrlGenerator;
-
 class SymfonyBridgesExtension implements ExtensionInterface
 {
     public function register(Application $app)

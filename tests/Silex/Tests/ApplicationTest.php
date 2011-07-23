@@ -14,6 +14,7 @@ namespace Silex\Tests;
 use Silex\Application;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
  * Application test cases.
@@ -102,6 +103,18 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
         $response = $app->handle(Request::create('/foo/foo/bar'));
         $this->assertEquals('foobar', $response->getContent());
+    }
+
+    public function testAbort()
+    {
+        $app = new Application();
+
+        try {
+            $app->abort(404);
+            $this->fail();
+        } catch (HttpException $e) {
+            $this->assertEquals(404, $e->getStatusCode());
+        }
     }
 
     /**

@@ -21,6 +21,7 @@ use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -210,6 +211,17 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     public function after($callback)
     {
         $this['dispatcher']->addListener(SilexEvents::AFTER, $callback);
+    }
+
+    /**
+     * Aborts the current request by sending a proper HTTP error.
+     *
+     * @param integer $statusCode The HTTP status code
+     * @param array   $headers    An array of HTTP headers
+     */
+    public function abort($statusCode, $message = '', array $headers = array())
+    {
+        throw new HttpException($statusCode, $message, null, $headers);
     }
 
     /**
