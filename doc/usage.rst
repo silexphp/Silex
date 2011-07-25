@@ -136,8 +136,9 @@ posts::
 This route definition has a variable ``{id}`` part which is passed
 to the closure.
 
-As you can see, we are throwing a ``NotFoundHttpException`` if the
-post does not exist. We will see how to handle this later on.
+When the post does not exist, we are using ``abort()`` to stop the request
+early. It actually throws an exception, which we will see how to handle later
+on.
 
 Example POST route
 ~~~~~~~~~~~~~~~~~~
