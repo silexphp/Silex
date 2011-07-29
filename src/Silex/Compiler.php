@@ -105,7 +105,7 @@ Phar::mapPhar('silex.phar');
 
 require_once 'phar://silex.phar/autoload.php';
 
-if ('cli' === php_sapi_name() && basename(__FILE__) === $argv[0] && isset($argv[1])) {
+if ('cli' === php_sapi_name() && basename(__FILE__) === basename($argv[0]) && isset($argv[1])) {
     switch ($argv[1]) {
         case 'update':
             $remoteFilename = 'http://silex-project.org/get/silex.phar';
