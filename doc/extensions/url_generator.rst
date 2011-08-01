@@ -25,9 +25,7 @@ Registering
 
 ::
 
-    use Silex\Extension\UrlGeneratorExtension;
-
-    $app->register(new UrlGeneratorExtension());
+    $app->register(new Silex\Extension\UrlGeneratorExtension());
 
 Usage
 -----

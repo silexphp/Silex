@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Mapping\ClassMetadataFactory;
 use Symfony\Component\Validator\Mapping\Loader\StaticMethodLoader;
 use Symfony\Component\Validator\ConstraintValidatorFactory;
 
-class ValidationExtension implements ExtensionInterface
+class ValidatorExtension implements ExtensionInterface
 {
     public function register(Application $app)
     {
@@ -38,8 +38,8 @@ class ValidationExtension implements ExtensionInterface
             return new ConstraintValidatorFactory();
         });
 
-        if (isset($app['validation.class_path'])) {
-            $app['autoloader']->registerNamespace('Symfony\\Component\\Validator', $app['validation.class_path']);
+        if (isset($app['validator.class_path'])) {
+            $app['autoloader']->registerNamespace('Symfony\\Component\\Validator', $app['validator.class_path']);
         }
     }
 }

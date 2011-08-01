@@ -71,9 +71,7 @@ applies to Silex as well. ::
 
 or ::
 
-    use Silex\Application;
-
-    $app = new Application();
+    $app = new Silex\Application();
 
 Parameters
 ~~~~~~~~~~

@@ -10,6 +10,19 @@ Parameters
 * **session.storage.options**: An array of options that is passed to the
   constructor of the ``session.storage`` service.
 
+  In case of the default ``NativeSessionStorage``, the possible options are:
+
+  * **name**: The cookie name (_SESS by default)
+  * **id**: The session id (null by default)
+  * **lifetime**: Cookie lifetime
+  * **path**: Cookie path
+  * **domain**: Cookie domain
+  * **secure**: Cookie secure (HTTPS)
+  * **httponly**: Whether the cookie is http only
+
+  However, all of these are optional. Sessions last as long as the browser
+  is open. To override this, set the ``lifetime`` option.
+
 Services
 --------
 
@@ -17,16 +30,15 @@ Services
   <http://api.symfony.com/2.0/Symfony/Component/HttpFoundation/Session.html>`_.
 
 * **session.storage**: A service that is used for persistence of the
-  session data.
+  session data. Defaults to a `NativeSessionStorage
+  <http://api.symfony.com/2.0/Symfony/Component/HttpFoundation/SessionStorage/NativeSessionStorage.html`_.
 
 Registering
 -----------
 
 ::
 
-    use Silex\Extension\SessionExtension;
-
-    $app->register(new SessionExtension());
+    $app->register(new Silex\Extension\SessionExtension());
 
 Usage
 -----

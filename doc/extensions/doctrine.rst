@@ -60,9 +60,7 @@ and *Doctrine Common* in ``vendor/doctrine-common``.
 
 ::
 
-    use Silex\Extension\DoctrineExtension;
-
-    $app->register(new DoctrineExtension(), array(
+    $app->register(new Silex\Extension\DoctrineExtension(), array(
         'db.options'            => array(
             'driver'    => 'pdo_sqlite',
             'path'      => __DIR__.'/app.db',

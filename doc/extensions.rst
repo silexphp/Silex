@@ -10,18 +10,16 @@ Loading extensions
 In order to load and use an extension, you must register it
 on the application. ::
 
-    use Acme\DatabaseExtension;
+    $app = new Silex\Application();
 
-    $app = new Application();
-
-    $app->register(new DatabaseExtension());
+    $app->register(new Acme\DatabaseExtension());
 
 You can also provide some parameters as a second argument. These
 will be set **before** the extension is registered.
 
 ::
 
-    $app->register(new DatabaseExtension(), array(
+    $app->register(new Acme\DatabaseExtension(), array(
         'database.dsn'      => 'mysql:host=localhost;dbname=myapp',
         'database.user'     => 'root',
         'database.password' => 'secret_root_password',
@@ -64,7 +62,9 @@ All of these are within the ``Silex\Extension`` namespace.
 * :doc:`MonologExtension <extensions/monolog>`
 * :doc:`SessionExtension <extensions/session>`
 * :doc:`TwigExtension <extensions/twig>`
+* :doc:`TranslationExtension <extensions/translation>`
 * :doc:`UrlGeneratorExtension <extensions/url_generator>`
+* :doc:`ValidatorExtension <extensions/validator>`
 
 Creating an extension
 ---------------------
@@ -108,11 +108,9 @@ is also missing, it will use an empty string.
 
 You can now use this extension as follows::
 
-    use Acme\HelloExtension;
+    $app = new Silex\Application();
 
-    $app = new Application();
-
-    $app->register(new HelloExtension(), array(
+    $app->register(new Acme\HelloExtension(), array(
         'hello.default_name' => 'Igor',
     ));
 
