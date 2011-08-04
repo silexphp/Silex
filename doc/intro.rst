@@ -39,7 +39,8 @@ Next we define a route to ``/hello/{name}`` that matches for ``GET``
 requests. When the route matches, the function is executed and the return
 value is sent back to the client.
 
-Finally, the app is run. It's really that easy!
+Finally, the app is run. Visit ``/hello/world`` to see the result.
+It's really that easy!
 
 Installing Silex is as easy as it can get. Download the `silex.phar`_ file
 and you're done!
