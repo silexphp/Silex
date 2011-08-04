@@ -72,3 +72,25 @@ The extension also provide ESI support::
 
 For more information, consult the `Symfony2 HTTP Cache documentation
 <http://symfony.com/doc/current/book/http_cache.html>`_.
+
+Configuring you're dev. environment 
+-----------------------------------
+
+When setting up caching, please make sure that the following settings have been 
+configured properly as well, otherwise Silex and the caching extension support might 
+not work properly.
+
+* **PHP**: session.cache_limiter
+This should be set to an empty value, otherwise, PHP will send anti-caching headers.
+In MAMP and WAMP, the default setting of this is to send anti-caching headers.
+
+For MAMP: the default configuration file is located under:
+/Applications/MAMP/conf/phpX.X/php.ini where X.X is the PHP version you're using.
+
+For WAMP: the default configuration file is located under:
+C:\\wamp\\conf\\phpX.X\\php.ini where X.X is the PHP version you're using.
+
+* **Apache**: mod_cache, mod_disk_cach, mod_mem_cache
+Verify that your Apache configuration is set up properly so that Apache won't override any 
+of your caching directives.
+
