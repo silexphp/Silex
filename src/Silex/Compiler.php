@@ -105,8 +105,8 @@ Phar::mapPhar('silex.phar');
 
 require_once 'phar://silex.phar/autoload.php';
 
-if ('cli' === php_sapi_name() && basename(__FILE__) === basename($argv[0]) && isset($argv[1])) {
-    switch ($argv[1]) {
+if ('cli' === php_sapi_name() && basename(__FILE__) === basename($_SERVER['argv'][0]) && isset($_SERVER['argv'][1])) {
+    switch ($_SERVER['argv'][1]) {
         case 'update':
             $remoteFilename = 'http://silex-project.org/get/silex.phar';
             $localFilename = __DIR__.'/silex.phar';
@@ -129,7 +129,7 @@ if ('cli' === php_sapi_name() && basename(__FILE__) === basename($argv[0]) && is
             break;
 
         default:
-            printf("Unknown command '%s' (available commands: version, check, and update).\n", $argv[1]);
+            printf("Unknown command '%s' (available commands: version, check, and update).\n", $_SERVER['argv'][1]);
     }
 
     exit(0);
