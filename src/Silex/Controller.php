@@ -34,7 +34,6 @@ class Controller
     public function __construct(Route $route)
     {
         $this->route = $route;
-        $this->bind($this->defaultRouteName());
     }
 
     /**
@@ -140,7 +139,7 @@ class Controller
         $this->isFrozen = true;
     }
 
-    private function defaultRouteName()
+    public function bindDefaultRouteName()
     {
         $requirements = $this->route->getRequirements();
         $method = isset($requirements['_method']) ? $requirements['_method'] : '';
@@ -149,6 +148,6 @@ class Controller
         $routeName = str_replace(array('/', ':', '|', '-'), '_', $routeName);
         $routeName = preg_replace('/[^a-z0-9A-Z_.]+/', '', $routeName);
 
-        return $routeName;
+        $this->routeName = $routeName;
     }
 }

@@ -48,6 +48,9 @@ class ControllerCollection
     public function flush()
     {
         foreach ($this->controllers as $controller) {
+            if (!$controller->getRouteName()) {
+                $controller->bindDefaultRouteName();
+            }
             $this->routes->add($controller->getRouteName(), $controller->getRoute());
             $controller->freeze();
         }
