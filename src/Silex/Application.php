@@ -117,20 +117,12 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      *
      * @param string $pattern Matched route pattern
      * @param mixed $to Callback that returns the response when matched
-     * @param string $method Matched HTTP methods, multiple can be supplied,
-     *                       delimited by a pipe character '|', eg. 'GET|POST'.
      *
      * @return Silex\Controller
      */
-    public function match($pattern, $to, $method = null)
+    public function match($pattern, $to)
     {
-        $requirements = array();
-
-        if ($method) {
-            $requirements['_method'] = $method;
-        }
-
-        $route = new Route($pattern, array('_controller' => $to), $requirements);
+        $route = new Route($pattern, array('_controller' => $to));
         $controller = new Controller($route);
         $this['controllers']->add($controller);
 
@@ -147,7 +139,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function get($pattern, $to)
     {
-        return $this->match($pattern, $to, 'GET');
+        return $this->match($pattern, $to)->method('GET');
     }
 
     /**
@@ -160,7 +152,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function post($pattern, $to)
     {
-        return $this->match($pattern, $to, 'POST');
+        return $this->match($pattern, $to)->method('POST');
     }
 
     /**
@@ -173,7 +165,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function put($pattern, $to)
     {
-        return $this->match($pattern, $to, 'PUT');
+        return $this->match($pattern, $to)->method('PUT');
     }
 
     /**
@@ -186,7 +178,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function delete($pattern, $to)
     {
-        return $this->match($pattern, $to, 'DELETE');
+        return $this->match($pattern, $to)->method('DELETE');
     }
 
     /**

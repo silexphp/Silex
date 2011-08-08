@@ -118,7 +118,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
         $app->match('/bar', function () {
             return 'bar';
-        }, 'GET|POST');
+        })->method('GET|POST');
 
         $app->get('/resource', function () {
             return 'get resource';
