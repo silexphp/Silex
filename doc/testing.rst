@@ -89,6 +89,23 @@ method, which returns your application. It will probably look like this::
 Make sure you do **not** use ``require_once`` here, as this method will be
 executed before every test.
 
+.. tip::
+
+    By default, the application behaves in the same way as when using it from
+    a browser. But when an error occurs, it is sometimes easier to get raw
+    exceptions instead of HTML pages. It is rather simple if you tweak the
+    application configuration in the ``createApplication()`` method like
+    follows::
+
+        public function createApplication()
+        {
+            $app = require __DIR__.'/path/to/app.php';
+            $app['debug'] = true;
+            unset($app['exception_handler']);
+
+            return $app;
+        }
+
 The WebTestCase provides a ``createClient`` method. A client acts as a browser,
 and allows you to interact with your application. Here's how it works::
 
