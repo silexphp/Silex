@@ -209,7 +209,7 @@ of them.
 
     $app['autoloader']->registerPrefix('Twig_', $app['twig.class_path']);
 
-  For more information, check out the `Symfony autoloader documentation
+  For more information, check out the `Symfony2 autoloader documentation
   <http://symfony.com/doc/2.0/cookbook/tools/autoloader.html>`_.
 
 * **routes**: The `RouteCollection
