@@ -199,9 +199,16 @@ can also call ``match``, which will match all methods.
 
 ::
 
-    $app->put('/blog', function () {
+    $app->match('/blog', function () {
         ...
     });
+
+You can then restrict the allowed methods via the ``method`` method::
+
+    $app->match('/blog', function () {
+        ...
+    })
+    ->method('PATCH');
 
 .. note::
 

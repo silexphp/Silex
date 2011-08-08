@@ -110,6 +110,19 @@ class Controller
     }
 
     /**
+     * Sets the requirement for the HTTP method.
+     *
+     * @param string $method The HTTP method name. Multiple methods can be supplied,
+     *                       delimited by a pipe character '|', eg. 'GET|POST'.
+     */
+    public function method($method)
+    {
+        $this->route->setRequirement('_method', $method);
+
+        return $this;
+    }
+
+    /**
      * Sets the requirement of HTTP (no HTTPS) on this controller.
      */
     public function requireHttp()
