@@ -37,3 +37,9 @@
 [submodule "vendor/Symfony/Component/Process"]
 	path = vendor/Symfony/Component/Process
 	url = https://github.com/symfony/Process
+[submodule "vendor/doctrine-common"]
+	path = vendor/doctrine-common
+	url = https://github.com/doctrine/common
+[submodule "vendor/doctrine-dbal"]
+	path = vendor/doctrine-dbal
+	url = https://github.com/doctrine/dbal
