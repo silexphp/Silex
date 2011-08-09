@@ -8,16 +8,14 @@ Loading extensions
 ------------------
 
 In order to load and use an extension, you must register it
-on the application. ::
+on the application::
 
     $app = new Silex\Application();
 
     $app->register(new Acme\DatabaseExtension());
 
 You can also provide some parameters as a second argument. These
-will be set **before** the extension is registered.
-
-::
+will be set **before** the extension is registered::
 
     $app->register(new Acme\DatabaseExtension(), array(
         'database.dsn'      => 'mysql:host=localhost;dbname=myapp',
@@ -70,9 +68,7 @@ All of these are within the ``Silex\Extension`` namespace.
 Creating an extension
 ---------------------
 
-Extensions must implement the ``Silex\ExtensionInterface``.
-
-::
+Extensions must implement the ``Silex\ExtensionInterface``::
 
     interface ExtensionInterface
     {

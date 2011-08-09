@@ -38,9 +38,7 @@ Registering
 -----------
 
 Make sure you place a copy of the Symfony2 Translation component in
-``vendor/symfony/src``. You can simply clone the whole Symfony2 into vendor.
-
-::
+``vendor/symfony/src``. You can simply clone the whole Symfony2 into vendor::
 
     $app->register(new Silex\Extension\TranslationExtension(), array(
         'locale_fallback'           => 'en',
@@ -51,9 +49,7 @@ Usage
 -----
 
 The Translation extension provides a ``translator`` service and makes use of
-the ``translator.messages`` parameter.
-
-::
+the ``translator.messages`` parameter::
 
     $app['translator.messages'] = array(
         'en' => array(
@@ -101,9 +97,7 @@ show you how to load translations from external YAML files.
 
 First you will need the ``Config`` and ``Yaml`` components from Symfony2. Also
 make sure you register them with the autoloader. You can just clone the entire
-Symfony2 repository into ``vendor/symfony``.
-
-::
+Symfony2 repository into ``vendor/symfony``::
 
     $app['autoloader']->registerNamespace('Symfony', __DIR__.'/vendor/symfony/src');
 

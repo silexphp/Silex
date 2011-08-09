@@ -8,9 +8,7 @@ Bootstrap
 
 To include the Silex all you need to do is require the ``silex.phar``
 file and create an instance of ``Silex\Application``. After your
-controller definitions, call the ``run`` method on your application.
-
-::
+controller definitions, call the ``run`` method on your application::
 
     require_once __DIR__.'/silex.phar';
 
@@ -146,9 +144,7 @@ Example POST route
 POST routes signify the creation of a resource. An example for this is a
 feedback form. We will use `Swift Mailer
 <http://swiftmailer.org/>`_ and assume a copy of it to be present in the
-``vendor/swiftmailer`` directory.
-
-::
+``vendor/swiftmailer`` directory::
 
     require_once __DIR__.'/vendor/swiftmailer/lib/swift_required.php';
 
@@ -193,9 +189,7 @@ Other methods
 
 You can create controllers for most HTTP methods. Just call one of these
 methods on your application: ``get``, ``post``, ``put``, ``delete``. You
-can also call ``match``, which will match all methods.
-
-::
+can also call ``match``, which will match all methods::
 
     $app->match('/blog', function () {
         ...
@@ -223,9 +217,7 @@ As has been show before you can define variable parts in a route like this::
     });
 
 It is also possible to have more than one variable part, just make sure the
-closure arguments match the names of the variable parts.
-
-::
+closure arguments match the names of the variable parts::
 
     $app->get('/blog/show/{postId}/{commentId}', function ($postId, $commentId) {
         ...
@@ -314,9 +306,7 @@ Default values
 ~~~~~~~~~~~~~~
 
 You can define a default value for any route variable by calling ``value`` on
-the ``Controller`` object.
-
-::
+the ``Controller`` object::
 
     $app->get('/{pageName}', function ($pageName) {
         ...
@@ -332,9 +322,7 @@ Named routes
 Certain extensions (such as ``UrlGenerator``) can make use of named routes.
 By default Silex will generate a route name for you, that cannot really be
 used. You can give a route a name by calling ``bind`` on the ``Controller``
-object that is returned by the routing methods.
-
-::
+object that is returned by the routing methods::
 
     $app->get('/', function () {
         ...

@@ -44,9 +44,7 @@ Registering
 -----------
 
 Make sure you place a copy of *Monolog* in the ``vendor/monolog``
-directory.
-
-::
+directory::
 
     $app->register(new Silex\Extension\MonologExtension(), array(
         'monolog.logfile'       => __DIR__.'/development.log',

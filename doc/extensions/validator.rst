@@ -33,9 +33,7 @@ Registering
 -----------
 
 Make sure you place a copy of the Symfony2 Validator component in
-``vendor/symfony/src``. You can simply clone the whole Symfony2 into vendor.
-
-::
+``vendor/symfony/src``. You can simply clone the whole Symfony2 into vendor::
 
     $app->register(new Silex\Extension\ValidatorExtension(), array(
         'validator.class_path'    => __DIR__.'/vendor/symfony/src',
@@ -49,9 +47,8 @@ The Validator extension provides a ``validator`` service.
 Validating values
 ~~~~~~~~~~~~~~~~~
 
-You can validate values directly using the ``validateValue`` validator method.
-
-::
+You can validate values directly using the ``validateValue`` validator
+method::
 
     use Symfony\Component\Validator\Constraints;
 
@@ -68,9 +65,7 @@ Validating object properties
 If you want to add validations to a class, you can implement a static
 ``loadValidatorMetadata`` method as described under *Services*. This allows
 you to define constraints for your object properties. It also works with
-getters.
-
-::
+getters::
 
     use Symfony\Component\Validator\Mapping\ClassMetadata;
     use Symfony\Component\Validator\Constraints;

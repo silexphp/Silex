@@ -26,9 +26,7 @@ PHPUnit
 is the de-facto standard testing framework for PHP. It was built for
 writing unit tests, but it can be used for functional tests too. You write
 tests by creating a new class, that extends the ``PHPUnit_Framework_TestCase``.
-Your test cases are methods prefixed with ``test``.
-
-::
+Your test cases are methods prefixed with ``test``::
 
     class ContactFormTest extends PHPUnit_Framework_TestCase
     {
@@ -40,9 +38,7 @@ Your test cases are methods prefixed with ``test``.
 
 In your test cases, you do assertions on the state of what you are testing. In
 this case we are testing a contact form, so we would want to assert that the
-page loaded correctly and contains our form.
-
-::
+page loaded correctly and contains our form::
 
         public function testInitialPage()
         {

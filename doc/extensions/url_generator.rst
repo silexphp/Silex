@@ -30,9 +30,7 @@ Registering
 Usage
 -----
 
-The UrlGenerator extension provides a ``url_generator`` service.
-
-::
+The UrlGenerator extension provides a ``url_generator`` service::
 
     $app->get('/', function () {
         return 'welcome to the homepage';

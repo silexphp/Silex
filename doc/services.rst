@@ -65,11 +65,11 @@ makes strong use of closures implements the ArrayAccess interface.
 
 We will start off by creating a new instance of Pimple -- and
 because ``Silex\Application`` extends ``Pimple`` all of this
-applies to Silex as well. ::
+applies to Silex as well::
 
     $container = new Pimple();
 
-or ::
+or::
 
     $app = new Silex\Application();
 
@@ -82,12 +82,12 @@ an array key on the container::
     $app['some_parameter'] = 'value';
 
 The array key can be anything, by convention periods are
-used for namespacing. ::
+used for namespacing::
 
     $app['asset.host'] = 'http://cdn.mysite.com/';
 
 Reading parameter values is possible with the same
-syntax. ::
+syntax::
 
     echo $app['some_parameter'];
 
@@ -97,9 +97,7 @@ Service definitions
 Defining services is no different than defining parameters.
 You just set an array key on the container to be a closure.
 However, when you retrieve the service, the closure is executed.
-This allows for lazy service creation.
-
-::
+This allows for lazy service creation::
 
     $app['some_service'] = function () {
         return new Service();
@@ -117,7 +115,7 @@ Shared services
 
 You may want to use the same instance of a service across all
 of your code. In order to do that you can make a *shared*
-service. ::
+service::
 
     $app['some_service'] = $app->share(function () {
         return new Service();
@@ -134,7 +132,7 @@ from within a service definition closure. For example when
 fetching services the current service depends on.
 
 Because of this, the container is passed to the closure as
-an argument. ::
+an argument::
 
     $app['some_service'] = function ($app) {
         return new Service($app['some_other_service'], $app['some_service.config']);
@@ -162,9 +160,7 @@ as a parameter, so that you can fetch it and execute it
 yourself -- with your own arguments.
 
 This is why Pimple allows you to protect your closures
-from being executed, by using the ``protect`` method.
-
-::
+from being executed, by using the ``protect`` method::
 
     $app['closure_parameter'] = $app->protect(function ($a, $b) {
         return $a + $b;
