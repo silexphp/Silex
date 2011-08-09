@@ -13,7 +13,6 @@ namespace Silex;
 
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\HttpKernel\Controller\ControllerResolver;
 use Symfony\Component\HttpKernel\Event\KernelEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
@@ -36,6 +35,7 @@ use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\ClassLoader\UniversalClassLoader;
 use Silex\RedirectableUrlMatcher;
+use Silex\ControllerResolver;
 
 /**
  * The Silex framework class.
@@ -82,8 +82,8 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             return $dispatcher;
         });
 
-        $this['resolver'] = $this->share(function () {
-            return new ControllerResolver();
+        $this['resolver'] = $this->share(function () use ($app) {
+            return new ControllerResolver($app);
         });
 
         $this['kernel'] = $this->share(function () use ($app) {

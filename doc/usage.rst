@@ -122,7 +122,7 @@ Dynamic routing
 Now, you can create another controller for viewing individual blog
 posts::
 
-    $app->get('/blog/show/{id}', function ($id) use ($app, $blogPosts) {
+    $app->get('/blog/show/{id}', function (Silex\Application $app, $id) use ($blogPosts) {
         if (!isset($blogPosts[$id])) {
             $app->abort(404, "Post $id does not exist.");
         }
@@ -152,11 +152,10 @@ feedback form. We will use `Swift Mailer
 
     require_once __DIR__.'/vendor/swiftmailer/lib/swift_required.php';
 
+    use Symfony\Component\HttpFoundation\Request;
     use Symfony\Component\HttpFoundation\Response;
 
-    $app->post('/feedback', function () use ($app) {
-        $request = $app['request'];
-
+    $app->post('/feedback', function (Request $request) {
         $message = \Swift_Message::newInstance()
             ->setSubject('[YourSite] Feedback')
             ->setFrom(array('noreply@yoursite.com'))
@@ -173,9 +172,8 @@ feedback form. We will use `Swift Mailer
 It is pretty straight forward. We include the Swift Mailer library,
 set up a message and send that message.
 
-The current ``request`` service is retrieved using the array key syntax.
-You can find more information about services in the *Services* chapter.
-The request is an instance of `Request
+The current ``request`` is automatically injected by Silex to the Closure
+thanks to the type hinting. It is an instance of `Request
 <http://api.symfony.com/2.0/Symfony/Component/HttpFoundation/Request.html>`_,
 so you can fetch variables using the request's ``get`` method.
 
@@ -238,6 +236,21 @@ While it's not suggested, you could also do this (note the switched arguments)::
     $app->get('/blog/show/{postId}/{commentId}', function ($commentId, $postId) {
         ...
     });
+
+You can also ask for the current Request and Application object::
+
+    $app->get('/blog/show/{id}', function (Application $app, Request $request, $id) {
+        ...
+    });
+
+.. note::
+
+    Note for the Application and Request objects, Silex does the injection
+    based on the type hinting and not on the variable name::
+
+        $app->get('/blog/show/{id}', function (Application $foo, Request $bar, $id) {
+            ...
+        });
 
 Route variables converters
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -405,7 +418,7 @@ once a response is returned, the following handlers are ignored.
 
         use Symfony\Component\HttpFoundation\Response;
 
-        $app->error(function (\Exception $e, $code) {
+        $app->error(function (\Exception $e, $code) use ($app) {
             if ($app['debug']) {
                 return;
             }
@@ -416,7 +429,7 @@ once a response is returned, the following handlers are ignored.
 The error handlers are also called when you use ``abort`` to abort a request
 early::
 
-    $app->get('/blog/show/{id}', function ($id) use ($app, $blogPosts) {
+    $app->get('/blog/show/{id}', function (Silex\Application $app, $id) use ($blogPosts) {
         if (!isset($blogPosts[$id])) {
             $app->abort(404, "Post $id does not exist.");
         }
@@ -430,7 +443,9 @@ Redirects
 You can redirect to another page by returning a redirect response, which
 you can create by calling the ``redirect`` method::
 
-    $app->get('/', function () use ($app) {
+    use Silex\Application;
+
+    $app->get('/', function (Silex\Application $app) {
         return $app->redirect('/hello');
     });
 
@@ -451,7 +466,7 @@ correctly, to prevent Cross-Site-Scripting attacks.
 * **Escaping HTML**: PHP provides the ``htmlspecialchars`` function for this.
   Silex provides a shortcut ``escape`` method::
 
-      $app->get('/name', function () use ($app) {
+      $app->get('/name', function (Silex\Application $app) {
           $name = $app['request']->get('name');
           return "You provided the name {$app->escape($name)}.";
       });
@@ -464,7 +479,7 @@ correctly, to prevent Cross-Site-Scripting attacks.
 
       use Symfony\Component\HttpFoundation\Response;
 
-      $app->get('/name.json', function () use ($app) {
+      $app->get('/name.json', function (Silex\Application $app) {
           $name = $app['request']->get('name');
           return new Response(
               json_encode(array('name' => $name)),
