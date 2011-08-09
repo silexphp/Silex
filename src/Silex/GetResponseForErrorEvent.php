@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Symfony package.
+ * This file is part of the Silex framework.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *
