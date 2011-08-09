@@ -137,4 +137,21 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
             array('abc', 'abc'),
         );
     }
+
+    public function testControllersAsMethods()
+    {
+        $app = new Application();
+unset($app['exception_handler']);
+        $app->get('/{name}', 'Silex\Tests\FooController::barAction');
+
+        $this->assertEquals('Hello Fabien', $app->handle(Request::create('/Fabien'))->getContent());
+    }
+}
+
+class FooController
+{
+    public function barAction(Application $app, $name)
+    {
+        return 'Hello '.$app->escape($name);
+    }
 }
