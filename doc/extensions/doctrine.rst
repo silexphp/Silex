@@ -11,7 +11,7 @@ The *DoctrineExtension* provides integration with the `Doctrine DBAL
 Parameters
 ----------
 
-* **dbal.options**: Array of Doctrine DBAL options.
+* **db.options**: Array of Doctrine DBAL options.
 
   These options are available:
 
@@ -32,29 +32,25 @@ Parameters
   * **path**: Only relevant for ``pdo_sqlite``, specifies the path to
     the SQLite database.
 
-  * **default**: (optional) When using multiple databases, allows you 
-    to set the default connection to one other than the first 
-    connection
-
   These and additional options are described in detail in the `Doctrine DBAL
   configuration documentation <http://www.doctrine-project.org/docs/dbal/2.0/en/reference/configuration.html>`_.
 
-* **dbal.dbal.class_path** (optional): Path to where the
+* **db.dbal.class_path** (optional): Path to where the
   Doctrine DBAL is located.
 
-* **dbal.common.class_path** (optional): Path to where
+* **db.common.class_path** (optional): Path to where
   Doctrine Common is located.
 
 Services
 --------
 
-* **dbal**: The database connection, instance of
+* **db**: The database connection, instance of
   ``Doctrine\DBAL\Connection``.
 
-* **dbal.config**: Configuration object for Doctrine. Defaults to
+* **db.config**: Configuration object for Doctrine. Defaults to
   an empty ``Doctrine\DBAL\Configuration``.
 
-* **dbal.event_manager**: Event Manager for Doctrine.
+* **db.event_manager**: Event Manager for Doctrine.
 
 Registering
 -----------
@@ -63,12 +59,12 @@ Make sure you place a copy of *Doctrine DBAL* in ``vendor/doctrine-dbal``
 and *Doctrine Common* in ``vendor/doctrine-common``::
 
     $app->register(new Silex\Extension\DoctrineExtension(), array(
-        'dbal.options'            => array(
+        'db.options'            => array(
             'driver'    => 'pdo_sqlite',
             'path'      => __DIR__.'/app.db',
         ),
-        'dbal.dbal.class_path'    => __DIR__.'/vendor/doctrine-dbal/lib',
-        'dbal.common.class_path'  => __DIR__.'/vendor/doctrine-common/lib',
+        'db.dbal.class_path'    => __DIR__.'/vendor/doctrine-dbal/lib',
+        'db.common.class_path'  => __DIR__.'/vendor/doctrine-common/lib',
     ));
 
 Usage
@@ -79,30 +75,22 @@ example::
 
     $app->get('/blog/show/{id}', function ($id) use ($app) {
         $sql = "SELECT * FROM posts WHERE id = ?";
-        $post = $app['dbal']->fetchAssoc($sql, array((int) $id));
+        $post = $app['db']->fetchAssoc($sql, array((int) $id));
 
         return  "<h1>{$post['title']}</h1>".
                 "<p>{$post['body']}</p>";
     });
 
-
 Using multiple databases
 ------------------------
 
-The Doctrine extension can allow access to multiple databases.  In order
-configure these data sources you must remove the **db.options** from 
-your extension registration, and replace it with an array named **dbs**.
-
-Each key of the dbs array should contain a configuration of options.
-
-Registering multiple database connections::
+The Doctrine extension can allow access to multiple databases. In order to
+configure the data sources, replace the **db.options** with **dbs.options**.
+**dbs.options** is an array of configurations where keys are connection names
+and values are options::
 
     $app->register(new Silex\Extension\DoctrineExtension(), array(
-        'dbal.dbs' => array (
-            'sqlite' => array(
-                'driver'    => 'pdo_sqlite',
-                'path'      => __DIR__.'/app.db',
-            ),
+        'dbs.options' => array (
             'mysql_read' => array(
                 'driver'    => 'pdo_mysql',
                 'host'      => 'mysql_read.someplace.tld'
@@ -118,33 +106,29 @@ Registering multiple database connections::
                 'password'  => 'my_password',
             ),
         ),
-        'dbal.dbal.class_path'    => __DIR__.'/vendor/doctrine-dbal/lib',
-        'dbal.common.class_path'  => __DIR__.'/vendor/doctrine-common/lib',
+        'db.dbal.class_path'    => __DIR__.'/vendor/doctrine-dbal/lib',
+        'db.common.class_path'  => __DIR__.'/vendor/doctrine-common/lib',
     ));
 
-By default, the first connection registered is the default.  This can simply be accessed as you would if there was only one connection.  Given the above DB registration these two lines are equal:
+The first registered connection is the default and can simply be accessed as
+you would if there was only one connection. Given the above configuration,
+these two lines are equivalent::
 
-	$app['dbal']->fetchAssoc('SELECT * FROM table');
-	
-	$app['dbal.connection.sqlite']->fetchAssoc('SELECT * FROM table');
+    $app['db']->fetchAssoc('SELECT * FROM table');
 
-The default connection can be selected by setting the **default** option toggle.
+    $app['dbs']['mysql_read']->fetchAssoc('SELECT * FROM table');
 
 Using multiple connections::
 
-    $app->get('/joined/{searchOne}/{searchTwo}, function ($searchOne, $searchTwo) use ($app)) {
-        $sqliteQuery = "SELECT * FROM table_one WHERE id = ?";
-        $one = $app['dbal.connection.sqlite']->fetchAssoc($sqliteQuery, array((int) $searchOne));
-        
-        $mysqlQuery = "SELECT * FROM table_two WHERE id = ?";
-        $two = $app['dbal.connection.mysql_read']->fetchAssoc($mysqlQuery, array((int) $searchTwo));
+    $app->get('/blog/show/{id}', function ($id) use ($app) {
+        $sql = "SELECT * FROM posts WHERE id = ?";
+        $post = $app['dbs']['mysql_read']->fetchAssoc($mysqlQuery, array((int) $id));
 
-        $mysqlUpdate = "UPDATE table_two SET value = ? WHERE id = ?";
-        $app['dbal.connection.mysql_write']->execute($mysqlUpdate, array((int) $searchTwo, 'newValue'));
-        
-        return  "<h1>{$one['column_from_sqlite']}</h1>".
-                "<p>{$two['column_from_mysql']}</p>";
-        
+        $mysqlUpdate = "UPDATE posts SET value = ? WHERE id = ?";
+        $app['dbs']['mysql_write']->execute($mysqlUpdate, array('newValue', (int) $id));
+
+        return  "<h1>{$post['title']}</h1>".
+                "<p>{$post['body']}</p>";
     });
 
 For more information, consult the `Doctrine DBAL documentation
