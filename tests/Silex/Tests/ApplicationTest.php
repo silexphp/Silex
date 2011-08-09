@@ -141,7 +141,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testControllersAsMethods()
     {
         $app = new Application();
-unset($app['exception_handler']);
+
         $app->get('/{name}', 'Silex\Tests\FooController::barAction');
 
         $this->assertEquals('Hello Fabien', $app->handle(Request::create('/Fabien'))->getContent());
