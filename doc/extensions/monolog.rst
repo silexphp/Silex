@@ -50,3 +50,30 @@ directory::
         'monolog.logfile'       => __DIR__.'/development.log',
         'monolog.class_path'    => __DIR__.'/vendor/monolog/src',
     ));
+
+.. note::
+
+    Monolog is not compiled into the ``silex.phar`` file. You have to
+    add your own copy of Monolog to your application.
+
+Usage
+-----
+
+The MonologExtension provides a ``monolog`` service. You can use
+it to add log entries for any logging level through ``addDebug()``,
+``addInfo()``, ``addWarning()`` and ``addError()``.
+
+::
+
+    use Symfony\Component\HttpFoundation\Response;
+
+    $app->post('/user', function () use ($app) {
+        // ...
+
+        $app['monolog']->addInfo(sprintf("User '%s' registered.", $username));
+
+        return new Response('', 201);
+    });
+
+For more information, check out the `Monolog documentation
+<https://github.com/Seldaek/monolog>`_.

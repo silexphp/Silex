@@ -64,11 +64,16 @@ The Twig extension provides a ``twig`` service::
 
 This will render a file named ``views/hello.twig``.
 
-It also registers the application as a global named
-``app``. So you can access any services from within your
-view. For example to access ``$app['request']->getHost()``,
-just put this in your template:
+.. tip::
 
-.. code-block:: jinja
+    The TwigExtension also registers the application as a global
+    named ``app``. So you can access any services from within your
+    view. For example to access ``$app['request']->getHost()``,
+    just put this in your template:
 
-    {{ app.request.host }}
+    .. code-block:: jinja
+
+        {{ app.request.host }}
+
+For more information, check out the `Twig documentation
+<http://www.twig-project.org>`_.
