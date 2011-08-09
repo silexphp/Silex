@@ -39,9 +39,7 @@ Registering
 -----------
 
 Make sure you place a copy of *Twig* in the ``vendor/twig``
-directory.
-
-::
+directory::
 
     $app->register(new Silex\Extension\TwigExtension(), array(
         'twig.path'       => __DIR__.'/views',
@@ -56,9 +54,7 @@ directory.
 Usage
 -----
 
-The Twig extension provides a ``twig`` service.
-
-::
+The Twig extension provides a ``twig`` service::
 
     $app->get('/hello/{name}', function ($name) use ($app) {
         return $app['twig']->render('hello.twig', array(

@@ -56,9 +56,7 @@ Registering
 -----------
 
 Make sure you place a copy of *Doctrine DBAL* in ``vendor/doctrine-dbal``
-and *Doctrine Common* in ``vendor/doctrine-common``.
-
-::
+and *Doctrine Common* in ``vendor/doctrine-common``::
 
     $app->register(new Silex\Extension\DoctrineExtension(), array(
         'db.options'            => array(
