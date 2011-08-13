@@ -587,9 +587,9 @@ ioncube loader bug
 
 Ioncube loader is an extension that can decode PHP encoded file. 
 Unfortunately, old versions (prior to version 4.0.9) are not working well 
-with phar archive.
-You must either upgrade Ioncube loder to version 4.0.9+ or disable it by 
-commenting or removing this line in you php.ini file:
+with phar archives.
+You must either upgrade Ioncube loader to version 4.0.9 or newer or disable it 
+by commenting or removing this line in your php.ini file:
 
 .. code-block:: ini
 
