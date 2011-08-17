@@ -56,6 +56,8 @@ class Compiler
             ->in(__DIR__.'/../../vendor/Symfony/Component/BrowserKit')
             ->in(__DIR__.'/../../vendor/Symfony/Component/CssSelector')
             ->in(__DIR__.'/../../vendor/Symfony/Component/DomCrawler')
+            ->in(__DIR__.'/../../vendor/Symfony/Component/Finder')
+            ->in(__DIR__.'/../../vendor/Symfony/Component/Process')
         ;
 
         foreach ($finder as $file) {
