@@ -17,12 +17,15 @@ use Symfony\Component\HttpKernel\Event\KernelEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
+use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -192,7 +195,13 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function before($callback, $priority = 0)
     {
-        $this['dispatcher']->addListener(SilexEvents::BEFORE, $callback, $priority);
+        $this['dispatcher']->addListener(SilexEvents::BEFORE, function (GetResponseEvent $event) use ($callback) {
+            $ret = $callback($event->getRequest());
+
+            if ($ret instanceof Response) {
+                $event->setResponse($ret);
+            }
+        }, $priority);
     }
 
     /**
@@ -206,7 +215,9 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function after($callback, $priority = 0)
     {
-        $this['dispatcher']->addListener(SilexEvents::AFTER, $callback, $priority);
+        $this['dispatcher']->addListener(SilexEvents::AFTER, function (FilterResponseEvent $event) use ($callback) {
+            $callback($event->getRequest(), $event->getResponse());
+        }, $priority);
     }
 
     /**
@@ -358,7 +369,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             // make sure onSilexBefore event is dispatched
 
             if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
-                $this['dispatcher']->dispatch(SilexEvents::BEFORE);
+                $this['dispatcher']->dispatch(SilexEvents::BEFORE, $event);
             }
 
             if ($e instanceof ResourceNotFoundException) {
@@ -373,7 +384,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         }
 
         if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
-            $this['dispatcher']->dispatch(SilexEvents::BEFORE);
+            $this['dispatcher']->dispatch(SilexEvents::BEFORE, $event);
         }
     }
 
@@ -413,7 +424,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     public function onKernelResponse(Event $event)
     {
         if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
-            $this['dispatcher']->dispatch(SilexEvents::AFTER);
+            $this['dispatcher']->dispatch(SilexEvents::AFTER, $event);
         }
     }
 

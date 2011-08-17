@@ -180,4 +180,32 @@ class BeforeAfterFilterTest extends \PHPUnit_Framework_TestCase
         $request = Request::create('/foo/de');
         $this->assertEquals('de', $app->handle($request)->getContent());
     }
+
+    public function testBeforeFilterAccessesRequestAndCanReturnResponse()
+    {
+        $app = new Application();
+
+        $app->before(function (Request $request) {
+            return new Response($request->get('name'));
+        });
+
+        $app->match('/', function () use ($app) { throw new \Exception('Should never be executed'); });
+
+        $request = Request::create('/?name=Fabien');
+        $this->assertEquals('Fabien', $app->handle($request)->getContent());
+    }
+
+    public function testAfterFilterAccessRequestResponse()
+    {
+        $app = new Application();
+
+        $app->after(function (Request $request, Response $response) {
+            $response->setContent($response->getContent().'---');
+        });
+
+        $app->match('/', function () { return new Response('foo'); });
+
+        $request = Request::create('/');
+        $this->assertEquals('foo---', $app->handle($request)->getContent());
+    }
 }

@@ -354,6 +354,22 @@ through before and after filters. All you need to do is pass a closure::
         // tear down
     });
 
+The before filter has access to the current Request, and can short-circuit the
+whole rendering by returning a Response:
+
+    $app->before(function (Request $request) {
+        // redirect the user to the login screen if access to the Resource is protected
+        if (...) {
+            return new RedirectResponse('/login');
+        }
+    });
+
+The after filter has access to the Request and the Response:
+
+    $app->before(function (Request $request, Response $response) {
+        // tweak the Response
+    });
+
 .. note::
 
     The filters are only run for the "master" Request.
