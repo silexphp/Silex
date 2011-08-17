@@ -354,6 +354,10 @@ through before and after filters. All you need to do is pass a closure::
         // tear down
     });
 
+.. note::
+
+    The filters are only run for the "master" Request.
+
 Error handlers
 --------------
 

@@ -357,7 +357,9 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         } catch (RoutingException $e) {
             // make sure onSilexBefore event is dispatched
 
-            $this['dispatcher']->dispatch(SilexEvents::BEFORE);
+            if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
+                $this['dispatcher']->dispatch(SilexEvents::BEFORE);
+            }
 
             if ($e instanceof ResourceNotFoundException) {
                 $message = sprintf('No route found for "%s %s"', $this['request']->getMethod(), $this['request']->getPathInfo());
@@ -370,7 +372,9 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             throw $e;
         }
 
-        $this['dispatcher']->dispatch(SilexEvents::BEFORE);
+        if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
+            $this['dispatcher']->dispatch(SilexEvents::BEFORE);
+        }
     }
 
     /**
@@ -408,7 +412,9 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function onKernelResponse(Event $event)
     {
-        $this['dispatcher']->dispatch(SilexEvents::AFTER);
+        if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
+            $this['dispatcher']->dispatch(SilexEvents::AFTER);
+        }
     }
 
     /**
