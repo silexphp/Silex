@@ -196,7 +196,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     public function before($callback, $priority = 0)
     {
         $this['dispatcher']->addListener(SilexEvents::BEFORE, function (GetResponseEvent $event) use ($callback) {
-            $ret = $callback($event->getRequest());
+            $ret = call_user_func($callback, $event->getRequest());
 
             if ($ret instanceof Response) {
                 $event->setResponse($ret);
@@ -216,7 +216,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     public function after($callback, $priority = 0)
     {
         $this['dispatcher']->addListener(SilexEvents::AFTER, function (FilterResponseEvent $event) use ($callback) {
-            $callback($event->getRequest(), $event->getResponse());
+            call_user_func($callback, $event->getRequest(), $event->getResponse());
         }, $priority);
     }
 
@@ -254,7 +254,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             $exception = $event->getException();
             $code = $exception instanceof HttpExceptionInterface ? $exception->getStatusCode() : 500;
 
-            $result = $callback($exception, $code);
+            $result = call_user_func($callback, $exception, $code);
 
             if (null !== $result) {
                 $event->setStringResponse($result);
