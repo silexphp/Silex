@@ -186,11 +186,13 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      *
      * Before filters are run before any route has been matched.
      *
-     * @param mixed $callback Before filter callback
+     * @param mixed   $callback Before filter callback
+     * @param integer $priority The higher this value, the earlier an event
+     *                          listener will be triggered in the chain (defaults to 0)
      */
-    public function before($callback)
+    public function before($callback, $priority = 0)
     {
-        $this['dispatcher']->addListener(SilexEvents::BEFORE, $callback);
+        $this['dispatcher']->addListener(SilexEvents::BEFORE, $callback, $priority);
     }
 
     /**
@@ -198,11 +200,13 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      *
      * After filters are run after the controller has been executed.
      *
-     * @param mixed $callback After filter callback
+     * @param mixed   $callback After filter callback
+     * @param integer $priority The higher this value, the earlier an event
+     *                          listener will be triggered in the chain (defaults to 0)
      */
-    public function after($callback)
+    public function after($callback, $priority = 0)
     {
-        $this['dispatcher']->addListener(SilexEvents::AFTER, $callback);
+        $this['dispatcher']->addListener(SilexEvents::AFTER, $callback, $priority);
     }
 
     /**
@@ -229,9 +233,11 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      *
      * For this reason you should add logging handlers before output handlers.
      *
-     * @param mixed $callback Error handler callback, takes an Exception argument
+     * @param mixed   $callback Error handler callback, takes an Exception argument
+     * @param integer $priority The higher this value, the earlier an event
+     *                          listener will be triggered in the chain (defaults to 0)
      */
-    public function error($callback)
+    public function error($callback, $priority = 0)
     {
         $this['dispatcher']->addListener(SilexEvents::ERROR, function (GetResponseForErrorEvent $event) use ($callback) {
             $exception = $event->getException();
@@ -242,7 +248,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             if (null !== $result) {
                 $event->setStringResponse($result);
             }
-        });
+        }, $priority);
     }
 
     /**
