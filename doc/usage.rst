@@ -366,7 +366,7 @@ whole rendering by returning a Response:
 
 The after filter has access to the Request and the Response:
 
-    $app->before(function (Request $request, Response $response) {
+    $app->after(function (Request $request, Response $response) {
         // tweak the Response
     });
 
