@@ -355,7 +355,7 @@ through before and after filters. All you need to do is pass a closure::
     });
 
 The before filter has access to the current Request, and can short-circuit the
-whole rendering by returning a Response:
+whole rendering by returning a Response::
 
     $app->before(function (Request $request) {
         // redirect the user to the login screen if access to the Resource is protected
@@ -364,7 +364,7 @@ whole rendering by returning a Response:
         }
     });
 
-The after filter has access to the Request and the Response:
+The after filter has access to the Request and the Response::
 
     $app->after(function (Request $request, Response $response) {
         // tweak the Response
