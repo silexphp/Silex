@@ -302,19 +302,18 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function mount($prefix, $app)
     {
+        $prefix = rtrim($prefix, '/');
         $mountHandler = function (Request $request, $prefix) use ($app) {
             if (is_callable($app)) {
                 $app = $app();
             }
 
             foreach ($app['controllers']->all() as $controller) {
-                $controller->getRoute()->setPattern(rtrim($prefix, '/').$controller->getRoute()->getPattern());
+                $controller->getRoute()->setPattern($prefix.$controller->getRoute()->getPattern());
             }
 
             return $app->handle($request);
         };
-
-        $prefix = rtrim($prefix, '/');
 
         $this
             ->match($prefix.'/{path}', $mountHandler)
