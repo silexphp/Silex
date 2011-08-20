@@ -450,8 +450,6 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     static public function getSubscribedEvents()
     {
-        // onKernelView listener is added manually because it has lower priority
-
         return array(
             KernelEvents::REQUEST    => 'onKernelRequest',
             KernelEvents::CONTROLLER => 'onKernelController',
