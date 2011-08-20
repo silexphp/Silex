@@ -1,14 +1,18 @@
 Extensions
 ==========
 
-Silex provides a common interface for extensions. These
-define services on the application.
+Extensions allow the developer to reuse parts of an application into another
+one. Silex provides two interfaces for extensions: `ExtensionInterface` for
+services and `ControllersExtensionInterface` for controllers.
 
-Loading extensions
+Service Extensions
 ------------------
 
-In order to load and use an extension, you must register it
-on the application::
+Loading extensions
+~~~~~~~~~~~~~~~~~~
+
+In order to load and use a service extension, you must register it on the
+application::
 
     $app = new Silex\Application();
 
@@ -24,7 +28,7 @@ will be set **before** the extension is registered::
     ));
 
 Conventions
------------
+~~~~~~~~~~~
 
 You need to watch out in what order you do certain things when
 interacting with extensions. Just keep to these rules:
@@ -51,7 +55,7 @@ Make sure to stick to this behavior when creating your
 own extensions.
 
 Included extensions
--------------------
+~~~~~~~~~~~~~~~~~~~
 
 There are a few extensions that you get out of the box.
 All of these are within the ``Silex\Extension`` namespace.
@@ -68,7 +72,7 @@ All of these are within the ``Silex\Extension`` namespace.
 * :doc:`HttpCacheExtension <extensions/http_cache>`
 
 Creating an extension
----------------------
+~~~~~~~~~~~~~~~~~~~~~
 
 Extensions must implement the ``Silex\ExtensionInterface``::
 
@@ -168,3 +172,73 @@ option when registering the extension::
     For libraries that do not use PHP 5.3 namespaces you can use ``registerPrefix``
     instead of ``registerNamespace``, which will use an underscore as directory
     delimiter.
+
+Controllers Extensions
+----------------------
+
+Loading extensions
+~~~~~~~~~~~~~~~~~~
+
+In order to load and use a controller extension, you must "mount" its
+controllers under a path::
+
+    $app = new Silex\Application();
+
+    $app->mount('/blog', new Acme\BlogExtension());
+
+All controllers defined by the extension will now be available under the
+`/blog` path.
+
+Creating an extension
+~~~~~~~~~~~~~~~~~~~~~
+
+Extensions must implement the ``Silex\ControllersExtensionInterface``::
+
+    interface ControllersExtensionInterface
+    {
+        function connect(Application $app);
+    }
+
+Here is an example of such an extension::
+
+    namespace Acme;
+
+    use Silex\Application;
+    use Silex\ControllersExtensionInterface;
+
+    class HelloExtension implements ControllersExtensionInterface
+    {
+        public function connect(Application $app)
+        {
+            $controllers = new ControllerCollection();
+
+            $controllers->get('/', function (Silex\Application $app) {
+                return $app->redirect('/hello');
+            });
+
+            return $controllers;
+        }
+    }
+
+The ``connect`` method must return an instance of ``ControllerCollection``.
+``ControllerCollection`` is the class where all controller related methods are
+defined (like ``get``, ``post``, ``match``, ...).
+
+.. tip::
+
+    The ``Application`` class acts in fact as a proxy for these methods.
+
+You can now use this extension as follows::
+
+    $app = new Silex\Application();
+
+    $app->connect('/blog', new Acme\HelloExtension());
+
+In this example, the ``/blog/`` path now references the controller defined in
+the extension.
+
+.. tip::
+
+    You can also define an extension that implements both the service and the
+    controller extension interface and package in the same class the services
+    needed to make your controllers work.
