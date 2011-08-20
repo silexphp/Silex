@@ -18,6 +18,9 @@ Parameters
 * **twig.options** (optional): An associative array of twig
   options. Check out the twig documentation for more information.
 
+* **twig.form_template** (optional): Default template to render 
+  form element. Only when using with the ``FormExtension``.
+
 * **twig.class_path** (optional): Path to where the Twig
   library is located.
 
