@@ -69,7 +69,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         });
 
         $this['controllers'] = $this->share(function () use ($app) {
-            return new ControllerCollection($app['routes']);
+            return new ControllerCollection();
         });
 
         $this['exception_handler'] = $this->share(function () {
@@ -267,10 +267,12 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
 
     /**
      * Flushes the controller collection.
+     *
+     * @param string $prefix The route prefix
      */
-    public function flush()
+    public function flush($prefix = '')
     {
-        $this['controllers']->flush();
+        $this['routes']->addCollection($this['controllers']->flush(), $prefix);
     }
 
     /**
@@ -311,9 +313,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
                 $app = $app();
             }
 
-            foreach ($app['controllers']->all() as $controller) {
-                $controller->getRoute()->setPattern($prefix.$controller->getRoute()->getPattern());
-            }
+            $app->flush($prefix);
 
             return $app->handle($request);
         };
@@ -359,7 +359,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             $this['request']->isSecure() ? $this['request']->getPort() : $this['request.https_port']
         );
 
-        $this['controllers']->flush();
+        $this->flush();
 
         $matcher = new RedirectableUrlMatcher($this['routes'], $this['request_context']);
 
