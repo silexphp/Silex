@@ -29,39 +29,24 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetRouteCollectionWithNoRoutes()
     {
-        $routes = new RouteCollection();
-        $controllers = new ControllerCollection($routes);
-
-        $this->assertEquals(0, count($routes->all()));
-        $controllers->flush();
+        $controllers = new ControllerCollection();
+        $routes = $controllers->flush();
         $this->assertEquals(0, count($routes->all()));
     }
 
     public function testGetRouteCollectionWithRoutes()
     {
-        $routes = new RouteCollection();
-        $controllers = new ControllerCollection($routes);
+        $controllers = new ControllerCollection();
         $controllers->add(new Controller(new Route('/foo')));
         $controllers->add(new Controller(new Route('/bar')));
 
-        $this->assertEquals(0, count($routes->all()));
-        $controllers->flush();
+        $routes = $controllers->flush();
         $this->assertEquals(2, count($routes->all()));
-    }
-
-    public function testAll()
-    {
-        $controllers = new ControllerCollection(new RouteCollection());
-        $controllers->add($c1 = new Controller(new Route('/foo')));
-        $controllers->add($c2 = new Controller(new Route('/bar')));
-
-        $this->assertEquals(array($c1, $c2), $controllers->all());
     }
 
     public function testControllerFreezing()
     {
-        $routes = new RouteCollection();
-        $controllers = new ControllerCollection($routes);
+        $controllers = new ControllerCollection();
 
         $fooController = new Controller(new Route('/foo'));
         $fooController->bind('foo');

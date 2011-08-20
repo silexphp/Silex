@@ -18,19 +18,13 @@ use Symfony\Component\Routing\RouteCollection;
  *
  * It acts as a staging area for routes. You are able to set the route name
  * until flush() is called, at which point all controllers are frozen and
- * added to the RouteCollection.
+ * converted to a RouteCollection.
  *
  * @author Igor Wiedler <igor@wiedler.ch>
  */
 class ControllerCollection
 {
     private $controllers = array();
-    private $routes;
-
-    public function __construct(RouteCollection $routes)
-    {
-        $this->routes = $routes;
-    }
 
     /**
      * Adds a controller to the staging area.
@@ -44,27 +38,23 @@ class ControllerCollection
 
     /**
      * Persists and freezes staged controllers.
+     *
+     * @return RouteCollection A RouteCollection instance
      */
     public function flush()
     {
+        $routes = new RouteCollection();
+
         foreach ($this->controllers as $controller) {
             if (!$controller->getRouteName()) {
                 $controller->bindDefaultRouteName();
             }
-            $this->routes->add($controller->getRouteName(), $controller->getRoute());
+            $routes->add($controller->getRouteName(), $controller->getRoute());
             $controller->freeze();
         }
 
         $this->controllers = array();
-    }
 
-    /**
-     * Gets all controllers.
-     *
-     * @return array An array of Controllers
-     */
-    public function all()
-    {
-        return $this->controllers;
+        return $routes;
     }
 }
