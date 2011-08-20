@@ -128,11 +128,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function match($pattern, $to)
     {
-        $route = new Route($pattern, array('_controller' => $to));
-        $controller = new Controller($route);
-        $this['controllers']->add($controller);
-
-        return $controller;
+        return $this['controllers']->match($pattern, $to);
     }
 
     /**
@@ -145,7 +141,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function get($pattern, $to)
     {
-        return $this->match($pattern, $to)->method('GET');
+        return $this['controllers']->get($pattern, $to);
     }
 
     /**
@@ -158,7 +154,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function post($pattern, $to)
     {
-        return $this->match($pattern, $to)->method('POST');
+        return $this['controllers']->post($pattern, $to);
     }
 
     /**
@@ -171,7 +167,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function put($pattern, $to)
     {
-        return $this->match($pattern, $to)->method('PUT');
+        return $this['controllers']->put($pattern, $to);
     }
 
     /**
@@ -184,7 +180,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function delete($pattern, $to)
     {
-        return $this->match($pattern, $to)->method('DELETE');
+        return $this['controllers']->delete($pattern, $to);
     }
 
     /**
@@ -302,26 +298,20 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     /**
      * Mounts an application under the given route prefix.
      *
-     * @param string               $prefix The route prefix
-     * @param Application|\Closure $app    An Application instance or a Closure that returns an Application instance
+     * @param string                                             $prefix The route prefix
+     * @param ControllerCollection|ControllersExtensionInterface $app    A ControllerCollection or an ControllersExtensionInterface instance
      */
     public function mount($prefix, $app)
     {
-        $prefix = rtrim($prefix, '/');
-        $mountHandler = function (Request $request, $prefix) use ($app) {
-            if (is_callable($app)) {
-                $app = $app();
-            }
+        if ($app instanceof ControllersExtensionInterface) {
+            $app = $app->connect($this);
+        }
 
-            $app->flush($prefix);
+        if (!$app instanceof ControllerCollection) {
+            throw new \LogicException('The "mount" method takes either a ControllerCollection or a ControllersExtensionInterface instance.');
+        }
 
-            return $app->handle($request);
-        };
-
-        $this
-            ->match($prefix.'/{path}', $mountHandler)
-            ->assert('path', '.*')
-            ->value('prefix', $prefix);
+        $this['routes']->addCollection($app->flush(), $prefix);
     }
 
     /**
