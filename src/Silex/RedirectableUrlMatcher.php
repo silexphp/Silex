@@ -16,6 +16,8 @@ use Symfony\Component\Routing\Matcher\RedirectableUrlMatcher as BaseRedirectable
 use Symfony\Component\Routing\Matcher\RedirectableUrlMatcherInterface;
 
 /**
+ * Implements the RedirectableUrlMatcherInterface for Silex.
+ *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class RedirectableUrlMatcher extends BaseRedirectableUrlMatcher

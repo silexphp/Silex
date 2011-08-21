@@ -12,6 +12,8 @@
 namespace Silex;
 
 /**
+ * The Silex events.
+ *
  * @author Igor Wiedler <igor@wiedler.ch>
  */
 final class SilexEvents

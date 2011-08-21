@@ -17,6 +17,11 @@ use Silex\HttpCache;
 use Symfony\Component\HttpKernel\HttpCache\Esi;
 use Symfony\Component\HttpKernel\HttpCache\Store;
 
+/**
+ * Symfony HttpKernel component extension for HTTP cache.
+ *
+ * @author Fabien Potencier <fabien@symfony.com>
+ */
 class HttpCacheExtension implements ExtensionInterface
 {
     public function register(Application $app)

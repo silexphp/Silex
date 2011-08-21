@@ -19,6 +19,11 @@ use Silex\ExtensionInterface;
 
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
+/**
+ * Monolog extension.
+ *
+ * @author Fabien Potencier <fabien@symfony.com>
+ */
 class MonologExtension implements ExtensionInterface
 {
     public function register(Application $app)

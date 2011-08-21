@@ -19,6 +19,11 @@ use Symfony\Component\Form\Extension\Core\CoreExtension;
 use Symfony\Component\Form\Extension\Validator\ValidatorExtension as FormValidatorExtension;
 use Symfony\Component\Form\Extension\Csrf\CsrfExtension;
 
+/**
+ * Symfony Form component extension.
+ *
+ * @author Fabien Potencier <fabien@symfony.com>
+ */
 class FormExtension implements ExtensionInterface
 {
     public function register(Application $app)

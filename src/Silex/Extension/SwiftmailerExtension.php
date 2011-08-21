@@ -14,6 +14,11 @@ namespace Silex\Extension;
 use Silex\Application;
 use Silex\ExtensionInterface;
 
+/**
+ * Swiftmailer extension.
+ *
+ * @author Fabien Potencier <fabien@symfony.com>
+ */
 class SwiftmailerExtension implements ExtensionInterface
 {
     public function register(Application $app)

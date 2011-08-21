@@ -14,6 +14,11 @@ namespace Silex\Extension;
 use Silex\Application;
 use Silex\ExtensionInterface;
 
+/**
+ * Symfony bridges extension.
+ *
+ * @author Fabien Potencier <fabien@symfony.com>
+ */
 class SymfonyBridgesExtension implements ExtensionInterface
 {
     public function register(Application $app)
