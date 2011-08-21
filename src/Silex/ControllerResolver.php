@@ -16,7 +16,7 @@ use Symfony\Component\HttpKernel\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * ControllerResolver.
+ * Adds Application as a valid argument for controllers.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

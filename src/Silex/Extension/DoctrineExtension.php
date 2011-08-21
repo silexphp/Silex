@@ -17,6 +17,11 @@ use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Configuration;
 use Doctrine\Common\EventManager;
 
+/**
+ * Doctrine DBAL extension.
+ *
+ * @author Fabien Potencier <fabien@symfony.com>
+ */
 class DoctrineExtension implements ExtensionInterface
 {
     public function register(Application $app)

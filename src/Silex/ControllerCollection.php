@@ -20,7 +20,7 @@ use Symfony\Component\Routing\RouteCollection;
  * until flush() is called, at which point all controllers are frozen and
  * added to the RouteCollection.
  *
- * @author Igor Wiedler igor@wiedler.ch
+ * @author Igor Wiedler <igor@wiedler.ch>
  */
 class ControllerCollection
 {

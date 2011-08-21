@@ -16,6 +16,11 @@ use Silex\ExtensionInterface;
 
 use Symfony\Component\Routing\Generator\UrlGenerator;
 
+/**
+ * Symfony Routing component extension for URL generation.
+ *
+ * @author Fabien Potencier <fabien@symfony.com>
+ */
 class UrlGeneratorExtension implements ExtensionInterface
 {
     public function register(Application $app)

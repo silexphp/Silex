@@ -18,6 +18,11 @@ use Symfony\Component\Translation\Translator;
 use Symfony\Component\Translation\MessageSelector;
 use Symfony\Component\Translation\Loader\ArrayLoader;
 
+/**
+ * Symfony Translation component extension.
+ *
+ * @author Fabien Potencier <fabien@symfony.com>
+ */
 class TranslationExtension implements ExtensionInterface
 {
     public function register(Application $app)

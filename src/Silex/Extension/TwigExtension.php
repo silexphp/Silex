@@ -18,6 +18,11 @@ use Symfony\Bridge\Twig\Extension\RoutingExtension as TwigRoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension as TwigTranslationExtension;
 use Symfony\Bridge\Twig\Extension\FormExtension as TwigFormExtension;
 
+/**
+ * Twig extension.
+ *
+ * @author Fabien Potencier <fabien@symfony.com>
+ */
 class TwigExtension implements ExtensionInterface
 {
     public function register(Application $app)

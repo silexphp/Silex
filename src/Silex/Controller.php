@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Route;
 /**
  * A wrapper for a controller, mapped to a route.
  *
- * @author Igor Wiedler igor@wiedler.ch
+ * @author Igor Wiedler <igor@wiedler.ch>
  */
 class Controller
 {

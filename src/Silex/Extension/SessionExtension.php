@@ -18,6 +18,11 @@ use Symfony\Component\HttpFoundation\SessionStorage\NativeSessionStorage;
 use Symfony\Component\HttpFoundation\Session;
 use Symfony\Component\HttpKernel\KernelEvents;
 
+/**
+ * Symfony HttpFoundation component extension for sessions.
+ *
+ * @author Fabien Potencier <fabien@symfony.com>
+ */
 class SessionExtension implements ExtensionInterface
 {
     private $app;

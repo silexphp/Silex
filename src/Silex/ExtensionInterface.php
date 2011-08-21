@@ -11,7 +11,17 @@
 
 namespace Silex;
 
+/**
+ * Interface that must implement all Silex extensions.
+ *
+ * @author Fabien Potencier <fabien@symfony.com>
+ */
 interface ExtensionInterface
 {
+    /**
+     * Registers an extension.
+     *
+     * @param Application $app An Application instance
+     */
     function register(Application $app);
 }
