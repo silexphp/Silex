@@ -263,3 +263,7 @@ Core parameters
   debug mode.
 
   Defaults to false.
+
+* **charset** (optional): The charset to use for Responses.
+
+  Defaults to UTF-8.
