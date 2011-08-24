@@ -30,8 +30,9 @@ class TwigExtension implements ExtensionInterface
         $app['twig'] = $app->share(function () use ($app) {
             $app['twig.options'] = array_replace(
                 array(
-                    'charset' => $app['charset'],
-                    'debug'   => $app['debug'],
+                    'charset'          => $app['charset'],
+                    'debug'            => $app['debug'],
+                    'strict_variables' => !$app['debug'],
                 ),
                 isset($app['twig.options']) ? $app['twig.options'] : array()
             );
