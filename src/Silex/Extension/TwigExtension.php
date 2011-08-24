@@ -29,7 +29,10 @@ class TwigExtension implements ExtensionInterface
     {
         $app['twig'] = $app->share(function () use ($app) {
             $app['twig.options'] = array_replace(
-                array('charset' => $app['charset']),
+                array(
+                    'charset' => $app['charset'],
+                    'debug'   => $app['debug'],
+                ),
                 isset($app['twig.options']) ? $app['twig.options'] : array()
             );
 
