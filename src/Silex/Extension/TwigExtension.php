@@ -60,10 +60,18 @@ class TwigExtension implements ExtensionInterface
             return $twig;
         });
 
+        $app['twig.loader.filesystem'] = $app->share(function () use ($app) {
+            return new \Twig_Loader_Filesystem(isset($app['twig.path']) ? $app['twig.path'] : array());
+        });
+
+        $app['twig.loader.array'] = $app->share(function () use ($app) {
+            return new \Twig_Loader_Array(isset($app['twig.templates']) ? $app['twig.templates'] : array());
+        });
+
         $app['twig.loader'] = $app->share(function () use ($app) {
             return new \Twig_Loader_Chain(array(
-                new \Twig_Loader_Filesystem(isset($app['twig.path']) ? $app['twig.path'] : array()),
-                new \Twig_Loader_Array(isset($app['twig.templates']) ? $app['twig.templates'] : array()),
+                $app['twig.loader.filesystem'],
+                $app['twig.loader.array'],
             ));
         });
 
