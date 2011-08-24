@@ -19,6 +19,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\EventListener\ResponseListener;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
@@ -81,6 +82,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             if (isset($app['exception_handler'])) {
                 $dispatcher->addSubscriber($app['exception_handler']);
             }
+            $dispatcher->addListener(KernelEvents::RESPONSE, array(new ResponseListener($app['charset']), 'onKernelResponse'));
 
             return $dispatcher;
         });

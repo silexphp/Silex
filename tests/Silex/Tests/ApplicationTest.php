@@ -146,6 +146,25 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('Hello Fabien', $app->handle(Request::create('/Fabien'))->getContent());
     }
+
+    public function testHttpSpec()
+    {
+        $app = new Application();
+        $app['charset'] = 'ISO-8859-1';
+
+        $app->get('/', function () {
+            return 'hello';
+        });
+
+        // content is empty for HEAD requests
+        $response = $app->handle(Request::create('/', 'HEAD'));
+        $this->assertEquals('', $response->getContent());
+
+        // charset is appended to Content-Type
+        $response = $app->handle(Request::create('/'));
+        $response->prepare();
+        $this->assertEquals('text/html; charset=ISO-8859-1', $response->headers->get('Content-Type'));
+    }
 }
 
 class FooController
