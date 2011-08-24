@@ -7,13 +7,11 @@ The *TwigExtension* provides integration with the `Twig
 Parameters
 ----------
 
-* **twig.path**: Path to the directory containing twig template
-  files.
+* **twig.path** (optional): Path to the directory containing twig template
+  files (it can also be an array of paths).
 
-* **twig.templates** (optional): If this option is provided
-  you don't have to provide a ``twig.path``. It is an
-  associative array of template names to template contents.
-  Use this if you want to define your templates inline.
+* **twig.templates** (optional): An associative array of template names to
+  template contents. Use this if you want to define your templates inline.
 
 * **twig.options** (optional): An associative array of twig
   options. Check out the twig documentation for more information.
