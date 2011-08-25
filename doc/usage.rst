@@ -591,6 +591,11 @@ If you are on Suhosin you will also have to set this:
 
     suhosin.executor.include.whitelist = phar
 
+.. note::
+
+    Ubuntu's PHP ships with Suhosin, so if you are using Ubuntu, you will need
+    this change.
+
 Phar-Stub bug
 ~~~~~~~~~~~~~
 
