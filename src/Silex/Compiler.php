@@ -108,14 +108,14 @@ require_once 'phar://silex.phar/autoload.php';
 if ('cli' === php_sapi_name() && basename(__FILE__) === basename($_SERVER['argv'][0]) && isset($_SERVER['argv'][1])) {
     switch ($_SERVER['argv'][1]) {
         case 'update':
-            $remoteFilename = 'http://silex-project.org/get/silex.phar';
+            $remoteFilename = 'http://silex.sensiolabs.org/get/silex.phar';
             $localFilename = __DIR__.'/silex.phar';
 
             file_put_contents($localFilename, file_get_contents($remoteFilename));
             break;
 
         case 'check':
-            $latest = trim(file_get_contents('http://silex-project.org/get/version'));
+            $latest = trim(file_get_contents('http://silex.sensiolabs.org/get/version'));
 
             if ($latest != Silex\Application::VERSION) {
                 printf("A newer Silex version is available (%s).\n", $latest);

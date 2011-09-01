@@ -2,7 +2,7 @@ TwigExtension
 =============
 
 The *TwigExtension* provides integration with the `Twig
-<http://www.twig-project.org/>`_ template engine.
+<http://twig.sensiolabs.org/>`_ template engine.
 
 Parameters
 ----------
@@ -74,4 +74,4 @@ This will render a file named ``views/hello.twig``.
         {{ app.request.host }}
 
 For more information, check out the `Twig documentation
-<http://www.twig-project.org>`_.
+<http://twig.sensiolabs.org>`_.

@@ -566,7 +566,7 @@ command:
     $ php silex.phar update
 
 This will automatically download a new ``silex.phar`` from
-``silex-project.org`` and replace the existing one.
+``silex.sensiolabs.org`` and replace the existing one.
 
 Pitfalls
 --------
