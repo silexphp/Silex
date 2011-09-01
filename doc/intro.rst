@@ -45,4 +45,4 @@ It's really that easy!
 Installing Silex is as easy as it can get. Download the `silex.phar`_ file
 and you're done!
 
-.. _silex.phar: http://silex-project.org/get/silex.phar
+.. _silex.phar: http://silex.sensiolabs.org/get/silex.phar
