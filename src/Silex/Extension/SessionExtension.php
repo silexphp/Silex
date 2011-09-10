@@ -32,7 +32,7 @@ class SessionExtension implements ExtensionInterface
         $this->app = $app;
 
         $app['session'] = $app->share(function () use ($app) {
-            return new Session($app['session.storage']);
+            return new Session($app['session.storage'], $app['session.default_locale']);
         });
 
         $app['session.storage'] = $app->share(function () use ($app) {
@@ -43,6 +43,10 @@ class SessionExtension implements ExtensionInterface
 
         if (!isset($app['session.storage.options'])) {
             $app['session.storage.options'] = array();
+        }
+        
+        if (!isset($app['session.default_locale'])) {
+            $app['session.default_locale'] = 'en';
         }
     }
 
