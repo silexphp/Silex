@@ -7,6 +7,8 @@ between requests.
 Parameters
 ----------
 
+* **session.default_locale**: The locale used by default in the session.
+
 * **session.storage.options**: An array of options that is passed to the
   constructor of the ``session.storage`` service.
 
