@@ -39,7 +39,7 @@ class SessionExtension implements ExtensionInterface
             return new NativeSessionStorage($app['session.storage.options']);
         });
 
-        $app['dispatcher']->addListener(KernelEvents::REQUEST, array($this, 'onKernelRequest'), -255);
+        $app['dispatcher']->addListener(KernelEvents::REQUEST, array($this, 'onKernelRequest'), 255);
 
         if (!isset($app['session.storage.options'])) {
             $app['session.storage.options'] = array();
