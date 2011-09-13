@@ -79,6 +79,8 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         $this['dispatcher'] = $this->share(function () use ($app) {
             $dispatcher = new EventDispatcher();
             $dispatcher->addSubscriber($app);
+            // This is registered manually as a subscriber can only be registered once per event.
+            $dispatcher->addListener(KernelEvents::REQUEST, array($app, 'onLateKernelRequest'), -10);
             if (isset($app['exception_handler'])) {
                 $dispatcher->addSubscriber($app['exception_handler']);
             }
@@ -384,7 +386,13 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
 
             throw $e;
         }
+    }
 
+    /**
+     * Handles onKernelRequest events to duspatch the silex.before event.
+     */
+    public function onLateKernelRequest(KernelEvent $event)
+    {
         if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
             $this['dispatcher']->dispatch(SilexEvents::BEFORE, $event);
         }
