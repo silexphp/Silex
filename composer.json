@@ -1,0 +1,30 @@
+{
+    "name": "Silex",
+    "type": "Library",
+    "description": "The PHP micro-framework based on the Symfony2 Components",
+    "keywords": ["microframework"],
+    "homepage": "http://silex.sensiolabs.org",
+    "version": "1.0.0",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Fabien Potencier",
+            "email": "fabien@symfony.com"
+        },
+        {
+            "name": "Igor Wiedler",
+            "email": "igor@wiedler.ch"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "Pimple": ">=1.0.0",
+        "Symfony-BrowserKit": ">=2.0.0",
+        "Symfony-CssSelector": ">=2.0.0",
+        "Symfony-DomCrawler": ">=2.0.0",
+        "Symfony-EventDispatcher": ">=2.0.0",
+        "Symfony-HttpFoundation": ">=2.0.0",
+        "Symfony-HttpKernel": ">=2.0.0",
+        "Symfony-Routing": ">=2.0.0"
+    }
+}
