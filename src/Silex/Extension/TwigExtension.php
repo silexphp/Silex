@@ -39,6 +39,7 @@ class TwigExtension implements ExtensionInterface
 
             $twig = new \Twig_Environment($app['twig.loader'], $app['twig.options']);
             $twig->addGlobal('app', $app);
+            $twig->addExtension(new TwigCoreExtension());
 
             if (isset($app['symfony_bridges'])) {
                 if (isset($app['url_generator'])) {
