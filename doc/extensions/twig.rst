@@ -49,6 +49,12 @@ directory::
     Twig is not compiled into the ``silex.phar`` file. You have to
     add your own copy of Twig to your application.
 
+.. note::
+
+    The *TwigExtension* currently depends on the latest development
+    snapshot of *Twig*. You can get it `from GitHub
+    <https://github.com/fabpot/Twig>`_.
+
 Usage
 -----
 
