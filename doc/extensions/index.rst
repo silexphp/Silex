@@ -7,6 +7,7 @@ Silex
     doctrine
     monolog
     session
+    symfony_bridges
     translation
     twig
     url_generator
