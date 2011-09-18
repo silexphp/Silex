@@ -39,13 +39,18 @@ Services
 
     $app['mailer']->send($message);
 
-* **swiftmailer.transport**:
+* **swiftmailer.transport**: The transport used for e-mail
+  delivery. Defaults to a ``Swift_Transport_EsmtpTransport``.
 
-* **swiftmailer.transport.buffer**:
+* **swiftmailer.transport.buffer**: StreamBuffer used by
+  the transport.
 
-* **swiftmailer.transport.authhandler**:
+* **swiftmailer.transport.authhandler**: Authentication
+  handler used by the transport. Will try the following
+  by default: CRAM-MD5, login, plaintext.
 
-* **swiftmailer.transport.eventdispatcher**:
+* **swiftmailer.transport.eventdispatcher**: Internal event
+  dispatcher used by Swiftmailer.
 
 Registering
 -----------
