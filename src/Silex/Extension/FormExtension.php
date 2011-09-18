@@ -14,6 +14,7 @@ namespace Silex\Extension;
 use Silex\Application;
 use Silex\ExtensionInterface;
 use Symfony\Component\Form\Extension\Csrf\CsrfProvider\DefaultCsrfProvider;
+use Symfony\Component\Form\Extension\Csrf\CsrfProvider\SessionCsrfProvider;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\Extension\Core\CoreExtension;
 use Symfony\Component\Form\Extension\Validator\ValidatorExtension as FormValidatorExtension;
@@ -44,6 +45,10 @@ class FormExtension implements ExtensionInterface
         });
 
         $app['form.csrf_provider'] = $app->share(function () use ($app) {
+            if (isset($app['session'])) {
+                return new SessionCsrfProvider($app['session'], $app['form.secret']);
+            }
+
             return new DefaultCsrfProvider($app['form.secret']);
         });
 
