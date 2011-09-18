@@ -1,7 +1,7 @@
 SwiftmailerExtension
 ====================
 
-The *SwiftmailerExtension* provides a a service for sending
+The *SwiftmailerExtension* provides a service for sending
 email through the `Swift Mailer <http://swiftmailer.org>`_
 library.
 
