@@ -32,17 +32,21 @@ class SessionExtension implements ExtensionInterface
         $this->app = $app;
 
         $app['session'] = $app->share(function () use ($app) {
-            return new Session($app['session.storage']);
+            return new Session($app['session.storage'], $app['session.default_locale']);
         });
 
         $app['session.storage'] = $app->share(function () use ($app) {
             return new NativeSessionStorage($app['session.storage.options']);
         });
 
-        $app['dispatcher']->addListener(KernelEvents::REQUEST, array($this, 'onKernelRequest'), -255);
+        $app['dispatcher']->addListener(KernelEvents::REQUEST, array($this, 'onKernelRequest'), 128);
 
         if (!isset($app['session.storage.options'])) {
             $app['session.storage.options'] = array();
+        }
+        
+        if (!isset($app['session.default_locale'])) {
+            $app['session.default_locale'] = 'en';
         }
     }
 

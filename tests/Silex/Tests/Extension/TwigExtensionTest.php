@@ -47,4 +47,29 @@ class TwigExtensionTest extends \PHPUnit_Framework_TestCase
         $response = $app->handle($request);
         $this->assertEquals('Hello john!', $response->getContent());
     }
+
+    public function testRenderFunction()
+    {
+        $app = new Application();
+
+        $app->register(new TwigExtension(), array(
+            'twig.templates'    => array(
+                'hello' => '{{ render("/foo") }}',
+                'foo'   => 'foo',
+            ),
+            'twig.class_path'   => __DIR__.'/../../../../vendor/twig/lib',
+        ));
+
+        $app->get('/hello', function () use ($app) {
+            return $app['twig']->render('hello');
+        });
+
+        $app->get('/foo', function () use ($app) {
+            return $app['twig']->render('foo');
+        });
+
+        $request = Request::create('/hello');
+        $response = $app->handle($request);
+        $this->assertEquals('foo', $response->getContent());
+    }
 }

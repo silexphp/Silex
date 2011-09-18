@@ -34,5 +34,5 @@ Read the [documentation][3] for more information.
 Silex is licensed under the MIT license.
 
 [1]: http://symfony.com
-[2]: http://silex-project.org/get/silex.phar
-[3]: http://silex-project.org/documentation
+[2]: http://silex.sensiolabs.org/get/silex.phar
+[3]: http://silex.sensiolabs.org/documentation

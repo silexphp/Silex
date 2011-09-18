@@ -2,7 +2,7 @@ TwigExtension
 =============
 
 The *TwigExtension* provides integration with the `Twig
-<http://www.twig-project.org/>`_ template engine.
+<http://twig.sensiolabs.org/>`_ template engine.
 
 Parameters
 ----------
@@ -62,16 +62,23 @@ The Twig extension provides a ``twig`` service::
 
 This will render a file named ``views/hello.twig``.
 
-.. tip::
+In any Twig template, the ``app`` variable refers to the Application object.
+So you can access any services from within your view. For example to access
+``$app['request']->getHost()``, just put this in your template:
 
-    The TwigExtension also registers the application as a global
-    named ``app``. So you can access any services from within your
-    view. For example to access ``$app['request']->getHost()``,
-    just put this in your template:
+.. code-block:: jinja
 
-    .. code-block:: jinja
+    {{ app.request.host }}
 
-        {{ app.request.host }}
+A ``render`` function is also register to help you render another controller
+from a template:
+
+.. code-block:: jinja
+
+    {{ render('/sidebar') }}
+
+    {# or if you are also using UrlGeneratorExtension #}
+    {{ render(path('sidebar')) }}
 
 For more information, check out the `Twig documentation
-<http://www.twig-project.org>`_.
+<http://twig.sensiolabs.org>`_.

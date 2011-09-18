@@ -1,9 +1,9 @@
 Services
 ========
 
-Silex is not only a microframework. It is also a micro service container.
-It does this by extending `Pimple <http://pimple-project.org>`_
-which provides service goodness in just 44 NCLOC.
+Silex is not only a microframework. It is also a micro service container. It
+does this by extending `Pimple <http://pimple.sensiolabs.org>`_ which provides
+service goodness in just 44 NCLOC.
 
 Dependency Injection
 --------------------
