@@ -73,9 +73,9 @@ class SwiftmailerExtension implements ExtensionInterface
         });
 
         if (isset($app['swiftmailer.class_path'])) {
-            require_once $app['swiftmailer.class_path'].'/classes/Swift.php';
+            require_once $app['swiftmailer.class_path'].'/Swift.php';
 
-            \Swift::registerAutoload($app['swiftmailer.class_path'].'/swift_init.php');
+            \Swift::registerAutoload($app['swiftmailer.class_path'].'/../swift_init.php');
         }
     }
 }
