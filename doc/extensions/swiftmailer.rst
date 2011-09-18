@@ -80,8 +80,6 @@ The Swiftmailer extension provides a ``mailer`` service.
             ->setTo(array('feedback@yoursite.com'))
             ->setBody($request->get('message'));
 
-        $transport = \Swift_MailTransport::newInstance();
-        $mailer = \Swift_Mailer::newInstance($transport);
         $app['mailer']->send($message);
 
         return new Response('Thank you for your feedback!', 201);
