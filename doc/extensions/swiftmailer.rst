@@ -56,12 +56,12 @@ Registering
 -----------
 
 Make sure you place a copy of *Swift Mailer* in the ``vendor/swiftmailer``
-directory.
+directory. Make sure you point the class path to ``/lib/classes``.
 
 ::
 
     $app->register(new Silex\Extension\SwiftmailerExtension(), array(
-        'swiftmailer.class_path'  => __DIR__.'/vendor/swiftmailer/lib',
+        'swiftmailer.class_path'  => __DIR__.'/vendor/swiftmailer/lib/classes',
     ));
 
 .. note::
