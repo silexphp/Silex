@@ -7,6 +7,7 @@ Silex
     doctrine
     monolog
     session
+    swiftmailer
     translation
     twig
     url_generator
