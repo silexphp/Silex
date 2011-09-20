@@ -60,6 +60,7 @@ All of these are within the ``Silex\Extension`` namespace.
 * :doc:`MonologExtension <extensions/monolog>`
 * :doc:`SessionExtension <extensions/session>`
 * :doc:`SwiftmailerExtension <extensions/swiftmailer>`
+* :doc:`SymfonyBridgesExtension <extensions/symfony_bridges>`
 * :doc:`TwigExtension <extensions/twig>`
 * :doc:`TranslationExtension <extensions/translation>`
 * :doc:`UrlGeneratorExtension <extensions/url_generator>`
