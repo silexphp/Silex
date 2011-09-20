@@ -59,6 +59,7 @@ All of these are within the ``Silex\Extension`` namespace.
 * :doc:`DoctrineExtension <extensions/doctrine>`
 * :doc:`MonologExtension <extensions/monolog>`
 * :doc:`SessionExtension <extensions/session>`
+* :doc:`SymfonyBridgesExtension <extensions/symfony_bridges>`
 * :doc:`TwigExtension <extensions/twig>`
 * :doc:`TranslationExtension <extensions/translation>`
 * :doc:`UrlGeneratorExtension <extensions/url_generator>`
