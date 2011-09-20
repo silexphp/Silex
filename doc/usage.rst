@@ -142,31 +142,24 @@ Example POST route
 ~~~~~~~~~~~~~~~~~~
 
 POST routes signify the creation of a resource. An example for this is a
-feedback form. We will use `Swift Mailer
-<http://swiftmailer.org/>`_ and assume a copy of it to be present in the
-``vendor/swiftmailer`` directory::
-
-    require_once __DIR__.'/vendor/swiftmailer/lib/swift_required.php';
+feedback form. We will use the ``mail`` function to send an e-mail::
 
     use Symfony\Component\HttpFoundation\Request;
     use Symfony\Component\HttpFoundation\Response;
 
     $app->post('/feedback', function (Request $request) {
-        $message = \Swift_Message::newInstance()
-            ->setSubject('[YourSite] Feedback')
-            ->setFrom(array('noreply@yoursite.com'))
-            ->setTo(array('feedback@yoursite.com'))
-            ->setBody($request->get('message'));
-
-        $transport = \Swift_MailTransport::newInstance();
-        $mailer = \Swift_Mailer::newInstance($transport);
-        $mailer->send($message);
+        $message = $request->get('message');
+        mail('feedback@yoursite.com', '[YourSite] Feedback', $message);
 
         return new Response('Thank you for your feedback!', 201);
     });
 
-It is pretty straight forward. We include the Swift Mailer library,
-set up a message and send that message.
+It is pretty straightforward.
+
+.. note::
+
+    There is a `SwiftmailerExtension <extensions/swiftmailer>` included
+    that you can use instead of ``mail()``.
 
 The current ``request`` is automatically injected by Silex to the Closure
 thanks to the type hinting. It is an instance of `Request
@@ -611,10 +604,10 @@ The exact cause of this issue could not be determined yet.
 ioncube loader bug
 ~~~~~~~~~~~~~~~~~~
 
-Ioncube loader is an extension that can decode PHP encoded file. 
-Unfortunately, old versions (prior to version 4.0.9) are not working well 
+Ioncube loader is an extension that can decode PHP encoded file.
+Unfortunately, old versions (prior to version 4.0.9) are not working well
 with phar archives.
-You must either upgrade Ioncube loader to version 4.0.9 or newer or disable it 
+You must either upgrade Ioncube loader to version 4.0.9 or newer or disable it
 by commenting or removing this line in your php.ini file:
 
 .. code-block:: ini
