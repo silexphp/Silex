@@ -9,17 +9,17 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Silex\Tests\Extension;
+namespace Silex\Tests\Provider;
 
 use Silex\Application;
-use Silex\Extension\DoctrineExtension;
+use Silex\Provider\DoctrineProvider;
 
 /**
- * DoctrineExtension test cases.
+ * DoctrineProvider test cases.
  *
  * Fabien Potencier <fabien@symfony.com>
  */
-class DoctrineExtensionTest extends \PHPUnit_Framework_TestCase
+class DoctrineProviderTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
@@ -31,7 +31,7 @@ class DoctrineExtensionTest extends \PHPUnit_Framework_TestCase
     public function testSingleConnection()
     {
         $app = new Application();
-        $app->register(new DoctrineExtension(), array(
+        $app->register(new DoctrineProvider(), array(
             'db.common.class_path' => __DIR__.'/../../../../vendor/doctrine-common/lib',
             'db.dbal.class_path' => __DIR__.'/../../../../vendor/doctrine-dbal/lib',
 
@@ -51,7 +51,7 @@ class DoctrineExtensionTest extends \PHPUnit_Framework_TestCase
     public function testMultipleConnections()
     {
         $app = new Application();
-        $app->register(new DoctrineExtension(), array(
+        $app->register(new DoctrineProvider(), array(
             'db.common.class_path' => __DIR__.'/../../../../vendor/doctrine-common/lib',
             'db.dbal.class_path' => __DIR__.'/../../../../vendor/doctrine-dbal/lib',
 

@@ -9,21 +9,21 @@
  * file that was distributed with this source code.
  */
 
-namespace Silex\Extension;
+namespace Silex\Provider;
 
 use Silex\Application;
-use Silex\ExtensionInterface;
+use Silex\ServiceProviderInterface;
 
 use Symfony\Bridge\Twig\Extension\RoutingExtension as TwigRoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension as TwigTranslationExtension;
 use Symfony\Bridge\Twig\Extension\FormExtension as TwigFormExtension;
 
 /**
- * Twig extension.
+ * Twig Provider.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class TwigExtension implements ExtensionInterface
+class TwigProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {

@@ -9,21 +9,21 @@
  * file that was distributed with this source code.
  */
 
-namespace Silex\Extension;
+namespace Silex\Provider;
 
 use Silex\Application;
-use Silex\ExtensionInterface;
+use Silex\ServiceProviderInterface;
 
 use Symfony\Component\HttpFoundation\SessionStorage\NativeSessionStorage;
 use Symfony\Component\HttpFoundation\Session;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
- * Symfony HttpFoundation component extension for sessions.
+ * Symfony HttpFoundation component Provider for sessions.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class SessionExtension implements ExtensionInterface
+class SessionProvider implements ServiceProviderInterface
 {
     private $app;
 

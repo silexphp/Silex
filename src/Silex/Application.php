@@ -102,18 +102,18 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     }
 
     /**
-     * Registers an extension.
+     * Registers a service provider.
      *
-     * @param ExtensionInterface $extension An ExtensionInterface instance
-     * @param array              $values    An array of values that customizes the extension
+     * @param ServiceProviderInterface $provider A ServiceProviderInterface instance
+     * @param array                    $values    An array of values that customizes the provider
      */
-    public function register(ExtensionInterface $extension, array $values = array())
+    public function register(ServiceProviderInterface $provider, array $values = array())
     {
         foreach ($values as $key => $value) {
             $this[$key] = $value;
         }
 
-        $extension->register($this);
+        $provider->register($this);
     }
 
     /**
@@ -298,17 +298,17 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     /**
      * Mounts an application under the given route prefix.
      *
-     * @param string                                             $prefix The route prefix
-     * @param ControllerCollection|ControllersExtensionInterface $app    A ControllerCollection or an ControllersExtensionInterface instance
+     * @param string                                           $prefix The route prefix
+     * @param ControllerCollection|ControllerProviderInterface $app    A ControllerCollection or an ControllerProviderInterface instance
      */
     public function mount($prefix, $app)
     {
-        if ($app instanceof ControllersExtensionInterface) {
+        if ($app instanceof ControllerProviderInterface) {
             $app = $app->connect($this);
         }
 
         if (!$app instanceof ControllerCollection) {
-            throw new \LogicException('The "mount" method takes either a ControllerCollection or a ControllersExtensionInterface instance.');
+            throw new \LogicException('The "mount" method takes either a ControllerCollection or a ControllerProviderInterface instance.');
         }
 
         $this['routes']->addCollection($app->flush(), $prefix);

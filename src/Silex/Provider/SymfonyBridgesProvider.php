@@ -9,17 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Silex\Extension;
+namespace Silex\Provider;
 
 use Silex\Application;
-use Silex\ExtensionInterface;
+use Silex\ServiceProviderInterface;
 
 /**
- * Symfony bridges extension.
+ * Symfony bridges Provider.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class SymfonyBridgesExtension implements ExtensionInterface
+class SymfonyBridgesProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {

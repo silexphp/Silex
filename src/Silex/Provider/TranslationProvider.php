@@ -9,21 +9,21 @@
  * file that was distributed with this source code.
  */
 
-namespace Silex\Extension;
+namespace Silex\Provider;
 
 use Silex\Application;
-use Silex\ExtensionInterface;
+use Silex\ServiceProviderInterface;
 
 use Symfony\Component\Translation\Translator;
 use Symfony\Component\Translation\MessageSelector;
 use Symfony\Component\Translation\Loader\ArrayLoader;
 
 /**
- * Symfony Translation component extension.
+ * Symfony Translation component Provider.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class TranslationExtension implements ExtensionInterface
+class TranslationProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {

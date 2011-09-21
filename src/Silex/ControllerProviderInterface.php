@@ -12,11 +12,11 @@
 namespace Silex;
 
 /**
- * Interface for reusable controllers.
+ * Interface for controller providers.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-interface ControllersExtensionInterface
+interface ControllerProviderInterface
 {
     /**
      * Returns routes to connect to the given application.

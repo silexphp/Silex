@@ -9,22 +9,22 @@
  * file that was distributed with this source code.
  */
 
-namespace Silex\Extension;
+namespace Silex\Provider;
 
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
 use Silex\Application;
-use Silex\ExtensionInterface;
+use Silex\ServiceProviderInterface;
 
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
- * Monolog extension.
+ * Monolog Provider.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class MonologExtension implements ExtensionInterface
+class MonologProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {

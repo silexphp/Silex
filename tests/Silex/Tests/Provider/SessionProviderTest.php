@@ -9,26 +9,26 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Silex\Tests\Extension;
+namespace Silex\Tests\Provider;
 
 use Silex\Application;
-use Silex\Extension\SessionExtension;
+use Silex\Provider\SessionProvider;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\SessionStorage\ArraySessionStorage;
 
 /**
- * SessionExtension test cases.
+ * SessionProvider test cases.
  *
  * @author Igor Wiedler <igor@wiedler.ch>
  */
-class SessionExtensionTest extends \PHPUnit_Framework_TestCase
+class SessionProviderTest extends \PHPUnit_Framework_TestCase
 {
     public function testRegister()
     {
         $app = new Application();
 
-        $app->register(new SessionExtension());
+        $app->register(new SessionProvider());
 
         $app['session.storage'] = $app->share(function () use ($app) {
             return new ArraySessionStorage();

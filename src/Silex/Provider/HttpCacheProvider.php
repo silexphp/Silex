@@ -9,20 +9,20 @@
  * file that was distributed with this source code.
  */
 
-namespace Silex\Extension;
+namespace Silex\Provider;
 
 use Silex\Application;
-use Silex\ExtensionInterface;
+use Silex\ServiceProviderInterface;
 use Silex\HttpCache;
 use Symfony\Component\HttpKernel\HttpCache\Esi;
 use Symfony\Component\HttpKernel\HttpCache\Store;
 
 /**
- * Symfony HttpKernel component extension for HTTP cache.
+ * Symfony HttpKernel component Provider for HTTP cache.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class HttpCacheExtension implements ExtensionInterface
+class HttpCacheProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {

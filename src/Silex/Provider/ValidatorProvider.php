@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Silex\Extension;
+namespace Silex\Provider;
 
 use Silex\Application;
-use Silex\ExtensionInterface;
+use Silex\ServiceProviderInterface;
 
 use Symfony\Component\Validator\Validator;
 use Symfony\Component\Validator\Mapping\ClassMetadataFactory;
@@ -20,11 +20,11 @@ use Symfony\Component\Validator\Mapping\Loader\StaticMethodLoader;
 use Symfony\Component\Validator\ConstraintValidatorFactory;
 
 /**
- * Symfony Validator component extension.
+ * Symfony Validator component Provider.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class ValidatorExtension implements ExtensionInterface
+class ValidatorProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
