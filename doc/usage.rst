@@ -313,9 +313,9 @@ Named routes
 ~~~~~~~~~~~~
 
 Certain extensions (such as ``UrlGenerator``) can make use of named routes.
-By default Silex will generate a route name for you, that cannot really be
-used. You can give a route a name by calling ``bind`` on the ``Controller``
-object that is returned by the routing methods::
+Silex generates a default route name for each controller but you can override
+it by calling ``bind`` on the ``Controller`` object that is returned by the
+routing methods::
 
     $app->get('/', function () {
         ...
