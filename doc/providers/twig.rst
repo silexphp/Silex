@@ -1,7 +1,7 @@
-TwigExtension
-=============
+TwigProvider
+============
 
-The *TwigExtension* provides integration with the `Twig
+The *TwigProvider* provides integration with the `Twig
 <http://twig.sensiolabs.org/>`_ template engine.
 
 Parameters
@@ -39,7 +39,7 @@ Registering
 Make sure you place a copy of *Twig* in the ``vendor/twig``
 directory::
 
-    $app->register(new Silex\Extension\TwigExtension(), array(
+    $app->register(new Silex\Provider\TwigProvider(), array(
         'twig.path'       => __DIR__.'/views',
         'twig.class_path' => __DIR__.'/vendor/twig/lib',
     ));
@@ -52,7 +52,7 @@ directory::
 Usage
 -----
 
-The Twig extension provides a ``twig`` service::
+The Twig provider provides a ``twig`` service::
 
     $app->get('/hello/{name}', function ($name) use ($app) {
         return $app['twig']->render('hello.twig', array(

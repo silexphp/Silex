@@ -1,7 +1,7 @@
-UrlGeneratorExtension
-=====================
+UrlGeneratorProvider
+====================
 
-The *UrlGeneratorExtension* provides a service for generating
+The *UrlGeneratorProvider* provides a service for generating
 URLs for named routes.
 
 Parameters
@@ -25,12 +25,12 @@ Registering
 
 ::
 
-    $app->register(new Silex\Extension\UrlGeneratorExtension());
+    $app->register(new Silex\Provider\UrlGeneratorProvider());
 
 Usage
 -----
 
-The UrlGenerator extension provides a ``url_generator`` service::
+The UrlGenerator provider provides a ``url_generator`` service::
 
     $app->get('/', function () {
         return 'welcome to the homepage';

@@ -312,10 +312,10 @@ have the value ``index``.
 Named routes
 ~~~~~~~~~~~~
 
-Certain extensions (such as ``UrlGenerator``) can make use of named routes.
-Silex generates a default route name for each controller but you can override
-it by calling ``bind`` on the ``Controller`` object that is returned by the
-routing methods::
+Some providers (such as ``UrlGeneratorProvider``) can make use of named routes.
+By default Silex will generate a route name for you, that cannot really be
+used. You can give a route a name by calling ``bind`` on the ``Controller``
+object that is returned by the routing methods::
 
     $app->get('/', function () {
         ...
@@ -330,7 +330,7 @@ routing methods::
 
 .. note::
 
-    It only makes sense to name routes if you use extensions that make use
+    It only makes sense to name routes if you use providers that make use
     of the ``RouteCollection``.
 
 Before and after filters
@@ -405,8 +405,8 @@ once a response is returned, the following handlers are ignored.
 
 .. note::
 
-    Silex ships with an extension for `Monolog <https://github.com/Seldaek/monolog>`_
-    which handles logging of errors. Check out the *Extensions* chapter
+    Silex ships with a provider for `Monolog <https://github.com/Seldaek/monolog>`_
+    which handles logging of errors. Check out the *Providers* chapter
     for details.
 
 .. tip::

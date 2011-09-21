@@ -1,7 +1,7 @@
-HttpCacheExtension
-==================
+HttpCacheProvider
+=================
 
-The *HttpCacheExtension* provides support for the Symfony2 Reverse Proxy.
+The *HttpCacheProvider* provides support for the Symfony2 Reverse Proxy.
 
 Parameters
 ----------
@@ -23,7 +23,7 @@ Registering
 
 ::
 
-    $app->register(new Silex\Extension\HttpCacheExtension(), array(
+    $app->register(new Silex\Provider\HttpCacheProvider(), array(
         'http_cache.cache_dir' => __DIR__.'/cache/',
     ));
 
@@ -39,12 +39,12 @@ setting Response HTTP cache headers::
         ));
     });
 
-This extension allows you to use the Symfony2 reverse proxy natively with
+This provider allows you to use the Symfony2 reverse proxy natively with
 Silex applications by using the `http_cache` service::
 
     $app['http_cache']->run();
 
-The extension also provide ESI support::
+The provider also provide ESI support::
 
     $app->get('/', function() {
         return new Response(<<<EOF

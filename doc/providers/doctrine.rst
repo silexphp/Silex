@@ -1,7 +1,7 @@
-DoctrineExtension
-=================
+DoctrineProvider
+================
 
-The *DoctrineExtension* provides integration with the `Doctrine DBAL
+The *DoctrineProvider* provides integration with the `Doctrine DBAL
 <http://www.doctrine-project.org/projects/dbal>`_ for easy database acccess.
 
 .. note::
@@ -58,7 +58,7 @@ Registering
 Make sure you place a copy of *Doctrine DBAL* in ``vendor/doctrine-dbal``
 and *Doctrine Common* in ``vendor/doctrine-common``::
 
-    $app->register(new Silex\Extension\DoctrineExtension(), array(
+    $app->register(new Silex\Provider\DoctrineProvider(), array(
         'db.options'            => array(
             'driver'    => 'pdo_sqlite',
             'path'      => __DIR__.'/app.db',
@@ -70,7 +70,7 @@ and *Doctrine Common* in ``vendor/doctrine-common``::
 Usage
 -----
 
-The Doctrine extension provides a ``db`` service. Here is a usage
+The Doctrine provider provides a ``db`` service. Here is a usage
 example::
 
     $app->get('/blog/show/{id}', function ($id) use ($app) {
@@ -84,12 +84,12 @@ example::
 Using multiple databases
 ------------------------
 
-The Doctrine extension can allow access to multiple databases. In order to
+The Doctrine provider can allow access to multiple databases. In order to
 configure the data sources, replace the **db.options** with **dbs.options**.
 **dbs.options** is an array of configurations where keys are connection names
 and values are options::
 
-    $app->register(new Silex\Extension\DoctrineExtension(), array(
+    $app->register(new Silex\Provider\DoctrineProvider(), array(
         'dbs.options' => array (
             'mysql_read' => array(
                 'driver'    => 'pdo_mysql',

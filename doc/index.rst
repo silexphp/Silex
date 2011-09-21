@@ -7,7 +7,7 @@ Silex
     intro
     usage
     services
-    extensions
+    providers
     testing
     internals
     contributing

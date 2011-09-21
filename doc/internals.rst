@@ -49,7 +49,7 @@ ControllerCollection
 
 One of the goals of exposing the `RouteCollection
 <http://api.symfony.com/2.0/Symfony/Component/Routing/RouteCollection.html>`_
-was to make it mutable, so extensions could add stuff to it.
+was to make it mutable, so providers could add stuff to it.
 The challenge here is the fact that routes know nothing
 about their name. The name only has meaning in context
 of the ``RouteCollection`` and cannot be changed.
