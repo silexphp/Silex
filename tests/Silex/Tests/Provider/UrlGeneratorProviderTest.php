@@ -9,25 +9,25 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Silex\Tests\Extension;
+namespace Silex\Tests\Provider;
 
 use Silex\Application;
-use Silex\Extension\UrlGeneratorExtension;
+use Silex\Provider\UrlGeneratorProvider;
 
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * UrlGeneratorExtension test cases.
+ * UrlGeneratorProvider test cases.
  *
  * @author Igor Wiedler <igor@wiedler.ch>
  */
-class UrlGeneratorExtensionTest extends \PHPUnit_Framework_TestCase
+class UrlGeneratorProviderTest extends \PHPUnit_Framework_TestCase
 {
     public function testRegister()
     {
         $app = new Application();
 
-        $app->register(new UrlGeneratorExtension());
+        $app->register(new UrlGeneratorProvider());
 
         $app->get('/hello/{name}', function ($name) {})
             ->bind('hello');
@@ -44,7 +44,7 @@ class UrlGeneratorExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->register(new UrlGeneratorExtension());
+        $app->register(new UrlGeneratorProvider());
 
         $app->get('/hello/{name}', function ($name) {})
             ->bind('hello');
@@ -63,7 +63,7 @@ class UrlGeneratorExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->register(new UrlGeneratorExtension());
+        $app->register(new UrlGeneratorProvider());
 
         $app->get('/hello/{name}', function ($name) {})
             ->bind('hello');
@@ -82,7 +82,7 @@ class UrlGeneratorExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->register(new UrlGeneratorExtension());
+        $app->register(new UrlGeneratorProvider());
 
         $app->get('/insecure', function () {})
             ->bind('insecure_page')
@@ -102,7 +102,7 @@ class UrlGeneratorExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->register(new UrlGeneratorExtension());
+        $app->register(new UrlGeneratorProvider());
 
         $app->get('/secure', function () {})
             ->bind('secure_page')

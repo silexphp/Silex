@@ -9,17 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Silex\Extension;
+namespace Silex\Provider;
 
 use Silex\Application;
-use Silex\ExtensionInterface;
+use Silex\ServiceProviderInterface;
 
 /**
- * Swiftmailer extension.
+ * Swiftmailer Provider.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class SwiftmailerExtension implements ExtensionInterface
+class SwiftmailerProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {

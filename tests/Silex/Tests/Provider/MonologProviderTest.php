@@ -9,21 +9,21 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Silex\Tests\Extension;
+namespace Silex\Tests\Provider;
 
 use Monolog\Handler\TestHandler;
 
 use Silex\Application;
-use Silex\Extension\MonologExtension;
+use Silex\Provider\MonologProvider;
 
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * MonologExtension test cases.
+ * MonologProvider test cases.
  *
  * @author Igor Wiedler <igor@wiedler.ch>
  */
-class MonologExtensionTest extends \PHPUnit_Framework_TestCase
+class MonologProviderTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
@@ -36,7 +36,7 @@ class MonologExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->register(new MonologExtension(), array(
+        $app->register(new MonologProvider(), array(
             'monolog.class_path'    => __DIR__.'/../../../../vendor/monolog/src',
         ));
 

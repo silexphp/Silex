@@ -9,19 +9,19 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Silex\Tests\Extension;
+namespace Silex\Tests\Provider;
 
 use Silex\Application;
-use Silex\Extension\TwigExtension;
+use Silex\Provider\TwigProvider;
 
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * TwigExtension test cases.
+ * TwigProvider test cases.
  *
  * @author Igor Wiedler <igor@wiedler.ch>
  */
-class TwigExtensionTest extends \PHPUnit_Framework_TestCase
+class TwigProviderTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
@@ -34,7 +34,7 @@ class TwigExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->register(new TwigExtension(), array(
+        $app->register(new TwigProvider(), array(
             'twig.templates'    => array('hello' => 'Hello {{ name }}!'),
             'twig.class_path'   => __DIR__.'/../../../../vendor/twig/lib',
         ));

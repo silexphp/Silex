@@ -9,19 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace Silex\Extension;
+namespace Silex\Provider;
 
 use Silex\Application;
-use Silex\ExtensionInterface;
+use Silex\ServiceProviderInterface;
 
 use Symfony\Component\Routing\Generator\UrlGenerator;
 
 /**
- * Symfony Routing component extension for URL generation.
+ * Symfony Routing component Provider for URL generation.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class UrlGeneratorExtension implements ExtensionInterface
+class UrlGeneratorProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {

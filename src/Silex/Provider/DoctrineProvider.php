@@ -9,20 +9,20 @@
  * file that was distributed with this source code.
  */
 
-namespace Silex\Extension;
+namespace Silex\Provider;
 
 use Silex\Application;
-use Silex\ExtensionInterface;
+use Silex\ServiceProviderInterface;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Configuration;
 use Doctrine\Common\EventManager;
 
 /**
- * Doctrine DBAL extension.
+ * Doctrine DBAL Provider.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class DoctrineExtension implements ExtensionInterface
+class DoctrineProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {

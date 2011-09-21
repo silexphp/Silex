@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Silex\Extension;
+namespace Silex\Provider;
 
 use Silex\Application;
-use Silex\ExtensionInterface;
+use Silex\ServiceProviderInterface;
 use Symfony\Component\Form\Extension\Csrf\CsrfProvider\DefaultCsrfProvider;
 use Symfony\Component\Form\Extension\Csrf\CsrfProvider\SessionCsrfProvider;
 use Symfony\Component\Form\FormFactory;
@@ -21,11 +21,11 @@ use Symfony\Component\Form\Extension\Validator\ValidatorExtension as FormValidat
 use Symfony\Component\Form\Extension\Csrf\CsrfExtension;
 
 /**
- * Symfony Form component extension.
+ * Symfony Form component Provider.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class FormExtension implements ExtensionInterface
+class FormProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {

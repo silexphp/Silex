@@ -12,14 +12,14 @@
 namespace Silex;
 
 /**
- * Interface that must implement all Silex extensions.
+ * Interface that must implement all Silex service providers.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-interface ExtensionInterface
+interface ServiceProviderInterface
 {
     /**
-     * Registers an extension.
+     * Registers services on the given app.
      *
      * @param Application $app An Application instance
      */
