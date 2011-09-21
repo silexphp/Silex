@@ -1,7 +1,7 @@
-SessionExtension
-================
+SessionProvider
+===============
 
-The *SessionExtension* provides a service for storing data persistently
+The *SessionProvider* provides a service for storing data persistently
 between requests.
 
 Parameters
@@ -40,12 +40,12 @@ Registering
 
 ::
 
-    $app->register(new Silex\Extension\SessionExtension());
+    $app->register(new Silex\Provider\SessionProvider());
 
 Usage
 -----
 
-The Session extension provides a ``session`` service. Here is an
+The Session provider provides a ``session`` service. Here is an
 example that authenticates a user and creates a session for him::
 
     use Symfony\Component\HttpFoundation\Response;

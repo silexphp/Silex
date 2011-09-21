@@ -1,7 +1,7 @@
-TranslationExtension
-=====================
+TranslationProvider
+===================
 
-The *TranslationExtension* provides a service for translating your application
+The *TranslationProvider* provides a service for translating your application
 into different languages.
 
 Parameters
@@ -40,7 +40,7 @@ Registering
 Make sure you place a copy of the Symfony2 Translation component in
 ``vendor/symfony/src``. You can simply clone the whole Symfony2 into vendor::
 
-    $app->register(new Silex\Extension\TranslationExtension(), array(
+    $app->register(new Silex\Provider\TranslationProvider(), array(
         'locale_fallback'           => 'en',
         'translation.class_path'    => __DIR__.'/vendor/symfony/src',
     ));
@@ -48,7 +48,7 @@ Make sure you place a copy of the Symfony2 Translation component in
 Usage
 -----
 
-The Translation extension provides a ``translator`` service and makes use of
+The Translation provider provides a ``translator`` service and makes use of
 the ``translator.messages`` parameter::
 
     $app['translator.messages'] = array(

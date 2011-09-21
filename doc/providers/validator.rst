@@ -1,8 +1,8 @@
-ValidatorExtension
-=====================
+ValidatorProvider
+=================
 
-The *ValidatorExtension* provides a service for validating data. It is
-most useful when used with the *FormExtension*, but can also be used
+The *ValidatorProvider* provides a service for validating data. It is
+most useful when used with the *FormProvider*, but can also be used
 standalone.
 
 Parameters
@@ -35,14 +35,14 @@ Registering
 Make sure you place a copy of the Symfony2 Validator component in
 ``vendor/symfony/src``. You can simply clone the whole Symfony2 into vendor::
 
-    $app->register(new Silex\Extension\ValidatorExtension(), array(
+    $app->register(new Silex\Provider\ValidatorProvider(), array(
         'validator.class_path'    => __DIR__.'/vendor/symfony/src',
     ));
 
 Usage
 -----
 
-The Validator extension provides a ``validator`` service.
+The Validator provider provides a ``validator`` service.
 
 Validating values
 ~~~~~~~~~~~~~~~~~
@@ -93,7 +93,7 @@ getters::
     });
 
 You will have to handle the display of these violations yourself. You can
-however use the *FormExtension* which can make use of the *ValidatorExtension*.
+however use the *FormProvider* which can make use of the *ValidatorProvider*.
 
 For more information, consult the `Symfony2 Validation documentation
 <http://symfony.com/doc/2.0/book/validation.html>`_.

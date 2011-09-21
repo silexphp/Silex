@@ -254,7 +254,7 @@ Core parameters
 
   Defaults to 80.
 
-  This parameter can be used by the ``UrlGeneratorExtension``.
+  This parameter can be used by the ``UrlGeneratorProvider``.
 
 * **request.https_port** (optional): Allows you to override the default port
   for HTTPS URLs. If the current request is HTTPS, it will always use the
@@ -262,7 +262,7 @@ Core parameters
 
   Defaults to 443.
 
-  This parameter can be used by the ``UrlGeneratorExtension``.
+  This parameter can be used by the ``UrlGeneratorProvider``.
 
 * **debug** (optional): Returns whether or not the application is running in
   debug mode.

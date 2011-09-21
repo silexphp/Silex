@@ -1,27 +1,28 @@
-Extensions
-==========
+Providers
+=========
 
-Extensions allow the developer to reuse parts of an application into another
-one. Silex provides two interfaces for extensions: `ExtensionInterface` for
-services and `ControllersExtensionInterface` for controllers.
+Providers allow the developer to reuse parts of an application into another
+one. Silex provides two types of providers defined by two interfaces:
+`ServiceProviderInterface` for services and `ControllerProviderInterface` for
+controllers.
 
-Service Extensions
-------------------
+Service Providers
+-----------------
 
-Loading extensions
-~~~~~~~~~~~~~~~~~~
+Loading providers
+~~~~~~~~~~~~~~~~~
 
-In order to load and use a service extension, you must register it on the
+In order to load and use a service provider, you must register it on the
 application::
 
     $app = new Silex\Application();
 
-    $app->register(new Acme\DatabaseExtension());
+    $app->register(new Acme\DatabaseProvider());
 
 You can also provide some parameters as a second argument. These
-will be set **before** the extension is registered::
+will be set **before** the provider is registered::
 
-    $app->register(new Acme\DatabaseExtension(), array(
+    $app->register(new Acme\DatabaseProvider(), array(
         'database.dsn'      => 'mysql:host=localhost;dbname=myapp',
         'database.user'     => 'root',
         'database.password' => 'secret_root_password',
@@ -31,52 +32,52 @@ Conventions
 ~~~~~~~~~~~
 
 You need to watch out in what order you do certain things when
-interacting with extensions. Just keep to these rules:
+interacting with providers. Just keep to these rules:
 
 * Class paths (for the autoloader) must be defined **before**
-  the extension is registered. Passing it as a second argument
+  the provider is registered. Passing it as a second argument
   to ``Application::register`` qualifies too, because it sets
   the passed parameters first.
 
-  *Reason: The extension will set up the autoloader at
-  extension register time. If the class path is not set
+  *Reason: The provider will set up the autoloader at
+  provider register time. If the class path is not set
   at that point, no autoloader can be registered.*
 
 * Overriding existing services must occur **after** the
-  extension is registered.
+  provider is registered.
 
-  *Reason: If the services already exist, the extension
+  *Reason: If the services already exist, the provider
   will overwrite it.*
 
 * You can set parameters any time before the service is
   accessed.
 
 Make sure to stick to this behavior when creating your
-own extensions.
+own providers.
 
-Included extensions
+Included providers
+~~~~~~~~~~~~~~~~~~
+
+There are a few provider that you get out of the box.
+All of these are within the ``Silex\Provider`` namespace.
+
+* :doc:`DoctrineProvider <providers/doctrine>`
+* :doc:`MonologProvider <providers/monolog>`
+* :doc:`SessionProvider <providers/session>`
+* :doc:`SwiftmailerServiceProvider <providers/swiftmailer>`
+* :doc:`SymfonyBridgesServiceProvider <providers/symfony_bridges>`
+* :doc:`TwigProvider <providers/twig>`
+* :doc:`TranslationProvider <providers/translation>`
+* :doc:`UrlGeneratorProvider <providers/url_generator>`
+* :doc:`ValidatorProvider <providers/validator>`
+* :doc:`HttpCacheProvider <providers/http_cache>`
+
+Creating a provider
 ~~~~~~~~~~~~~~~~~~~
 
-There are a few extensions that you get out of the box.
-All of these are within the ``Silex\Extension`` namespace.
+Providers must implement the ``Silex\ServiceProviderInterface``::
 
-* :doc:`DoctrineExtension <extensions/doctrine>`
-* :doc:`MonologExtension <extensions/monolog>`
-* :doc:`SessionExtension <extensions/session>`
-* :doc:`SwiftmailerExtension <extensions/swiftmailer>`
-* :doc:`SymfonyBridgesExtension <extensions/symfony_bridges>`
-* :doc:`TwigExtension <extensions/twig>`
-* :doc:`TranslationExtension <extensions/translation>`
-* :doc:`UrlGeneratorExtension <extensions/url_generator>`
-* :doc:`ValidatorExtension <extensions/validator>`
-* :doc:`HttpCacheExtension <extensions/http_cache>`
-
-Creating an extension
-~~~~~~~~~~~~~~~~~~~~~
-
-Extensions must implement the ``Silex\ExtensionInterface``::
-
-    interface ExtensionInterface
+    interface ServiceProviderInterface
     {
         function register(Application $app);
     }
@@ -86,14 +87,14 @@ implements the ``register`` method.  In this method you must
 define services on the application which then may make use
 of other services and parameters.
 
-Here is an example of such an extension::
+Here is an example of such a provider::
 
     namespace Acme;
 
     use Silex\Application;
-    use Silex\ExtensionInterface;
+    use Silex\ServiceProviderInterface;
 
-    class HelloExtension implements ExtensionInterface
+    class HelloProvider implements ServiceProviderInterface
     {
         public function register(Application $app)
         {
@@ -111,11 +112,11 @@ closure. It takes a name argument and will return
 ``hello.default_name`` if no name is given. If the default
 is also missing, it will use an empty string.
 
-You can now use this extension as follows::
+You can now use this provider as follows::
 
     $app = new Silex\Application();
 
-    $app->register(new Acme\HelloExtension(), array(
+    $app->register(new Acme\HelloProvider(), array(
         'hello.default_name' => 'Igor',
     ));
 
@@ -131,9 +132,9 @@ query string, so the request path would have to be ``/hello?name=Fabien``.
 Class loading
 ~~~~~~~~~~~~~
 
-Extensions are great for tying in external libraries as you
-can see by looking at the ``MonologExtension`` and
-``TwigExtension``. If the library is decent and follows the
+Providers are great for tying in external libraries as you
+can see by looking at the ``MonologProvider`` and
+``TwigProvider``. If the library is decent and follows the
 `PSR-0 Naming Standard <http://groups.google.com/group/php-standards/web/psr-0-final-proposal>`_
 or the PEAR Naming Convention, it is possible to autoload
 classes using the ``UniversalClassLoader``.
@@ -146,9 +147,9 @@ Here is an example of how to use it (based on `Buzz <https://github.com/kriswall
     namespace Acme;
 
     use Silex\Application;
-    use Silex\ExtensionInterface;
+    use Silex\ServiceProviderInterface;
 
-    class BuzzExtension implements ExtensionInterface
+    class BuzzProvider implements ServiceProviderInterface
     {
         public function register(Application $app)
         {
@@ -161,9 +162,9 @@ Here is an example of how to use it (based on `Buzz <https://github.com/kriswall
     }
 
 This allows you to simply provide the class  path as an
-option when registering the extension::
+option when registering the provider::
 
-    $app->register(new BuzzExtension(), array(
+    $app->register(new BuzzProvider(), array(
         'buzz.class_path' => __DIR__.'/vendor/buzz/lib',
     ));
 
@@ -173,40 +174,40 @@ option when registering the extension::
     instead of ``registerNamespace``, which will use an underscore as directory
     delimiter.
 
-Controllers Extensions
-----------------------
+Controllers providers
+---------------------
 
-Loading extensions
-~~~~~~~~~~~~~~~~~~
+Loading providers
+~~~~~~~~~~~~~~~~~
 
-In order to load and use a controller extension, you must "mount" its
+In order to load and use a controller provider, you must "mount" its
 controllers under a path::
 
     $app = new Silex\Application();
 
-    $app->mount('/blog', new Acme\BlogExtension());
+    $app->mount('/blog', new Acme\BlogProvider());
 
-All controllers defined by the extension will now be available under the
+All controllers defined by the provider will now be available under the
 `/blog` path.
 
-Creating an extension
-~~~~~~~~~~~~~~~~~~~~~
+Creating a provider
+~~~~~~~~~~~~~~~~~~~
 
-Extensions must implement the ``Silex\ControllersExtensionInterface``::
+Providers must implement the ``Silex\ControllerProviderInterface``::
 
-    interface ControllersExtensionInterface
+    interface ControllerProviderInterface
     {
         function connect(Application $app);
     }
 
-Here is an example of such an extension::
+Here is an example of such a provider::
 
     namespace Acme;
 
     use Silex\Application;
-    use Silex\ControllersExtensionInterface;
+    use Silex\ControllerProviderInterface;
 
-    class HelloExtension implements ControllersExtensionInterface
+    class HelloProvider implements ControllerProviderInterface
     {
         public function connect(Application $app)
         {
@@ -228,17 +229,17 @@ defined (like ``get``, ``post``, ``match``, ...).
 
     The ``Application`` class acts in fact as a proxy for these methods.
 
-You can now use this extension as follows::
+You can now use this provider as follows::
 
     $app = new Silex\Application();
 
-    $app->connect('/blog', new Acme\HelloExtension());
+    $app->connect('/blog', new Acme\HelloProvider());
 
 In this example, the ``/blog/`` path now references the controller defined in
-the extension.
+the provider.
 
 .. tip::
 
-    You can also define an extension that implements both the service and the
-    controller extension interface and package in the same class the services
+    You can also define an provider that implements both the service and the
+    controller provider interface and package in the same class the services
     needed to make your controllers work.

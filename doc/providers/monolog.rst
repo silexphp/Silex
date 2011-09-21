@@ -1,7 +1,7 @@
-MonologExtension
-================
+MonologProvider
+===============
 
-The *MonologExtension* provides a default logging mechanism
+The *MonologProvider* provides a default logging mechanism
 through Jordi Boggiano's `Monolog <https://github.com/Seldaek/monolog>`_
 library.
 
@@ -46,7 +46,7 @@ Registering
 Make sure you place a copy of *Monolog* in the ``vendor/monolog``
 directory::
 
-    $app->register(new Silex\Extension\MonologExtension(), array(
+    $app->register(new Silex\Provider\MonologProvider(), array(
         'monolog.logfile'       => __DIR__.'/development.log',
         'monolog.class_path'    => __DIR__.'/vendor/monolog/src',
     ));
@@ -59,7 +59,7 @@ directory::
 Usage
 -----
 
-The MonologExtension provides a ``monolog`` service. You can use
+The MonologProvider provides a ``monolog`` service. You can use
 it to add log entries for any logging level through ``addDebug()``,
 ``addInfo()``, ``addWarning()`` and ``addError()``.
 

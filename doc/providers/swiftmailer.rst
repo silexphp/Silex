@@ -1,7 +1,7 @@
-SwiftmailerExtension
-====================
+SwiftmailerServiceProvider
+==========================
 
-The *SwiftmailerExtension* provides a service for sending
+The *SwiftmailerServiceProvider* provides a service for sending
 email through the `Swift Mailer <http://swiftmailer.org>`_
 library.
 
@@ -60,7 +60,7 @@ directory. Make sure you point the class path to ``/lib/classes``.
 
 ::
 
-    $app->register(new Silex\Extension\SwiftmailerExtension(), array(
+    $app->register(new Silex\Provider\SwiftmailerServiceProvider(), array(
         'swiftmailer.class_path'  => __DIR__.'/vendor/swiftmailer/lib/classes',
     ));
 
@@ -72,7 +72,7 @@ directory. Make sure you point the class path to ``/lib/classes``.
 Usage
 -----
 
-The Swiftmailer extension provides a ``mailer`` service.
+The Swiftmailer provider provides a ``mailer`` service.
 
 ::
 
