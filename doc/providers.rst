@@ -17,12 +17,12 @@ application::
 
     $app = new Silex\Application();
 
-    $app->register(new Acme\DatabaseProvider());
+    $app->register(new Acme\DatabaseServiceProvider());
 
 You can also provide some parameters as a second argument. These
 will be set **before** the provider is registered::
 
-    $app->register(new Acme\DatabaseProvider(), array(
+    $app->register(new Acme\DatabaseServiceProvider(), array(
         'database.dsn'      => 'mysql:host=localhost;dbname=myapp',
         'database.user'     => 'root',
         'database.password' => 'secret_root_password',
@@ -61,16 +61,16 @@ Included providers
 There are a few provider that you get out of the box.
 All of these are within the ``Silex\Provider`` namespace.
 
-* :doc:`DoctrineProvider <providers/doctrine>`
-* :doc:`MonologProvider <providers/monolog>`
-* :doc:`SessionProvider <providers/session>`
+* :doc:`DoctrineServiceProvider <providers/doctrine>`
+* :doc:`MonologServiceProvider <providers/monolog>`
+* :doc:`SessionServiceProvider <providers/session>`
 * :doc:`SwiftmailerServiceProvider <providers/swiftmailer>`
 * :doc:`SymfonyBridgesServiceProvider <providers/symfony_bridges>`
-* :doc:`TwigProvider <providers/twig>`
-* :doc:`TranslationProvider <providers/translation>`
-* :doc:`UrlGeneratorProvider <providers/url_generator>`
-* :doc:`ValidatorProvider <providers/validator>`
-* :doc:`HttpCacheProvider <providers/http_cache>`
+* :doc:`TwigServiceProvider <providers/twig>`
+* :doc:`TranslationServiceProvider <providers/translation>`
+* :doc:`UrlGeneratorServiceProvider <providers/url_generator>`
+* :doc:`ValidatorServiceProvider <providers/validator>`
+* :doc:`HttpCacheServiceProvider <providers/http_cache>`
 
 Creating a provider
 ~~~~~~~~~~~~~~~~~~~
@@ -94,7 +94,7 @@ Here is an example of such a provider::
     use Silex\Application;
     use Silex\ServiceProviderInterface;
 
-    class HelloProvider implements ServiceProviderInterface
+    class HelloServiceProvider implements ServiceProviderInterface
     {
         public function register(Application $app)
         {
@@ -116,7 +116,7 @@ You can now use this provider as follows::
 
     $app = new Silex\Application();
 
-    $app->register(new Acme\HelloProvider(), array(
+    $app->register(new Acme\HelloServiceProvider(), array(
         'hello.default_name' => 'Igor',
     ));
 
@@ -133,8 +133,8 @@ Class loading
 ~~~~~~~~~~~~~
 
 Providers are great for tying in external libraries as you
-can see by looking at the ``MonologProvider`` and
-``TwigProvider``. If the library is decent and follows the
+can see by looking at the ``MonologServiceProvider`` and
+``TwigServiceProvider``. If the library is decent and follows the
 `PSR-0 Naming Standard <http://groups.google.com/group/php-standards/web/psr-0-final-proposal>`_
 or the PEAR Naming Convention, it is possible to autoload
 classes using the ``UniversalClassLoader``.
@@ -149,7 +149,7 @@ Here is an example of how to use it (based on `Buzz <https://github.com/kriswall
     use Silex\Application;
     use Silex\ServiceProviderInterface;
 
-    class BuzzProvider implements ServiceProviderInterface
+    class BuzzServiceProvider implements ServiceProviderInterface
     {
         public function register(Application $app)
         {
@@ -164,7 +164,7 @@ Here is an example of how to use it (based on `Buzz <https://github.com/kriswall
 This allows you to simply provide the class  path as an
 option when registering the provider::
 
-    $app->register(new BuzzProvider(), array(
+    $app->register(new BuzzServiceProvider(), array(
         'buzz.class_path' => __DIR__.'/vendor/buzz/lib',
     ));
 
@@ -185,7 +185,7 @@ controllers under a path::
 
     $app = new Silex\Application();
 
-    $app->mount('/blog', new Acme\BlogProvider());
+    $app->mount('/blog', new Acme\BlogControllerProvider());
 
 All controllers defined by the provider will now be available under the
 `/blog` path.
@@ -207,7 +207,7 @@ Here is an example of such a provider::
     use Silex\Application;
     use Silex\ControllerProviderInterface;
 
-    class HelloProvider implements ControllerProviderInterface
+    class HelloControllerProvider implements ControllerProviderInterface
     {
         public function connect(Application $app)
         {
@@ -233,7 +233,7 @@ You can now use this provider as follows::
 
     $app = new Silex\Application();
 
-    $app->connect('/blog', new Acme\HelloProvider());
+    $app->connect('/blog', new Acme\HelloControllerProvider());
 
 In this example, the ``/blog/`` path now references the controller defined in
 the provider.
