@@ -23,7 +23,7 @@ use Symfony\Bridge\Twig\Extension\FormExtension as TwigFormExtension;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class TwigProvider implements ServiceProviderInterface
+class TwigServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {

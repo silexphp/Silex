@@ -24,7 +24,7 @@ use Symfony\Component\Validator\ConstraintValidatorFactory;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class ValidatorProvider implements ServiceProviderInterface
+class ValidatorServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {

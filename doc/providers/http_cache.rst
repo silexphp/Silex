@@ -1,5 +1,5 @@
-HttpCacheProvider
-=================
+HttpCacheServiceProvider
+========================
 
 The *HttpCacheProvider* provides support for the Symfony2 Reverse Proxy.
 
@@ -23,7 +23,7 @@ Registering
 
 ::
 
-    $app->register(new Silex\Provider\HttpCacheProvider(), array(
+    $app->register(new Silex\Provider\HttpCacheServiceProvider(), array(
         'http_cache.cache_dir' => __DIR__.'/cache/',
     ));
 

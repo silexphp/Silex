@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class UrlGeneratorProvider implements ServiceProviderInterface
+class UrlGeneratorServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {

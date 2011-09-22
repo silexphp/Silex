@@ -1,7 +1,7 @@
-UrlGeneratorProvider
-====================
+UrlGeneratorServiceProvider
+===========================
 
-The *UrlGeneratorProvider* provides a service for generating
+The *UrlGeneratorServiceProvider* provides a service for generating
 URLs for named routes.
 
 Parameters
@@ -25,7 +25,7 @@ Registering
 
 ::
 
-    $app->register(new Silex\Provider\UrlGeneratorProvider());
+    $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 
 Usage
 -----

@@ -14,7 +14,7 @@ namespace Silex\Tests\Provider;
 use Monolog\Handler\TestHandler;
 
 use Silex\Application;
-use Silex\Provider\MonologProvider;
+use Silex\Provider\MonologServiceProvider;
 
 use Symfony\Component\HttpFoundation\Request;
 
@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @author Igor Wiedler <igor@wiedler.ch>
  */
-class MonologProviderTest extends \PHPUnit_Framework_TestCase
+class MonologServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
@@ -36,7 +36,7 @@ class MonologProviderTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->register(new MonologProvider(), array(
+        $app->register(new MonologServiceProvider(), array(
             'monolog.class_path'    => __DIR__.'/../../../../vendor/monolog/src',
         ));
 

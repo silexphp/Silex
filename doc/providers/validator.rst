@@ -1,8 +1,8 @@
-ValidatorProvider
-=================
+ValidatorServiceProvider
+========================
 
-The *ValidatorProvider* provides a service for validating data. It is
-most useful when used with the *FormProvider*, but can also be used
+The *ValidatorServiceProvider* provides a service for validating data. It is
+most useful when used with the *FormServiceProvider*, but can also be used
 standalone.
 
 Parameters
@@ -35,7 +35,7 @@ Registering
 Make sure you place a copy of the Symfony2 Validator component in
 ``vendor/symfony/src``. You can simply clone the whole Symfony2 into vendor::
 
-    $app->register(new Silex\Provider\ValidatorProvider(), array(
+    $app->register(new Silex\Provider\ValidatorServiceProvider(), array(
         'validator.class_path'    => __DIR__.'/vendor/symfony/src',
     ));
 
@@ -93,7 +93,7 @@ getters::
     });
 
 You will have to handle the display of these violations yourself. You can
-however use the *FormProvider* which can make use of the *ValidatorProvider*.
+however use the *FormServiceProvider* which can make use of the *ValidatorServiceProvider*.
 
 For more information, consult the `Symfony2 Validation documentation
 <http://symfony.com/doc/2.0/book/validation.html>`_.

@@ -22,7 +22,7 @@ use Doctrine\Common\EventManager;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class DoctrineProvider implements ServiceProviderInterface
+class DoctrineServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {

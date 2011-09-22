@@ -23,7 +23,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class SessionProvider implements ServiceProviderInterface
+class SessionServiceProvider implements ServiceProviderInterface
 {
     private $app;
 

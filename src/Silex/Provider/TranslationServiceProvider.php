@@ -23,7 +23,7 @@ use Symfony\Component\Translation\Loader\ArrayLoader;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class TranslationProvider implements ServiceProviderInterface
+class TranslationServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
