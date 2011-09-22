@@ -2,7 +2,7 @@ Contributing
 ============
 
 We are open to contributions to the Silex code. If you find
-a bug or want to contribute an extension, just follow these
+a bug or want to contribute a provider, just follow these
 steps.
 
 * Fork `the Silex repository <https://github.com/fabpot/Silex>`_

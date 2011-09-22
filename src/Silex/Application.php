@@ -69,7 +69,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         });
 
         $this['controllers'] = $this->share(function () use ($app) {
-            return new ControllerCollection($app['routes']);
+            return new ControllerCollection();
         });
 
         $this['exception_handler'] = $this->share(function () {
@@ -102,18 +102,18 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     }
 
     /**
-     * Registers an extension.
+     * Registers a service provider.
      *
-     * @param ExtensionInterface $extension An ExtensionInterface instance
-     * @param array              $values    An array of values that customizes the extension
+     * @param ServiceProviderInterface $provider A ServiceProviderInterface instance
+     * @param array                    $values    An array of values that customizes the provider
      */
-    public function register(ExtensionInterface $extension, array $values = array())
+    public function register(ServiceProviderInterface $provider, array $values = array())
     {
         foreach ($values as $key => $value) {
             $this[$key] = $value;
         }
 
-        $extension->register($this);
+        $provider->register($this);
     }
 
     /**
@@ -128,11 +128,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function match($pattern, $to)
     {
-        $route = new Route($pattern, array('_controller' => $to));
-        $controller = new Controller($route);
-        $this['controllers']->add($controller);
-
-        return $controller;
+        return $this['controllers']->match($pattern, $to);
     }
 
     /**
@@ -145,7 +141,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function get($pattern, $to)
     {
-        return $this->match($pattern, $to)->method('GET');
+        return $this['controllers']->get($pattern, $to);
     }
 
     /**
@@ -158,7 +154,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function post($pattern, $to)
     {
-        return $this->match($pattern, $to)->method('POST');
+        return $this['controllers']->post($pattern, $to);
     }
 
     /**
@@ -171,7 +167,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function put($pattern, $to)
     {
-        return $this->match($pattern, $to)->method('PUT');
+        return $this['controllers']->put($pattern, $to);
     }
 
     /**
@@ -184,7 +180,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function delete($pattern, $to)
     {
-        return $this->match($pattern, $to)->method('DELETE');
+        return $this['controllers']->delete($pattern, $to);
     }
 
     /**
@@ -267,10 +263,12 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
 
     /**
      * Flushes the controller collection.
+     *
+     * @param string $prefix The route prefix
      */
-    public function flush()
+    public function flush($prefix = '')
     {
-        $this['controllers']->flush();
+        $this['routes']->addCollection($this['controllers']->flush(), $prefix);
     }
 
     /**
@@ -300,28 +298,20 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     /**
      * Mounts an application under the given route prefix.
      *
-     * @param string               $prefix The route prefix
-     * @param Application|\Closure $app    An Application instance or a Closure that returns an Application instance
+     * @param string                                           $prefix The route prefix
+     * @param ControllerCollection|ControllerProviderInterface $app    A ControllerCollection or an ControllerProviderInterface instance
      */
     public function mount($prefix, $app)
     {
-        $prefix = rtrim($prefix, '/');
-        $mountHandler = function (Request $request, $prefix) use ($app) {
-            if (is_callable($app)) {
-                $app = $app();
-            }
+        if ($app instanceof ControllerProviderInterface) {
+            $app = $app->connect($this);
+        }
 
-            foreach ($app['controllers']->all() as $controller) {
-                $controller->getRoute()->setPattern($prefix.$controller->getRoute()->getPattern());
-            }
+        if (!$app instanceof ControllerCollection) {
+            throw new \LogicException('The "mount" method takes either a ControllerCollection or a ControllerProviderInterface instance.');
+        }
 
-            return $app->handle($request);
-        };
-
-        $this
-            ->match($prefix.'/{path}', $mountHandler)
-            ->assert('path', '.*')
-            ->value('prefix', $prefix);
+        $this['routes']->addCollection($app->flush(), $prefix);
     }
 
     /**
@@ -359,7 +349,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             $this['request']->isSecure() ? $this['request']->getPort() : $this['request.https_port']
         );
 
-        $this['controllers']->flush();
+        $this->flush();
 
         $matcher = new RedirectableUrlMatcher($this['routes'], $this['request_context']);
 
