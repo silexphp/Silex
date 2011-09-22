@@ -66,14 +66,7 @@ In any Twig template, the ``app`` variable refers to the Application object.
 So you can access any services from within your view. For example to access
 ``$app['request']->getHost()``, just put this in your template:
 
-<<<<<<< HEAD
 .. code-block:: jinja
-=======
-    The TwigServiceProvider also registers the application as a global
-    named ``app``. So you can access any services from within your
-    view. For example to access ``$app['request']->getHost()``,
-    just put this in your template:
->>>>>>> renamed *Provider classes to *ServiceProvider
 
     {{ app.request.host }}
 
@@ -84,7 +77,7 @@ from a template:
 
     {{ render('/sidebar') }}
 
-    {# or if you are also using UrlGeneratorExtension #}
+    {# or if you are also using UrlGeneratorServiceProvider #}
     {{ render(path('sidebar')) }}
 
 For more information, check out the `Twig documentation
