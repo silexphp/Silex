@@ -5,8 +5,8 @@ This changelog references all backward incompatibilities as we introduce them:
 
 * **2011-09-22**: `ExtensionInterface` has been renamed to
   `ServiceProviderInterface`. All built-in extensions have been renamed
-  accordingly (for instance, `Silex\Extension\TwigExtension` has been renamed
-  to `Silex\Provider\TwigServiceProvider`)
+  accordingly (for instance, `Silex\\Extension\\TwigExtension` has been renamed
+  to `Silex\\Provider\\TwigServiceProvider`)
 
 * **2011-09-22**: The way reusable applications work has changed. The `mount()`
   method now takes an instance of `ControllerCollection` instead of an
