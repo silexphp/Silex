@@ -12,7 +12,7 @@
 namespace Silex\Tests\Provider;
 
 use Silex\Application;
-use Silex\Provider\TwigProvider;
+use Silex\Provider\TwigServiceProvider;
 
 use Symfony\Component\HttpFoundation\Request;
 
@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @author Igor Wiedler <igor@wiedler.ch>
  */
-class TwigProviderTest extends \PHPUnit_Framework_TestCase
+class TwigServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
@@ -34,7 +34,7 @@ class TwigProviderTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->register(new TwigProvider(), array(
+        $app->register(new TwigServiceProvider(), array(
             'twig.templates'    => array('hello' => 'Hello {{ name }}!'),
             'twig.class_path'   => __DIR__.'/../../../../vendor/twig/lib',
         ));

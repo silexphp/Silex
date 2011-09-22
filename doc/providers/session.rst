@@ -1,7 +1,7 @@
-SessionProvider
-===============
+SessionServiceProvider
+======================
 
-The *SessionProvider* provides a service for storing data persistently
+The *SessionServiceProvider* provides a service for storing data persistently
 between requests.
 
 Parameters
@@ -40,7 +40,7 @@ Registering
 
 ::
 
-    $app->register(new Silex\Provider\SessionProvider());
+    $app->register(new Silex\Provider\SessionServiceProvider());
 
 Usage
 -----

@@ -24,7 +24,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class MonologProvider implements ServiceProviderInterface
+class MonologServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {

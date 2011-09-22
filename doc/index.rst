@@ -11,4 +11,4 @@ Silex
     testing
     internals
     contributing
-    extensions/index
+    providers/index

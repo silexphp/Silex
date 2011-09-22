@@ -12,14 +12,14 @@
 namespace Silex\Tests\Provider;
 
 use Silex\Application;
-use Silex\Provider\DoctrineProvider;
+use Silex\Provider\DoctrineServiceProvider;
 
 /**
  * DoctrineProvider test cases.
  *
  * Fabien Potencier <fabien@symfony.com>
  */
-class DoctrineProviderTest extends \PHPUnit_Framework_TestCase
+class DoctrineServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
@@ -31,7 +31,7 @@ class DoctrineProviderTest extends \PHPUnit_Framework_TestCase
     public function testSingleConnection()
     {
         $app = new Application();
-        $app->register(new DoctrineProvider(), array(
+        $app->register(new DoctrineServiceProvider(), array(
             'db.common.class_path' => __DIR__.'/../../../../vendor/doctrine-common/lib',
             'db.dbal.class_path' => __DIR__.'/../../../../vendor/doctrine-dbal/lib',
 
@@ -51,7 +51,7 @@ class DoctrineProviderTest extends \PHPUnit_Framework_TestCase
     public function testMultipleConnections()
     {
         $app = new Application();
-        $app->register(new DoctrineProvider(), array(
+        $app->register(new DoctrineServiceProvider(), array(
             'db.common.class_path' => __DIR__.'/../../../../vendor/doctrine-common/lib',
             'db.dbal.class_path' => __DIR__.'/../../../../vendor/doctrine-dbal/lib',
 

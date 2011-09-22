@@ -12,7 +12,7 @@
 namespace Silex\Tests\Provider;
 
 use Silex\Application;
-use Silex\Provider\SessionProvider;
+use Silex\Provider\SessionServiceProvider;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\SessionStorage\ArraySessionStorage;
@@ -22,13 +22,13 @@ use Symfony\Component\HttpFoundation\SessionStorage\ArraySessionStorage;
  *
  * @author Igor Wiedler <igor@wiedler.ch>
  */
-class SessionProviderTest extends \PHPUnit_Framework_TestCase
+class SessionServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
     public function testRegister()
     {
         $app = new Application();
 
-        $app->register(new SessionProvider());
+        $app->register(new SessionServiceProvider());
 
         $app['session.storage'] = $app->share(function () use ($app) {
             return new ArraySessionStorage();

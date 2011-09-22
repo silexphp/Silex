@@ -19,7 +19,7 @@ use Silex\ServiceProviderInterface;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class SwiftmailerProvider implements ServiceProviderInterface
+class SwiftmailerServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {

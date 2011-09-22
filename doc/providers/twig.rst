@@ -1,7 +1,7 @@
-TwigProvider
-============
+TwigServiceProvider
+===================
 
-The *TwigProvider* provides integration with the `Twig
+The *TwigServiceProvider* provides integration with the `Twig
 <http://twig.sensiolabs.org/>`_ template engine.
 
 Parameters
@@ -39,7 +39,7 @@ Registering
 Make sure you place a copy of *Twig* in the ``vendor/twig``
 directory::
 
-    $app->register(new Silex\Provider\TwigProvider(), array(
+    $app->register(new Silex\Provider\TwigServiceProvider(), array(
         'twig.path'       => __DIR__.'/views',
         'twig.class_path' => __DIR__.'/vendor/twig/lib',
     ));
@@ -66,7 +66,14 @@ In any Twig template, the ``app`` variable refers to the Application object.
 So you can access any services from within your view. For example to access
 ``$app['request']->getHost()``, just put this in your template:
 
+<<<<<<< HEAD
 .. code-block:: jinja
+=======
+    The TwigServiceProvider also registers the application as a global
+    named ``app``. So you can access any services from within your
+    view. For example to access ``$app['request']->getHost()``,
+    just put this in your template:
+>>>>>>> renamed *Provider classes to *ServiceProvider
 
     {{ app.request.host }}
 

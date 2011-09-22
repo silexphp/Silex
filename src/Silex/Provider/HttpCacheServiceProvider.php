@@ -22,7 +22,7 @@ use Symfony\Component\HttpKernel\HttpCache\Store;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class HttpCacheProvider implements ServiceProviderInterface
+class HttpCacheServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {

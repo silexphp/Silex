@@ -12,7 +12,7 @@
 namespace Silex\Tests\Provider;
 
 use Silex\Application;
-use Silex\Provider\UrlGeneratorProvider;
+use Silex\Provider\UrlGeneratorServiceProvider;
 
 use Symfony\Component\HttpFoundation\Request;
 
@@ -21,13 +21,13 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @author Igor Wiedler <igor@wiedler.ch>
  */
-class UrlGeneratorProviderTest extends \PHPUnit_Framework_TestCase
+class UrlGeneratorServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
     public function testRegister()
     {
         $app = new Application();
 
-        $app->register(new UrlGeneratorProvider());
+        $app->register(new UrlGeneratorServiceProvider());
 
         $app->get('/hello/{name}', function ($name) {})
             ->bind('hello');
@@ -44,7 +44,7 @@ class UrlGeneratorProviderTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->register(new UrlGeneratorProvider());
+        $app->register(new UrlGeneratorServiceProvider());
 
         $app->get('/hello/{name}', function ($name) {})
             ->bind('hello');
@@ -63,7 +63,7 @@ class UrlGeneratorProviderTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->register(new UrlGeneratorProvider());
+        $app->register(new UrlGeneratorServiceProvider());
 
         $app->get('/hello/{name}', function ($name) {})
             ->bind('hello');
@@ -82,7 +82,7 @@ class UrlGeneratorProviderTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->register(new UrlGeneratorProvider());
+        $app->register(new UrlGeneratorServiceProvider());
 
         $app->get('/insecure', function () {})
             ->bind('insecure_page')
@@ -102,7 +102,7 @@ class UrlGeneratorProviderTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->register(new UrlGeneratorProvider());
+        $app->register(new UrlGeneratorServiceProvider());
 
         $app->get('/secure', function () {})
             ->bind('secure_page')

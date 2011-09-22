@@ -25,7 +25,7 @@ use Symfony\Component\Form\Extension\Csrf\CsrfExtension;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class FormProvider implements ServiceProviderInterface
+class FormServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
