@@ -17,7 +17,7 @@
         }
     ],
     "require": {
-        "php": ">=5.3.0",
+        "php": ">=5.3.2",
         "Pimple": ">=1.0.0",
         "Symfony-BrowserKit": ">=2.0.0",
         "Symfony-CssSelector": ">=2.0.0",
