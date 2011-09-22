@@ -12,3 +12,4 @@ Silex
     internals
     contributing
     providers/index
+    changelog
