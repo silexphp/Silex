@@ -158,7 +158,7 @@ It is pretty straightforward.
 
 .. note::
 
-    There is a `SwiftmailerExtension <extensions/swiftmailer>` included
+    There is a `SwiftmailerServiceProvider <providers/swiftmailer>` included
     that you can use instead of ``mail()``.
 
 The current ``request`` is automatically injected by Silex to the Closure
