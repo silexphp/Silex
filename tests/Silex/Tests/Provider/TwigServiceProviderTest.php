@@ -52,7 +52,7 @@ class TwigServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->register(new TwigExtension(), array(
+        $app->register(new TwigServiceProvider(), array(
             'twig.templates'    => array(
                 'hello' => '{{ render("/foo") }}',
                 'foo'   => 'foo',
