@@ -104,18 +104,18 @@ executed before every test.
 
 .. tip::
 
-    If your application use sessions, you have to use ``ArraySessionStorage``
+    If your application use sessions, you have to use ``FilesystemSessionStorage``
     to store sessions::
 
         // ...
-        use Symfony\Component\HttpFoundation\SessionStorage\ArraySessionStorage;
+        use Symfony\Component\HttpFoundation\SessionStorage\FilesystemSessionStorage;
         // ...
 
         public function createApplication()
         {
             // ...
             $this->app['session.storage'] = $this->app->share(function() {
-                return new ArraySessionStorage();
+                return new FilesystemSessionStorage(sys_get_temp_dir());
             });
             // ...
         }
