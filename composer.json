@@ -1,5 +1,5 @@
 {
-    "name": "silex",
+    "name": "silex/silex",
     "type": "library",
     "description": "The PHP micro-framework based on the Symfony2 Components",
     "keywords": ["microframework"],
