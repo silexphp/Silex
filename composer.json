@@ -26,5 +26,13 @@
         "symfony/http-foundation": ">=2.0",
         "symfony/http-kernel": ">=2.0",
         "symfony/routing": ">=2.0"
+    },
+    "suggest": {
+        "symfony/form": ">=2.0",
+        "monolog/monolog": ">=1.0.0",
+        "symfony/translation": ">=2.0",
+        "symfony/twig-bridge": ">=2.0",
+        "symfony/validator": ">=2.0",
+        "twig/twig": ">=1.2.0"
     }
 }
