@@ -206,6 +206,7 @@ Here is an example of such a provider::
 
     use Silex\Application;
     use Silex\ControllerProviderInterface;
+    use Silex\ControllerCollection;
 
     class HelloControllerProvider implements ControllerProviderInterface
     {
@@ -213,7 +214,7 @@ Here is an example of such a provider::
         {
             $controllers = new ControllerCollection();
 
-            $controllers->get('/', function (Silex\Application $app) {
+            $controllers->get('/', function (Application $app) {
                 return $app->redirect('/hello');
             });
 
