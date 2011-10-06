@@ -102,6 +102,24 @@ executed before every test.
             return $app;
         }
 
+.. tip::
+
+    If your application use sessions, you have to use ``FilesystemSessionStorage``
+    to store sessions::
+
+        // ...
+        use Symfony\Component\HttpFoundation\SessionStorage\FilesystemSessionStorage;
+        // ...
+
+        public function createApplication()
+        {
+            // ...
+            $this->app['session.storage'] = $this->app->share(function() {
+                return new FilesystemSessionStorage(sys_get_temp_dir());
+            });
+            // ...
+        }
+
 The WebTestCase provides a ``createClient`` method. A client acts as a browser,
 and allows you to interact with your application. Here's how it works::
 
