@@ -52,6 +52,11 @@ class TwigServiceProvider implements ServiceProviderInterface
 
                 if (isset($app['form.factory'])) {
                     $twig->addExtension(new TwigFormExtension(array('form_div_layout.html.twig')));
+
+                    // add loader for form_div_layout.html.twig
+                    $reflected = new \ReflectionClass('Symfony\Bridge\Twig\Extension\FormExtension');
+                    $path = dirname($reflected->getFileName()).'/../Resources/views/Form';
+                    $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($path));
                 }
             }
 
