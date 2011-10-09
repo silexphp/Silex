@@ -7,7 +7,7 @@ Silex is a simple web framework to develop simple websites based on
 
 ```php
 <?php
-require_once __DIR__.'/silex.phar';
+require_once 'phar:///'.__DIR__.'/silex.phar';
 
 $app = new Silex\Application();
 
