@@ -40,7 +40,7 @@ class TranslationServiceProvider implements ServiceProviderInterface
             }
             
             foreach ($app['translator.validators'] as $locale => $validators) {
-                $translator->addResource('array', $validators, $locale);
+                $translator->addResource('array', $validators, $locale, 'validators');
             }
 
             return $translator;
