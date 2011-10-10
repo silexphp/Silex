@@ -83,12 +83,8 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             if (isset($app['exception_handler'])) {
                 $dispatcher->addSubscriber($app['exception_handler']);
             }
-
-            $dispatcher->addListener(KernelEvents::RESPONSE, array(new ResponseListener($app['charset']), 'onKernelResponse'));
-
-            $routerListener = new RouterListener($app['url_matcher']);
-            $dispatcher->addListener(KernelEvents::REQUEST, array($routerListener, 'onEarlyKernelRequest'), 255);
-            $dispatcher->addListener(KernelEvents::REQUEST, array($routerListener, 'onKernelRequest'), 10);
+            $dispatcher->addSubscriber(new ResponseListener($app['charset']));
+            $dispatcher->addSubscriber(new RouterListener($app['url_matcher']));
 
             return $dispatcher;
         });
