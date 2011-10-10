@@ -20,6 +20,7 @@ use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\EventListener\ResponseListener;
+use Symfony\Component\HttpKernel\EventListener\RouterListener;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
@@ -82,7 +83,12 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             if (isset($app['exception_handler'])) {
                 $dispatcher->addSubscriber($app['exception_handler']);
             }
+
             $dispatcher->addListener(KernelEvents::RESPONSE, array(new ResponseListener($app['charset']), 'onKernelResponse'));
+
+            $routerListener = new RouterListener($app['url_matcher']);
+            $dispatcher->addListener(KernelEvents::REQUEST, array($routerListener, 'onEarlyKernelRequest'), 255);
+            $dispatcher->addListener(KernelEvents::REQUEST, array($routerListener, 'onKernelRequest'), 10);
 
             return $dispatcher;
         });
@@ -343,6 +349,12 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
 
     public function handle(Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true)
     {
+        $this->beforeDispatched = false;
+
+        $this['request'] = $request;
+
+        $this->flush();
+
         return $this['kernel']->handle($request, $type, $catch);
     }
 
@@ -351,34 +363,8 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function onKernelRequest(KernelEvent $event)
     {
-        $this['request'] = $event->getRequest();
-        $this['request_context']->fromRequest($this['request']);
-
-        $this->flush();
-
-        try {
-            $attributes = $this['url_matcher']->match($this['request']->getPathInfo());
-
-            $this['request']->attributes->add($attributes);
-        } catch (RoutingException $e) {
-            // make sure onSilexBefore event is dispatched
-
-            if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
-                $this['dispatcher']->dispatch(SilexEvents::BEFORE, $event);
-            }
-
-            if ($e instanceof ResourceNotFoundException) {
-                $message = sprintf('No route found for "%s %s"', $this['request']->getMethod(), $this['request']->getPathInfo());
-                throw new NotFoundHttpException($message, $e);
-            } else if ($e instanceof MethodNotAllowedException) {
-                $message = sprintf('No route found for "%s %s": Method Not Allowed (Allow: %s)', $this['request']->getMethod(), $this['request']->getPathInfo(), strtoupper(implode(', ', $e->getAllowedMethods())));
-                throw new MethodNotAllowedHttpException($e->getAllowedMethods(), $message, $e);
-            }
-
-            throw $e;
-        }
-
         if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
+            $this->beforeDispatched = true;
             $this['dispatcher']->dispatch(SilexEvents::BEFORE, $event);
         }
     }
@@ -433,6 +419,11 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
+        if (!$this->beforeDispatched) {
+            $this->beforeDispatched = true;
+            $this['dispatcher']->dispatch(SilexEvents::BEFORE, $event);
+        }
+
         $errorEvent = new GetResponseForErrorEvent($this, $event->getRequest(), $event->getRequestType(), $event->getException());
         $this['dispatcher']->dispatch(SilexEvents::ERROR, $errorEvent);
 
