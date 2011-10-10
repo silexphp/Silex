@@ -95,6 +95,19 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             return new HttpKernel($app['dispatcher'], $app['resolver']);
         });
 
+        $this['request_context'] = $this->share(function () use ($app) {
+            $context = new RequestContext();
+
+            $context->setHttpPort($app['request.http_port']);
+            $context->setHttpsPort($app['request.https_port']);
+
+            return $context;
+        });
+
+        $this['url_matcher'] = $this->share(function () use ($app) {
+            return new RedirectableUrlMatcher($app['routes'], $app['request_context']);
+        });
+
         $this['request.http_port'] = 80;
         $this['request.https_port'] = 443;
         $this['debug'] = false;
@@ -339,22 +352,12 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     public function onKernelRequest(KernelEvent $event)
     {
         $this['request'] = $event->getRequest();
-
-        $this['request_context'] = new RequestContext(
-            $this['request']->getBaseUrl(),
-            $this['request']->getMethod(),
-            $this['request']->getHost(),
-            $this['request']->getScheme(),
-            !$this['request']->isSecure() ? $this['request']->getPort() : $this['request.http_port'],
-            $this['request']->isSecure() ? $this['request']->getPort() : $this['request.https_port']
-        );
+        $this['request_context']->fromRequest($this['request']);
 
         $this->flush();
 
-        $matcher = new RedirectableUrlMatcher($this['routes'], $this['request_context']);
-
         try {
-            $attributes = $matcher->match($this['request']->getPathInfo());
+            $attributes = $this['url_matcher']->match($this['request']->getPathInfo());
 
             $this['request']->attributes->add($attributes);
         } catch (RoutingException $e) {
