@@ -234,7 +234,7 @@ You can now use this provider as follows::
 
     $app = new Silex\Application();
 
-    $app->connect('/blog', new Acme\HelloControllerProvider());
+    $app->mount('/blog', new Acme\HelloControllerProvider());
 
 In this example, the ``/blog/`` path now references the controller defined in
 the provider.
