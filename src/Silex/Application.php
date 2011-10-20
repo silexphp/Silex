@@ -283,7 +283,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function flush($prefix = '')
     {
-        $this['routes']->addCollection($this['controllers']->flush(), $prefix);
+        $this['routes']->addCollection($this['controllers']->flush($prefix), $prefix);
     }
 
     /**
@@ -326,7 +326,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             throw new \LogicException('The "mount" method takes either a ControllerCollection or a ControllerProviderInterface instance.');
         }
 
-        $this['routes']->addCollection($app->flush(), $prefix);
+        $this['routes']->addCollection($app->flush($prefix), $prefix);
     }
 
     /**

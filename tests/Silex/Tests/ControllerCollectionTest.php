@@ -70,4 +70,19 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
         } catch (ControllerFrozenException $e) {
         }
     }
+
+    public function testConflictingRouteNames()
+    {
+        $controllers = new ControllerCollection();
+
+        $mountedRootController = new Controller(new Route('/'));
+        $controllers->add($mountedRootController);
+
+        $mainRootController = new Controller(new Route('/'));
+        $mainRootController->bindDefaultRouteName('main_');
+
+        $controllers->flush();
+
+        $this->assertNotEquals($mainRootController->getRouteName(), $mountedRootController->getRouteName());
+    }
 }
