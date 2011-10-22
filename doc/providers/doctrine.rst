@@ -121,7 +121,7 @@ these two lines are equivalent::
 Using multiple connections::
 
     $app->get('/blog/show/{id}', function ($id) use ($app) {
-        $sql = "SELECT * FROM posts WHERE id = ?";
+        $mysqlQuery = "SELECT * FROM posts WHERE id = ?";
         $post = $app['dbs']['mysql_read']->fetchAssoc($mysqlQuery, array((int) $id));
 
         $mysqlUpdate = "UPDATE posts SET value = ? WHERE id = ?";
