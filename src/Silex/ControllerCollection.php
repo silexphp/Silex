@@ -115,13 +115,13 @@ class ControllerCollection
      *
      * @return RouteCollection A RouteCollection instance
      */
-    public function flush()
+    public function flush($prefix = '')
     {
         $routes = new RouteCollection();
 
         foreach ($this->controllers as $controller) {
             if (!$controller->getRouteName()) {
-                $controller->bindDefaultRouteName();
+                $controller->bindDefaultRouteName($prefix);
             }
             $routes->add($controller->getRouteName(), $controller->getRoute());
             $controller->freeze();
