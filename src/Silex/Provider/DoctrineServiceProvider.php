@@ -55,6 +55,7 @@ class DoctrineServiceProvider implements ServiceProviderInterface
                     $app['dbs.default'] = $name;
                 }
             }
+            $app['dbs.options'] = $tmp;
         });
 
         $app['dbs'] = $app->share(function () use ($app) {
