@@ -34,8 +34,12 @@ provide you with the following additional capabilities:
 Registering
 -----------
 
-Make sure you place a copy of the Symfony2 Bridges in
-``vendor/symfony/src``. You can simply clone the whole Symfony2 into vendor::
+Make sure you place a copy of the Symfony2 Bridges in either
+``vendor/symfony/src`` by cloning `Symfony2 <https://github.com/symfony/symfony>`_ or
+``vendor/symfony/src/Symfony/Bridge/Twig`` by cloning `TwigBridge <https://github.com/symfony/TwigBridge>`_
+(the latter having a smaller footprint).
+
+Then, register the provider via::
 
     $app->register(new Silex\Provider\SymfonyBridgesServiceProvider(), array(
         'symfony_bridges.class_path'  => __DIR__.'/vendor/symfony/src',
