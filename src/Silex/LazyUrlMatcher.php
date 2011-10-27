@@ -15,7 +15,7 @@ use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
 
 /**
- * Implements the RedirectableUrlMatcherInterface for Silex.
+ * Implements a lazy UrlMatcher.
  *
  * @author Igor Wiedler <igor@wiedler.ch>
  */
