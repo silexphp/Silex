@@ -18,7 +18,7 @@ git fetch origin && git reset --hard origin/2.1.x
 cd ../..
 
 cd vendor/monolog
-git fetch origin && git reset --hard 1.0.1
+git fetch origin && git reset --hard 1.0.2
 cd ../..
 
 cd vendor/pimple
