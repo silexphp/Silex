@@ -80,11 +80,11 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         $this['dispatcher'] = $this->share(function () use ($app) {
             $dispatcher = new EventDispatcher();
             $dispatcher->addSubscriber($app);
-            if (isset($app['exception_handler'])) {
-                $dispatcher->addSubscriber($app['exception_handler']);
-            }
-            $dispatcher->addSubscriber(new ResponseListener($app['charset']));
-            $dispatcher->addSubscriber(new RouterListener($app['url_matcher']));
+
+            $urlMatcher = new LazyUrlMatcher(function () use ($app) {
+                return $app['url_matcher'];
+            });
+            $dispatcher->addSubscriber(new RouterListener($urlMatcher));
 
             return $dispatcher;
         });
@@ -355,6 +355,19 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     }
 
     /**
+     * Handles onEarlyKernelRequest events.
+     */
+    public function onEarlyKernelRequest(KernelEvent $event)
+    {
+        if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
+            if (isset($this['exception_handler'])) {
+                $this['dispatcher']->addSubscriber($this['exception_handler']);
+            }
+            $this['dispatcher']->addSubscriber(new ResponseListener($this['charset']));
+        }
+    }
+
+    /**
      * Handles onKernelRequest events.
      */
     public function onKernelRequest(KernelEvent $event)
@@ -434,7 +447,10 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     static public function getSubscribedEvents()
     {
         return array(
-            KernelEvents::REQUEST    => 'onKernelRequest',
+            KernelEvents::REQUEST    => array(
+                array('onEarlyKernelRequest', 256),
+                array('onKernelRequest')
+            ),
             KernelEvents::CONTROLLER => 'onKernelController',
             KernelEvents::RESPONSE   => 'onKernelResponse',
             KernelEvents::EXCEPTION  => 'onKernelException',

@@ -209,10 +209,33 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
 
         try {
             $request = Request::create('/foo');
-            $this->checkRouteResponse($app, '/foo', 'foo exception handler', 'should accept a string response from the error handler');
+            $app->handle($request);
             $this->fail('->handle() should not catch exceptions thrown from an error handler');
         } catch (\RuntimeException $e) {
             $this->assertEquals('foo exception handler exception', $e->getMessage());
+        }
+    }
+
+    public function testRemoveExceptionHandlerAfterDispatcherAccess()
+    {
+        $app = new Application();
+
+        $app->match('/foo', function () {
+            throw new \RuntimeException('foo exception');
+        });
+
+        $app->before(function () {
+            // just making sure the dispatcher gets created
+        });
+
+        unset($app['exception_handler']);
+
+        try {
+            $request = Request::create('/foo');
+            $app->handle($request);
+            $this->fail('default exception handler should have been removed');
+        } catch (\RuntimeException $e) {
+            $this->assertEquals('foo exception', $e->getMessage());
         }
     }
 
