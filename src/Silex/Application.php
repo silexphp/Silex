@@ -39,6 +39,7 @@ use Symfony\Component\Routing\Exception\ExceptionInterface as RoutingException;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\ClassLoader\UniversalClassLoader;
+use Symfony\Component\ClassLoader\ApcUniversalClassLoader;
 use Silex\RedirectableUrlMatcher;
 use Silex\ControllerResolver;
 
@@ -54,12 +55,25 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     /**
      * Constructor.
      */
-    public function __construct()
+    public function __construct($apc_loader = null)
     {
         $app = $this;
 
         $this['autoloader'] = $this->share(function () {
-            $loader = new UniversalClassLoader();
+            /* Use ApcUniversalClassLoader */
+            if (true === $apc_loader) {
+                /* ensure APC is loaded */
+                if ( extension_loaded('apc') ) {
+                    $loader = new ApcUniversalClassLoader('silex.loader');
+                } else {
+                    /* fallback to normal loader and let the developer know */
+                    trigger_error("APC not loaded; falling back to default 'UniversalClassLoader()'", E_USER_WARNING);
+                    $loader = new UniversalClassLoader();
+                }
+            } else {
+                $loader = new UniversalClassLoader();
+            }
+
             $loader->register();
 
             return $loader;
