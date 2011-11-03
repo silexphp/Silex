@@ -23,22 +23,30 @@ class PropelServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
-        $propelPath = isset($app['propel.path']) ? $app['propel.path'].'/Propel.php' : realpath('.').'/vendor/propel/runtime/lib/Propel.php';
-        $propelModelPath = isset($app['propel.model_path']) ? $app['propel.model_path'] : realpath('.').'/build/classes';
+        $path = isset($app['propel.path']) ? $app['propel.path'].'/Propel.php' : realpath('.').'/vendor/propel/runtime/lib/Propel.php';
+        $modelPath = isset($app['propel.model_path']) ? $app['propel.model_path'] : realpath('.').'/build/classes';
+        $internalAutoload = isset($app['propel.internal_autoload']) ? $app['propel.internal_autoload'] : false;
         
         if (isset($app['propel.config_file'])) {
-            $propelConfig = $app['propel.config_file'];
+            $config = $app['propel.config_file'];
         }
         else {
             $currentDir = getcwd();
             chdir(realpath('.').'/build/conf');
             $files = glob('classmap*.*');
-            $propelConfig = '/build/conf/'.substr(strstr($files[0], '-'), 1); 
+            $config = '/build/conf/'.substr(strstr($files[0], '-'), 1); 
             chdir($currentDir);            
         }
         
-        require $propelPath;
-        \Propel::init($propelConfig);
-        set_include_path($propelModelPath.PATH_SEPARATOR.get_include_path());
+        if ($internalAutoload) {
+            set_include_path($modelPath.PATH_SEPARATOR.get_include_path());
+        }
+        else {
+            $app['autoloader']->registerNamespace('model', $modelPath);
+        }
+        
+        require $path;
+        \Propel::init($config);
+        
     }
 }
