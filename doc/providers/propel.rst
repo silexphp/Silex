@@ -19,6 +19,11 @@ Parameters
 * **propel.model_path** (optional): Path to where model classes are located.
   Defaults to ``/full/project/path/build/classes``
   
+* **propel.internal_autoload** (optional): Setting to true, forces Propel to use 
+  its own internal autoloader, instead of Silex one, to load model classes. 
+  Defaults to false
+  
+  
 .. note::
 
     It's strongly recommanded to use **absolute paths** for previous options.
@@ -57,17 +62,27 @@ you built your model with default Propel generator options:
   We can consider "default" Propel generator options:
   
   * Put ``build.properties`` and ``schema.xml`` files into the main directory project,
-    usually where is located ``index.php``.
+    usually where file ``index.php`` is located.
   * In ``build.properties`` file, define only propel.database, propel.project 
-    and, optionally, propel.namespace.autopackage properties.
+    and propel.namespace.autopackage properties.
 
 
 
 Usage
 -----
 
-Build the model, according to Propel documentation, then instantiate the model classes you need
+Build the model, according to Propel documentation, instantiate the model classes you need
 and use them. That's all. 
+
+By default, PropelServiceProvider initializes Propel to use Silex autoloader to autoloader
+model classes. Of course, Silex autoloader needs the model to be built with this option:
+
+    propel.namespace.autopackage = true
+
+
+If you plan to build your model without using namespaces, you need to set to true 
+the option propel.internal_autoload.
+
 
 
 For more information, consult the `Propel documentation
