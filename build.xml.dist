@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="silex" basedir="." default="build-doc">
+  
+  <property name="silex.doc.directory" value="./doc" />
+  <property name="silex.doc.build.directory" value="./doc/build" />
+  <property name="silex.phar" value="./silex.phar" />
+
+  <target name="-sphinx-build-available" hidden="true" 
+          description="Checks if sphinx-build is available">
+    <exec command="which sphinx-build" returnProperty="sphinx.build.available" />
+    <if>
+     <equals arg1="${sphinx.build.available}" arg2="0" />
+     <then>
+       <property name="sphinx.build.available" value="true" override="true" />
+       <echo msg="sphinx-build available" />
+     </then>
+     <else>
+       <property name="sphinx.build.available" value="false" override="true" />
+       <property name="sphinx.build.not.available" value="true" override="true" />
+     </else>
+    </if>
+  </target>
+
+  <target name="-remove-doc-build" hidden="true" 
+          description="Removes the former build Silex documentation">
+    <echo msg="Removing former built Silex doc" />
+    <delete dir="${silex.doc.build.directory}" includeemptydirs="true" />
+  </target>
+
+  <target name="build-doc" depends="-remove-doc-build,-sphinx-build-available" 
+          if="sphinx.build.available" unless="sphinx.build.not.available" 
+          description="Builds the Silex documentation via sphinx-build">
+    <echo msg="Building Silex doc" />
+    <exec command="sphinx-build -b html ${silex.doc.directory} ${silex.doc.build.directory}" logoutput="true" />
+  </target>
+
+  <target name="-remove-phar" hidden="true" 
+          description="Removes the former compiled Silex phar">
+    <echo msg="Removing former built Silex phar" />
+    <delete file="${silex.phar}" />
+  </target>
+
+  <target name="compile-phar" depends="-remove-phar" 
+          description="Compiles the Silex phar">
+    <echo msg="Compiling the latest Silex phar" />
+    <exec command="php compile" logoutput="true" />
+  </target>
+</project>
