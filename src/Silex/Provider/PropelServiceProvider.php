@@ -32,8 +32,13 @@ class PropelServiceProvider implements ServiceProviderInterface
         }
         else {
             $currentDir = getcwd();
-            chdir(realpath('.').'/build/conf');
-            $files = glob('classmap*.*');
+            if (!@chdir(realpath('.').'/build/conf')) {
+              throw new \InvalidArgumentException(__CLASS__.': please, initialize the propel.config_file property');
+            }
+            $files = glob('classmap*.php');
+            if ((!$files) || (empty($files))) {
+              throw new \InvalidArgumentException(__CLASS__.': please, initialize the propel.config_file property');
+            }
             $config = '/build/conf/'.substr(strstr($files[0], '-'), 1); 
             chdir($currentDir);            
         }
