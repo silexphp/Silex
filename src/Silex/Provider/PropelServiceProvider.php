@@ -50,7 +50,10 @@ class PropelServiceProvider implements ServiceProviderInterface
             $app['autoloader']->registerNamespace('model', $modelPath);
         }
         
-        require $path;
+        if (!class_exists('Propel')) {
+          require $path;
+        }
+        
         \Propel::init($config);
         
     }
