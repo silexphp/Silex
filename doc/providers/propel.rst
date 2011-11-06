@@ -1,27 +1,26 @@
 PropelServiceProvider
 ======================
 
-The *PropelServiceProvider* provides integration with `Propel Orm
-<http://www.propelorm.org>`.
+The *PropelServiceProvider* provides integration with `Propel <http://www.propelorm.org>`.
 
 
 Parameters
 ----------
 
-* **propel.path** (optional): Path to were Propel.php file is located. Usually, for 
+* **propel.path** (optional): The path in wich Propel.php will be found. Usually, for 
   PEAR installation, it is ``propel`` while for Git installation it is 
   ``vendor/propel/runtime/lib``. 
-  Defaults to ``/full/project/path/vendor/propel/runtime/lib``.
+  Default is ``/full/project/path/vendor/propel/runtime/lib``.
 
 * **propel.config_file** (optional): The name of Propel configuration file with full path.
-  Defaults to ``/full/project/path/build/conf/projectname-conf.php`` 
+  Default is ``/full/project/path/build/conf/projectname-conf.php`` 
 
 * **propel.model_path** (optional): Path to where model classes are located.
-  Defaults to ``/full/project/path/build/classes``
+  Default is ``/full/project/path/build/classes``
   
 * **propel.internal_autoload** (optional): Setting to true, forces Propel to use 
   its own internal autoloader, instead of Silex one, to load model classes. 
-  Defaults to false
+  Default is false
   
   
 .. note::
@@ -34,16 +33,16 @@ Services
 
 No service is provided.
 
-Propel configures and manages itself by ** static ** methods, so no service 
+Propel configures and manages itself by ** using ** static methods, so no service 
 is registered into Application.
-Simply, the PropelServiceProvider class initializes Propel in a more "Silex-ian" way.
+Actually, the PropelServiceProvider class initializes Propel in a more "Silex-ian" way.
 
 
 Registering
 -----------
 
-Make sure you place a copy of *Propel orm* in ``vendor/propel`` or install it
-by PEAR. For more informations consult the Propel documentation http://www.propelorm.org/documentation/01-installation.html::
+Make sure you place a copy of *Propel* in ``vendor/propel`` or install it
+through PEAR. For more informations consult the Propel documentation http://www.propelorm.org/documentation/01-installation.html::
 
     $app->register(new Silex\Provider\PropelServiceProvider(), array(
             'propel.path'        => __DIR__.'/path/to/Propel.php',
@@ -51,7 +50,7 @@ by PEAR. For more informations consult the Propel documentation http://www.prope
             'propel.model_path'  => __DIR__.'/path/to/model/classes',
     ));
     
-Alternatively, if you installed Propel by Git in ``vendor/propel`` and
+Alternatively, if you 've installed Propel by Git in ``vendor/propel`` and
 you built your model with default Propel generator options:
     
     $app->register(new Silex\Provider\PropelServiceProvider());

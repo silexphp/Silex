@@ -15,7 +15,7 @@ use Silex\Application;
 use Silex\ServiceProviderInterface;
 
 /**
- * Propel ORM service provider.
+ * Propel service provider.
  *
  * @author Cristiano Cinotti <cristianocinotti@gmail.com>
  */
@@ -29,8 +29,7 @@ class PropelServiceProvider implements ServiceProviderInterface
         
         if (isset($app['propel.config_file'])) {
             $config = $app['propel.config_file'];
-        }
-        else {
+        } else {
             $currentDir = getcwd();
             if (!@chdir(realpath('.').'/build/conf')) {
               throw new \InvalidArgumentException(__CLASS__.': please, initialize the propel.config_file property');
@@ -45,8 +44,7 @@ class PropelServiceProvider implements ServiceProviderInterface
         
         if ($internalAutoload) {
             set_include_path($modelPath.PATH_SEPARATOR.get_include_path());
-        }
-        else {
+        } else {
             $app['autoloader']->registerNamespace('model', $modelPath);
         }
         
