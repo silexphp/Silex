@@ -42,13 +42,18 @@ class PropelServiceProviderTest extends \PHPUnit_Framework_TestCase
         
     }
     
-    /**
-    * @expectedException InvalidArgumentException
-    */
+    
     public function testRegisterDefaults()
     {
+        $current = getcwd();
+        chdir(__DIR__.'/PropelTestData');
+        
         $app = new Application();
         $app->register(new PropelServiceProvider());
+        
+        $this->assertTrue(class_exists('Propel'));
+        
+        chdir($current);
     }
     
     
