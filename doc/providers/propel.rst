@@ -9,7 +9,7 @@ Parameters
 ----------
 
 * **propel.path** (optional): Path to were Propel.php file is located. Usually, for 
-  PEAR installation, is ``propel`` while for Git installation is 
+  PEAR installation, it is ``propel`` while for Git installation it is 
   ``vendor/propel/runtime/lib``. 
   Defaults to ``/full/project/path/vendor/propel/runtime/lib``.
 
@@ -53,9 +53,9 @@ by PEAR. For more informations consult the Propel documentation http://www.prope
     
 Alternatively, if you installed Propel by Git in ``vendor/propel`` and
 you built your model with default Propel generator options:
-
+    
     $app->register(new Silex\Provider\PropelServiceProvider());
-
+    
 
 .. note::
 
@@ -74,14 +74,18 @@ Usage
 Build the model, according to Propel documentation, instantiate the model classes you need
 and use them. That's all. 
 
-By default, PropelServiceProvider initializes Propel to use Silex autoloader to autoloader
-model classes. Of course, Silex autoloader needs the model to be built with this option:
 
+
+By default, PropelServiceProvider initializes Propel to use Silex autoloader to load
+model classes. Of course, Silex autoloader needs the model to be built with namespaces, 
+so be sure to set this property into build.properties file:
+    
     propel.namespace.autopackage = true
+    
+before building your model.
 
-
-If you plan to build your model without using namespaces, you need to set to true 
-the option propel.internal_autoload.
+If you plan to build your model without using namespaces, you need to force Propel to use
+its internal autoloader. Do this by setting the option ``propel.internal_autoload`` to true.
 
 
 
