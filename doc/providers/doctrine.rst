@@ -93,14 +93,14 @@ and values are options::
         'dbs.options' => array (
             'mysql_read' => array(
                 'driver'    => 'pdo_mysql',
-                'host'      => 'mysql_read.someplace.tld'
+                'host'      => 'mysql_read.someplace.tld',
                 'dbname'    => 'my_database',
                 'user'      => 'my_username',
                 'password'  => 'my_password',
             ),
             'mysql_write' => array(
                 'driver'    => 'pdo_mysql',
-                'host'      => 'mysql_write.someplace.tld'
+                'host'      => 'mysql_write.someplace.tld',
                 'dbname'    => 'my_database',
                 'user'      => 'my_username',
                 'password'  => 'my_password',
