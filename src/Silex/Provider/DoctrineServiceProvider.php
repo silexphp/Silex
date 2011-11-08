@@ -11,6 +11,7 @@
 
 namespace Silex\Provider;
 
+use Pimple\Container;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Doctrine\DBAL\DriverManager;
@@ -60,7 +61,7 @@ class DoctrineServiceProvider implements ServiceProviderInterface
         $app['dbs'] = $app->share(function () use ($app) {
             $app['dbs.options.initializer']();
 
-            $dbs = new \Pimple();
+            $dbs = new Container();
             foreach ($app['dbs.options'] as $name => $options) {
                 if ($app['dbs.default'] === $name) {
                     // we use shortcuts here in case the default has been overriden
@@ -80,7 +81,7 @@ class DoctrineServiceProvider implements ServiceProviderInterface
         $app['dbs.config'] = $app->share(function () use ($app) {
             $app['dbs.options.initializer']();
 
-            $configs = new \Pimple();
+            $configs = new Container();
             foreach ($app['dbs.options'] as $name => $options) {
                 $configs[$name] = new Configuration();
             }
@@ -91,7 +92,7 @@ class DoctrineServiceProvider implements ServiceProviderInterface
         $app['dbs.event_manager'] = $app->share(function () use ($app) {
             $app['dbs.options.initializer']();
 
-            $managers = new \Pimple();
+            $managers = new Container();
             foreach ($app['dbs.options'] as $name => $options) {
                 $managers[$name] = new EventManager();
             }

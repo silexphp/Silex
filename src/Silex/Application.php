@@ -11,6 +11,7 @@
 
 namespace Silex;
 
+use Pimple\Container;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\Event\KernelEvent;
@@ -47,7 +48,7 @@ use Silex\ControllerResolver;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Application extends \Pimple implements HttpKernelInterface, EventSubscriberInterface
+class Application extends Container implements HttpKernelInterface, EventSubscriberInterface
 {
     const VERSION = '@package_version@';
 
