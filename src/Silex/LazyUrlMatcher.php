@@ -29,6 +29,11 @@ class LazyUrlMatcher implements UrlMatcherInterface
         $this->factory = $factory;
     }
 
+    /**
+     * Returns the corresponding UrlMatcherInterface instance.
+     *
+     * @return UrlMatcherInterface
+     */
     public function getUrlMatcher()
     {
         $urlMatcher = call_user_func($this->factory);
