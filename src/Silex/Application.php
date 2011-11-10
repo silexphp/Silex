@@ -344,10 +344,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     }
 
     /**
-     * Handles the request and returns the response.
-     *
-     * @param Request $request Request to process
-     * @return Response
+     * {@inheritdoc}
      */
     public function handle(Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true)
     {
