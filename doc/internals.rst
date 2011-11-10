@@ -25,7 +25,8 @@ them.
 
 The application makes strong use of the `EventDispatcher
 <http://api.symfony.com/2.0/Symfony/Component/EventDispatcher/EventDispatcher.html>`_
-to hook into the Symfony2 HttpKernel events. This allows
+to hook into the Symfony2 `HttpKernel
+<http://api.symfony.com/2.0/Symfony/Component/HttpKernel/HttpKernel.html>`_ events. This allows
 fetching the ``Request``, converting string responses into
 ``Response`` objects and handling Exceptions. We also use it
 to dispatch some custom events like before/after filters and

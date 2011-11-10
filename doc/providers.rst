@@ -108,7 +108,7 @@ Here is an example of such a provider::
     }
 
 This class provides a ``hello`` service which is a protected
-closure. It takes a name argument and will return
+closure. It takes a ``name`` argument and will return
 ``hello.default_name`` if no name is given. If the default
 is also missing, it will use an empty string.
 
@@ -161,7 +161,7 @@ Here is an example of how to use it (based on `Buzz <https://github.com/kriswall
         }
     }
 
-This allows you to simply provide the class  path as an
+This allows you to simply provide the class path as an
 option when registering the provider::
 
     $app->register(new BuzzServiceProvider(), array(
@@ -241,6 +241,6 @@ the provider.
 
 .. tip::
 
-    You can also define an provider that implements both the service and the
+    You can also define a provider that implements both the service and the
     controller provider interface and package in the same class the services
     needed to make your controllers work.
