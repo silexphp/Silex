@@ -42,7 +42,7 @@ class PropelServiceProviderTest extends \PHPUnit_Framework_TestCase
         
     }
     
-    
+
     public function testRegisterDefaults()
     {
         $current = getcwd();
@@ -55,7 +55,7 @@ class PropelServiceProviderTest extends \PHPUnit_Framework_TestCase
         
         chdir($current);
     }
-    
+
     
     public function testRegisterInternalAutoload()
     {
