@@ -7,7 +7,7 @@ of Symfony2 and Pimple and also inspired by sinatra.
 A microframework provides the guts for building simple single-file apps.
 Silex aims to be:
 
-* *Concise*: Silex exposes a intuitive and concise API that is fun to use.
+* *Concise*: Silex exposes an intuitive and concise API that is fun to use.
 
 * *Extensible*: Silex has an extension system based around the Pimple
   micro service-container that makes it even easier to tie in third party

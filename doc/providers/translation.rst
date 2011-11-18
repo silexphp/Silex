@@ -1,17 +1,17 @@
 TranslationServiceProvider
 ==========================
 
-The *TranslationServiceProvider* provides a service for translating your application
-into different languages.
+The *TranslationServiceProvider* provides a service for translating your
+application into different languages.
 
 Parameters
 ----------
 
-* **translator.messages**: A mapping of locales to message arrays. This parameter
-  contains the translation data in all languages.
+* **translator.messages**: A mapping of locales to message arrays. This
+  parameter contains the translation data in all languages.
 
-* **locale** (optional): The locale for the translator. You will most likely want
-  to set this based on some request parameter. Defaults to ``en``.
+* **locale** (optional): The locale for the translator. You will most likely
+  want to set this based on some request parameter. Defaults to ``en``.
 
 * **locale_fallback** (optional): Fallback locale for the translator. It will
   be used when the current locale has no messages set.
@@ -92,7 +92,7 @@ Recipes
 YAML-based language files
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Having your translation in PHP files can be inconvenient. This recipe will
+Having your translations in PHP files can be inconvenient. This recipe will
 show you how to load translations from external YAML files.
 
 First you will need the ``Config`` and ``Yaml`` components from Symfony2. Also
@@ -109,8 +109,8 @@ use is ``locales/en.yml``. Just do the mapping in this file as follows:
     hello: Hello %name%
     goodbye: Goodbye %name%
 
-Repeat this for all of your languages. Then set up the ``translator.messages`` to map
-languages to files::
+Repeat this for all of your languages. Then set up the ``translator.messages``
+to map languages to files::
 
     $app['translator.messages'] = array(
         'en' => __DIR__.'/locales/en.yml',
@@ -118,8 +118,8 @@ languages to files::
         'fr' => __DIR__.'/locales/fr.yml',
     );
 
-Finally override the ``translator.loader`` to use a ``YamlFileLoader`` instead of the
-default ``ArrayLoader``::
+Finally override the ``translator.loader`` to use a ``YamlFileLoader`` instead
+of the default ``ArrayLoader``::
 
     $app['translator.loader'] = new Symfony\Component\Translation\Loader\YamlFileLoader();
 
