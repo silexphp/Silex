@@ -24,6 +24,11 @@ class Compiler
 {
     protected $version;
 
+    /**
+     * Compiles the Silex source code into one single Phar file.
+     *
+     * @param string $pharFile Name of the output Phar file
+     */
     public function compile($pharFile = 'silex.phar')
     {
         if (file_exists($pharFile)) {
