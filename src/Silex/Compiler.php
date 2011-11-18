@@ -85,7 +85,7 @@ class Compiler
         $path = str_replace(dirname(dirname(__DIR__)).DIRECTORY_SEPARATOR, '', $file->getRealPath());
         $content = file_get_contents($file);
         if ($strip) {
-            $content = Kernel::stripComments($content);
+            $content = self::stripComments($content);
         }
 
         $content = str_replace('@package_version@', $this->version, $content);
@@ -142,5 +142,34 @@ if ('cli' === php_sapi_name() && basename(__FILE__) === basename($_SERVER['argv'
 
 __HALT_COMPILER();
 EOF;
+    }
+
+    /**
+     * Removes comments from a PHP source string.
+     *
+     * Based on Kernel::stripComments(), but keeps line numbers intact.
+     *
+     * @param string $source A PHP string
+     *
+     * @return string The PHP string with the comments removed
+     */
+    static public function stripComments($source)
+    {
+        if (!function_exists('token_get_all')) {
+            return $source;
+        }
+
+        $output = '';
+        foreach (token_get_all($source) as $token) {
+            if (is_string($token)) {
+                $output .= $token;
+            } elseif (in_array($token[0], array(T_COMMENT, T_DOC_COMMENT))) {
+                $output .= str_repeat("\n", substr_count($token[1], "\n"));
+            } else {
+                $output .= $token[1];
+            }
+        }
+
+        return $output;
     }
 }
