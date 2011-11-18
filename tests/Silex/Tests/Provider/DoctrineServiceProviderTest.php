@@ -28,6 +28,17 @@ class DoctrineServiceProviderTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    public function testOptionsInitializer()
+    {
+        $app = new Application();
+        $app->register(new DoctrineServiceProvider(), array(
+            'db.common.class_path' => __DIR__.'/../../../../vendor/doctrine-common/lib',
+            'db.dbal.class_path' => __DIR__.'/../../../../vendor/doctrine-dbal/lib',
+        ));
+
+        $this->assertEquals($app['db.default_options'], $app['db']->getParams());
+    }
+
     public function testSingleConnection()
     {
         $app = new Application();
