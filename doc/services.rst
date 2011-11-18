@@ -47,7 +47,7 @@ in fact other services.
 Container
 ~~~~~~~~~
 
-A DI or service container is responsible for creating and storing
+A DIC or service container is responsible for creating and storing
 services. It can recursively create dependencies of the requested
 services and inject them. It does so lazily, which means a service
 is only created when you actually need it.
@@ -61,7 +61,7 @@ Pimple
 ------
 
 Pimple is probably the simplest service container out there. It
-makes strong use of closures implements the ArrayAccess interface.
+makes strong use of closures and implements the ArrayAccess interface.
 
 We will start off by creating a new instance of Pimple -- and
 because ``Silex\Application`` extends ``Pimple`` all of this
