@@ -17,6 +17,8 @@ use Monolog\Handler\StreamHandler;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
@@ -54,16 +56,16 @@ class MonologServiceProvider implements ServiceProviderInterface
             $app['autoloader']->registerNamespace('Monolog', $app['monolog.class_path']);
         }
 
-        $app->before(function () use ($app) {
-            $app['monolog']->addInfo($app['request']->getMethod().' '.$app['request']->getRequestUri());
+        $app->before(function (Request $request) use ($app) {
+            $app['monolog']->addInfo('> '.$request->getMethod().' '.$request->getRequestUri());
         });
 
         $app->error(function (\Exception $e) use ($app) {
-            if ($e instanceof HttpException) {
-                $app['monolog']->addWarning($e->getStatusCode().' '.$app['request']->getMethod().' '.$app['request']->getRequestUri());
-            } else {
-                $app['monolog']->addError($e->getMessage());
-            }
+            $app['monolog']->addError($e->getMessage());
+        });
+
+        $app->after(function (Request $request, Response $response) use ($app) {
+            $app['monolog']->addInfo('< '.$response->getStatusCode());
         });
     }
 }
