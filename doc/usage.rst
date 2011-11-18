@@ -164,7 +164,7 @@ It is pretty straightforward.
 The current ``request`` is automatically injected by Silex to the Closure
 thanks to the type hinting. It is an instance of `Request
 <http://api.symfony.com/2.0/Symfony/Component/HttpFoundation/Request.html>`_,
-so you can fetch variables using the request's ``get`` method.
+so you can fetch variables using the request ``get`` method.
 
 Instead of returning a string we are returning an instance of
 `Response
@@ -211,7 +211,7 @@ You can match multiple methods with one controller using regex syntax::
 Route variables
 ~~~~~~~~~~~~~~~
 
-As has been show before you can define variable parts in a route like this::
+As it has been shown before you can define variable parts in a route like this::
 
     $app->get('/blog/show/{id}', function ($id) {
         ...
@@ -230,7 +230,7 @@ While it's not suggested, you could also do this (note the switched arguments)::
         ...
     });
 
-You can also ask for the current Request and Application object::
+You can also ask for the current Request and Application objects::
 
     $app->get('/blog/show/{id}', function (Application $app, Request $request, $id) {
         ...
@@ -345,7 +345,7 @@ Before and after filters
 ------------------------
 
 Silex allows you to run code before and after every request. This happens
-through before and after filters. All you need to do is pass a closure::
+through ``before`` and ``after`` filters. All you need to do is pass a closure::
 
     $app->before(function () {
         // set up
@@ -355,8 +355,8 @@ through before and after filters. All you need to do is pass a closure::
         // tear down
     });
 
-The before filter has access to the current Request, and can short-circuit the
-whole rendering by returning a Response::
+The before filter has access to the current Request, and can short-circuit
+the whole rendering by returning a Response::
 
     $app->before(function (Request $request) {
         // redirect the user to the login screen if access to the Resource is protected
