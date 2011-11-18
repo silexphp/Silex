@@ -32,7 +32,7 @@ class MonologServiceProviderTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testRegisterAndRender()
+    public function testRegister()
     {
         $app = new Application();
 
@@ -44,10 +44,48 @@ class MonologServiceProviderTest extends \PHPUnit_Framework_TestCase
             return new TestHandler($app['monolog.level']);
         });
 
+        return $app;
+    }
+
+    /**
+     * @depends testRegister
+     */
+    public function testRequestLogging($app)
+    {
+        $app->get('/foo', function () use ($app) {
+            return 'foo';
+        });
+
+        $this->assertFalse($app['monolog.handler']->hasInfoRecords());
+
+        $request = Request::create('/foo');
+        $app->handle($request);
+
+        $this->assertTrue($app['monolog.handler']->hasInfoRecords());
+    }
+
+    /**
+     * @depends testRegister
+     */
+    public function testManualLogging($app)
+    {
         $app->get('/log', function () use ($app) {
             $app['monolog']->addDebug('logging a message');
         });
 
+        $this->assertFalse($app['monolog.handler']->hasDebugRecords());
+
+        $request = Request::create('/log');
+        $app->handle($request);
+
+        $this->assertTrue($app['monolog.handler']->hasDebugRecords());
+    }
+
+    /**
+     * @depends testRegister
+     */
+    public function testErrorLogging($app)
+    {
         $app->get('/error', function () {
             throw new \RuntimeException('very bad error');
         });
@@ -56,16 +94,11 @@ class MonologServiceProviderTest extends \PHPUnit_Framework_TestCase
             return 'error handled';
         });
 
-        $this->assertFalse($app['monolog.handler']->hasDebugRecords());
         $this->assertFalse($app['monolog.handler']->hasErrorRecords());
-
-        $request = Request::create('/log');
-        $app->handle($request);
 
         $request = Request::create('/error');
         $app->handle($request);
 
-        $this->assertTrue($app['monolog.handler']->hasDebugRecords());
         $this->assertTrue($app['monolog.handler']->hasErrorRecords());
     }
 }
