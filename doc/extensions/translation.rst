@@ -10,6 +10,9 @@ Parameters
 * **translator.messages**: A mapping of locales to message arrays. This parameter
   contains the translation data in all languages.
 
+* **translator.validators**: A mapping of locales to validation messages arrays. This parameter
+  contains the translation data of validation messages in all languages.
+
 * **locale** (optional): The locale for the translator. You will most likely want
   to set this based on some request parameter. Defaults to ``en``.
 
@@ -86,6 +89,8 @@ The above example will result in following routes:
 
 * ``/it/hello/igor`` will return ``Hello igor`` (because of the fallback).
 
+Note that ``translator.validators`` can be used in the same way.
+
 Recipes
 -------
 
@@ -117,6 +122,8 @@ languages to files::
         'de' => __DIR__.'/locales/de.yml',
         'fr' => __DIR__.'/locales/fr.yml',
     );
+
+Note that ``translator.validators`` can be set up in the same way.
 
 Finally override the ``translator.loader`` to use a ``YamlFileLoader`` instead of the
 default ``ArrayLoader``::
