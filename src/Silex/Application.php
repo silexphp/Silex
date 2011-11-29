@@ -80,11 +80,11 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         $this['dispatcher'] = $this->share(function () use ($app) {
             $dispatcher = new EventDispatcher();
             $dispatcher->addSubscriber($app);
-
-            $urlMatcher = new LazyUrlMatcher(function () use ($app) {
-                return $app['url_matcher'];
-            });
-            $dispatcher->addSubscriber(new RouterListener($urlMatcher));
+            if (isset($app['exception_handler'])) {
+                $dispatcher->addSubscriber($app['exception_handler']);
+            }
+            $dispatcher->addSubscriber(new ResponseListener($app['charset']));
+            $dispatcher->addSubscriber(new RouterListener($app['url_matcher']));
 
             return $dispatcher;
         });
@@ -283,7 +283,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function flush($prefix = '')
     {
-        $this['routes']->addCollection($this['controllers']->flush($prefix), $prefix);
+        $this['routes']->addCollection($this['controllers']->flush(), $prefix);
     }
 
     /**
@@ -326,7 +326,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             throw new \LogicException('The "mount" method takes either a ControllerCollection or a ControllerProviderInterface instance.');
         }
 
-        $this['routes']->addCollection($app->flush($prefix), $prefix);
+        $this['routes']->addCollection($app->flush(), $prefix);
     }
 
     /**
@@ -352,19 +352,6 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         $this->flush();
 
         return $this['kernel']->handle($request, $type, $catch);
-    }
-
-    /**
-     * Handles onEarlyKernelRequest events.
-     */
-    public function onEarlyKernelRequest(KernelEvent $event)
-    {
-        if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
-            if (isset($this['exception_handler'])) {
-                $this['dispatcher']->addSubscriber($this['exception_handler']);
-            }
-            $this['dispatcher']->addSubscriber(new ResponseListener($this['charset']));
-        }
     }
 
     /**
@@ -447,10 +434,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     static public function getSubscribedEvents()
     {
         return array(
-            KernelEvents::REQUEST    => array(
-                array('onEarlyKernelRequest', 256),
-                array('onKernelRequest')
-            ),
+            KernelEvents::REQUEST    => 'onKernelRequest',
             KernelEvents::CONTROLLER => 'onKernelController',
             KernelEvents::RESPONSE   => 'onKernelResponse',
             KernelEvents::EXCEPTION  => 'onKernelException',

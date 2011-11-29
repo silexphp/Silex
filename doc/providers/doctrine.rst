@@ -93,14 +93,14 @@ and values are options::
         'dbs.options' => array (
             'mysql_read' => array(
                 'driver'    => 'pdo_mysql',
-                'host'      => 'mysql_read.someplace.tld',
+                'host'      => 'mysql_read.someplace.tld'
                 'dbname'    => 'my_database',
                 'user'      => 'my_username',
                 'password'  => 'my_password',
             ),
             'mysql_write' => array(
                 'driver'    => 'pdo_mysql',
-                'host'      => 'mysql_write.someplace.tld',
+                'host'      => 'mysql_write.someplace.tld'
                 'dbname'    => 'my_database',
                 'user'      => 'my_username',
                 'password'  => 'my_password',
@@ -122,10 +122,10 @@ Using multiple connections::
 
     $app->get('/blog/show/{id}', function ($id) use ($app) {
         $sql = "SELECT * FROM posts WHERE id = ?";
-        $post = $app['dbs']['mysql_read']->fetchAssoc($sql, array((int) $id));
+        $post = $app['dbs']['mysql_read']->fetchAssoc($mysqlQuery, array((int) $id));
 
-        $sql = "UPDATE posts SET value = ? WHERE id = ?";
-        $app['dbs']['mysql_write']->execute($sql, array('newValue', (int) $id));
+        $mysqlUpdate = "UPDATE posts SET value = ? WHERE id = ?";
+        $app['dbs']['mysql_write']->execute($mysqlUpdate, array('newValue', (int) $id));
 
         return  "<h1>{$post['title']}</h1>".
                 "<p>{$post['body']}</p>";

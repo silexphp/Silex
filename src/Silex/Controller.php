@@ -152,12 +152,12 @@ class Controller
         $this->isFrozen = true;
     }
 
-    public function bindDefaultRouteName($prefix)
+    public function bindDefaultRouteName()
     {
         $requirements = $this->route->getRequirements();
         $method = isset($requirements['_method']) ? $requirements['_method'] : '';
 
-        $routeName = $prefix.$method.$this->route->getPattern();
+        $routeName = $method.$this->route->getPattern();
         $routeName = str_replace(array('/', ':', '|', '-'), '_', $routeName);
         $routeName = preg_replace('/[^a-z0-9A-Z_.]+/', '', $routeName);
 

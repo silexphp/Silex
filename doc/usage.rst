@@ -195,18 +195,10 @@ You can then restrict the allowed methods via the ``method`` method::
     })
     ->method('PATCH');
 
-You can match multiple methods with one controller using regex syntax::
-
-    $app->match('/blog', function () {
-        ...
-    })
-    ->method('PUT|POST');
-
 .. note::
 
     The order in which the routes are defined is significant. The first
     matching route will be used, so place more generic routes at the bottom.
-
 
 Route variables
 ~~~~~~~~~~~~~~~
