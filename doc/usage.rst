@@ -582,6 +582,7 @@ the following may help.
 
 .. code-block:: ini
 
+    detect_unicode = Off
     phar.readonly = Off
     phar.require_hash = Off
 
@@ -610,10 +611,10 @@ The exact cause of this issue could not be determined yet.
 ioncube loader bug
 ~~~~~~~~~~~~~~~~~~
 
-Ioncube loader is an extension that can decode PHP encoded file. 
-Unfortunately, old versions (prior to version 4.0.9) are not working well 
+Ioncube loader is an extension that can decode PHP encoded file.
+Unfortunately, old versions (prior to version 4.0.9) are not working well
 with phar archives.
-You must either upgrade Ioncube loader to version 4.0.9 or newer or disable it 
+You must either upgrade Ioncube loader to version 4.0.9 or newer or disable it
 by commenting or removing this line in your php.ini file:
 
 .. code-block:: ini
