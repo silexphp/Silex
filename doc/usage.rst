@@ -542,6 +542,7 @@ the following may help.
 
 .. code-block:: ini
 
+    detect_unicode = Off
     phar.readonly = Off
     phar.require_hash = Off
     detect_unicode = Off
