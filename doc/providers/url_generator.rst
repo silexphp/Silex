@@ -47,3 +47,7 @@ The UrlGenerator provider provides a ``url_generator`` service::
                ' | '.
                '<a href="'.$app['url_generator']->generate('hello', array('name' => 'Igor')).'">Hello Igor</a>';
     });
+
+When using Twig, the service can be used like this::
+
+    {{ app.url_generator.generate('homepage') }}
