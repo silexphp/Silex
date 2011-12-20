@@ -43,3 +43,6 @@
 [submodule "vendor/doctrine-dbal"]
 	path = vendor/doctrine-dbal
 	url = https://github.com/doctrine/dbal
+[submodule "vendor/xsltemplate"]
+	path = vendor/xsltemplate
+	url = https://github.com/kucherenko/xsltemplate.git
