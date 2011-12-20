@@ -10,7 +10,7 @@ Parameters
 
 * **xsltemplate.templates.path**: Path to the directory containing xsl template files.
 
-* **xsltemplate.templates.url**: An associative array of template names to template contents. Use this if you want to define your templates inline.
+* **xsltemplate.templates.url**: HTTP url to xsl templates.
 
 * **xsltemplate.parameters** (optional): An associative array of xsltemplate
   parameters. Check out the xsltemplate documentation for more information.
