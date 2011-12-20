@@ -8,11 +8,9 @@ The *XSLTemplateServiceProvider* provides integration with the `XSLTemplate
 Parameters
 ----------
 
-* **xsltemplate.templates.path**: Path to the directory containing xsl template
-  files.
+* **xsltemplate.templates.path**: Path to the directory containing xsl template files.
 
-* **xsltemplate.templates.url**: An associative array of template names to template contents.
-    Use this if you want to define your templates inline.
+* **xsltemplate.templates.url**: An associative array of template names to template contents. Use this if you want to define your templates inline.
 
 * **xsltemplate.parameters** (optional): An associative array of xsltemplate
   parameters. Check out the xsltemplate documentation for more information.
@@ -53,17 +51,17 @@ The XSLTemplate provider provides a ``xsltemplate`` service::
 
     $app->get('/hello/{name}', function ($name) use ($app) {
 
-    $app['xsltemplate.writer']->writeElement('page', 'test');
+        $app['xsltemplate.writer']->writeElement('page', 'test');
 
-    $content = $app['xsltemplate']->render('hello.xsl', $app['xsltemplate.writer']);
-    $contentType = $app['xsltemplate']->getContentType();
+        $content = $app['xsltemplate']->render('hello.xsl', $app['xsltemplate.writer']);
+        $contentType = $app['xsltemplate']->getContentType();
 
-    return new Symfony\Component\HttpFoundation\Response(
-        $content,
-        200,
-        array('Content-Type' => $contentType)
-    );
-});
+        return new Symfony\Component\HttpFoundation\Response(
+            $content,
+            200,
+            array('Content-Type' => $contentType)
+        );
+    });
 
 This will render a file named ``xsl/hello.xsl``.
 
