@@ -45,6 +45,16 @@ are using apache you can use a ``.htaccess`` file for this.
 
         $app['debug'] = true;
 
+.. tip::
+
+    If your application is hosted behind a reverse proxy and you want Silex
+    to trust the `X-Forwarded-For*` headers, you will need to run your application
+    like this::
+
+        $request = Symfony\Component\HttpFoundation\Request::createFromGlobals();
+        $request::trustProxyData();
+        $app->run($request);
+
 Routing
 -------
 
