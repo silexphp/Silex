@@ -51,8 +51,10 @@ are using apache you can use a ``.htaccess`` file for this.
     to trust the `X-Forwarded-For*` headers, you will need to run your application
     like this::
 
-        $request = Symfony\Component\HttpFoundation\Request::createFromGlobals();
-        $request::trustProxyData();
+        use Symfony\Component\HttpFoundation\Request;
+
+        Request::trustProxyData();
+        $request = Request::createFromGlobals();
         $app->run($request);
 
 Routing
