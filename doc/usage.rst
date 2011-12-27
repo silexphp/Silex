@@ -54,8 +54,7 @@ are using apache you can use a ``.htaccess`` file for this.
         use Symfony\Component\HttpFoundation\Request;
 
         Request::trustProxyData();
-        $request = Request::createFromGlobals();
-        $app->run($request);
+        $app->run();
 
 Routing
 -------
