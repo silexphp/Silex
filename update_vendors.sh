@@ -26,5 +26,5 @@ git fetch origin && git reset --hard origin/master
 cd ../..
 
 cd vendor/twig
-git fetch origin && git reset --hard v1.3.0
+git fetch origin && git reset --hard origin/master
 cd ../..
