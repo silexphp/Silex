@@ -464,13 +464,46 @@ Redirects
 You can redirect to another page by returning a redirect response, which
 you can create by calling the ``redirect`` method::
 
-    use Silex\Application;
-
-    $app->get('/', function (Silex\Application $app) {
+    $app->get('/', function () use ($app) {
         return $app->redirect('/hello');
     });
 
 This will redirect from ``/`` to ``/hello``.
+
+Streaming
+---------
+
+It's possible to create a streaming response, which is important in cases
+when you cannot buffer the data being sent.
+
+code-block:: php
+
+    $app->get('/images/{file}', function ($file) use ($app) {
+        if (!file_exists(__DIR__.'/images/'.$file)) {
+            return $app->abort(404, 'The image was not found.');
+        }
+
+        $stream = function () use ($file) {
+            readfile($file);
+        };
+
+        return $app->stream($stream, 200, array('Content-Type' => 'image/png'));
+    });
+
+If you need to send chunks, make sure you call ``ob_flush`` and ``flush`` after
+every chunk.
+
+code-block:: php
+
+    $stream = function () {
+        $fh = fopen('http://www.example.com/', 'rb');
+        while (!feof($fh)) {
+          echo fread($fh, 1024);
+          ob_flush();
+          flush();
+        }
+        fclose($fh);
+    };
 
 Security
 --------
