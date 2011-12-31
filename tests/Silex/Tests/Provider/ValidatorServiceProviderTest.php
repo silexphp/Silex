@@ -21,29 +21,29 @@ use Silex\Provider\ValidatorServiceProvider;
  */
 class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
-  public function setUp()
-  {
-    if (!is_dir(__DIR__.'/../../../../vendor/Symfony/Component/Validator')) {
-      $this->markTestSkipped('Validator submodule was not installed.');
+    public function setUp()
+    {
+        if (!is_dir(__DIR__.'/../../../../vendor/Symfony/Component/Validator')) {
+          $this->markTestSkipped('Validator submodule was not installed.');
+        }
     }
-  }
 
-  public function testRegister()
-  {
-    $app = new Application();
+    public function testRegister()
+    {
+      $app = new Application();
 
-    $app->register(new ValidatorServiceProvider(), array(
-      'validator.class_path' =>  __DIR__.'/../../../../vendor/Symfony/Component/Validator'
-    ));
+      $app->register(new ValidatorServiceProvider(), array(
+        'validator.class_path' =>  __DIR__.'/../../../../vendor/Symfony/Component/Validator'
+      ));
 
-    return $app;
-  }
+      return $app;
+    }
 
-  /**
-   * @depends testRegister
-   */
-  public function testValidatorServiceIsAValidator($app)
-  {
-    $this->assertInstanceOf('Symfony\Component\Validator\Validator', $app['validator']);
-  }
+    /**
+     * @depends testRegister
+     */
+    public function testValidatorServiceIsAValidator($app)
+    {
+      $this->assertInstanceOf('Symfony\Component\Validator\Validator', $app['validator']);
+    }
 }
