@@ -24,7 +24,7 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
   public function setUp()
   {
     if (!is_dir(__DIR__.'/../../../../vendor/Symfony/Component/Validator')) {
-      $this->markTestSkipped('Monolog submodule was not installed.');
+      $this->markTestSkipped('Validator submodule was not installed.');
     }
   }
 
