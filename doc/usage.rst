@@ -476,7 +476,7 @@ Streaming
 It's possible to create a streaming response, which is important in cases
 when you cannot buffer the data being sent.
 
-code-block:: php
+.. code-block:: php
 
     $app->get('/images/{file}', function ($file) use ($app) {
         if (!file_exists(__DIR__.'/images/'.$file)) {
@@ -493,7 +493,7 @@ code-block:: php
 If you need to send chunks, make sure you call ``ob_flush`` and ``flush`` after
 every chunk.
 
-code-block:: php
+.. code-block:: php
 
     $stream = function () {
         $fh = fopen('http://www.example.com/', 'rb');
