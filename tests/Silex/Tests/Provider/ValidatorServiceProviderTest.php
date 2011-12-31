@@ -30,13 +30,13 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
 
     public function testRegister()
     {
-      $app = new Application();
+        $app = new Application();
 
-      $app->register(new ValidatorServiceProvider(), array(
-        'validator.class_path' =>  __DIR__.'/../../../../vendor/Symfony/Component/Validator'
-      ));
+        $app->register(new ValidatorServiceProvider(), array(
+          'validator.class_path' =>  __DIR__.'/../../../../vendor/Symfony/Component/Validator'
+        ));
 
-      return $app;
+        return $app;
     }
 
     /**
@@ -44,6 +44,6 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testValidatorServiceIsAValidator($app)
     {
-      $this->assertInstanceOf('Symfony\Component\Validator\Validator', $app['validator']);
+        $this->assertInstanceOf('Symfony\Component\Validator\Validator', $app['validator']);
     }
 }
