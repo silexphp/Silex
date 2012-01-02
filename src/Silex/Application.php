@@ -29,6 +29,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -297,6 +298,20 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     public function redirect($url, $status = 302)
     {
         return new RedirectResponse($url, $status);
+    }
+
+    /**
+     * Creates a streaming response.
+     *
+     * @param mixed   $callback A valid PHP callback
+     * @param integer $status   The response status code
+     * @param array   $headers  An array of response headers
+     *
+     * @see Symfony\Component\HttpFoundation\StreamedResponse
+     */
+    public function stream($callback = null, $status = 200, $headers = array())
+    {
+        return new StreamedResponse($callback, $status, $headers);
     }
 
     /**
