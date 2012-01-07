@@ -48,6 +48,15 @@ The UrlGenerator provider provides a ``url_generator`` service::
                '<a href="'.$app['url_generator']->generate('hello', array('name' => 'Igor')).'">Hello Igor</a>';
     });
 
+
 When using Twig, the service can be used like this::
 
     {{ app.url_generator.generate('homepage') }}
+
+Moreover, if you register the ``SymfonyBridgesServiceProvider``, then you will have access to the native Twig helpers: ``path()`` and ``url()``::
+
+    {{ path('homepage') }}
+    {{ url('homepage') }} {# generates the absolute url http://example.org/ #}
+
+You can find more information about this subject in the `Symfony bridges documentation
+<http://silex.sensiolabs.org/doc/providers/symfony_bridges.html>`_.
