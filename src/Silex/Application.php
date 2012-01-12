@@ -239,6 +239,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      * Aborts the current request by sending a proper HTTP error.
      *
      * @param integer $statusCode The HTTP status code
+     * @param string  $message    The status message
      * @param array   $headers    An array of HTTP headers
      */
     public function abort($statusCode, $message = '', array $headers = array())
@@ -317,7 +318,11 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     /**
      * Escapes a text for HTML.
      *
-     * @param string $text The input text to be escaped
+     * @param string  $text         The input text to be escaped
+     * @param integer $flags        The flags (@see htmlspecialchars)
+     * @param string  $charset      The charset
+     * @param Boolean $doubleEncode Whether to try to avoid double escaping or not
+     *
      * @return string Escaped text
      */
     public function escape($text, $flags = ENT_COMPAT, $charset = 'UTF-8', $doubleEncode = true)
