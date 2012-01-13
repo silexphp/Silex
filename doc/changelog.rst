@@ -3,6 +3,8 @@ Changelog
 
 This changelog references all backward incompatibilities as we introduce them:
 
+* **2012-01-02**: Introduced support for streaming responses.
+
 * **2011-09-22**: ``ExtensionInterface`` has been renamed to
   ``ServiceProviderInterface``. All built-in extensions have been renamed
   accordingly (for instance, ``Silex\Extension\TwigExtension`` has been
