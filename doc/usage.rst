@@ -589,7 +589,6 @@ the following may help.
     detect_unicode = Off
     phar.readonly = Off
     phar.require_hash = Off
-    detect_unicode = Off
 
 If you are on Suhosin you will also have to set this:
 
