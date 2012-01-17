@@ -57,9 +57,9 @@ replace the request data on the ``$request`` object.
     use Symfony\Component\HttpFoundation\ParameterBag;
 
     $app->before(function (Request $request) {
-        if (0 === strpos($request->headers->get('Content-Type'), 'application/json') {
+        if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
             $data = json_decode($request->getContent(), true);
-            $request->request = new ParameterBag(is_array($data) ? $data : array());
+            $request->request->replace(is_array($data) ? $data : array());
         }
     });
 
@@ -74,16 +74,16 @@ return the post object, including its ``id``, as JSON.
     use Symfony\Component\HttpFoundation\Request;
     use Symfony\Component\HttpFoundation\Response;
 
-    $app->match('/blog/posts', function (Request $request) {
+    $app->post('/blog/posts', function (Request $request) {
         $post = array(
-            'title' => $request->get('title'),
-            'body'  => $request->get('body'),
+            'title' => $request->request->get('title'),
+            'body'  => $request->request->get('body'),
         );
 
         $post['id'] = createPost($post);
 
         $json = json_encode($post);
-        return new Response($json, 201);
+        return new Response($json, 201, array('Content-Type' => 'application/json'));
     });
 
 Manual testing
