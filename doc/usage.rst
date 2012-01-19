@@ -60,7 +60,7 @@ Routing
 -------
 
 In Silex you define a route and the controller that is called when that
-route is matched. 
+route is matched.
 
 A route pattern consists of:
 
