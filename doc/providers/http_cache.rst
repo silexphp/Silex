@@ -23,8 +23,6 @@ Registering
 
 ::
 
-    use Symfony\Component\HttpFoundation\Response; 
-
     $app->register(new Silex\Provider\HttpCacheServiceProvider(), array(
         'http_cache.cache_dir' => __DIR__.'/cache/',
     ));
@@ -34,6 +32,8 @@ Usage
 
 Silex already supports any reverse proxy like Varnish out of the box by
 setting Response HTTP cache headers::
+
+    use Symfony\Component\HttpFoundation\Response; 
 
     $app->get('/', function() {
         return new Response('Foo', 200, array(
