@@ -80,7 +80,7 @@ from a template:
 
     {{ render('/sidebar') }}
 
-    {# or if you are also using UrlGeneratorServiceProvider #}
+    {# or if you are also using UrlGeneratorServiceProvider with the SymfonyBridgesServiceProvider #}
     {{ render(path('sidebar')) }}
 
 For more information, check out the `Twig documentation
