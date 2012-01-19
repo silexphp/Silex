@@ -16,7 +16,7 @@ Services
 --------
 
 * **http_cache**: An instance of `HttpCache
-  <http://api.symfony.com/2.0/Symfony/Component/HttpKernel/HttpCache/HttpCache.html>`_,
+  <http://api.symfony.com/2.0/Symfony/Component/HttpKernel/HttpCache/HttpCache.html>`_.
 
 Registering
 -----------
@@ -30,21 +30,33 @@ Registering
 Usage
 -----
 
-Silex already supports any Reverse Proxy like Varnish out of the box by
+Silex already supports any reverse proxy like Varnish out of the box by
 setting Response HTTP cache headers::
+
+    use Symfony\Component\HttpFoundation\Response; 
 
     $app->get('/', function() {
         return new Response('Foo', 200, array(
             'Cache-Control' => 's-maxage=5',
         ));
     });
+	
+.. tip::
+
+    If you want Silex to trust the `X-Forwarded-For*` headers from your reverse proxy, 
+    you will need to run your application like this::
+
+        use Symfony\Component\HttpFoundation\Request;
+
+        Request::trustProxyData();
+        $app->run();
 
 This provider allows you to use the Symfony2 reverse proxy natively with
 Silex applications by using the `http_cache` service::
 
     $app['http_cache']->run();
 
-The provider also provide ESI support::
+The provider also provides ESI support::
 
     $app->get('/', function() {
         return new Response(<<<EOF
