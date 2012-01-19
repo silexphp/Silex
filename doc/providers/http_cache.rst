@@ -23,8 +23,8 @@ Registering
 
 ::
 
-	use Symfony\Component\HttpFoundation\Response; 
-	
+    use Symfony\Component\HttpFoundation\Response; 
+
     $app->register(new Silex\Provider\HttpCacheServiceProvider(), array(
         'http_cache.cache_dir' => __DIR__.'/cache/',
     ));
@@ -44,7 +44,7 @@ setting Response HTTP cache headers::
 .. tip::
 
     If you want Silex to trust the `X-Forwarded-For*` headers from your reverse proxy, 
-	you will need to run your application like this::
+    you will need to run your application like this::
 
         use Symfony\Component\HttpFoundation\Request;
 

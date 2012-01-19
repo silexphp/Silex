@@ -17,7 +17,7 @@ This changelog references all backward incompatibilities as we introduce them:
     Before::
 
         $app = new Application();
-        $app->get('/bar', function() { return 'foo'; });
+        $app->mount('/bar', function() { return 'foo'; });
 
         return $app;
 
