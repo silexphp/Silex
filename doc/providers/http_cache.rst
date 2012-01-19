@@ -23,6 +23,8 @@ Registering
 
 ::
 
+	use Symfony\Component\HttpFoundation\Response; 
+	
     $app->register(new Silex\Provider\HttpCacheServiceProvider(), array(
         'http_cache.cache_dir' => __DIR__.'/cache/',
     ));
@@ -44,7 +46,7 @@ Silex applications by using the `http_cache` service::
 
     $app['http_cache']->run();
 
-The provider also provide ESI support::
+The provider also provides ESI support::
 
     $app->get('/', function() {
         return new Response(<<<EOF
