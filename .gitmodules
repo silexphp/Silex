@@ -43,3 +43,6 @@
 [submodule "vendor/doctrine-dbal"]
 	path = vendor/doctrine-dbal
 	url = https://github.com/doctrine/dbal
+[submodule "vendor/Symfony/Component/Validator"]
+	path = vendor/Symfony/Component/Validator
+	url = https://github.com/symfony/Validator.git
