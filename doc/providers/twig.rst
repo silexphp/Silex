@@ -28,7 +28,7 @@ Services
 * **twig**: The ``Twig_Environment`` instance. The main way of
   interacting with Twig.
 
-* **twig.configure**: Protected closure that takes the Twig
+* **twig.configure**: :doc:`Protected closure <services#protected-closures>` that takes the Twig
   environment as an argument. You can use it to add more
   custom globals.
 
