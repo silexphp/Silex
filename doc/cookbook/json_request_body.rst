@@ -24,6 +24,7 @@ indicate that using the ``Content-Type`` header.
     Accept: application/json
     Content-Type: application/json
     Content-Length: 57
+
     {"title":"Hello World!","body":"This is my first post!"}
 
 Response
@@ -39,6 +40,7 @@ JSON.
     Content-Type: application/json
     Content-Length: 65
     Connection: close
+
     {"id":"1","title":"Hello World!","body":"This is my first post!"}
 
 Parsing the request body
@@ -96,4 +98,3 @@ utility, which allows sending HTTP requests.
 
     $ curl http://blog.lo/blog/posts -d '{"title":"Hello World!","body":"This is my first post!"}' -H 'Content-Type: application/json'
     {"id":"1","title":"Hello World!","body":"This is my first post!"}
-    $
