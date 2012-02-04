@@ -9,6 +9,7 @@ Silex
     services
     providers
     testing
+    cookbook
     internals
     contributing
     providers/index
