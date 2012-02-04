@@ -1,6 +1,6 @@
 #!/bin/sh
 
-COMPONENTS='BrowserKit CssSelector EventDispatcher HttpFoundation Process ClassLoader DomCrawler Finder HttpKernel Routing'
+COMPONENTS='BrowserKit CssSelector EventDispatcher HttpFoundation Process ClassLoader DomCrawler Finder HttpKernel Routing Validator'
 
 cd vendor/Symfony/Component
 for COMPONENT in $COMPONENTS
