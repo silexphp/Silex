@@ -23,36 +23,37 @@ class PropelServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
-        $path = isset($app['propel.path']) ? $app['propel.path'].'/Propel.php' : realpath('.').'/vendor/propel/runtime/lib/Propel.php';
-        $modelPath = isset($app['propel.model_path']) ? $app['propel.model_path'] : realpath('.').'/build/classes';
+        $path = isset($app['propel.path']) ? $app['propel.path'].'/Propel.php' : realpath('./vendor/propel/runtime/lib/Propel.php');
+        $modelPath = isset($app['propel.model_path']) ? $app['propel.model_path'] : realpath('./build/classes');
         $internalAutoload = isset($app['propel.internal_autoload']) ? $app['propel.internal_autoload'] : false;
-        
+
         if (isset($app['propel.config_file'])) {
             $config = $app['propel.config_file'];
         } else {
             $currentDir = getcwd();
-            if (!@chdir(realpath('.').'/build/conf')) {
-              throw new \InvalidArgumentException(__CLASS__.': please, initialize the propel.config_file property');
+            if (!@chdir(realpath('./build/conf'))) {
+                throw new \InvalidArgumentException(__CLASS__.': please, initialize the "propel.config_file" property.');
             }
+
             $files = glob('classmap*.php');
-            if ((!$files) || (empty($files))) {
-              throw new \InvalidArgumentException(__CLASS__.': please, initialize the propel.config_file property');
+            if (!$files || empty($files)) {
+                throw new \InvalidArgumentException(__CLASS__.': please, initialize the "propel.config_file" property.');
             }
-            $config = '/build/conf/'.substr(strstr($files[0], '-'), 1); 
-            chdir($currentDir);            
+
+            $config = '/build/conf/'.substr(strstr($files[0], '-'), 1);
+            chdir($currentDir);
         }
-        
+
         if ($internalAutoload) {
             set_include_path($modelPath.PATH_SEPARATOR.get_include_path());
         } else {
             $app['autoloader']->registerNamespace('model', $modelPath);
         }
-        
+
         if (!class_exists('Propel')) {
-          require $path;
+            require $path;
         }
-        
+
         \Propel::init($config);
-        
     }
 }
