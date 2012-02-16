@@ -30,6 +30,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -346,6 +347,20 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     public function escape($text, $flags = ENT_COMPAT, $charset = 'UTF-8', $doubleEncode = true)
     {
         return htmlspecialchars($text, $flags, $charset, $doubleEncode);
+    }
+
+    /**
+     * Convert some data into a JSON response.
+     *
+     * @param mixed   $data    The response data
+     * @param integer $status  The response status code
+     * @param array   $headers An array of response headers
+     *
+     * @see Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function json($data = array(), $status = 200, $headers = array())
+    {
+        return new JsonResponse($data, $status, $headers);
     }
 
     /**
