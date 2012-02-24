@@ -124,3 +124,36 @@ of the default ``ArrayLoader``::
     $app['translator.loader'] = new Symfony\Component\Translation\Loader\YamlFileLoader();
 
 And that's all you need to load translations from YAML files.
+
+XLIFF-based language files
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Just as you would do with YAML translation files, you first need to make
+sure you have the ``Config`` component from Symfony2, and that they are
+registered with the autoloader. See above for details.
+
+Then, similarly, create XLIFF files in your locales directory and setup the ``translator.messages`` to map to them.
+
+Finally override the ``translator.loader`` to use a ``XliffFileLoader``::
+
+    $app['translator.loader'] = new Symfony\Component\Translation\Loader\XliffFileLoader();
+
+That's it.
+
+
+Adding translations in Twig templates
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Once loaded, the translation service provider is available from within Twig templates:
+
+.. code-block:: jinja
+    {{ app.translator.trans('translation_key') }}
+
+Even better: register the SymfonyBridgesServiceProvider and you will get
+the TranslationExtension of the bridge allowing you to translate things in
+the Twig way:
+
+.. code-block:: jinja
+    {{ 'translation_key'|trans }}
+    {{ 'translation_key'|transchoice }}
+    {% trans %}translation_key{% endtrans %}
