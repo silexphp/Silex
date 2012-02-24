@@ -58,7 +58,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($request, $app['request']);
     }
 
-    public function testgetRoutesWithNoRoutes()
+    public function testGetRoutesWithNoRoutes()
     {
         $app = new Application();
 
@@ -164,6 +164,16 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $response = $app->handle(Request::create('/'));
 
         $this->assertEquals('text/html; charset=ISO-8859-1', $response->headers->get('Content-Type'));
+    }
+
+    /**
+     * @expectedException RuntimeException
+     */
+    public function testAccessingRequestOutsideOfScopeShouldThrowRuntimeException()
+    {
+        $app = new Application();
+
+        $request = $app['request'];
     }
 }
 
