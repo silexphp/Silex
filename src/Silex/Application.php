@@ -111,6 +111,10 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             return new RedirectableUrlMatcher($app['routes'], $app['request_context']);
         });
 
+        $this['request'] = function () {
+            throw new \RuntimeException('Accessed request service outside of request scope. Try moving that call to a before handler or controller.');
+        };
+
         $this['request.http_port'] = 80;
         $this['request.https_port'] = 443;
         $this['debug'] = false;
