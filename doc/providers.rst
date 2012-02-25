@@ -72,6 +72,15 @@ All of these are within the ``Silex\Provider`` namespace.
 * :doc:`ValidatorServiceProvider <providers/validator>`
 * :doc:`HttpCacheServiceProvider <providers/http_cache>`
 
+Third party providers
+~~~~~~~~~~~~~~~~~~~~~
+
+Some service providers are developed by the community. Those 
+third-party providers are listed on `Silex' repository wiki 
+<https://github.com/fabpot/Silex/wiki/Third-Party-ServiceProviders>`_.
+
+You are encouraged to share yours.
+
 Creating a provider
 ~~~~~~~~~~~~~~~~~~~
 
