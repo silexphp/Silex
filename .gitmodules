@@ -46,3 +46,6 @@
 [submodule "vendor/Symfony/Component/Validator"]
 	path = vendor/Symfony/Component/Validator
 	url = https://github.com/symfony/Validator.git
+[submodule "vendor/propel"]
+	path = vendor/propel
+	url = git://github.com/propelorm/Propel
