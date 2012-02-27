@@ -31,11 +31,11 @@ Services
 --------
 
 * **session**: An instance of Symfony2's `Session
-  <http://api.symfony.com/2.0/Symfony/Component/HttpFoundation/Session.html>`_.
+  <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Session.html>`_.
 
 * **session.storage**: A service that is used for persistence of the
-  session data. Defaults to a `NativeSessionStorage
-  <http://api.symfony.com/2.0/Symfony/Component/HttpFoundation/SessionStorage/NativeSessionStorage.html>`_.
+  session data. Defaults to a `NativeFileSessionStorage
+  <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/NativeFileSessionStorage.html>`_.
 
 Registering
 -----------
