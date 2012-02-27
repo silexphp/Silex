@@ -184,7 +184,7 @@ of them.
 
 * **request**: Contains the current request object,
   which is an instance of `Request
-  <http://api.symfony.com/2.0/Symfony/Component/HttpFoundation/Request.html>`_.
+  <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Request.html>`_.
   It gives you access to ``GET``, ``POST`` parameters
   and lots more!
 
@@ -197,7 +197,7 @@ of them.
 
 * **autoloader**: This service provides you with a
   `UniversalClassLoader
-  <http://api.symfony.com/2.0/Symfony/Component/ClassLoader/UniversalClassLoader.html>`_
+  <http://api.symfony.com/master/Symfony/Component/ClassLoader/UniversalClassLoader.html>`_
   that is already registered. You can register prefixes
   and namespaces on it.
 
@@ -206,10 +206,10 @@ of them.
     $app['autoloader']->registerPrefix('Twig_', $app['twig.class_path']);
 
   For more information, check out the `Symfony2 autoloader documentation
-  <http://symfony.com/doc/2.0/cookbook/tools/autoloader.html>`_.
+  <http://symfony.com/doc/current/components/class_loader.html>`_.
 
 * **routes**: The `RouteCollection
-  <http://api.symfony.com/2.0/Symfony/Component/Routing/RouteCollection.html>`_
+  <http://api.symfony.com/master/Symfony/Component/Routing/RouteCollection.html>`_
   that is used internally. You can add, modify, read
   routes.
 
@@ -218,17 +218,17 @@ of them.
   chapter for more information.
 
 * **dispatcher**: The `EventDispatcher
-  <http://api.symfony.com/2.0/Symfony/Component/EventDispatcher/EventDispatcher.html>`_
+  <http://api.symfony.com/master/Symfony/Component/EventDispatcher/EventDispatcher.html>`_
   that is used internally. It is the core of the Symfony2
   system and is used quite a bit by Silex.
 
 * **resolver**: The `ControllerResolver
-  <http://api.symfony.com/2.0/Symfony/Component/HttpKernel/Controller/ControllerResolver.html>`_
+  <http://api.symfony.com/master/Symfony/Component/HttpKernel/Controller/ControllerResolver.html>`_
   that is used internally. It takes care of executing the
   controller with the right arguments.
 
 * **kernel**: The `HttpKernel
-  <http://api.symfony.com/2.0/Symfony/Component/HttpKernel/HttpKernel.html>`_
+  <http://api.symfony.com/master/Symfony/Component/HttpKernel/HttpKernel.html>`_
   that is used internally. The HttpKernel is the heart of
   Symfony2, it takes a Request as input and returns a
   Response as output.
@@ -263,6 +263,10 @@ Core parameters
   Defaults to 443.
 
   This parameter can be used by the ``UrlGeneratorProvider``.
+
+* **request.default_locale** (optional): The locale used by default.
+
+  Defaults to ``en``.
 
 * **debug** (optional): Returns whether or not the application is running in
   debug mode.
