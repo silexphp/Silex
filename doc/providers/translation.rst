@@ -23,16 +23,16 @@ Services
 --------
 
 * **translator**: An instance of `Translator
-  <http://api.symfony.com/2.0/Symfony/Component/Translation/Translator.html>`_,
+  <http://api.symfony.com/master/Symfony/Component/Translation/Translator.html>`_,
   that is used for translation.
 
 * **translator.loader**: An instance of an implementation of the translation
-  `LoaderInterface <http://api.symfony.com/2.0/Symfony/Component/Translation/Loader/LoaderInterface.html>`_,
+  `LoaderInterface <http://api.symfony.com/master/Symfony/Component/Translation/Loader/LoaderInterface.html>`_,
   defaults to an `ArrayLoader
-  <http://api.symfony.com/2.0/Symfony/Component/Translation/Loader/ArrayLoader.html>`_.
+  <http://api.symfony.com/master/Symfony/Component/Translation/Loader/ArrayLoader.html>`_.
 
 * **translator.message_selector**: An instance of `MessageSelector
-  <http://api.symfony.com/2.0/Symfony/Component/Translation/MessageSelector.html>`_.
+  <http://api.symfony.com/master/Symfony/Component/Translation/MessageSelector.html>`_.
 
 Registering
 -----------
