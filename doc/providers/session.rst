@@ -7,12 +7,14 @@ between requests.
 Parameters
 ----------
 
-* **session.default_locale**: The locale used by default in the session.
+* **session.storage.save_path** (optional): The path for the
+  ``NativeFileSessionStorage``, defaults to the value of
+  ``sys_get_temp_dir()``.
 
 * **session.storage.options**: An array of options that is passed to the
   constructor of the ``session.storage`` service.
 
-  In case of the default ``NativeSessionStorage``, the possible options are:
+  In case of the default ``NativeFileSessionStorage``, the possible options are:
 
   * **name**: The cookie name (_SESS by default)
   * **id**: The session id (null by default)
@@ -29,11 +31,11 @@ Services
 --------
 
 * **session**: An instance of Symfony2's `Session
-  <http://api.symfony.com/2.0/Symfony/Component/HttpFoundation/Session.html>`_.
+  <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Session.html>`_.
 
 * **session.storage**: A service that is used for persistence of the
-  session data. Defaults to a `NativeSessionStorage
-  <http://api.symfony.com/2.0/Symfony/Component/HttpFoundation/SessionStorage/NativeSessionStorage.html>`_.
+  session data. Defaults to a `NativeFileSessionStorage
+  <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/NativeFileSessionStorage.html>`_.
 
 Registering
 -----------
