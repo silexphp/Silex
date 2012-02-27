@@ -3,6 +3,8 @@ Changelog
 
 This changelog references all backward incompatibilities as we introduce them:
 
+* **2012-02-27**: Updated to Symfony 2.1 session handling.
+
 * **2012-01-02**: Introduced support for streaming responses.
 
 * **2011-09-22**: ``ExtensionInterface`` has been renamed to
