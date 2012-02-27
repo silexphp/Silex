@@ -9,14 +9,14 @@ Parameters
 * **http_cache.cache_dir**: The cache directory to store the HTTP cache data.
 
 * **http_cache.options** (optional): An array of options for the `HttpCache
-  <http://api.symfony.com/2.0/Symfony/Component/HttpKernel/HttpCache/HttpCache.html>`_
+  <http://api.symfony.com/master/Symfony/Component/HttpKernel/HttpCache/HttpCache.html>`_
   constructor.
 
 Services
 --------
 
 * **http_cache**: An instance of `HttpCache
-  <http://api.symfony.com/2.0/Symfony/Component/HttpKernel/HttpCache/HttpCache.html>`_,
+  <http://api.symfony.com/master/Symfony/Component/HttpKernel/HttpCache/HttpCache.html>`_,
 
 Registering
 -----------

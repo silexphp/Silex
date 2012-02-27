@@ -174,12 +174,12 @@ It is pretty straightforward.
 
 The current ``request`` is automatically injected by Silex to the Closure
 thanks to the type hinting. It is an instance of `Request
-<http://api.symfony.com/2.0/Symfony/Component/HttpFoundation/Request.html>`_,
+<http://api.symfony.com/master/Symfony/Component/HttpFoundation/Request.html>`_,
 so you can fetch variables using the request ``get`` method.
 
 Instead of returning a string we are returning an instance of
 `Response
-<http://api.symfony.com/2.0/Symfony/Component/HttpFoundation/Response.html>`_.
+<http://api.symfony.com/master/Symfony/Component/HttpFoundation/Response.html>`_.
 This allows setting an HTTP
 status code, in this case it is set to ``201 Created``.
 
