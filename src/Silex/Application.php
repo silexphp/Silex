@@ -111,6 +111,8 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             return new RedirectableUrlMatcher($app['routes'], $app['request_context']);
         });
 
+        $this['request.default_locale'] = 'en';
+
         $this['request'] = function () {
             throw new \RuntimeException('Accessed request service outside of request scope. Try moving that call to a before handler or controller.');
         };
@@ -375,6 +377,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         $this->beforeDispatched = false;
 
         $this['request'] = $request;
+        $this['request']->setDefaultLocale($this['request.default_locale']);
 
         $this->flush();
 
