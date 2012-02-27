@@ -44,10 +44,6 @@ class SessionServiceProvider implements ServiceProviderInterface
         if (!isset($app['session.storage.options'])) {
             $app['session.storage.options'] = array();
         }
-
-//        if (!isset($app['session.default_locale'])) {
-//            $app['session.default_locale'] = 'en';
-//        }
     }
 
     public function onKernelRequest($event)
