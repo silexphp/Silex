@@ -1,10 +1,8 @@
 {
     "name": "silex/silex",
-    "type": "library",
     "description": "The PHP micro-framework based on the Symfony2 Components",
     "keywords": ["microframework"],
     "homepage": "http://silex.sensiolabs.org",
-    "version": "1.0.0",
     "license": "MIT",
     "authors": [
         {
