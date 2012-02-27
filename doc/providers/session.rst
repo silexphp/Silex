@@ -7,12 +7,14 @@ between requests.
 Parameters
 ----------
 
-* **session.default_locale**: The locale used by default in the session.
+* **session.storage.save_path** (optional): The path for the
+  ``NativeFileSessionStorage``, defaults to the value of
+  ``sys_get_temp_dir()``.
 
 * **session.storage.options**: An array of options that is passed to the
   constructor of the ``session.storage`` service.
 
-  In case of the default ``NativeSessionStorage``, the possible options are:
+  In case of the default ``NativeFileSessionStorage``, the possible options are:
 
   * **name**: The cookie name (_SESS by default)
   * **id**: The session id (null by default)

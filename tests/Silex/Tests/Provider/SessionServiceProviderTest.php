@@ -15,7 +15,7 @@ use Silex\Application;
 use Silex\Provider\SessionServiceProvider;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\SessionStorage\ArraySessionStorage;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
  * SessionProvider test cases.
@@ -31,7 +31,7 @@ class SessionServiceProviderTest extends \PHPUnit_Framework_TestCase
         $app->register(new SessionServiceProvider());
 
         $app['session.storage'] = $app->share(function () use ($app) {
-            return new ArraySessionStorage();
+            return new MockArraySessionStorage();
         });
 
         $app->get('/login', function () use ($app) {
@@ -41,7 +41,7 @@ class SessionServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $app->get('/account', function () use ($app) {
             if (!$app['session']->get('logged_in')) {
-                return 'You are not in.';
+                return 'You are not logged in.';
             }
 
             return 'This is your account.';

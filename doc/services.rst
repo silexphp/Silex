@@ -264,6 +264,10 @@ Core parameters
 
   This parameter can be used by the ``UrlGeneratorProvider``.
 
+* **request.default_locale** (optional): The locale used by default.
+
+  Defaults to ``en``.
+
 * **debug** (optional): Returns whether or not the application is running in
   debug mode.
 
