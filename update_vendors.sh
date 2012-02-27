@@ -5,7 +5,7 @@ COMPONENTS='BrowserKit CssSelector EventDispatcher HttpFoundation Process ClassL
 cd vendor/Symfony/Component
 for COMPONENT in $COMPONENTS
 do
-    cd $COMPONENT && git fetch origin && git reset --hard origin/master && cd ..
+    cd $COMPONENT && (git fetch origin && git reset --hard origin/master || true) && cd ..
 done
 cd ../../..
 
