@@ -146,11 +146,14 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      * @param string $pattern Matched route pattern
      * @param mixed $to Callback that returns the response when matched
      *
+     * Additional params may be provided between $pattern and $to ; they will be
+     * handled as Routes Middlewares (PHP callables triggered before the "$to" callback)
+     *
      * @return Silex\Controller
      */
     public function match($pattern, $to)
     {
-        return $this['controllers']->match($pattern, $to);
+        return call_user_func_array( array($this['controllers'], 'match'), func_get_args() );
     }
 
     /**
@@ -159,11 +162,14 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      * @param string $pattern Matched route pattern
      * @param mixed $to Callback that returns the response when matched
      *
+     * Additional params may be provided between $pattern and $to ; they will be
+     * handled as Routes Middlewares (PHP callables triggered before the "$to" callback)
+     *
      * @return Silex\Controller
      */
     public function get($pattern, $to)
     {
-        return $this['controllers']->get($pattern, $to);
+        return call_user_func_array( array($this['controllers'], 'get'), func_get_args() );
     }
 
     /**
@@ -172,11 +178,14 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      * @param string $pattern Matched route pattern
      * @param mixed $to Callback that returns the response when matched
      *
+     * Additional params may be provided between $pattern and $to ; they will be
+     * handled as Routes Middlewares (PHP callables triggered before the "$to" callback)
+     *
      * @return Silex\Controller
      */
     public function post($pattern, $to)
     {
-        return $this['controllers']->post($pattern, $to);
+        return call_user_func_array( array($this['controllers'], 'post'), func_get_args() );
     }
 
     /**
@@ -185,11 +194,14 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      * @param string $pattern Matched route pattern
      * @param mixed $to Callback that returns the response when matched
      *
+     * Additional params may be provided between $pattern and $to ; they will be
+     * handled as Routes Middlewares (PHP callables triggered before the "$to" callback)
+     *
      * @return Silex\Controller
      */
     public function put($pattern, $to)
     {
-        return $this['controllers']->put($pattern, $to);
+        return call_user_func_array( array($this['controllers'], 'put'), func_get_args() );
     }
 
     /**
@@ -198,11 +210,14 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      * @param string $pattern Matched route pattern
      * @param mixed $to Callback that returns the response when matched
      *
+     * Additional params may be provided between $pattern and $to ; they will be
+     * handled as Routes Middlewares (PHP callables triggered before the "$to" callback)
+     *
      * @return Silex\Controller
      */
     public function delete($pattern, $to)
     {
-        return $this['controllers']->delete($pattern, $to);
+        return call_user_func_array( array($this['controllers'], 'delete'), func_get_args() );
     }
 
     /**

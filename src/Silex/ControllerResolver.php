@@ -37,6 +37,23 @@ class ControllerResolver extends BaseControllerResolver
         parent::__construct($logger);
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getController(Request $request)
+    {
+        // Do we have Route Middlewares to handle ?
+        if ($request->attributes->has('_middlewares')) {
+            $middlewares = $request->attributes->get('_middlewares');
+            foreach ($middlewares as $currentMiddleware) {
+                // This is where we trigger the Route Middlewares
+                call_user_func( $currentMiddleware );
+            }
+        }
+        // Return parent implementation result
+        return parent::getController($request);
+    }
+
     protected function doGetArguments(Request $request, $controller, array $parameters)
     {
         foreach ($parameters as $param) {
