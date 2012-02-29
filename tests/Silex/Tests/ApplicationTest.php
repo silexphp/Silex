@@ -188,13 +188,14 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
             $middlewareTarget[0] .= '_middleware2_triggered';
         };
 
-        $app->get('/', $middleware1, $middleware2, function () {
+        $app->get('/', $middleware1, $middleware2, function () use (& $middlewareTarget) {
+            $middlewareTarget[0] .= '_route_triggered';
             return 'hello';
         });
 
         $result = $app->handle(Request::create('/'));
 
-        $this->assertEquals('result_middleware1_triggered_middleware2_triggered', $middlewareTarget[0]);
+        $this->assertEquals('result_middleware1_triggered_middleware2_triggered_route_triggered', $middlewareTarget[0]);
         $this->assertEquals('hello', $result->getContent());
 
     }
