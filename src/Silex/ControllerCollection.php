@@ -37,13 +37,30 @@ class ControllerCollection
      * @param string $pattern Matched route pattern
      * @param mixed $to Callback that returns the response when matched
      *
+     * Additional params may be provided between $pattern and $to ; they will be
+     * handled as Routes Middlewares (PHP callables triggered before the "$to" callback)
+     *
      * @return Silex\Controller
      */
     public function match($pattern, $to)
     {
+
+        if (func_num_args() > 2) {
+            // We have Routes Middlewares !
+            $args = func_get_args();
+            $pattern = array_shift($args);
+            $to = array_pop($args);
+            $middlewares = $args;
+        }
+
         $route = new Route($pattern, array('_controller' => $to));
         $controller = new Controller($route);
         $this->add($controller);
+
+        if (isset($middlewares)) {
+            // Routes Middlewares array is added to the route data
+            $route->addDefaults(array('_middlewares' => $middlewares));
+        }
 
         return $controller;
     }
@@ -54,11 +71,14 @@ class ControllerCollection
      * @param string $pattern Matched route pattern
      * @param mixed $to Callback that returns the response when matched
      *
+     * Additional params may be provided between $pattern and $to ; they will be
+     * handled as Routes Middlewares (PHP callables triggered before the "$to" callback)
+     *
      * @return Silex\Controller
      */
     public function get($pattern, $to)
     {
-        return $this->match($pattern, $to)->method('GET');
+        return call_user_func_array( array($this, 'match'), func_get_args() )->method('GET');
     }
 
     /**
@@ -71,7 +91,7 @@ class ControllerCollection
      */
     public function post($pattern, $to)
     {
-        return $this->match($pattern, $to)->method('POST');
+        return call_user_func_array( array($this, 'match'), func_get_args() )->method('POST');
     }
 
     /**
@@ -84,7 +104,7 @@ class ControllerCollection
      */
     public function put($pattern, $to)
     {
-        return $this->match($pattern, $to)->method('PUT');
+        return call_user_func_array( array($this, 'match'), func_get_args() )->method('PUT');
     }
 
     /**
@@ -97,7 +117,7 @@ class ControllerCollection
      */
     public function delete($pattern, $to)
     {
-        return $this->match($pattern, $to)->method('DELETE');
+        return call_user_func_array( array($this, 'match'), func_get_args() )->method('DELETE');
     }
 
     /**

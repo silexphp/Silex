@@ -175,6 +175,29 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
         $request = $app['request'];
     }
+
+    public function testRoutesMiddlewares()
+    {
+        $app = new Application();
+
+        $middlewareTarget = array('result');
+        $middleware1 = function() use(& $middlewareTarget) {
+            $middlewareTarget[0] .= '_middleware1_triggered';
+        };
+        $middleware2 = function() use(& $middlewareTarget) {
+            $middlewareTarget[0] .= '_middleware2_triggered';
+        };
+
+        $app->get('/', $middleware1, $middleware2, function () {
+            return 'hello';
+        });
+
+        $result = $app->handle(Request::create('/'));
+
+        $this->assertEquals('result_middleware1_triggered_middleware2_triggered', $middlewareTarget[0]);
+        $this->assertEquals('hello', $result->getContent());
+
+    }
 }
 
 class FooController
