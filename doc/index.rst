@@ -9,7 +9,7 @@ Silex
     services
     providers
     testing
-    cookbook
+    cookbook/index
     internals
     contributing
     providers/index
