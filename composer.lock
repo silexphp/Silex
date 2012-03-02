@@ -1,0 +1,71 @@
+{
+    "hash": "fe5aa65692e9cdbe9bbc18a5a3ec82fa",
+    "packages": [
+        {
+            "package": "pimple/pimple",
+            "version": "dev-master",
+            "source-reference": "321db91e49b6cf8cbeed58d8db662d40de96d2c3"
+        },
+        {
+            "package": "symfony/browser-kit",
+            "version": "dev-master",
+            "source-reference": "afa16de6b91833b5a72ca89dc942ffb424737687",
+            "alias": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/class-loader",
+            "version": "dev-master",
+            "source-reference": "8bceaa2f1fed52f6285b2cea39e7ae37fbea1c9b",
+            "alias": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/css-selector",
+            "version": "dev-master",
+            "source-reference": "dcce8174c551814c7aadcf13a2f8d73f3a6b4347",
+            "alias": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/dom-crawler",
+            "version": "dev-master",
+            "source-reference": "d35d208382d6e23a39a9e3c09357801b911eead6",
+            "alias": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/event-dispatcher",
+            "version": "dev-master",
+            "source-reference": "f6b7f60b0c29ab8167de7d7c9ba78fc9cc283c64",
+            "alias": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/finder",
+            "version": "dev-master",
+            "source-reference": "b3adc8d5c29593db93c0abc4711a1e25fd3a6fa0",
+            "alias": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/http-foundation",
+            "version": "dev-master",
+            "source-reference": "2abe7f1b8e0f808dad0cc001b9d69371b604d719",
+            "alias": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/http-kernel",
+            "version": "dev-master",
+            "source-reference": "cf2bb8655a13fcb516b1d0b95ddf0c51db25b2a8",
+            "alias": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/process",
+            "version": "dev-master",
+            "source-reference": "6aceac404d8574cf7da57e7e29b00a665b7bd559",
+            "alias": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/routing",
+            "version": "dev-master",
+            "source-reference": "d3d9c02357b2db6503539d11f6c379ccd86f9cc4",
+            "alias": "2.1.9999999.9999999-dev"
+        }
+    ],
+    "aliases": []
+}

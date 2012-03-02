@@ -24,7 +24,9 @@
         "symfony/event-dispatcher": "2.1.*",
         "symfony/http-foundation": "2.1.*",
         "symfony/http-kernel": "2.1.*",
-        "symfony/routing": "2.1.*"
+        "symfony/routing": "2.1.*",
+        "symfony/process": "2.1.*",
+        "symfony/finder": "2.1.*"
     },
     "suggest": {
         "symfony/form": "2.1.*",
