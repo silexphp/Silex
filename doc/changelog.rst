@@ -3,6 +3,8 @@ Changelog
 
 This changelog references all backward incompatibilities as we introduce them:
 
+* **2012-03-02**: Switched to use Composer for dependency management
+
 * **2012-02-27**: Updated to Symfony 2.1 session handling.
 
 * **2012-01-02**: Introduced support for streaming responses.

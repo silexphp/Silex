@@ -52,15 +52,15 @@ class Compiler
             ->name('*.php')
             ->notName('Compiler.php')
             ->in(__DIR__.'/..')
-            ->in(__DIR__.'/../../vendor/pimple/lib')
-            ->in(__DIR__.'/../../vendor/Symfony/Component/ClassLoader')
-            ->in(__DIR__.'/../../vendor/Symfony/Component/EventDispatcher')
-            ->in(__DIR__.'/../../vendor/Symfony/Component/HttpFoundation')
-            ->in(__DIR__.'/../../vendor/Symfony/Component/HttpKernel')
-            ->in(__DIR__.'/../../vendor/Symfony/Component/Routing')
-            ->in(__DIR__.'/../../vendor/Symfony/Component/BrowserKit')
-            ->in(__DIR__.'/../../vendor/Symfony/Component/CssSelector')
-            ->in(__DIR__.'/../../vendor/Symfony/Component/DomCrawler')
+            ->in(__DIR__.'/../../vendor/pimple/pimple/lib')
+            ->in(__DIR__.'/../../vendor/symfony/class-loader/Symfony/Component/ClassLoader')
+            ->in(__DIR__.'/../../vendor/symfony/event-dispatcher/Symfony/Component/EventDispatcher')
+            ->in(__DIR__.'/../../vendor/symfony/http-foundation/Symfony/Component/HttpFoundation')
+            ->in(__DIR__.'/../../vendor/symfony/http-kernel/Symfony/Component/HttpKernel')
+            ->in(__DIR__.'/../../vendor/symfony/routing/Symfony/Component/Routing')
+            ->in(__DIR__.'/../../vendor/symfony/browser-kit/Symfony/Component/BrowserKit')
+            ->in(__DIR__.'/../../vendor/symfony/css-selector/Symfony/Component/CssSelector')
+            ->in(__DIR__.'/../../vendor/symfony/dom-crawler/Symfony/Component/DomCrawler')
         ;
 
         foreach ($finder as $file) {
@@ -68,7 +68,9 @@ class Compiler
         }
 
         $this->addFile($phar, new \SplFileInfo(__DIR__.'/../../LICENSE'), false);
-        $this->addFile($phar, new \SplFileInfo(__DIR__.'/../../autoload.php'));
+        $this->addFile($phar, new \SplFileInfo(__DIR__.'/../../vendor/.composer/autoload.php'));
+        $this->addFile($phar, new \SplFileInfo(__DIR__.'/../../vendor/.composer/ClassLoader.php'));
+        $this->addFile($phar, new \SplFileInfo(__DIR__.'/../../vendor/.composer/autoload_namespaces.php'));
 
         // Stubs
         $phar->setStub($this->getStub());
@@ -108,7 +110,7 @@ class Compiler
 
 Phar::mapPhar('silex.phar');
 
-require_once 'phar://silex.phar/autoload.php';
+require_once 'phar://silex.phar/vendor/.composer/autoload.php';
 
 if ('cli' === php_sapi_name() && basename(__FILE__) === basename($_SERVER['argv'][0]) && isset($_SERVER['argv'][1])) {
     switch ($_SERVER['argv'][1]) {
