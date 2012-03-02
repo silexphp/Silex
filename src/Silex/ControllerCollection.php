@@ -27,7 +27,7 @@ use Silex\Controller;
  */
 class ControllerCollection
 {
-    private $controllers = array();
+    protected $controllers = array();
 
     /**
      * Maps a pattern to a callable.
