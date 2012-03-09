@@ -9,6 +9,7 @@ The cookbook section contains recipes for solving specific problems.
 
     json_request_body
     translating_validation_messages
+    session_storage
 
 Recipes
 -------
@@ -18,3 +19,5 @@ Recipes
   the request body.
 
 * :doc:`Translating Validation Messages<translating_validation_messages>`.
+
+* :doc:`How to use PdoSessionStorage to store sessions in the database <session_storage>`.
