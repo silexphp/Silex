@@ -7,7 +7,7 @@ to large websites use a database to store the session values instead of files,
 because databases are easier to use and scale in a multi-webserver environment.
 
 Symfony2 has multiple session storage solutions. For database, its called
-`PdoSessionStorage <http://api.symfony.com/master/Symfony/Component/HttpFoundation/SessionStorage/PdoSessionStorage.html>
+`PdoSessionStorage <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/PdoSessionStorage.html>
 To use it, you need to replace the ``session.storage`` service in your application.
 
 Example
