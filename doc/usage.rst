@@ -352,63 +352,6 @@ object that is returned by the routing methods::
     It only makes sense to name routes if you use providers that make use
     of the ``RouteCollection``.
 
-Routes middlewares
-~~~~~~~~~~~~~~~~~~
-
-You can define one or more Routes Middlewares, and link them to your routes.
-Routes Middlewares are just "PHP callables" (i.e. a Closure or a
-"ClassName::methodName" string, like others Silex callbacks), which will
-be triggered when their route is matched.
-Middlewares are fired just before the route callback,
-but after Application ``before`` filters, which have precedence
- - see next section about these ``before`` filters.
-
-This mechanism can be used for a lot of use case - for example, a
-"anonymous/logged user" simple control::
-
-    $mustBeAnonymous = function (Request $request) use ($app) {
-        if ($app['session']->has('userId')) {
-            return $app->redirect('/user/logout');
-        }
-    };
-
-    $mustBeLogged = function (Request $request) use ($app) {
-        if (!$app['session']->has('userId')) {
-            return $app->redirect('/user/login');
-        }
-    };
-
-    $app->get('/user/subscribe', function () {
-        ...
-    })
-    ->middleware($mustBeAnonymous);
-
-    $app->get('/user/login', function () {
-        ...
-    })
-    ->middleware($mustBeAnonymous);
-
-    $app->get('/user/my-profile', function () {
-        ...
-    })
-    ->middleware($mustBeLogged);
-
-You can call the ``middleware`` function several times for a single route.
-The middlewares will be triggered in the order you added them to the route.
-
-For convenience, the routes middlewares functions are triggered with the current
-Request as their only argument.
-
-If any of the routes middlewares returns a Symfony Http Response, this response
-will short-circuit the whole rendering : the next middlewares won't run, neither
-the route callback.
-As in route callbacks, you can redirect to another page by from a route middleware
-by returning a redirect response, which you can create by calling the
-Application ``redirect`` method.
-
-A route Middleware can return a Symfony Http Response or null.
-A RuntimeException will be thrown if anything else is returned.
-
 Before and after filters
 ------------------------
 
@@ -442,6 +385,59 @@ The after filter has access to the Request and the Response::
 .. note::
 
     The filters are only run for the "master" Request.
+
+Route middlewares
+~~~~~~~~~~~~~~~~~
+
+Route middlewares are PHP callables which are triggered when their associated
+route is matched. They are fired just before the route callback, but after the
+application ``before`` filters.
+
+This can be used for a lot of use cases; for instance, here is a simple
+"anonymous/logged user" check::
+
+    $mustBeAnonymous = function (Request $request) use ($app) {
+        if ($app['session']->has('userId')) {
+            return $app->redirect('/user/logout');
+        }
+    };
+
+    $mustBeLogged = function (Request $request) use ($app) {
+        if (!$app['session']->has('userId')) {
+            return $app->redirect('/user/login');
+        }
+    };
+
+    $app->get('/user/subscribe', function () {
+        ...
+    })
+    ->middleware($mustBeAnonymous);
+
+    $app->get('/user/login', function () {
+        ...
+    })
+    ->middleware($mustBeAnonymous);
+
+    $app->get('/user/my-profile', function () {
+        ...
+    })
+    ->middleware($mustBeLogged);
+
+The ``middleware`` function can be called several times for a given route, in
+which case they are triggered in the same order as you added them to the
+route.
+
+For convenience, the route middlewares functions are triggered with the
+current ``Request`` instance as their only argument.
+
+If any of the route middlewares returns a Symfony HTTP Response, it will
+short-circuit the whole rendering: the next middlewares won't be run, neither
+the route callback. You can also redirect to another page by returning a
+redirect response, which you can create by calling the Application
+``redirect`` method.
+
+If a route middleware does not return a Symfony HTTP Response or ``null``, a
+``RuntimeException`` is thrown.
 
 Error handlers
 --------------
