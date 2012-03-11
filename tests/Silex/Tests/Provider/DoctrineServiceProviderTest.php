@@ -23,7 +23,7 @@ class DoctrineServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        if (!is_dir(__DIR__.'/../../../../vendor/doctrine-common/lib') || !is_dir(__DIR__.'/../../../../vendor/doctrine-dbal/lib')) {
+        if (!is_dir(__DIR__.'/../../../../vendor/doctrine/common/lib') || !is_dir(__DIR__.'/../../../../vendor/doctrine-dbal/lib')) {
             $this->markTestSkipped('Doctrine Common/DBAL submodules were not installed.');
         }
     }

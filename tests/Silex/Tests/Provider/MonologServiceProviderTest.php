@@ -27,7 +27,7 @@ class MonologServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        if (!is_dir(__DIR__.'/../../../../vendor/monolog/src')) {
+        if (!is_dir(__DIR__.'/../../../../vendor/monolog/monolog/src')) {
             $this->markTestSkipped('Monolog submodule was not installed.');
         }
     }
@@ -37,7 +37,7 @@ class MonologServiceProviderTest extends \PHPUnit_Framework_TestCase
         $app = new Application();
 
         $app->register(new MonologServiceProvider(), array(
-            'monolog.class_path'    => __DIR__.'/../../../../vendor/monolog/src',
+            'monolog.class_path'    => __DIR__.'/../../../../vendor/monolog/monolog/src',
         ));
 
         $app['monolog.handler'] = $app->share(function () use ($app) {

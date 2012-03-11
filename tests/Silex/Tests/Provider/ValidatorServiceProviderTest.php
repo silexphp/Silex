@@ -23,7 +23,7 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        if (!is_dir(__DIR__.'/../../../../vendor/Symfony/Component/Validator')) {
+        if (!is_dir(__DIR__.'/../../../../vendor/symfony/validator/Symfony/Component/Validator')) {
             $this->markTestSkipped('Validator submodule was not installed.');
         }
     }
@@ -33,7 +33,7 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
         $app = new Application();
 
         $app->register(new ValidatorServiceProvider(), array(
-            'validator.class_path' =>  __DIR__.'/../../../../vendor/Symfony/Component/Validator'
+            'validator.class_path' =>  __DIR__.'/../../../../vendor/symfony/validator/Symfony/Component/Validator'
         ));
 
         return $app;
