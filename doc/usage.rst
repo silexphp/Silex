@@ -387,7 +387,7 @@ The after filter has access to the Request and the Response::
     The filters are only run for the "master" Request.
 
 Route middlewares
-~~~~~~~~~~~~~~~~~
+-----------------
 
 Route middlewares are PHP callables which are triggered when their associated
 route is matched. They are fired just before the route callback, but after the
