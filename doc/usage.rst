@@ -396,32 +396,32 @@ application ``before`` filters.
 This can be used for a lot of use cases; for instance, here is a simple
 "anonymous/logged user" check::
 
-    $mustBeAnonymous = function (Request $request) use ($app) {
+    $app['middleware.mustBeAnonymous'] = $app->protect(function (Request $request) use ($app) {
         if ($app['session']->has('userId')) {
             return $app->redirect('/user/logout');
         }
-    };
+    });
 
-    $mustBeLogged = function (Request $request) use ($app) {
+    $app['middleware.mustBeLogged'] = $app->protect(function (Request $request) use ($app) {
         if (!$app['session']->has('userId')) {
             return $app->redirect('/user/login');
         }
-    };
+    });
 
     $app->get('/user/subscribe', function () {
         ...
     })
-    ->middleware($mustBeAnonymous);
+    ->middleware($app['middleware.mustBeAnonymous']);
 
     $app->get('/user/login', function () {
         ...
     })
-    ->middleware($mustBeAnonymous);
+    ->middleware($app['middleware.mustBeAnonymous']);
 
     $app->get('/user/my-profile', function () {
         ...
     })
-    ->middleware($mustBeLogged);
+    ->middleware($app['middleware.mustBeLogged']);
 
 The ``middleware`` function can be called several times for a given route, in
 which case they are triggered in the same order as you added them to the
@@ -438,6 +438,9 @@ redirect response, which you can create by calling the Application
 
 If a route middleware does not return a Symfony HTTP Response or ``null``, a
 ``RuntimeException`` is thrown.
+
+By storing the middleware callable in Silex's DI container, it is available
+wherever a route may be defined (e.g. a Controller Provider).
 
 Error handlers
 --------------
