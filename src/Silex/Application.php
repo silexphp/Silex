@@ -111,6 +111,18 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             return new RedirectableUrlMatcher($app['routes'], $app['request_context']);
         });
 
+        $this['route_middlewares_trigger'] = $this->protect(function (KernelEvent $event) use ($app) {
+            foreach ($event->getRequest()->attributes->get('_middlewares', array()) as $callback) {
+                $ret = call_user_func($callback, $event->getRequest());
+                if ($ret instanceof Response) {
+                    $event->setResponse($ret);
+                    return;
+                } elseif (null !== $ret) {
+                    throw new \RuntimeException('Middleware for route "'.$event->getRequest()->attributes->get('_route').'" returned an invalid response value. Must return null or an instance of Response.');
+                }
+            }
+        });
+
         $this['request.default_locale'] = 'en';
 
         $this['request'] = function () {
@@ -409,6 +421,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
             $this->beforeDispatched = true;
             $this['dispatcher']->dispatch(SilexEvents::BEFORE, $event);
+            $this['route_middlewares_trigger']($event);
         }
     }
 

@@ -155,6 +155,22 @@ class Controller
     }
 
     /**
+     * Sets a callback to handle before triggering the route callback.
+     * (a.k.a. "Route Middleware")
+     *
+     * @param mixed  $callback A PHP callback to be triggered when the Route is matched, just before the route callback
+     * @return Controller $this The current Controller instance
+     */
+    public function middleware($callback)
+    {
+        $middlewareCallbacks = $this->route->getDefault('_middlewares');
+        $middlewareCallbacks[] = $callback;
+        $this->route->setDefault('_middlewares', $middlewareCallbacks);
+
+        return $this;
+    }
+
+    /**
      * Freezes the controller.
      *
      * Once the controller is frozen, you can no longer change the route name
