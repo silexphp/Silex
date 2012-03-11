@@ -1,17 +1,22 @@
 How to use PdoSessionStorage to store sessions in the database
 ==============================================================
 
-By default, the :doc:`SessionServiceProvider <providers/session>` writes session
-information in files with the NativeFileSessionStorage of Symfony2. Most medium
-to large websites use a database to store the session values instead of files,
-because databases are easier to use and scale in a multi-webserver environment.
+By default, the :doc:`SessionServiceProvider <providers/session>` writes
+session information in files using Symfony2 NativeFileSessionStorage. Most
+medium to large websites use a database to store sessions instead of files,
+because databases are easier to use and scale in a multi-webserver
+environment.
 
-Symfony2 has multiple session storage solutions. For database, its called
-`PdoSessionStorage <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/PdoSessionStorage.html>
-To use it, you need to replace the ``session.storage`` service in your application.
+Symfony2 has multiple session storage solutions and one of them uses PDO to
+store sessions, `PdoSessionStorage
+<http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/PdoSessionStorage.html>
+To use it, replace the ``session.storage`` service in your application like
+explained below.
 
 Example
 -------
+
+::
 
     use Symfony\Component\HttpFoundation\Session\Storage\PdoSessionStorage;
 
@@ -44,7 +49,6 @@ Example
         );
     });
 
-
 Database structure
 ------------------
 
@@ -54,5 +58,6 @@ PdoSessionStorage needs a database table with 3 columns:
 * ``session_value``: Value column (TEXT or CLOB)
 * ``session_time``: Time column (INTEGER)
 
-Examples of SQL statements to create the session table on `Symfony2 cookbook
+You can find examples of SQL statements to create the session table in the
+`Symfony2 cookbook
 <http://symfony.com/doc/current/cookbook/configuration/pdo_session_storage.html>`
