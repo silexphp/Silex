@@ -20,6 +20,8 @@ $app->run();
 
 Silex works with PHP 5.3.2 or later.
 
+[![Build Status](https://secure.travis-ci.org/fabpot/Silex.png?branch=master)](http://travis-ci.org/fabpot/Silex)
+
 ## Installation
 
 Installing Silex is as easy as it can get. Download the [`silex.phar`][2] file
