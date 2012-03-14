@@ -9,7 +9,7 @@ environment.
 
 Symfony2 has multiple session storage solutions and one of them uses PDO to
 store sessions, `PdoSessionStorage
-<http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/PdoSessionStorage.html>
+<http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/PdoSessionStorage.html>_
 To use it, replace the ``session.storage`` service in your application like
 explained below.
 
@@ -60,4 +60,5 @@ PdoSessionStorage needs a database table with 3 columns:
 
 You can find examples of SQL statements to create the session table in the
 `Symfony2 cookbook
-<http://symfony.com/doc/current/cookbook/configuration/pdo_session_storage.html>`
+<http://symfony.com/doc/current/cookbook/configuration/pdo_session_storage.html>`_
+
