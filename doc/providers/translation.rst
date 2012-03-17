@@ -129,7 +129,7 @@ XLIFF-based language files
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Just as you would do with YAML translation files, you first need to make
-sure you have the ``Config`` component from Symfony2, and that they are
+sure you have the ``Config`` component from Symfony2, and that it is
 registered with the autoloader. See above for details.
 
 Then, similarly, create XLIFF files in your locales directory and setup the ``translator.messages`` to map to them.
