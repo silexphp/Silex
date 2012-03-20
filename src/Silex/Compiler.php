@@ -87,7 +87,7 @@ class Compiler
         $path = str_replace(dirname(dirname(__DIR__)).DIRECTORY_SEPARATOR, '', $file->getRealPath());
         $content = file_get_contents($file);
         if ($strip) {
-            $content = self::stripComments($content);
+            $content = self::stripWhitespace($content);
         }
 
         $content = str_replace('@package_version@', $this->version, $content);
@@ -147,15 +147,15 @@ EOF;
     }
 
     /**
-     * Removes comments from a PHP source string.
+     * Removes whitespace from a PHP source string while preserving line numbers.
      *
      * Based on Kernel::stripComments(), but keeps line numbers intact.
      *
      * @param string $source A PHP string
      *
-     * @return string The PHP string with the comments removed
+     * @return string The PHP string with the whitespace removed
      */
-    static public function stripComments($source)
+    static public function stripWhitespace($source)
     {
         if (!function_exists('token_get_all')) {
             return $source;
@@ -167,6 +167,14 @@ EOF;
                 $output .= $token;
             } elseif (in_array($token[0], array(T_COMMENT, T_DOC_COMMENT))) {
                 $output .= str_repeat("\n", substr_count($token[1], "\n"));
+            } elseif (T_WHITESPACE === $token[0]) {
+                // reduce wide spaces
+                $whitespace = preg_replace('{[ \t]+}', ' ', $token[1]);
+                // normalize newlines to \n
+                $whitespace = preg_replace('{(?:\r\n|\r|\n)}', "\n", $whitespace);
+                // trim leading spaces
+                $whitespace = preg_replace('{\n +}', "\n", $whitespace);
+                $output .= $whitespace;
             } else {
                 $output .= $token[1];
             }
