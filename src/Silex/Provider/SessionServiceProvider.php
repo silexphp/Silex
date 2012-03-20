@@ -14,7 +14,8 @@ namespace Silex\Provider;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-use Symfony\Component\HttpFoundation\Session\Storage\NativeFileSessionStorage;
+use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler;
+use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\KernelEvents;
 
@@ -35,10 +36,16 @@ class SessionServiceProvider implements ServiceProviderInterface
             return new Session($app['session.storage']);
         });
 
+        $app['session.storage.handler'] = $app->share(function () use ($app) {
+            return new NativeFileSessionHandler(
+                isset($app['session.storage.save_path']) ? $app['session.storage.save_path'] : null
+            );
+        });
+
         $app['session.storage'] = $app->share(function () use ($app) {
-            return new NativeFileSessionStorage(
-                isset($app['session.storage.save_path']) ? $app['session.storage.save_path'] : null,
-                $app['session.storage.options']
+            return new NativeSessionStorage(
+                $app['session.storage.options'],
+                $app['session.storage.handler']
             );
         });
 
