@@ -7,10 +7,9 @@ medium to large websites use a database to store sessions instead of files,
 because databases are easier to use and scale in a multi-webserver
 environment.
 
-Symfony2 has multiple session storage solutions and one of them uses PDO to
-store sessions, `PdoSessionStorage
-<http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/PdoSessionStorage.html>
-To use it, replace the ``session.storage`` service in your application like
+Symfony2's ``NativeSessionStorage`` has multiple storage handlers and one of them uses PDO to
+store sessions, ``PdoSessionHandler``.
+To use it, replace the ``session.storage.handler`` service in your application like
 explained below.
 
 Example
@@ -18,7 +17,7 @@ Example
 
 ::
 
-    use Symfony\Component\HttpFoundation\Session\Storage\PdoSessionStorage;
+    use Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler;
 
     $app->register(new Silex\Provider\SessionServiceProvider());
 
@@ -41,8 +40,8 @@ Example
         );
     });
 
-    $app['session.storage'] = $app->share(function () use ($app) {
-        return new PdoSessionStorage(
+    $app['session.storage.handler'] = $app->share(function () use ($app) {
+        return new PdoSessionHandler(
             $app['pdo'],
             $app['pdo.db_options'],
             $app['session.storage.options']
