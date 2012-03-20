@@ -523,6 +523,26 @@ you can create by calling the ``redirect`` method::
 
 This will redirect from ``/`` to ``/hello``.
 
+JSON
+----
+
+If you want to return JSON data, you can use the ``json`` helper method.
+Simply pass it your data, status code and headers, and it will create a
+JSON response for you.
+
+.. code-block:: php
+
+    $app->get('/users/{id}', function ($id) use ($app) {
+        $user = getUser($id);
+
+        if (!$user) {
+            $error = array('message' => 'The user was not found.');
+            return $app->json($error, 404);
+        }
+
+        return $app->json($user);
+    });
+
 Streaming
 ---------
 
