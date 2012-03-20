@@ -3,9 +3,14 @@ Changelog
 
 This changelog references all backward incompatibilities as we introduce them:
 
-* **2012-03-11**: Added route middlewares
+* **2012-03-20**: Added ``json`` helper::
 
-* **2012-03-02**: Switched to use Composer for dependency management
+        $data = array('some' => 'data');
+        $response = $app->json($data);
+
+* **2012-03-11**: Added route middlewares.
+
+* **2012-03-02**: Switched to use Composer for dependency management.
 
 * **2012-02-27**: Updated to Symfony 2.1 session handling.
 
@@ -14,7 +19,7 @@ This changelog references all backward incompatibilities as we introduce them:
 * **2011-09-22**: ``ExtensionInterface`` has been renamed to
   ``ServiceProviderInterface``. All built-in extensions have been renamed
   accordingly (for instance, ``Silex\Extension\TwigExtension`` has been
-  renamed to ``Silex\Provider\TwigServiceProvider``)
+  renamed to ``Silex\Provider\TwigServiceProvider``).
 
 * **2011-09-22**: The way reusable applications work has changed. The
   ``mount()`` method now takes an instance of ``ControllerCollection`` instead
