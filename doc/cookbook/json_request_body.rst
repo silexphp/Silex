@@ -84,8 +84,7 @@ return the post object, including its ``id``, as JSON.
 
         $post['id'] = createPost($post);
 
-        $json = json_encode($post);
-        return new Response($json, 201, array('Content-Type' => 'application/json'));
+        return $app->json($post, 201);
     });
 
 Manual testing
