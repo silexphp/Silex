@@ -344,9 +344,9 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      *
      * @return string Escaped text
      */
-    public function escape($text, $flags = ENT_COMPAT, $charset = 'UTF-8', $doubleEncode = true)
+    public function escape($text, $flags = ENT_COMPAT, $charset = null, $doubleEncode = true)
     {
-        return htmlspecialchars($text, $flags, $charset, $doubleEncode);
+        return htmlspecialchars($text, $flags, $charset ?: $this['charset'], $doubleEncode);
     }
 
     /**
