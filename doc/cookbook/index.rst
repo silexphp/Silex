@@ -10,6 +10,7 @@ The cookbook section contains recipes for solving specific problems.
     json_request_body
     translating_validation_messages
     session_storage
+    form_no_csrf
 
 Recipes
 -------
@@ -21,3 +22,5 @@ Recipes
 * :doc:`Translating Validation Messages<translating_validation_messages>`.
 
 * :doc:`How to use PdoSessionStorage to store sessions in the database <session_storage>`.
+
+* :doc:`How to disable the CSRF Protection on a form using the FormExtension`.
