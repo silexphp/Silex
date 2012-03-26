@@ -602,17 +602,11 @@ correctly, to prevent Cross-Site-Scripting attacks.
   auto-escaping mechanisms.
 
 * **Escaping JSON**: If you want to provide data in JSON format you should
-  use the PHP ``json_encode`` function::
-
-      use Symfony\Component\HttpFoundation\Response;
+  use the Silex ``json`` function::
 
       $app->get('/name.json', function (Silex\Application $app) {
           $name = $app['request']->get('name');
-          return new Response(
-              json_encode(array('name' => $name)),
-              200,
-              array('Content-Type' => 'application/json')
-          );
+          return $app->json(array('name' => $name));
       });
 
 Console
