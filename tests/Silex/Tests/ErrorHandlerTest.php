@@ -296,7 +296,33 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
         // Register 2 error handlers, each with a specified Exception class
         // Since we throw a LogicException above
         // the first error handler should fire
-        //
+        $app->error(function (\LogicException $e) { // Extends \Exception
+            return "Caught LogicException";
+        });
+        $app->error(function (\Exception $e) {
+            return "Caught Exception";
+        });
+
+        $request = Request::create('/foo');
+        $response = $app->handle($request);
+        $this->assertContains('Caught LogicException', $response->getContent());
+    }
+
+    public function testErrorHandlerWithSpecifiedExceptionInReverseOrder()
+    {
+        $app = new Application();
+        $app['debug'] = false;
+
+        $app->match('/foo', function () {
+            // Throw a specified exception
+            throw new \LogicException();
+        });
+
+        // Register the \Exception error handler first, since the
+        // error handler works with an instanceof mechanism the
+        // second more specific error handler should not fire since
+        // the \Exception error handler is registered first and also
+        // captures all exceptions that extend it
         $app->error(function (\Exception $e) {
             return "Caught Exception";
         });
@@ -306,7 +332,7 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
 
         $request = Request::create('/foo');
         $response = $app->handle($request);
-        $this->assertContains('Caught LogicException', $response->getContent());
+        $this->assertContains('Caught Exception', $response->getContent());
     }
 
     protected function checkRouteResponse($app, $path, $expectedContent, $method = 'get', $message = null)
