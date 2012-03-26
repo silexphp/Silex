@@ -292,7 +292,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             if($callbackReflection->getNumberOfParameters() > 0){
                 $parameters = $callbackReflection->getParameters();
                 $expectedException = $parameters[0];
-                if(!($expectedException->getClass()->isInstance($exception))){
+                if($expectedException->getClass() && !($expectedException->getClass()->isInstance($exception))){
                     return;
                 }
             }
