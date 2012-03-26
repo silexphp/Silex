@@ -141,16 +141,16 @@ Finally override the ``translator.loader`` to use a ``XliffFileLoader``::
 That's it.
 
 
-Adding translations in Twig templates
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Accessing translations in Twig templates
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Once loaded, the translation service provider is available from within Twig templates:
 
 .. code-block:: jinja
     {{ app.translator.trans('translation_key') }}
 
-Even better: register the SymfonyBridgesServiceProvider and you will get
-the TranslationExtension of the bridge allowing you to translate things in
+Even better: register the :doc:`SymfonyBridgesServiceProvider <providers/symfony_bridges>` and you will get
+the TranslationExtension of the bridge allowing you to translate strings in
 the Twig way:
 
 .. code-block:: jinja
