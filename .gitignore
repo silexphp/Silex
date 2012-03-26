@@ -1,3 +1,6 @@
 phpunit.xml
 silex.phar
+composer.phar
+.htaccess
+index.php
 vendor
