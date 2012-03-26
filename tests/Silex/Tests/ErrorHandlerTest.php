@@ -258,10 +258,6 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(500, $response->getStatusCode());
     }
 
-    /**
-     * Register multiple error handlers that each should only trigger when
-     * a specified Exception type is thrown
-     */
     public function testErrorHandlerWithStandardException()
     {
         $app = new Application();
@@ -272,7 +268,7 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
             throw new \Exception();
         });
 
-        // Register 2 error handlers
+        // Register 2 error handlers, each with a specified Exception class
         // Since we throw a standard Exception above only
         // the second error handler should fire
         $app->error(function (\LogicException $e) { // Extends \Exception
@@ -287,10 +283,6 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('Caught Exception', $response->getContent());
     }
 
-    /**
-     * Register multiple error handlers that each should only trigger when
-     * a specified Exception type is thrown
-     */
     public function testErrorHandlerWithSpecifiedException()
     {
         $app = new Application();
@@ -301,14 +293,15 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
             throw new \LogicException();
         });
 
-        // Register 2 error handlers
+        // Register 2 error handlers, each with a specified Exception class
         // Since we throw a LogicException above
         // the first error handler should fire
-        $app->error(function (\LogicException $e) { // Extends \Exception
-            return "Caught LogicException";
-        });
+        //
         $app->error(function (\Exception $e) {
             return "Caught Exception";
+        });
+        $app->error(function (\LogicException $e) { // Extends \Exception
+            return "Caught LogicException";
         });
 
         $request = Request::create('/foo');
