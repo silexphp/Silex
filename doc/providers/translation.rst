@@ -121,9 +121,14 @@ to map languages to files::
 Finally override the ``translator.loader`` to use a ``YamlFileLoader`` instead
 of the default ``ArrayLoader``::
 
-    $app['translator.loader'] = new Symfony\Component\Translation\Loader\YamlFileLoader();
 
-And that's all you need to load translations from YAML files.
+    use Symfony\Component\Translation\Loader\YamlFileLoader;
+
+    $app['translator.loader'] = $app->share(function () {
+        return new YamlFileLoader();
+    });
+
+That's all you need to load translations from YAML files.
 
 XLIFF-based language files
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -136,10 +141,13 @@ Then, similarly, create XLIFF files in your locales directory and setup the ``tr
 
 Finally override the ``translator.loader`` to use a ``XliffFileLoader``::
 
-    $app['translator.loader'] = new Symfony\Component\Translation\Loader\XliffFileLoader();
+    use Symfony\Component\Translation\Loader\XliffFileLoader;
+
+    $app['translator.loader'] = $app->share(function () {
+        return new XliffFileLoader();
+    });
 
 That's it.
-
 
 Accessing translations in Twig templates
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
