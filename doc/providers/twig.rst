@@ -73,7 +73,7 @@ So you can access any services from within your view. For example to access
 
     {{ app.request.host }}
 
-A ``render`` function is also register to help you render another controller
+A ``render`` function is also registered to help you render another controller
 from a template:
 
 .. code-block:: jinja
