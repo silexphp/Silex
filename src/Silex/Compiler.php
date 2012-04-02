@@ -51,6 +51,7 @@ class Compiler
             ->ignoreVCS(true)
             ->name('*.php')
             ->notName('Compiler.php')
+            ->exclude('Tests')
             ->in(__DIR__.'/..')
             ->in(__DIR__.'/../../vendor/pimple/pimple/lib')
             ->in(__DIR__.'/../../vendor/symfony/class-loader/Symfony/Component/ClassLoader')
