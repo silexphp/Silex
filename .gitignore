@@ -1,3 +1,4 @@
 phpunit.xml
 silex.phar
+composer.phar
 vendor

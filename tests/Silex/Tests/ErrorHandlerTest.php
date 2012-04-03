@@ -239,6 +239,124 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    public function testErrorHandlerWithDefaultException()
+    {
+        $app = new Application();
+        $app['debug'] = false;
+
+        $app->match('/foo', function () {
+            throw new \Exception();
+        });
+
+        $app->error(function (\Exception $e) {
+            return new Response("Exception thrown", 500);
+        });
+
+        $request = Request::create('/foo');
+        $response = $app->handle($request);
+        $this->assertContains('Exception thrown', $response->getContent());
+        $this->assertEquals(500, $response->getStatusCode());
+    }
+
+    public function testErrorHandlerWithStandardException()
+    {
+        $app = new Application();
+        $app['debug'] = false;
+
+        $app->match('/foo', function () {
+            // Throw a normal exception
+            throw new \Exception();
+        });
+
+        // Register 2 error handlers, each with a specified Exception class
+        // Since we throw a standard Exception above only
+        // the second error handler should fire
+        $app->error(function (\LogicException $e) { // Extends \Exception
+            return "Caught LogicException";
+        });
+        $app->error(function (\Exception $e) {
+            return "Caught Exception";
+        });
+
+        $request = Request::create('/foo');
+        $response = $app->handle($request);
+        $this->assertContains('Caught Exception', $response->getContent());
+    }
+
+    public function testErrorHandlerWithSpecifiedException()
+    {
+        $app = new Application();
+        $app['debug'] = false;
+
+        $app->match('/foo', function () {
+            // Throw a specified exception
+            throw new \LogicException();
+        });
+
+        // Register 2 error handlers, each with a specified Exception class
+        // Since we throw a LogicException above
+        // the first error handler should fire
+        $app->error(function (\LogicException $e) { // Extends \Exception
+            return "Caught LogicException";
+        });
+        $app->error(function (\Exception $e) {
+            return "Caught Exception";
+        });
+
+        $request = Request::create('/foo');
+        $response = $app->handle($request);
+        $this->assertContains('Caught LogicException', $response->getContent());
+    }
+
+    public function testErrorHandlerWithSpecifiedExceptionInReverseOrder()
+    {
+        $app = new Application();
+        $app['debug'] = false;
+
+        $app->match('/foo', function () {
+            // Throw a specified exception
+            throw new \LogicException();
+        });
+
+        // Register the \Exception error handler first, since the
+        // error handler works with an instanceof mechanism the
+        // second more specific error handler should not fire since
+        // the \Exception error handler is registered first and also
+        // captures all exceptions that extend it
+        $app->error(function (\Exception $e) {
+            return "Caught Exception";
+        });
+        $app->error(function (\LogicException $e) { // Extends \Exception
+            return "Caught LogicException";
+        });
+
+        $request = Request::create('/foo');
+        $response = $app->handle($request);
+        $this->assertContains('Caught Exception', $response->getContent());
+    }
+
+    public function testErrorHandlerWithArrayStyleCallback()
+    {
+        $app = new Application();
+        $app['debug'] = false;
+
+        $app->match('/foo', function () {
+            throw new \Exception();
+        });
+
+        $stub = $this->getMock('\StdClass');
+        $stub->expects($this->any())
+             ->method('handler')
+             ->will($this->returnValue('Caught Exception'));
+
+        // Array style callback for error handler
+        $app->error(array($stub, 'handler'));
+
+        $request = Request::create('/foo');
+        $response = $app->handle($request);
+        $this->assertContains('Caught Exception', $response->getContent());
+    }
+
     protected function checkRouteResponse($app, $path, $expectedContent, $method = 'get', $message = null)
     {
         $request = Request::create($path, $method);

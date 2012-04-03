@@ -287,6 +287,21 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     {
         $this['dispatcher']->addListener(SilexEvents::ERROR, function (GetResponseForErrorEvent $event) use ($callback) {
             $exception = $event->getException();
+
+            if(is_array($callback)){
+                $callbackReflection = new \ReflectionMethod($callback[0], $callback[1]);
+            } else {
+                $callbackReflection = new \ReflectionFunction($callback);
+            }
+
+            if($callbackReflection->getNumberOfParameters() > 0){
+                $parameters = $callbackReflection->getParameters();
+                $expectedException = $parameters[0];
+                if($expectedException->getClass() && !($expectedException->getClass()->isInstance($exception))){
+                    return;
+                }
+            }
+
             $code = $exception instanceof HttpExceptionInterface ? $exception->getStatusCode() : 500;
 
             $result = call_user_func($callback, $exception, $code);
