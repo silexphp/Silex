@@ -18,7 +18,7 @@ Parameters
 
   * **name**: The cookie name (_SESS by default)
   * **id**: The session id (null by default)
-  * **lifetime**: Cookie lifetime
+  * **cookie_lifetime**: Cookie lifetime
   * **path**: Cookie path
   * **domain**: Cookie domain
   * **secure**: Cookie secure (HTTPS)
@@ -59,6 +59,7 @@ example that authenticates a user and creates a session for him::
         $password = $app['request']->server->get('PHP_AUTH_PW');
 
         if ('igor' === $username && 'password' === $password) {
+            $app['session']->start();
             $app['session']->set('user', array('username' => $username));
             return $app->redirect('/account');
         }
@@ -70,6 +71,7 @@ example that authenticates a user and creates a session for him::
     });
 
     $app->get('/account', function () use ($app) {
+        $app['session']->start();
         if (null === $user = $app['session']->get('user')) {
             return $app->redirect('/login');
         }
