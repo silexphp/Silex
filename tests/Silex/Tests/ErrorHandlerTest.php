@@ -335,6 +335,28 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('Caught Exception', $response->getContent());
     }
 
+    public function testErrorHandlerWithArrayStyleCallback()
+    {
+        $app = new Application();
+        $app['debug'] = false;
+
+        $app->match('/foo', function () {
+            throw new \Exception();
+        });
+
+        $stub = $this->getMock('\StdClass');
+        $stub->expects($this->any())
+             ->method('handler')
+             ->will($this->returnValue('Caught Exception'));
+
+        // Array style callback for error handler
+        $app->error(array($stub, 'handler'));
+
+        $request = Request::create('/foo');
+        $response = $app->handle($request);
+        $this->assertContains('Caught Exception', $response->getContent());
+    }
+
     protected function checkRouteResponse($app, $path, $expectedContent, $method = 'get', $message = null)
     {
         $request = Request::create($path, $method);
