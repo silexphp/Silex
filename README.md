@@ -29,6 +29,14 @@ and you're done!
 
 Read the [documentation][3] for more information.
 
+## Tests
+
+To run the test suite, you need [composer](http://getcomposer.org) and
+[PHPUnit](https://github.com/sebastianbergmann/phpunit).
+
+    $ php composer.phar install --dev
+    $ phpunit
+
 ## License
 
 Silex is licensed under the MIT license.

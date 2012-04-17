@@ -28,13 +28,14 @@
         "symfony/process": "2.1.*",
         "symfony/finder": "2.1.*"
     },
-    "suggest": {
+    "require-dev": {
         "symfony/form": "2.1.*",
         "monolog/monolog": ">=1.0.0",
         "symfony/translation": "2.1.*",
         "symfony/twig-bridge": "2.1.*",
         "symfony/validator": "2.1.*",
-        "twig/twig": ">=1.2.0"
+        "twig/twig": ">=1.2.0",
+        "doctrine/dbal": "2.1.*"
     },
     "autoload": {
         "psr-0": { "Silex": "src/" }
