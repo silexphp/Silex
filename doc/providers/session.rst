@@ -70,6 +70,8 @@ example that authenticates a user and creates a session for him::
     });
 
     $app->get('/account', function () use ($app) {
+        $app['session']->start();
+
         if (null === $user = $app['session']->get('user')) {
             return $app->redirect('/login');
         }
