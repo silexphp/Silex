@@ -23,7 +23,7 @@ class DoctrineServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        if (!is_dir(__DIR__.'/../../../../vendor/doctrine-common/lib') || !is_dir(__DIR__.'/../../../../vendor/doctrine-dbal/lib')) {
+        if (!is_dir(__DIR__.'/../../../../vendor/doctrine/common/lib') || !is_dir(__DIR__.'/../../../../vendor/doctrine-dbal/lib')) {
             $this->markTestSkipped('Doctrine Common/DBAL submodules were not installed.');
         }
     }
@@ -32,7 +32,7 @@ class DoctrineServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
         $app->register(new DoctrineServiceProvider(), array(
-            'db.common.class_path' => __DIR__.'/../../../../vendor/doctrine-common/lib',
+            'db.common.class_path' => __DIR__.'/../../../../vendor/doctrine/common/lib',
             'db.dbal.class_path' => __DIR__.'/../../../../vendor/doctrine-dbal/lib',
         ));
 
@@ -43,7 +43,7 @@ class DoctrineServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
         $app->register(new DoctrineServiceProvider(), array(
-            'db.common.class_path' => __DIR__.'/../../../../vendor/doctrine-common/lib',
+            'db.common.class_path' => __DIR__.'/../../../../vendor/doctrine/common/lib',
             'db.dbal.class_path' => __DIR__.'/../../../../vendor/doctrine-dbal/lib',
 
             'db.options' => array('driver' => 'pdo_sqlite', 'memory' => true),
@@ -63,7 +63,7 @@ class DoctrineServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
         $app->register(new DoctrineServiceProvider(), array(
-            'db.common.class_path' => __DIR__.'/../../../../vendor/doctrine-common/lib',
+            'db.common.class_path' => __DIR__.'/../../../../vendor/doctrine/common/lib',
             'db.dbal.class_path' => __DIR__.'/../../../../vendor/doctrine-dbal/lib',
 
             'dbs.options' => array(

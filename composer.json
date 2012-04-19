@@ -34,7 +34,7 @@
         "symfony/translation": "2.1.*",
         "symfony/twig-bridge": "2.1.*",
         "symfony/validator": "2.1.*",
-        "twig/twig": ">=1.2.0"
+        "twig/twig": "1.6.*"
     },
     "autoload": {
         "psr-0": { "Silex": "src/" }
