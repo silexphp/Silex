@@ -25,7 +25,7 @@ class TwigServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        if (!is_dir(__DIR__.'/../../../../vendor/twig/lib')) {
+        if (!is_dir(__DIR__.'/../../../../vendor/twig/twig/lib')) {
             $this->markTestSkipped('Twig submodule was not installed.');
         }
     }
@@ -36,7 +36,6 @@ class TwigServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $app->register(new TwigServiceProvider(), array(
             'twig.templates'    => array('hello' => 'Hello {{ name }}!'),
-            'twig.class_path'   => __DIR__.'/../../../../vendor/twig/lib',
         ));
 
         $app->get('/hello/{name}', function ($name) use ($app) {
@@ -57,7 +56,6 @@ class TwigServiceProviderTest extends \PHPUnit_Framework_TestCase
                 'hello' => '{{ render("/foo") }}',
                 'foo'   => 'foo',
             ),
-            'twig.class_path'   => __DIR__.'/../../../../vendor/twig/lib',
         ));
 
         $app->get('/hello', function () use ($app) {
