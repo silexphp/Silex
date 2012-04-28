@@ -21,12 +21,12 @@
         "symfony/class-loader": "2.1.*",
         "symfony/css-selector": "2.1.*",
         "symfony/dom-crawler": "2.1.*",
-        "symfony/event-dispatcher": "2.1.*",
+        "symfony/event-dispatcher": "2.0.12",
         "symfony/http-foundation": "2.1.*",
-        "symfony/http-kernel": "2.1.*",
+        "symfony/http-kernel": "2.0.12",
         "symfony/routing": "2.1.*",
         "symfony/process": "2.1.*",
-        "symfony/finder": "2.1.*"
+        "symfony/finder": "2.0.12"
     },
     "require-dev": {
         "symfony/form": "2.1.*",
