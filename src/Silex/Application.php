@@ -13,12 +13,14 @@ namespace Silex;
 
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\HttpKernel\TerminableInterface;
 use Symfony\Component\HttpKernel\Event\KernelEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\HttpKernel\EventListener\ResponseListener;
 use Symfony\Component\HttpKernel\EventListener\RouterListener;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
@@ -49,7 +51,7 @@ use Silex\ControllerResolver;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Application extends \Pimple implements HttpKernelInterface, EventSubscriberInterface
+class Application extends \Pimple implements HttpKernelInterface, EventSubscriberInterface, TerminableInterface
 {
     const VERSION = '@package_version@';
 
@@ -255,6 +257,22 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     }
 
     /**
+     * Registers a finish filter.
+     *
+     * Finish filters are run after the response has been sent.
+     *
+     * @param mixed   $callback Finish filter callback
+     * @param integer $priority The higher this value, the earlier an event
+     *                          listener will be triggered in the chain (defaults to 0)
+     */
+    public function finish($callback, $priority = 0)
+    {
+        $this['dispatcher']->addListener(SilexEvents::FINISH, function (PostResponseEvent $event) use ($callback) {
+            call_user_func($callback, $event->getRequest(), $event->getResponse());
+        }, $priority);
+    }
+
+    /**
      * Aborts the current request by sending a proper HTTP error.
      *
      * @param integer $statusCode The HTTP status code
@@ -393,7 +411,9 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             $request = Request::createFromGlobals();
         }
 
-        $this->handle($request)->send();
+        $response = $this->handle($request);
+        $response->send();
+        $this->terminate($request, $response);
     }
 
     /**
@@ -478,6 +498,17 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
             $this['dispatcher']->dispatch(SilexEvents::AFTER, $event);
         }
+    }
+
+    /**
+     * Runs finish filters, TerminableInterface implementation
+     *
+     * @param Request $request
+     * @param Response $response
+     */
+    public function terminate(Request $request, Response $response)
+    {
+        $this['dispatcher']->dispatch(SilexEvents::FINISH, new PostResponseEvent($this, $request, $response));
     }
 
     /**
