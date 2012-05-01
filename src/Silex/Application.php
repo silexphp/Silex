@@ -432,6 +432,14 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function terminate(Request $request, Response $response)
+    {
+        $this['kernel']->terminate($request, $response);
+    }
+
+    /**
      * Handles onEarlyKernelRequest events.
      *
      * @param KernelEvent $event The event to handle
@@ -501,14 +509,13 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     }
 
     /**
-     * Runs finish filters, TerminableInterface implementation
+     * Runs finish filters.
      *
-     * @param Request $request
-     * @param Response $response
+     * Handler for onKernelTerminate.
      */
-    public function terminate(Request $request, Response $response)
+    public function onKernelTerminate(PostResponseEvent $event)
     {
-        $this['dispatcher']->dispatch(SilexEvents::FINISH, new PostResponseEvent($this, $request, $response));
+        $this['dispatcher']->dispatch(SilexEvents::FINISH, $event);
     }
 
     /**
@@ -547,6 +554,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             KernelEvents::CONTROLLER => 'onKernelController',
             KernelEvents::RESPONSE   => 'onKernelResponse',
             KernelEvents::EXCEPTION  => 'onKernelException',
+            KernelEvents::TERMINATE  => 'onKernelTerminate',
             KernelEvents::VIEW       => array('onKernelView', -10),
         );
     }
