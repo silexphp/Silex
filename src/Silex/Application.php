@@ -440,11 +440,11 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     }
 
     /**
-     * Handles onEarlyKernelRequest events.
+     * Handles KernelEvents::REQUEST events registered early.
      *
-     * @param KernelEvent $event The event to handle
+     * @param GetResponseEvent $event The event to handle
      */
-    public function onEarlyKernelRequest(KernelEvent $event)
+    public function onEarlyKernelRequest(GetResponseEvent $event)
     {
         if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
             if (isset($this['exception_handler'])) {
@@ -455,11 +455,13 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     }
 
     /**
-     * Handles onKernelRequest events.
+     * Runs before filters.
      *
-     * @param KernelEvent $event The event to handle
+     * @param GetResponseEvent $event The event to handle
+     *
+     * @see before()
      */
-    public function onKernelRequest(KernelEvent $event)
+    public function onKernelRequest(GetResponseEvent $event)
     {
         if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
             $this->beforeDispatched = true;
@@ -471,7 +473,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     /**
      * Handles converters.
      *
-     * @param FilterControllerEvent $event A FilterControllerEvent instance
+     * @param FilterControllerEvent $event The event to handle
      */
     public function onKernelController(FilterControllerEvent $event)
     {
@@ -487,7 +489,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     /**
      * Handles string responses.
      *
-     * Handler for onKernelView.
+     * @param GetResponseForControllerResultEvent $event The event to handle
      */
     public function onKernelView(GetResponseForControllerResultEvent $event)
     {
@@ -499,9 +501,11 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     /**
      * Runs after filters.
      *
-     * Handler for onKernelResponse.
+     * @param FilterResponseEvent $event The event to handle
+     *
+     * @see after()
      */
-    public function onKernelResponse(Event $event)
+    public function onKernelResponse(FilterResponseEvent $event)
     {
         if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
             $this['dispatcher']->dispatch(SilexEvents::AFTER, $event);
@@ -511,7 +515,9 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     /**
      * Runs finish filters.
      *
-     * Handler for onKernelTerminate.
+     * @param PostResponseEvent $event The event to handle
+     *
+     * @see finish()
      */
     public function onKernelTerminate(PostResponseEvent $event)
     {
@@ -519,10 +525,12 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     }
 
     /**
+     * Runs error filters.
+     *
      * Executes registered error handlers until a response is returned,
      * in which case it returns it to the client.
      *
-     * Handler for onKernelException.
+     * @param GetResponseForExceptionEvent $event The event to handle
      *
      * @see error()
      */
