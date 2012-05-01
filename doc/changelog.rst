@@ -3,6 +3,8 @@ Changelog
 
 This changelog references all backward incompatibilities as we introduce them:
 
+* **2012-04-01**: Added ``finish`` filters.
+
 * **2012-03-20**: Added ``json`` helper::
 
         $data = array('some' => 'data');
