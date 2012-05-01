@@ -352,11 +352,12 @@ object that is returned by the routing methods::
     It only makes sense to name routes if you use providers that make use
     of the ``RouteCollection``.
 
-Before and after filters
-------------------------
+Before, after and finish filters
+--------------------------------
 
-Silex allows you to run code before and after every request. This happens
-through ``before`` and ``after`` filters. All you need to do is pass a closure::
+Silex allows you to run code before, after every request and even after the
+response has been sent. This happens through ``before``, ``after`` and ``finish``
+filters. All you need to do is pass a closure::
 
     $app->before(function () {
         // set up
@@ -364,6 +365,10 @@ through ``before`` and ``after`` filters. All you need to do is pass a closure::
 
     $app->after(function () {
         // tear down
+    });
+
+    $app->finish(function () {
+        // after response has been sent
     });
 
 The before filter has access to the current Request, and can short-circuit
@@ -380,6 +385,12 @@ The after filter has access to the Request and the Response::
 
     $app->after(function (Request $request, Response $response) {
         // tweak the Response
+    });
+
+The finish filter has access to the Request and the Response::
+
+    $app->finish(function (Request $request, Response $response) {
+        // send e-mails ...
     });
 
 .. note::
