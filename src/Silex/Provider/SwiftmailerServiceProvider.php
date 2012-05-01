@@ -36,7 +36,11 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface
             $r = new \ReflectionClass('Swift_Mailer');
             require_once dirname($r->getFilename()).'/../../swift_init.php';
 
-            return new \Swift_Mailer($app['swiftmailer.transport']);
+            return new \Swift_Mailer($app['swiftmailer.spooltransport']);
+        });
+
+        $app['swiftmailer.spooltransport'] = $app->share(function () use ($app) {
+            return new \Swift_SpoolTransport(new \Swift_MemorySpool());
         });
 
         $app['swiftmailer.transport'] = $app->share(function () use ($app) {
@@ -70,6 +74,10 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface
 
         $app['swiftmailer.transport.eventdispatcher'] = $app->share(function () {
             return new \Swift_Events_SimpleEventDispatcher();
+        });
+
+        $app->finish(function () use ($app) {
+            $app['swiftmailer.spooltransport']->getSpool()->flushQueue($app['swiftmailer.transport']);
         });
 
         if (isset($app['swiftmailer.class_path'])) {
