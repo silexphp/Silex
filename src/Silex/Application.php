@@ -418,6 +418,9 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
 
     /**
      * {@inheritdoc}
+     *
+     * If you call this method directly instead of run(), you must call the
+     * terminate() method yourself if you want the finish filters to be run.
      */
     public function handle(Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true)
     {
