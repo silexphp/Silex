@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
@@ -262,6 +263,33 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $app->handle(Request::create('/foo'));
 
         $this->assertSame(array('before_triggered', 'middleware_triggered', 'route_triggered'), $middlewareTarget);
+    }
+
+    public function testFinishFilter()
+    {
+        $containerTarget = array();
+
+        $app = new Application();
+
+        $app->finish(function () use (&$containerTarget) {
+            $containerTarget[] = '4_filterFinish';
+        });
+
+        $app->get('/foo', function () use (&$containerTarget) {
+            $containerTarget[] = '1_routeTriggered';
+
+            return new StreamedResponse(function() use (&$containerTarget) {
+                $containerTarget[] = '3_responseSent';
+            });
+        });
+
+        $app->after(function () use (&$containerTarget) {
+            $containerTarget[] = '2_filterAfter';
+        });
+
+        $app->run(Request::create('/foo'));
+
+        $this->assertSame(array('1_routeTriggered', '2_filterAfter', '3_responseSent', '4_filterFinish'), $containerTarget);
     }
 
     /**
