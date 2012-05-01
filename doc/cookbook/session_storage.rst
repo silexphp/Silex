@@ -1,7 +1,7 @@
 How to use PdoSessionStorage to store sessions in the database
 ==============================================================
 
-By default, the :doc:`SessionServiceProvider <providers/session>` writes
+By default, the :doc:`SessionServiceProvider </providers/session>` writes
 session information in files using Symfony2 NativeFileSessionStorage. Most
 medium to large websites use a database to store sessions instead of files,
 because databases are easier to use and scale in a multi-webserver
