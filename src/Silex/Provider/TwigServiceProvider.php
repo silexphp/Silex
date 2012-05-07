@@ -55,7 +55,7 @@ class TwigServiceProvider implements ServiceProviderInterface
                         $app['twig.form.templates'] = array('form_div_layout.html.twig');
                     }
 
-                    $twig->addExtension(new TwigFormExtension($app['form.csrf_provider'], $app['twig.form.templates']));
+                    $twig->addExtension(new TwigFormExtension($app['twig.form.templates']));
 
                     // add loader for Symfony built-in form templates
                     $reflected = new \ReflectionClass('Symfony\Bridge\Twig\Extension\FormExtension');
