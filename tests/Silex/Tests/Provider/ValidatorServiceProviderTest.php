@@ -44,4 +44,36 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf('Symfony\Component\Validator\Validator', $app['validator']);
     }
+
+    /**
+     * @depends testRegister
+     */
+    public function testValidatorServiceWithFormServiceDisabled($app)
+    {
+        if (!is_dir(__DIR__ . '/../../../../vendor/symfony/form')) {
+            $this->markTestSkipped('Form submodule was not installed.');
+        }
+
+        $metadatas = $app['validator']->getMetadataFactory()->getClassMetadata('Symfony\Component\Form\Form');
+
+        $this->assertEquals(0, count($metadatas->constraints));
+    }
+
+    /**
+     * @depends testRegister
+     */
+    public function testValidatorServiceWithFormServiceEnabled($app)
+    {
+        if (!is_dir(__DIR__ . '/../../../../vendor/symfony/form')) {
+            $this->markTestSkipped('Form submodule was not installed.');
+        }
+
+        $app->register(new ValidatorServiceProvider());
+
+        $app['form.factory'] = true;
+
+        $metadatas = $app['validator']->getMetadataFactory()->getClassMetadata('Symfony\Component\Form\Form');
+
+        $this->assertEquals(1, count($metadatas->constraints));
+    }
 }
