@@ -32,6 +32,9 @@ class HttpCache extends BaseHttpCache
             $request = Request::createFromGlobals();
         }
 
-        $this->handle($request)->send();
+        $response = $this->handle($request);
+        $response->send();
+
+        $this->terminate($request, $response);
     }
 }
