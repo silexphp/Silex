@@ -23,8 +23,6 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\HttpKernel\EventListener\ResponseListener;
 use Symfony\Component\HttpKernel\EventListener\RouterListener;
-use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -36,12 +34,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RequestContext;
-use Symfony\Component\Routing\Exception\ExceptionInterface as RoutingException;
-use Symfony\Component\Routing\Exception\MethodNotAllowedException;
-use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\ClassLoader\UniversalClassLoader;
 use Silex\RedirectableUrlMatcher;
 use Silex\ControllerResolver;
@@ -119,6 +113,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
                 $ret = call_user_func($callback, $event->getRequest());
                 if ($ret instanceof Response) {
                     $event->setResponse($ret);
+
                     return;
                 } elseif (null !== $ret) {
                     throw new \RuntimeException('Middleware for route "'.$event->getRequest()->attributes->get('_route').'" returned an invalid response value. Must return null or an instance of Response.');
@@ -159,7 +154,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      * You can optionally specify HTTP methods that should be matched.
      *
      * @param string $pattern Matched route pattern
-     * @param mixed $to Callback that returns the response when matched
+     * @param mixed  $to      Callback that returns the response when matched
      *
      * @return Silex\Controller
      */
@@ -172,7 +167,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      * Maps a GET request to a callable.
      *
      * @param string $pattern Matched route pattern
-     * @param mixed $to Callback that returns the response when matched
+     * @param mixed  $to      Callback that returns the response when matched
      *
      * @return Silex\Controller
      */
@@ -185,7 +180,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      * Maps a POST request to a callable.
      *
      * @param string $pattern Matched route pattern
-     * @param mixed $to Callback that returns the response when matched
+     * @param mixed  $to      Callback that returns the response when matched
      *
      * @return Silex\Controller
      */
@@ -198,7 +193,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      * Maps a PUT request to a callable.
      *
      * @param string $pattern Matched route pattern
-     * @param mixed $to Callback that returns the response when matched
+     * @param mixed  $to      Callback that returns the response when matched
      *
      * @return Silex\Controller
      */
@@ -211,7 +206,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      * Maps a DELETE request to a callable.
      *
      * @param string $pattern Matched route pattern
-     * @param mixed $to Callback that returns the response when matched
+     * @param mixed  $to      Callback that returns the response when matched
      *
      * @return Silex\Controller
      */
@@ -384,8 +379,8 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     /**
      * Mounts an application under the given route prefix.
      *
-     * @param string $prefix The route prefix
-     * @param ControllerCollection|ControllerProviderInterface $app A ControllerCollection or a ControllerProviderInterface instance
+     * @param string                                           $prefix The route prefix
+     * @param ControllerCollection|ControllerProviderInterface $app    A ControllerCollection or a ControllerProviderInterface instance
      */
     public function mount($prefix, $app)
     {

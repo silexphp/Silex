@@ -11,8 +11,6 @@
 
 namespace Silex;
 
-use Silex\Application;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Debug\ExceptionHandler as DebugExceptionHandler;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

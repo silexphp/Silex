@@ -139,6 +139,7 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
 
         $app->error(function ($e) use (&$errors) {
             $errors++;
+
             return new Response('foo exception handler');
         });
 
