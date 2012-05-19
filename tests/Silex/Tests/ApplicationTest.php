@@ -191,6 +191,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
         $app->get('/reached', function () use (&$middlewareTarget) {
             $middlewareTarget[] = 'route_triggered';
+
             return 'hello';
         })
         ->middleware($middleware1)

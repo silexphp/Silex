@@ -36,6 +36,7 @@ class SessionServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $app->get('/login', function () use ($app) {
             $app['session']->set('logged_in', true);
+
             return 'Logged in successfully.';
         });
 

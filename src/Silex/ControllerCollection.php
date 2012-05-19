@@ -35,7 +35,7 @@ class ControllerCollection
      * You can optionally specify HTTP methods that should be matched.
      *
      * @param string $pattern Matched route pattern
-     * @param mixed $to Callback that returns the response when matched
+     * @param mixed  $to      Callback that returns the response when matched
      *
      * @return Silex\Controller
      */
@@ -52,7 +52,7 @@ class ControllerCollection
      * Maps a GET request to a callable.
      *
      * @param string $pattern Matched route pattern
-     * @param mixed $to Callback that returns the response when matched
+     * @param mixed  $to      Callback that returns the response when matched
      *
      * @return Silex\Controller
      */
@@ -65,7 +65,7 @@ class ControllerCollection
      * Maps a POST request to a callable.
      *
      * @param string $pattern Matched route pattern
-     * @param mixed $to Callback that returns the response when matched
+     * @param mixed  $to      Callback that returns the response when matched
      *
      * @return Silex\Controller
      */
@@ -78,7 +78,7 @@ class ControllerCollection
      * Maps a PUT request to a callable.
      *
      * @param string $pattern Matched route pattern
-     * @param mixed $to Callback that returns the response when matched
+     * @param mixed  $to      Callback that returns the response when matched
      *
      * @return Silex\Controller
      */
@@ -91,7 +91,7 @@ class ControllerCollection
      * Maps a DELETE request to a callable.
      *
      * @param string $pattern Matched route pattern
-     * @param mixed $to Callback that returns the response when matched
+     * @param mixed  $to      Callback that returns the response when matched
      *
      * @return Silex\Controller
      */

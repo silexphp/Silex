@@ -15,7 +15,6 @@ use Silex\Application;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Error handler test cases.
@@ -60,6 +59,7 @@ class BeforeAfterFilterTest extends \PHPUnit_Framework_TestCase
 
         $app->match('/foo', function () use (&$i) {
             $i++;
+
             return new Response('foo');
         });
 
