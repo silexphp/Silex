@@ -562,6 +562,64 @@ If you are using ``UrlGeneratorProvider``, you can also generate the URI::
 
     $request = Request::create($app['url_generator']->generate('hello'), 'GET');
 
+Modularity
+----------
+
+When your application starts to define too many controllers, you might want to
+group them logically::
+
+    use Silex\ControllerCollection;
+
+    // define controllers for a blog
+    $blog = new ControllerCollection();
+    $blog->get('/', function () {
+        return 'Blog home page';
+    });
+    // ...
+
+    // define controllers for a forum
+    $forum = new ControllerCollection();
+    $forum->get('/', function () {
+        return 'Forum home page';
+    });
+
+    // define "global" controllers
+    $app->get('/', function () {
+        return 'Main home page';
+    });
+
+    $app->mount('/blog', $blog);
+    $app->mount('/forum', $forum);
+
+``mount()`` prefixes all routes with the given prefix and merges them into the
+main Application. So, ``/`` will map to the main home page, ``/blog/`` to the
+blog home page, and ``/forum/`` to the forum home page.
+
+.. note::
+
+    When calling ``get()``, ``match()``, or any other HTTP methods on the
+    Application, you are in fact calling them on a default instance of
+    ``ControllerCollection``.
+
+.. tip::
+
+    For a better readability, you can split each controller collection into a
+    separate file::
+
+        // blog.php
+        use Silex\ControllerCollection;
+
+        $blog = new ControllerCollection();
+        $blog->get('/', function () { return 'Blog home page'; });
+
+        return $blog;
+
+        // app.php
+        $app->mount('/blog', include 'blog.php');
+
+    Instead of requiring a file, you can also create a :doc:`Controller
+    provider </providers#controllers-providers>`.
+
 JSON
 ----
 
