@@ -129,8 +129,8 @@ and allows you to interact with your application. Here's how it works::
             $crawler = $client->request('GET', '/');
 
             $this->assertTrue($client->getResponse()->isOk());
-            $this->assertEquals(1, count($crawler->filter('h1:contains("Contact us")')));
-            $this->assertEquals(1, count($crawler->filter('form')));
+            $this->assertCount(1, $crawler->filter('h1:contains("Contact us")'));
+            $this->assertCount(1, $crawler->filter('form'));
             ...
         }
 
