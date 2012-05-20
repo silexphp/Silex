@@ -25,9 +25,19 @@ use Silex\Controller;
  * @author Igor Wiedler <igor@wiedler.ch>
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class ControllerCollection
+class ControllerCollection extends Controller
 {
     protected $controllers = array();
+
+    /**
+     * Constructor.
+     *
+     * @param Route $route
+     */
+    public function __construct()
+    {
+        parent::__construct(new Route(''));
+    }
 
     /**
      * Maps a pattern to a callable.
@@ -120,6 +130,8 @@ class ControllerCollection
         $routes = new RouteCollection();
 
         foreach ($this->controllers as $controller) {
+            $route = $controller->getRoute();
+
             if (!$name = $controller->getRouteName()) {
                 $name = $controller->generateRouteName($prefix);
                 while ($routes->get($name)) {
@@ -127,12 +139,34 @@ class ControllerCollection
                 }
                 $controller->bind($name);
             }
-            $routes->add($name, $controller->getRoute());
+
+            $this->mergeGlobalSettings($route);
+
+            $routes->add($name, $route);
+
             $controller->freeze();
         }
 
         $this->controllers = array();
 
         return $routes;
+    }
+
+    protected function mergeGlobalSettings(Route $route)
+    {
+        $route->setOption('_middlewares', array_merge((array) $this->route->getOption('_middlewares'), (array) $route->getOption('_middlewares')));
+        $route->setOption('_converters', array_replace((array) $this->route->getOption('_converters'), (array) $route->getOption('_converters')));
+
+        foreach ($this->route->getDefaults() as $name => $value) {
+            if (!$route->hasDefault($name)) {
+                $route->setDefault($name, $value);
+            }
+        }
+
+        foreach ($this->route->getRequirements() as $name => $value) {
+            if (!$route->getRequirement($name)) {
+                $route->setRequirement($name, $value);
+            }
+        }
     }
 }
