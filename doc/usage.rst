@@ -54,9 +54,9 @@ Alternatively, if you use Apache 2.2.16 or higher, you can use the
 
 .. tip::
 
-    If your application is hosted behind a reverse proxy and you want Silex
-    to trust the `X-Forwarded-For*` headers, you will need to run your application
-    like this::
+    If your application is hosted behind a reverse proxy and you want Silex to
+    trust the ``X-Forwarded-For*`` headers, you will need to run your
+    application like this::
 
         use Symfony\Component\HttpFoundation\Request;
 
