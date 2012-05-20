@@ -332,6 +332,40 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
         $request = $app['request'];
     }
+
+    public function testSubRequest()
+    {
+        $app = new Application();
+        $app->get('/sub', function (Request $request) {
+            return new Response('foo');
+        });
+        $app->get('/', function (Request $request) use ($app) {
+            return $app->handle(Request::create('/sub'), HttpKernelInterface::SUB_REQUEST);
+        });
+
+        $this->assertEquals('foo', $app->handle(Request::create('/'))->getContent());
+    }
+
+    public function testSubRequestDoesNotReplaceMainRequestAfterHandling()
+    {
+        $mainRequest = Request::create('/');
+        $subRequest = Request::create('/sub');
+
+        $app = new Application();
+        $app->get('/sub', function (Request $request) {
+            return new Response('foo');
+        });
+        $app->get('/', function (Request $request) use ($subRequest, $app) {
+            $response = $app->handle($subRequest, HttpKernelInterface::SUB_REQUEST);
+
+            // request in app must be the main request here
+            $response->setContent($response->getContent().' '.$app['request']->getPathInfo());
+
+            return $response;
+        });
+
+        $this->assertEquals('foo /', $app->handle($mainRequest)->getContent());
+    }
 }
 
 class FooController
