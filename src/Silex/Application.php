@@ -550,7 +550,12 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     {
         if (!$this->beforeDispatched) {
             $this->beforeDispatched = true;
-            $this['dispatcher']->dispatch(SilexEvents::BEFORE, $event);
+            try {
+                $this['dispatcher']->dispatch(SilexEvents::BEFORE, $event);
+            } catch (\Exception $e) {
+                // as we are already handling an exception, ignore this one
+                // even if it might have been thrown on purpose by the developer
+            }
         }
 
         $errorEvent = new GetResponseForErrorEvent($this, $event->getRequest(), $event->getRequestType(), $event->getException());
