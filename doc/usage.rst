@@ -18,32 +18,8 @@ controller definitions, call the ``run`` method on your application::
 
     $app->run();
 
-One other thing you have to do is configure your web server. If you
-are using Apache you can use a ``.htaccess`` file for this.
-
-.. code-block:: apache
-
-    <IfModule mod_rewrite.c>
-        Options -MultiViews
-
-        RewriteEngine On
-        #RewriteBase /path/to/app
-        RewriteCond %{REQUEST_FILENAME} !-f
-        RewriteRule ^ index.php [L]
-    </IfModule>
-
-Alternatively, if you use Apache 2.2.16 or higher, you can use the
-`FallbackResource directive`_ so make your .htaccess even easier:
-
-.. code-block:: apache
-
-    FallbackResource index.php
-
-.. note::
-
-    If your site is not at the webroot level you will have to uncomment the
-    ``RewriteBase`` statement and adjust the path to point to your directory,
-    relative from the webroot.
+Then, you have to configure your web server (read below hints for Apache and
+IIS).
 
 .. tip::
 
@@ -788,6 +764,35 @@ by commenting or removing this line in your php.ini file:
 .. code-block:: ini
 
     zend_extension = /usr/lib/php5/20090626+lfs/ioncube_loader_lin_5.3.so
+
+Apache configuration
+--------------------
+
+If you are using Apache you can use a ``.htaccess`` file for this:
+
+.. code-block:: apache
+
+    <IfModule mod_rewrite.c>
+        Options -MultiViews
+
+        RewriteEngine On
+        #RewriteBase /path/to/app
+        RewriteCond %{REQUEST_FILENAME} !-f
+        RewriteRule ^ index.php [L]
+    </IfModule>
+
+.. note::
+
+    If your site is not at the webroot level you will have to uncomment the
+    ``RewriteBase`` statement and adjust the path to point to your directory,
+    relative from the webroot.
+
+Alternatively, if you use Apache 2.2.16 or higher, you can use the
+`FallbackResource directive`_ so make your .htaccess even easier:
+
+.. code-block:: apache
+
+    FallbackResource index.php
 
 IIS configuration
 -----------------
