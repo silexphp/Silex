@@ -36,7 +36,6 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RequestContext;
-use Symfony\Component\ClassLoader\UniversalClassLoader;
 use Silex\RedirectableUrlMatcher;
 use Silex\ControllerResolver;
 
@@ -55,13 +54,6 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     public function __construct()
     {
         $app = $this;
-
-        $this['autoloader'] = $this->share(function () {
-            $loader = new UniversalClassLoader();
-            $loader->register();
-
-            return $loader;
-        });
 
         $this['routes'] = $this->share(function () {
             return new RouteCollection();

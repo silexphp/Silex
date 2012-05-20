@@ -51,10 +51,6 @@ class MonologServiceProvider implements ServiceProviderInterface
             };
         }
 
-        if (isset($app['monolog.class_path'])) {
-            $app['autoloader']->registerNamespace('Monolog', $app['monolog.class_path']);
-        }
-
         $app->before(function (Request $request) use ($app) {
             $app['monolog']->addInfo('> '.$request->getMethod().' '.$request->getRequestUri());
         });

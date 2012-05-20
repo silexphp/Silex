@@ -35,12 +35,6 @@ Parameters
   These and additional options are described in detail in the `Doctrine DBAL
   configuration documentation <http://www.doctrine-project.org/docs/dbal/2.0/en/reference/configuration.html>`_.
 
-* **db.dbal.class_path** (optional): Path to where the
-  Doctrine DBAL is located.
-
-* **db.common.class_path** (optional): Path to where
-  Doctrine Common is located.
-
 Services
 --------
 
@@ -63,8 +57,6 @@ and *Doctrine Common* in ``vendor/doctrine-common``::
             'driver'    => 'pdo_sqlite',
             'path'      => __DIR__.'/app.db',
         ),
-        'db.dbal.class_path'    => __DIR__.'/vendor/doctrine-dbal/lib',
-        'db.common.class_path'  => __DIR__.'/vendor/doctrine-common/lib',
     ));
 
 Usage
@@ -106,8 +98,6 @@ and values are options::
                 'password'  => 'my_password',
             ),
         ),
-        'db.dbal.class_path'    => __DIR__.'/vendor/doctrine-dbal/lib',
-        'db.common.class_path'  => __DIR__.'/vendor/doctrine-common/lib',
     ));
 
 The first registered connection is the default and can simply be accessed as

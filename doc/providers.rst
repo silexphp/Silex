@@ -34,15 +34,6 @@ Conventions
 You need to watch out in what order you do certain things when
 interacting with providers. Just keep to these rules:
 
-* Class paths (for the autoloader) must be defined **before**
-  the provider is registered. Passing it as a second argument
-  to ``Application::register`` qualifies too, because it sets
-  the passed parameters first.
-
-  *Reason: The provider will set up the autoloader at
-  provider register time. If the class path is not set
-  at that point, no autoloader can be registered.*
-
 * Overriding existing services must occur **after** the
   provider is registered.
 
@@ -137,51 +128,6 @@ You can now use this provider as follows::
 
 In this example we are getting the ``name`` parameter from the
 query string, so the request path would have to be ``/hello?name=Fabien``.
-
-Class loading
-~~~~~~~~~~~~~
-
-Providers are great for tying in external libraries as you
-can see by looking at the ``MonologServiceProvider`` and
-``TwigServiceProvider``. If the library is decent and follows the
-`PSR-0 Naming Standard <http://groups.google.com/group/php-standards/web/psr-0-final-proposal>`_
-or the PEAR Naming Convention, it is possible to autoload
-classes using the ``UniversalClassLoader``.
-
-As described in the *Services* chapter, there is an
-*autoloader* service which can be used for this.
-
-Here is an example of how to use it (based on `Buzz <https://github.com/kriswallsmith/Buzz>`_)::
-
-    namespace Acme;
-
-    use Silex\Application;
-    use Silex\ServiceProviderInterface;
-
-    class BuzzServiceProvider implements ServiceProviderInterface
-    {
-        public function register(Application $app)
-        {
-            $app['buzz'] = $app->share(function () { ... });
-
-            if (isset($app['buzz.class_path'])) {
-                $app['autoloader']->registerNamespace('Buzz', $app['buzz.class_path']);
-            }
-        }
-    }
-
-This allows you to simply provide the class path as an
-option when registering the provider::
-
-    $app->register(new BuzzServiceProvider(), array(
-        'buzz.class_path' => __DIR__.'/vendor/buzz/lib',
-    ));
-
-.. note::
-
-    For libraries that do not use PHP 5.3 namespaces you can use ``registerPrefix``
-    instead of ``registerNamespace``, which will use an underscore as directory
-    delimiter.
 
 Controllers providers
 ---------------------

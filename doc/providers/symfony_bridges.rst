@@ -7,8 +7,7 @@ Symfony2 components and libraries.
 Parameters
 ----------
 
-* **symfony_bridges.class_path** (optional): Path to where
-  the Symfony2 Bridges are located.
+none
 
 Twig
 ----
@@ -41,6 +40,4 @@ Make sure you place a copy of the Symfony2 Bridges in either
 
 Then, register the provider via::
 
-    $app->register(new Silex\Provider\SymfonyBridgesServiceProvider(), array(
-        'symfony_bridges.class_path'  => __DIR__.'/vendor/symfony/src',
-    ));
+    $app->register(new Silex\Provider\SymfonyBridgesServiceProvider());

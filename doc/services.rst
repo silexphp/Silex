@@ -195,19 +195,6 @@ of them.
   This is only available when a request is being served, you can only access it
   from within a controller, before filter, after filter or error handler.
 
-* **autoloader**: This service provides you with a
-  `UniversalClassLoader
-  <http://api.symfony.com/master/Symfony/Component/ClassLoader/UniversalClassLoader.html>`_
-  that is already registered. You can register prefixes
-  and namespaces on it.
-
-  Example usage, autoloads Twig classes::
-
-    $app['autoloader']->registerPrefix('Twig_', $app['twig.class_path']);
-
-  For more information, check out the `Symfony2 autoloader documentation
-  <http://symfony.com/doc/current/components/class_loader.html>`_.
-
 * **routes**: The `RouteCollection
   <http://api.symfony.com/master/Symfony/Component/Routing/RouteCollection.html>`_
   that is used internally. You can add, modify, read

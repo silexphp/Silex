@@ -49,9 +49,5 @@ class TranslationServiceProvider implements ServiceProviderInterface
         $app['translator.message_selector'] = $app->share(function () {
             return new MessageSelector();
         });
-
-        if (isset($app['translation.class_path'])) {
-            $app['autoloader']->registerNamespace('Symfony\\Component\\Translation', $app['translation.class_path']);
-        }
     }
 }

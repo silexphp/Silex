@@ -15,9 +15,6 @@ Parameters
 
 * **monolog.logfile**: File where logs are written to.
 
-* **monolog.class_path** (optional): Path to where the
-  Monolog library is located.
-
 * **monolog.level** (optional): Level of logging defaults
   to ``DEBUG``. Must be one of ``Logger::DEBUG``, ``Logger::INFO``,
   ``Logger::WARNING``, ``Logger::ERROR``. ``DEBUG`` will log
@@ -47,8 +44,7 @@ Make sure you place a copy of *Monolog* in the ``vendor/monolog``
 directory::
 
     $app->register(new Silex\Provider\MonologServiceProvider(), array(
-        'monolog.logfile'       => __DIR__.'/development.log',
-        'monolog.class_path'    => __DIR__.'/vendor/monolog/src',
+        'monolog.logfile' => __DIR__.'/development.log',
     ));
 
 .. note::
