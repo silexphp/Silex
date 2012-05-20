@@ -16,9 +16,6 @@ Parameters
 * **twig.options** (optional): An associative array of twig
   options. Check out the twig documentation for more information.
 
-* **twig.class_path** (optional): Path to where the Twig
-  library is located.
-
 * **twig.form.templates** (optional): An array of templates used to render
   forms (only available when the ``FormServiceProvider`` is enabled).
 
@@ -43,8 +40,7 @@ Make sure you place a copy of *Twig* in the ``vendor/twig``
 directory::
 
     $app->register(new Silex\Provider\TwigServiceProvider(), array(
-        'twig.path'       => __DIR__.'/views',
-        'twig.class_path' => __DIR__.'/vendor/twig/lib',
+        'twig.path' => __DIR__.'/views',
     ));
 
 .. note::

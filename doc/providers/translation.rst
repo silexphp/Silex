@@ -16,9 +16,6 @@ Parameters
 * **locale_fallback** (optional): Fallback locale for the translator. It will
   be used when the current locale has no messages set.
 
-* **translation.class_path** (optional): Path to where
-  the Symfony2 Translation component is located.
-
 Services
 --------
 
@@ -41,8 +38,7 @@ Make sure you place a copy of the Symfony2 Translation component in
 ``vendor/symfony/src``. You can simply clone the whole Symfony2 into vendor::
 
     $app->register(new Silex\Provider\TranslationServiceProvider(), array(
-        'locale_fallback'           => 'en',
-        'translation.class_path'    => __DIR__.'/vendor/symfony/src',
+        'locale_fallback' => 'en',
     ));
 
 Usage
@@ -95,11 +91,15 @@ YAML-based language files
 Having your translations in PHP files can be inconvenient. This recipe will
 show you how to load translations from external YAML files.
 
-First you will need the ``Config`` and ``Yaml`` components from Symfony2. Also
-make sure you register them with the autoloader. You can just clone the entire
-Symfony2 repository into ``vendor/symfony``::
+First, add the Symfony2 ``Config`` and ``Yaml`` components in your composer
+file:
 
-    $app['autoloader']->registerNamespace('Symfony', __DIR__.'/vendor/symfony/src');
+.. code-block:: json
+
+    "require": {
+        "symfony/config": "2.1.*",
+        "symfony/yaml": "2.1.*",
+    }
 
 Next, you have to create the language mappings in YAML files. A naming you can
 use is ``locales/en.yml``. Just do the mapping in this file as follows:
@@ -132,11 +132,11 @@ That's all you need to load translations from YAML files.
 XLIFF-based language files
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Just as you would do with YAML translation files, you first need to make
-sure you have the ``Config`` component from Symfony2, and that it is
-registered with the autoloader. See above for details.
+Just as you would do with YAML translation files, you first need to add the
+Symfony2 ``Config`` component as a dependency (see above for details).
 
-Then, similarly, create XLIFF files in your locales directory and setup the ``translator.messages`` to map to them.
+Then, similarly, create XLIFF files in your locales directory and setup the
+``translator.messages`` to map to them.
 
 Finally override the ``translator.loader`` to use a ``XliffFileLoader``::
 

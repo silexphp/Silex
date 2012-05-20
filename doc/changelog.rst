@@ -3,6 +3,10 @@ Changelog
 
 This changelog references all backward incompatibilities as we introduce them:
 
+* **2012-05-24**: Removed the ``autoloader`` service (use composer instead).
+  The ``*.class_path`` settings on all the built-in providers have also been
+  removed in favor of Composer.
+
 * **2012-05-21**: Changed error() to allow handling specific exceptions.
 
 * **2012-05-20**: Added a way to define settings on a controller collection.

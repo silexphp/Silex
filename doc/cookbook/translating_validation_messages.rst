@@ -9,7 +9,6 @@ In order to do that, you will need to register translator and point to translate
 
     $app->register(new Silex\Provider\TranslationServiceProvider(), array(
         'locale' => 'sr_Latn',
-        'translation.class_path' => __DIR__ . '/vendor/symfony/src',
         'translator.messages' => array()
     ));
     $app->before(function () use ($app) {
