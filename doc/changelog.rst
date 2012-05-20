@@ -3,6 +3,9 @@ Changelog
 
 This changelog references all backward incompatibilities as we introduce them:
 
+* **2012-05-20**: The Request instance is not available anymore from the
+  Application after it has been handled.
+
 * **2012-04-01**: Added ``finish`` filters.
 
 * **2012-03-20**: Added ``json`` helper::
