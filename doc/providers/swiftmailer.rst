@@ -52,17 +52,20 @@ Services
 Registering
 -----------
 
-Make sure you place a copy of *Swift Mailer* in the ``vendor/swiftmailer``
-directory. Make sure you point the class path to ``/lib/classes``.
-
-::
+.. code-block:: php
 
     $app->register(new Silex\Provider\SwiftmailerServiceProvider());
 
 .. note::
 
-    Swift Mailer is not compiled into the ``silex.phar`` file. You have to
-    add your own copy of Swift Mailer to your application.
+    SwiftMailer does not come with the ``silex.zip`, so you need to add it as
+    a dependency to your ``composer.json`` file:
+
+    .. code-block:: json
+
+        "require": {
+            "swiftmailer/swiftmailer": ">=4.1.2,<4.2-dev"
+        }
 
 Usage
 -----

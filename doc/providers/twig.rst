@@ -36,8 +36,7 @@ Services
 Registering
 -----------
 
-Make sure you place a copy of *Twig* in the ``vendor/twig``
-directory::
+.. code-block:: php
 
     $app->register(new Silex\Provider\TwigServiceProvider(), array(
         'twig.path' => __DIR__.'/views',
@@ -45,8 +44,14 @@ directory::
 
 .. note::
 
-    Twig is not compiled into the ``silex.phar`` file. You have to
-    add your own copy of Twig to your application.
+    Twig does not come with the ``silex.zip`, so you need to add it as a
+    dependency to your ``composer.json`` file:
+
+    .. code-block:: json
+
+        "require": {
+            "twig/twig": ">=1.8,<2.0-dev"
+        }
 
 Usage
 -----

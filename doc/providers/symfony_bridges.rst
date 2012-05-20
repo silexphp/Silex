@@ -33,11 +33,17 @@ provide you with the following additional capabilities:
 Registering
 -----------
 
-Make sure you place a copy of the Symfony2 Bridges in either
-``vendor/symfony/src`` by cloning `Symfony2 <https://github.com/symfony/symfony>`_ or
-``vendor/symfony/src/Symfony/Bridge/Twig`` by cloning `TwigBridge <https://github.com/symfony/TwigBridge>`_
-(the latter having a smaller footprint).
-
-Then, register the provider via::
+.. code-block:: php
 
     $app->register(new Silex\Provider\SymfonyBridgesServiceProvider());
+
+.. note::
+
+    The Symfony bridges do not come with the ``silex.zip`, so you need to add
+    them as a dependency to your ``composer.json`` file:
+
+    .. code-block:: json
+
+        "require": {
+            "symfony/twig-bridge": "2.1.*",
+        }
