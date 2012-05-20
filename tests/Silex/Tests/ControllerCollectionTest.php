@@ -94,4 +94,67 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(2, $routes->all());
         $this->assertEquals(array('_a_a', '_a_a_'), array_keys($routes->all()));
     }
+
+    public function testRouteSettingsFromCollection()
+    {
+        $controller = new Controller(new Route('/'));
+        $controller
+            ->value('bar', 'bar')
+            ->value('baz', 'baz')
+            ->assert('bar', 'bar')
+            ->assert('baz', 'baz')
+            ->convert('bar', $converterBar = function () {})
+            ->middleware($middleware1 = function () {})
+            ->bind('home')
+        ;
+        $controller1 = new Controller(new Route('/'));
+        $controller1
+            ->requireHttp()
+            ->method('post')
+            ->convert('foo', $converterFoo1 = function () {})
+            ->bind('home1')
+        ;
+
+        $controllers = new ControllerCollection();
+        $controllers->add($controller);
+        $controllers->add($controller1);
+
+        $controllers
+            ->value('foo', 'foo')
+            ->value('baz', 'not_used')
+            ->assert('foo', 'foo')
+            ->assert('baz', 'not_used')
+            ->requireHttps()
+            ->method('get')
+            ->convert('foo', $converterFoo = function () {})
+            ->middleware($middleware2 = function () {})
+        ;
+
+        $routes = $controllers->flush();
+
+        $this->assertEquals(array(
+            'foo' => 'foo',
+            'bar' => 'bar',
+            'baz' => 'baz',
+        ), $routes->get('home')->getDefaults());
+
+        $this->assertEquals(array(
+            'foo'     => 'foo',
+            'bar'     => 'bar',
+            'baz'     => 'baz',
+            '_scheme' => 'https',
+            '_method' => 'get',
+        ), $routes->get('home')->getRequirements());
+
+        $this->assertEquals(array(
+            'foo' => $converterFoo,
+            'bar' => $converterBar,
+        ), $routes->get('home')->getOption('_converters'));
+
+        $this->assertEquals(array($middleware1, $middleware2), $routes->get('home')->getOption('_middlewares'));
+
+        $this->assertEquals('http', $routes->get('home1')->getRequirement('_scheme'));
+        $this->assertEquals('post', $routes->get('home1')->getRequirement('_method'));
+        $this->assertEquals(array('foo' => $converterFoo1), $routes->get('home1')->getOption('_converters'));
+    }
 }
