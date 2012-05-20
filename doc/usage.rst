@@ -541,6 +541,27 @@ you can create by calling the ``redirect`` method::
 
 This will redirect from ``/`` to ``/hello``.
 
+Forwards
+--------
+
+When you want to delegate the rendering to another controller, without a
+round-trip to the browser (as for a redirect), use an internal sub-request::
+
+    use Symfony\Component\HttpKernel\HttpKernelInterface;
+
+    $app->get('/', function () use ($app) {
+        // redirect to /hello
+        $subRequest = Request::create('/hello', 'GET');
+
+        return $app->handle($subRequest, HttpKernelInterface::SUB_REQUEST);
+    });
+
+.. tip::
+
+If you are using ``UrlGeneratorProvider``, you can also generate the URI::
+
+    $request = Request::create($app['url_generator']->generate('hello'), 'GET');
+
 JSON
 ----
 
