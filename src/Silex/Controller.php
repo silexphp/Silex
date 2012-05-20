@@ -60,6 +60,7 @@ class Controller
      * Sets the controller's route.
      *
      * @param string $routeName
+     *
      * @return Controller $this The current Controller instance
      */
     public function bind($routeName)
@@ -78,6 +79,7 @@ class Controller
      *
      * @param string $variable The variable name
      * @param string $regexp   The regexp to apply
+     *
      * @return Controller $this The current Controller instance
      */
     public function assert($variable, $regexp)
@@ -92,6 +94,7 @@ class Controller
      *
      * @param string $variable The variable name
      * @param mixed  $default  The default value
+     *
      * @return Controller $this The current Controller instance
      */
     public function value($variable, $default)
@@ -106,6 +109,7 @@ class Controller
      *
      * @param string $variable The variable name
      * @param mixed  $callback A PHP callback that converts the original value
+     *
      * @return Controller $this The current Controller instance
      */
     public function convert($variable, $callback)
@@ -120,7 +124,8 @@ class Controller
     /**
      * Sets the requirement for the HTTP method.
      *
-     * @param string $method The HTTP method name. Multiple methods can be supplied, delimited by a pipe character '|', eg. 'GET|POST'.
+     * @param string $method The HTTP method name. Multiple methods can be supplied, delimited by a pipe character '|', eg. 'GET|POST'
+     *
      * @return Controller $this The current Controller instance
      */
     public function method($method)
@@ -159,6 +164,7 @@ class Controller
      * (a.k.a. "Route Middleware")
      *
      * @param mixed $callback A PHP callback to be triggered when the Route is matched, just before the route callback
+     *
      * @return Controller $this The current Controller instance
      */
     public function middleware($callback)
