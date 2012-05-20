@@ -37,8 +37,8 @@ Registering
 
 .. note::
 
-    The Symfony Validator component does not come with the ``silex.zip`, so
-    you need to add it as a dependency to your ``composer.json`` file:
+    The Symfony Validator component does not come with the ``silex`` archives,
+    so you need to add it as a dependency to your ``composer.json`` file:
 
     .. code-block:: json
 

@@ -22,7 +22,7 @@ step.
 
 **Let's go!**::
 
-    require_once __DIR__.'/silex.phar';
+    require_once __DIR__.'/vendor/autoload.php';
 
     $app = new Silex\Application();
 
@@ -32,8 +32,8 @@ step.
 
     $app->run();
 
-All that is needed to get access to the Framework is to include
-``silex.phar``. This phar (PHP Archive) file will take care of the rest.
+All that is needed to get access to the Framework is to include the
+autoloader.
 
 Next we define a route to ``/hello/{name}`` that matches for ``GET``
 requests. When the route matches, the function is executed and the return
@@ -42,7 +42,7 @@ value is sent back to the client.
 Finally, the app is run. Visit ``/hello/world`` to see the result.
 It's really that easy!
 
-Installing Silex is as easy as it can get. Download the `silex.phar`_ file
-and you're done!
+Installing Silex is as easy as it can get. Download the `silex.zip`_ file,
+unzip it, and you're done!
 
-.. _silex.phar: http://silex.sensiolabs.org/get/silex.phar
+.. _silex.zip: http://silex.sensiolabs.org/get/silex.zip
