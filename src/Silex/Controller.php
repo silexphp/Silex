@@ -186,7 +186,7 @@ class Controller
         $this->isFrozen = true;
     }
 
-    public function generateRouteName($prefix)
+    protected function generateRouteName($prefix)
     {
         $requirements = $this->route->getRequirements();
         $method = isset($requirements['_method']) ? $requirements['_method'] : '';
