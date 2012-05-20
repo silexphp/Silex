@@ -32,6 +32,12 @@ are using apache you can use a ``.htaccess`` file for this.
         RewriteRule ^ index.php [L]
     </IfModule>
 
+Alternatively, if you use Apache 2.2.16 or higher, you can use the [FallbackResource directive](http://www.adayinthelifeof.nl/2012/01/21/apaches-fallbackresource-your-new-htaccess-command/) so make your .htaccess even easier:
+
+.. code-block:: apache
+
+    FallbackResource index.php
+
 .. note::
 
     If your site is not at the webroot level you will have to uncomment the
