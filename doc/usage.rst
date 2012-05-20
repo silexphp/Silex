@@ -19,7 +19,7 @@ controller definitions, call the ``run`` method on your application::
     $app->run();
 
 One other thing you have to do is configure your web server. If you
-are using apache you can use a ``.htaccess`` file for this.
+are using Apache you can use a ``.htaccess`` file for this.
 
 .. code-block:: apache
 
@@ -32,7 +32,8 @@ are using apache you can use a ``.htaccess`` file for this.
         RewriteRule ^ index.php [L]
     </IfModule>
 
-Alternatively, if you use Apache 2.2.16 or higher, you can use the [FallbackResource directive](http://www.adayinthelifeof.nl/2012/01/21/apaches-fallbackresource-your-new-htaccess-command/) so make your .htaccess even easier:
+Alternatively, if you use Apache 2.2.16 or higher, you can use the
+`FallbackResource directive`_ so make your .htaccess even easier:
 
 .. code-block:: apache
 
@@ -709,7 +710,6 @@ by commenting or removing this line in your php.ini file:
 
     zend_extension = /usr/lib/php5/20090626+lfs/ioncube_loader_lin_5.3.so
 
-
 IIS configuration
 -----------------
 
@@ -740,3 +740,5 @@ this sample ``web.config`` file:
             </rewrite>
         </system.webServer>
     </configuration>
+
+.. _FallbackResource directive: http://www.adayinthelifeof.nl/2012/01/21/apaches-fallbackresource-your-new-htaccess-command/
