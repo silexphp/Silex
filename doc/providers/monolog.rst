@@ -48,8 +48,8 @@ Registering
 
 .. note::
 
-    Monolog does not come with the ``silex.zip`, so you need to add it as a
-    dependency to your ``composer.json`` file:
+    Monolog does not come with the ``silex`` archives, so you need to add it
+    as a dependency to your ``composer.json`` file:
 
     .. code-block:: json
 

@@ -14,3 +14,4 @@ Silex
     contributing
     providers/index
     changelog
+    phar

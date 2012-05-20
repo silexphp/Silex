@@ -60,8 +60,8 @@ Registering
 
 .. note::
 
-    Doctrine does not come with the ``silex.zip`, so you need to add Doctrine
-    DBAL as a dependency to your ``composer.json`` file:
+    Doctrine does not come with the ``silex`` archives, so you need to add
+    Doctrine DBAL as a dependency to your ``composer.json`` file:
 
     .. code-block:: json
 
