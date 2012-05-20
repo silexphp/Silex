@@ -49,8 +49,7 @@ Services
 Registering
 -----------
 
-Make sure you place a copy of *Doctrine DBAL* in ``vendor/doctrine-dbal``
-and *Doctrine Common* in ``vendor/doctrine-common``::
+.. code-block:: php
 
     $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
         'db.options'            => array(
@@ -58,6 +57,17 @@ and *Doctrine Common* in ``vendor/doctrine-common``::
             'path'      => __DIR__.'/app.db',
         ),
     ));
+
+.. note::
+
+    Doctrine does not come with the ``silex.zip`, so you need to add Doctrine
+    DBAL as a dependency to your ``composer.json`` file:
+
+    .. code-block:: json
+
+        "require": {
+            "doctrine/dbal": "2.2.*",
+         }
 
 Usage
 -----
