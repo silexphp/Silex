@@ -423,6 +423,8 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     {
         $this->beforeDispatched = false;
 
+        $current = HttpKernelInterface::SUB_REQUEST === $type ? $this['request'] : $this['request_error'];
+
         $this['request'] = $request;
         $this['request']->setDefaultLocale($this['request.default_locale']);
 
@@ -430,7 +432,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
 
         $response = $this['kernel']->handle($request, $type, $catch);
 
-        $this['request'] = $this['request_error'];
+        $this['request'] = $current;
 
         return $response;
     }
