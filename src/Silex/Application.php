@@ -116,7 +116,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
 
                     return;
                 } elseif (null !== $ret) {
-                    throw new \RuntimeException('Middleware for route "'.$event->getRequest()->attributes->get('_route').'" returned an invalid response value. Must return null or an instance of Response.');
+                    throw new \RuntimeException(sprintf('Middleware for route "%s" returned an invalid response value. Must return null or an instance of Response.', $event->getRequest()->attributes->get('_route')));
                 }
             }
         });
