@@ -185,7 +185,7 @@ class Controller
         $this->isFrozen = true;
     }
 
-    public function bindDefaultRouteName($prefix)
+    public function generateRouteName($prefix)
     {
         $requirements = $this->route->getRequirements();
         $method = isset($requirements['_method']) ? $requirements['_method'] : '';
@@ -194,6 +194,6 @@ class Controller
         $routeName = str_replace(array('/', ':', '|', '-'), '_', $routeName);
         $routeName = preg_replace('/[^a-z0-9A-Z_.]+/', '', $routeName);
 
-        $this->routeName = $routeName;
+        return $routeName;
     }
 }

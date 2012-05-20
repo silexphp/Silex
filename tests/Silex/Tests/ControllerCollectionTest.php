@@ -76,10 +76,22 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
         $controllers->add($mountedRootController);
 
         $mainRootController = new Controller(new Route('/'));
-        $mainRootController->bindDefaultRouteName('main_');
+        $mainRootController->bind($mainRootController->generateRouteName('main_'));
 
         $controllers->flush();
 
         $this->assertNotEquals($mainRootController->getRouteName(), $mountedRootController->getRouteName());
+    }
+
+    public function testUniqueGeneratedRouteNames()
+    {
+        $controllers = new ControllerCollection();
+
+        $controllers->add(new Controller(new Route('/a-a')));
+        $controllers->add(new Controller(new Route('/a_a')));
+        $routes = $controllers->flush();
+
+        $this->assertCount(2, $routes->all());
+        $this->assertEquals(array('_a_a', '_a_a_'), array_keys($routes->all()));
     }
 }

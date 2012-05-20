@@ -120,10 +120,14 @@ class ControllerCollection
         $routes = new RouteCollection();
 
         foreach ($this->controllers as $controller) {
-            if (!$controller->getRouteName()) {
-                $controller->bindDefaultRouteName($prefix);
+            if (!$name = $controller->getRouteName()) {
+                $name = $controller->generateRouteName($prefix);
+                while ($routes->get($name)) {
+                    $name .= '_';
+                }
+                $controller->bind($name);
             }
-            $routes->add($controller->getRouteName(), $controller->getRoute());
+            $routes->add($name, $controller->getRoute());
             $controller->freeze();
         }
 
