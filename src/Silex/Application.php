@@ -109,14 +109,20 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         });
 
         $this['route_middlewares_trigger'] = $this->protect(function (KernelEvent $event) use ($app) {
-            foreach ($event->getRequest()->attributes->get('_middlewares', array()) as $callback) {
-                $ret = call_user_func($callback, $event->getRequest());
+            $request = $event->getRequest();
+            $routeName = $request->attributes->get('_route');
+            if (!$route = $app['routes']->get($routeName)) {
+                return;
+            }
+
+            foreach ((array) $route->getOption('_middlewares') as $callback) {
+                $ret = call_user_func($callback, $request);
                 if ($ret instanceof Response) {
                     $event->setResponse($ret);
 
                     return;
                 } elseif (null !== $ret) {
-                    throw new \RuntimeException(sprintf('Middleware for route "%s" returned an invalid response value. Must return null or an instance of Response.', $event->getRequest()->attributes->get('_route')));
+                    throw new \RuntimeException(sprintf('Middleware for route "%s" returned an invalid response value. Must return null or an instance of Response.', $routeName));
                 }
             }
         });

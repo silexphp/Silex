@@ -12,7 +12,6 @@
 namespace Silex;
 
 use Silex\Exception\ControllerFrozenException;
-
 use Symfony\Component\Routing\Route;
 
 /**
@@ -169,9 +168,9 @@ class Controller
      */
     public function middleware($callback)
     {
-        $middlewareCallbacks = $this->route->getDefault('_middlewares');
+        $middlewareCallbacks = $this->route->getOption('_middlewares');
         $middlewareCallbacks[] = $callback;
-        $this->route->setDefault('_middlewares', $middlewareCallbacks);
+        $this->route->setOption('_middlewares', $middlewareCallbacks);
 
         return $this;
     }
