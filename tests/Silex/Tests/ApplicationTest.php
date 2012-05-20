@@ -49,17 +49,14 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
     public function testGetRequest()
     {
-        $app = new Application();
-
-        $app->get('/', function () {
-            return 'root';
-        });
-
         $request = Request::create('/');
 
-        $app->handle($request);
+        $app = new Application();
+        $app->get('/', function (Request $req) use ($request) {
+            return $request === $req ? 'ok' : 'ko';
+        });
 
-        $this->assertEquals($request, $app['request']);
+        $this->assertEquals('ok', $app->handle($request)->getContent());
     }
 
     public function testGetRoutesWithNoRoutes()
@@ -71,7 +68,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(0, count($routes->all()));
     }
 
-    public function testgetRoutesWithRoutes()
+    public function testGetRoutesWithRoutes()
     {
         $app = new Application();
 
@@ -318,6 +315,20 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testAccessingRequestOutsideOfScopeShouldThrowRuntimeException()
     {
         $app = new Application();
+
+        $request = $app['request'];
+    }
+
+    /**
+     * @expectedException RuntimeException
+     */
+    public function testAccessingRequestOutsideOfScopeShouldThrowRuntimeExceptionAfterHandling()
+    {
+        $app = new Application();
+        $app->get('/', function () {
+            return 'hello';
+        });
+        $app->handle(Request::create('/'), HttpKernelInterface::MASTER_REQUEST, false);
 
         $request = $app['request'];
     }

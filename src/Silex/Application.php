@@ -123,9 +123,11 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
 
         $this['request.default_locale'] = 'en';
 
-        $this['request'] = function () {
+        $this['request_error'] = $this->protect(function () {
             throw new \RuntimeException('Accessed request service outside of request scope. Try moving that call to a before handler or controller.');
-        };
+        });
+
+        $this['request'] = $this['request_error'];
 
         $this['request.http_port'] = 80;
         $this['request.https_port'] = 443;
@@ -426,7 +428,11 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
 
         $this->flush();
 
-        return $this['kernel']->handle($request, $type, $catch);
+        $response = $this['kernel']->handle($request, $type, $catch);
+
+        $this['request'] = $this['request_error'];
+
+        return $response;
     }
 
     /**
