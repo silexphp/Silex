@@ -75,7 +75,10 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
     public function testDefaultRouteNameGeneration(Route $route, $expectedRouteName)
     {
         $controller = new Controller($route);
-        $controller->bind($controller->generateRouteName(''));
+        $r = new \ReflectionObject($controller);
+        $m = $r->getMethod('generateRouteName');
+        $m->setAccessible(true);
+        $controller->bind($m->invoke($controller, ''));
 
         $this->assertEquals($expectedRouteName, $controller->getRouteName());
     }

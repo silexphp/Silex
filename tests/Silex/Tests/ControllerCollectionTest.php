@@ -76,7 +76,10 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
         $controllers->add($mountedRootController);
 
         $mainRootController = new Controller(new Route('/'));
-        $mainRootController->bind($mainRootController->generateRouteName('main_'));
+        $r = new \ReflectionObject($mainRootController);
+        $m = $r->getMethod('generateRouteName');
+        $m->setAccessible(true);
+        $mainRootController->bind($m->invoke($mainRootController, 'main_'));
 
         $controllers->flush();
 
