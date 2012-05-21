@@ -436,9 +436,9 @@ If a route middleware does not return a Symfony HTTP Response or ``null``, a
 Global Configuration
 --------------------
 
-If a route setting must be applied to all routes (a converter, a middleware, a
-requirement, or a default value), you can configure it on
-``$app['controllers']``, which holds all controllers::
+If a controller setting must be applied to all controllers (a converter, a
+middleware, a requirement, or a default value), you can configure it on
+``$app['controllers']``, which holds all application controllers::
 
     $app['controllers']
         ->value('id', '1')
@@ -449,8 +449,8 @@ requirement, or a default value), you can configure it on
         ->middleware(function () { // ... })
     ;
 
-These settings can be set before or after controller definitions and settings
-defined on a controller always override the globally configured one.
+These settings are applied to already registered controllers and they become
+the defaults for new controllers.
 
 Error handlers
 --------------
@@ -596,12 +596,13 @@ blog home page, and ``/forum/`` to the forum home page.
     Application, you are in fact calling them on a default instance of
     ``ControllerCollection`` (stored in ``$app['controllers']``).
 
-Another benefit is the ability to apply default settings on a set of
-controllers very easily. Building on the example from the middleware section,
-here is how you would secure all controllers for all backend routes::
+Another benefit is the ability to apply settings on a set of controllers very
+easily. Building on the example from the middleware section, here is how you
+would secure all controllers for the backend collection::
 
     $backend = new ControllerCollection();
 
+    // ensure that all controllers require logged-in users
     $backend->middleware($mustBeLogged);
 
 .. tip::

@@ -3,7 +3,7 @@ Changelog
 
 This changelog references all backward incompatibilities as we introduce them:
 
-* **2012-05-20**: Added a way to define settings for all routes of a collection.
+* **2012-05-20**: Added a way to define settings on a controller collection.
 
 * **2012-05-20**: The Request instance is not available anymore from the
   Application after it has been handled.
