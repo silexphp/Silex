@@ -12,7 +12,6 @@
 namespace Silex;
 
 use Symfony\Component\Routing\RouteCollection;
-use Symfony\Component\Routing\Route;
 use Silex\Controller;
 
 /**
@@ -25,9 +24,10 @@ use Silex\Controller;
  * @author Igor Wiedler <igor@wiedler.ch>
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class ControllerCollection extends Controller
+class ControllerCollection
 {
     protected $controllers = array();
+    protected $defaultRoute;
 
     /**
      * Constructor.
@@ -36,7 +36,7 @@ class ControllerCollection extends Controller
      */
     public function __construct()
     {
-        parent::__construct(new Route(''));
+        $this->defaultRoute = new Route('');
     }
 
     /**
@@ -51,7 +51,7 @@ class ControllerCollection extends Controller
      */
     public function match($pattern, $to)
     {
-        $route = clone $this->route;
+        $route = clone $this->defaultRoute;
         $route->setPattern($pattern);
         $route->setDefault('_controller', $to);
 
@@ -113,11 +113,16 @@ class ControllerCollection extends Controller
     }
 
     /**
-     * {@inheritDoc}
+     * Sets the requirement for a route variable.
+     *
+     * @param string $variable The variable name
+     * @param string $regexp   The regexp to apply
+     *
+     * @return Controller $this The current Controller instance
      */
     public function assert($variable, $regexp)
     {
-        parent::assert($variable, $regexp);
+        $this->defaultRoute->assert($variable, $regexp);
 
         foreach ($this->controllers as $controller) {
             $controller->assert($variable, $regexp);
@@ -127,11 +132,16 @@ class ControllerCollection extends Controller
     }
 
     /**
-     * {@inheritDoc}
+     * Sets the default value for a route variable.
+     *
+     * @param string $variable The variable name
+     * @param mixed  $default  The default value
+     *
+     * @return Controller $this The current Controller instance
      */
     public function value($variable, $default)
     {
-        parent::value($variable, $default);
+        $this->defaultRoute->value($variable, $default);
 
         foreach ($this->controllers as $controller) {
             $controller->value($variable, $default);
@@ -141,11 +151,16 @@ class ControllerCollection extends Controller
     }
 
     /**
-     * {@inheritDoc}
+     * Sets a converter for a route variable.
+     *
+     * @param string $variable The variable name
+     * @param mixed  $callback A PHP callback that converts the original value
+     *
+     * @return Controller $this The current Controller instance
      */
     public function convert($variable, $callback)
     {
-        parent::convert($variable, $callback);
+        $this->defaultRoute->convert($variable, $callback);
 
         foreach ($this->controllers as $controller) {
             $controller->convert($variable, $callback);
@@ -155,11 +170,15 @@ class ControllerCollection extends Controller
     }
 
     /**
-     * {@inheritDoc}
+     * Sets the requirement for the HTTP method.
+     *
+     * @param string $method The HTTP method name. Multiple methods can be supplied, delimited by a pipe character '|', eg. 'GET|POST'
+     *
+     * @return Controller $this The current Controller instance
      */
     public function method($method)
     {
-        parent::method($method);
+        $this->defaultRoute->method($method);
 
         foreach ($this->controllers as $controller) {
             $controller->method($method);
@@ -169,11 +188,13 @@ class ControllerCollection extends Controller
     }
 
     /**
-     * {@inheritDoc}
+     * Sets the requirement of HTTP (no HTTPS) on this controller.
+     *
+     * @return Controller $this The current Controller instance
      */
     public function requireHttp()
     {
-        parent::requireHttp();
+        $this->defaultRoute->requireHttp();
 
         foreach ($this->controllers as $controller) {
             $controller->requireHttp();
@@ -183,11 +204,13 @@ class ControllerCollection extends Controller
     }
 
     /**
-     * {@inheritDoc}
+     * Sets the requirement of HTTPS on this controller.
+     *
+     * @return Controller $this The current Controller instance
      */
     public function requireHttps()
     {
-        parent::requireHttps();
+        $this->defaultRoute->requireHttps();
 
         foreach ($this->controllers as $controller) {
             $controller->requireHttps();
@@ -197,11 +220,16 @@ class ControllerCollection extends Controller
     }
 
     /**
-     * {@inheritDoc}
+     * Sets a callback to handle before triggering the route callback.
+     * (a.k.a. "Route Middleware")
+     *
+     * @param mixed $callback A PHP callback to be triggered when the Route is matched, just before the route callback
+     *
+     * @return Controller $this The current Controller instance
      */
     public function middleware($callback)
     {
-        parent::middleware($callback);
+        $this->defaultRoute->middleware($callback);
 
         foreach ($this->controllers as $controller) {
             $controller->middleware($callback);
