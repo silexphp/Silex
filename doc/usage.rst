@@ -43,7 +43,7 @@ Routing
 -------
 
 In Silex you define a route and the controller that is called when that
-route is matched
+route is matched.
 
 A route pattern consists of:
 
@@ -433,6 +433,25 @@ redirect response, which you can create by calling the Application
 If a route middleware does not return a Symfony HTTP Response or ``null``, a
 ``RuntimeException`` is thrown.
 
+Global Configuration
+--------------------
+
+If a controller setting must be applied to all controllers (a converter, a
+middleware, a requirement, or a default value), you can configure it on
+``$app['controllers']``, which holds all application controllers::
+
+    $app['controllers']
+        ->value('id', '1')
+        ->assert('id', '\d+')
+        ->requireHttps()
+        ->method('get')
+        ->convert('id', function () { // ... })
+        ->middleware(function () { // ... })
+    ;
+
+These settings are applied to already registered controllers and they become
+the defaults for new controllers.
+
 Error handlers
 --------------
 
@@ -575,7 +594,16 @@ blog home page, and ``/forum/`` to the forum home page.
 
     When calling ``get()``, ``match()``, or any other HTTP methods on the
     Application, you are in fact calling them on a default instance of
-    ``ControllerCollection``.
+    ``ControllerCollection`` (stored in ``$app['controllers']``).
+
+Another benefit is the ability to apply settings on a set of controllers very
+easily. Building on the example from the middleware section, here is how you
+would secure all controllers for the backend collection::
+
+    $backend = new ControllerCollection();
+
+    // ensure that all controllers require logged-in users
+    $backend->middleware($mustBeLogged);
 
 .. tip::
 
