@@ -12,8 +12,7 @@
 namespace Silex\Tests;
 
 use Silex\Controller;
-
-use Symfony\Component\Routing\Route;
+use Silex\Route;
 
 /**
  * Controller test cases.

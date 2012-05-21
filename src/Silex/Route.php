@@ -11,67 +11,15 @@
 
 namespace Silex;
 
-use Silex\Exception\ControllerFrozenException;
+use Symfony\Component\Routing\Route as BaseRoute;
 
 /**
  * A wrapper for a controller, mapped to a route.
  *
- * @author Igor Wiedler <igor@wiedler.ch>
+ * @author Fabien Potencier <fabien@symfony.com>
  */
-class Controller
+class Route extends BaseRoute
 {
-    private $route;
-    private $routeName;
-    private $isFrozen = false;
-
-    /**
-     * Constructor.
-     *
-     * @param Route $route
-     */
-    public function __construct(Route $route)
-    {
-        $this->route = $route;
-    }
-
-    /**
-     * Gets the controller's route.
-     *
-     * @return Route
-     */
-    public function getRoute()
-    {
-        return $this->route;
-    }
-
-    /**
-     * Gets the controller's route name.
-     *
-     * @return string
-     */
-    public function getRouteName()
-    {
-        return $this->routeName;
-    }
-
-    /**
-     * Sets the controller's route.
-     *
-     * @param string $routeName
-     *
-     * @return Controller $this The current Controller instance
-     */
-    public function bind($routeName)
-    {
-        if ($this->isFrozen) {
-            throw new ControllerFrozenException(sprintf('Calling %s on frozen %s instance.', __METHOD__, __CLASS__));
-        }
-
-        $this->routeName = $routeName;
-
-        return $this;
-    }
-
     /**
      * Sets the requirement for a route variable.
      *
@@ -82,7 +30,7 @@ class Controller
      */
     public function assert($variable, $regexp)
     {
-        $this->route->assert($variable, $regexp);
+        $this->setRequirement($variable, $regexp);
 
         return $this;
     }
@@ -97,7 +45,7 @@ class Controller
      */
     public function value($variable, $default)
     {
-        $this->route->value($variable, $default);
+        $this->setDefault($variable, $default);
 
         return $this;
     }
@@ -112,7 +60,9 @@ class Controller
      */
     public function convert($variable, $callback)
     {
-        $this->route->convert($variable, $callback);
+        $converters = $this->getOption('_converters');
+        $converters[$variable] = $callback;
+        $this->setOption('_converters', $converters);
 
         return $this;
     }
@@ -126,7 +76,7 @@ class Controller
      */
     public function method($method)
     {
-        $this->route->method($method);
+        $this->setRequirement('_method', $method);
 
         return $this;
     }
@@ -138,7 +88,7 @@ class Controller
      */
     public function requireHttp()
     {
-        $this->route->requireHttp();
+        $this->setRequirement('_scheme', 'http');
 
         return $this;
     }
@@ -150,7 +100,7 @@ class Controller
      */
     public function requireHttps()
     {
-        $this->route->requireHttps();
+        $this->setRequirement('_scheme', 'https');
 
         return $this;
     }
@@ -165,30 +115,10 @@ class Controller
      */
     public function middleware($callback)
     {
-        $this->route->middleware($callback);
+        $middlewareCallbacks = $this->getOption('_middlewares');
+        $middlewareCallbacks[] = $callback;
+        $this->setOption('_middlewares', $middlewareCallbacks);
 
         return $this;
-    }
-
-    /**
-     * Freezes the controller.
-     *
-     * Once the controller is frozen, you can no longer change the route name
-     */
-    public function freeze()
-    {
-        $this->isFrozen = true;
-    }
-
-    public function generateRouteName($prefix)
-    {
-        $requirements = $this->route->getRequirements();
-        $method = isset($requirements['_method']) ? $requirements['_method'] : '';
-
-        $routeName = $prefix.$method.$this->route->getPattern();
-        $routeName = str_replace(array('/', ':', '|', '-'), '_', $routeName);
-        $routeName = preg_replace('/[^a-z0-9A-Z_.]+/', '', $routeName);
-
-        return $routeName;
     }
 }
