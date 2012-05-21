@@ -12,8 +12,7 @@
 namespace Silex\Tests;
 
 use Silex\Controller;
-
-use Symfony\Component\Routing\Route;
+use Silex\Route;
 
 /**
  * Controller test cases.
@@ -75,10 +74,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
     public function testDefaultRouteNameGeneration(Route $route, $expectedRouteName)
     {
         $controller = new Controller($route);
-        $r = new \ReflectionObject($controller);
-        $m = $r->getMethod('generateRouteName');
-        $m->setAccessible(true);
-        $controller->bind($m->invoke($controller, ''));
+        $controller->bind($controller->generateRouteName(''));
 
         $this->assertEquals($expectedRouteName, $controller->getRouteName());
     }

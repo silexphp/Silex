@@ -14,8 +14,7 @@ namespace Silex\Tests;
 use Silex\Controller;
 use Silex\ControllerCollection;
 use Silex\Exception\ControllerFrozenException;
-
-use Symfony\Component\Routing\Route;
+use Silex\Route;
 
 /**
  * ControllerCollection test cases.
@@ -70,10 +69,7 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
         $mountedRootController = $controllers->match('/', function () {});
 
         $mainRootController = new Controller(new Route('/'));
-        $r = new \ReflectionObject($mainRootController);
-        $m = $r->getMethod('generateRouteName');
-        $m->setAccessible(true);
-        $mainRootController->bind($m->invoke($mainRootController, 'main_'));
+        $mainRootController->bind($mainRootController->generateRouteName('main_'));
 
         $controllers->flush();
 
