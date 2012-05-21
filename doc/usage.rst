@@ -485,6 +485,14 @@ handle them differently::
         return new Response($message, $code);
     });
 
+You can restrict an error handler to only handle some Exception classes by
+setting a more specific type hint for the Closure argument::
+
+    $app->error(function (\LogicException $e, $code) {
+        // this handler will only \LogicException exceptions
+        // and exceptions that extends \LogicException
+    });
+
 If you want to set up logging you can use a separate error handler for that.
 Just make sure you register it before the response error handlers, because
 once a response is returned, the following handlers are ignored.
