@@ -309,16 +309,19 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         $this['dispatcher']->addListener(SilexEvents::ERROR, function (GetResponseForErrorEvent $event) use ($callback) {
             $exception = $event->getException();
 
-            if(is_array($callback)){
+            if (is_array($callback)) {
                 $callbackReflection = new \ReflectionMethod($callback[0], $callback[1]);
+            } elseif (is_object($callback) && !$callback instanceof \Closure) {
+                $callbackReflection = new \ReflectionObject($callback);
+                $callbackReflection = $callbackReflection->getMethod('__invoke');
             } else {
                 $callbackReflection = new \ReflectionFunction($callback);
             }
 
-            if($callbackReflection->getNumberOfParameters() > 0){
+            if ($callbackReflection->getNumberOfParameters() > 0) {
                 $parameters = $callbackReflection->getParameters();
                 $expectedException = $parameters[0];
-                if($expectedException->getClass() && !($expectedException->getClass()->isInstance($exception))){
+                if ($expectedException->getClass() && !$expectedException->getClass()->isInstance($exception)) {
                     return;
                 }
             }
