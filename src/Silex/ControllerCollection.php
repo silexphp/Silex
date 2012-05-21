@@ -51,9 +51,11 @@ class ControllerCollection extends Controller
      */
     public function match($pattern, $to)
     {
-        $route = new Route($pattern, array('_controller' => $to));
-        $controller = new Controller($route);
-        $this->add($controller);
+        $route = clone $this->route;
+        $route->setPattern($pattern);
+        $route->setDefault('_controller', $to);
+
+        $this->controllers[] = $controller = new Controller($route);
 
         return $controller;
     }
@@ -111,13 +113,101 @@ class ControllerCollection extends Controller
     }
 
     /**
-     * Adds a controller to the staging area.
-     *
-     * @param Controller $controller
+     * {@inheritDoc}
      */
-    public function add(Controller $controller)
+    public function assert($variable, $regexp)
     {
-        $this->controllers[] = $controller;
+        parent::assert($variable, $regexp);
+
+        foreach ($this->controllers as $controller) {
+            $controller->assert($variable, $regexp);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function value($variable, $default)
+    {
+        parent::value($variable, $default);
+
+        foreach ($this->controllers as $controller) {
+            $controller->value($variable, $default);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function convert($variable, $callback)
+    {
+        parent::convert($variable, $callback);
+
+        foreach ($this->controllers as $controller) {
+            $controller->convert($variable, $callback);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function method($method)
+    {
+        parent::method($method);
+
+        foreach ($this->controllers as $controller) {
+            $controller->method($method);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function requireHttp()
+    {
+        parent::requireHttp();
+
+        foreach ($this->controllers as $controller) {
+            $controller->requireHttp();
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function requireHttps()
+    {
+        parent::requireHttps();
+
+        foreach ($this->controllers as $controller) {
+            $controller->requireHttps();
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function middleware($callback)
+    {
+        parent::middleware($callback);
+
+        foreach ($this->controllers as $controller) {
+            $controller->middleware($callback);
+        }
+
+        return $this;
     }
 
     /**
@@ -130,8 +220,6 @@ class ControllerCollection extends Controller
         $routes = new RouteCollection();
 
         foreach ($this->controllers as $controller) {
-            $route = $controller->getRoute();
-
             if (!$name = $controller->getRouteName()) {
                 $name = $controller->generateRouteName($prefix);
                 while ($routes->get($name)) {
@@ -139,34 +227,12 @@ class ControllerCollection extends Controller
                 }
                 $controller->bind($name);
             }
-
-            $this->mergeGlobalSettings($route);
-
-            $routes->add($name, $route);
-
+            $routes->add($name, $controller->getRoute());
             $controller->freeze();
         }
 
         $this->controllers = array();
 
         return $routes;
-    }
-
-    protected function mergeGlobalSettings(Route $route)
-    {
-        $route->setOption('_middlewares', array_merge((array) $this->route->getOption('_middlewares'), (array) $route->getOption('_middlewares')));
-        $route->setOption('_converters', array_replace((array) $this->route->getOption('_converters'), (array) $route->getOption('_converters')));
-
-        foreach ($this->route->getDefaults() as $name => $value) {
-            if (!$route->hasDefault($name)) {
-                $route->setDefault($name, $value);
-            }
-        }
-
-        foreach ($this->route->getRequirements() as $name => $value) {
-            if (!$route->getRequirement($name)) {
-                $route->setRequirement($name, $value);
-            }
-        }
     }
 }

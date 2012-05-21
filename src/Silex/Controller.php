@@ -21,10 +21,10 @@ use Symfony\Component\Routing\Route;
  */
 class Controller
 {
+    protected $route;
+
     private $routeName;
     private $isFrozen = false;
-
-    protected $route;
 
     /**
      * Constructor.

@@ -34,8 +34,8 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
     public function testGetRouteCollectionWithRoutes()
     {
         $controllers = new ControllerCollection();
-        $controllers->add(new Controller(new Route('/foo')));
-        $controllers->add(new Controller(new Route('/bar')));
+        $controllers->match('/foo', function () {});
+        $controllers->match('/bar', function () {});
 
         $routes = $controllers->flush();
         $this->assertEquals(2, count($routes->all()));
@@ -45,13 +45,8 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
     {
         $controllers = new ControllerCollection();
 
-        $fooController = new Controller(new Route('/foo'));
-        $fooController->bind('foo');
-        $controllers->add($fooController);
-
-        $barController = new Controller(new Route('/bar'));
-        $barController->bind('bar');
-        $controllers->add($barController);
+        $fooController = $controllers->match('/foo', function () {})->bind('foo');
+        $barController = $controllers->match('/bar', function () {})->bind('bar');
 
         $controllers->flush();
 
@@ -72,8 +67,7 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
     {
         $controllers = new ControllerCollection();
 
-        $mountedRootController = new Controller(new Route('/'));
-        $controllers->add($mountedRootController);
+        $mountedRootController = $controllers->match('/', function () {});
 
         $mainRootController = new Controller(new Route('/'));
         $r = new \ReflectionObject($mainRootController);
@@ -90,74 +84,69 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
     {
         $controllers = new ControllerCollection();
 
-        $controllers->add(new Controller(new Route('/a-a')));
-        $controllers->add(new Controller(new Route('/a_a')));
+        $controllers->match('/a-a', function () {});
+        $controllers->match('/a_a', function () {});
+
         $routes = $controllers->flush();
 
         $this->assertCount(2, $routes->all());
         $this->assertEquals(array('_a_a', '_a_a_'), array_keys($routes->all()));
     }
 
-    public function testRouteSettingsFromCollection()
+    public function testAssert()
     {
-        $controller = new Controller(new Route('/'));
-        $controller
-            ->value('bar', 'bar')
-            ->value('baz', 'baz')
-            ->assert('bar', 'bar')
-            ->assert('baz', 'baz')
-            ->convert('bar', $converterBar = function () {})
-            ->middleware($middleware1 = function () {})
-            ->bind('home')
-        ;
-        $controller1 = new Controller(new Route('/'));
-        $controller1
-            ->requireHttp()
-            ->method('post')
-            ->convert('foo', $converterFoo1 = function () {})
-            ->bind('home1')
-        ;
-
         $controllers = new ControllerCollection();
-        $controllers->add($controller);
-        $controllers->add($controller1);
+        $controllers->assert('id', '\d+');
+        $controller = $controllers->match('/{id}/{name}/{extra}', function () {})->assert('name', '\w+')->assert('extra', '.*');
+        $controllers->assert('extra', '\w+');
 
-        $controllers
-            ->value('foo', 'foo')
-            ->value('baz', 'not_used')
-            ->assert('foo', 'foo')
-            ->assert('baz', 'not_used')
-            ->requireHttps()
-            ->method('get')
-            ->convert('foo', $converterFoo = function () {})
-            ->middleware($middleware2 = function () {})
-        ;
+        $this->assertEquals('\d+', $controller->getRoute()->getRequirement('id'));
+        $this->assertEquals('\w+', $controller->getRoute()->getRequirement('name'));
+        $this->assertEquals('\w+', $controller->getRoute()->getRequirement('extra'));
+    }
 
-        $routes = $controllers->flush();
+    public function testValue()
+    {
+        $controllers = new ControllerCollection();
+        $controllers->value('id', '1');
+        $controller = $controllers->match('/{id}/{name}/{extra}', function () {})->value('name', 'Fabien')->value('extra', 'Symfony');
+        $controllers->value('extra', 'Twig');
 
-        $this->assertEquals(array(
-            'foo' => 'foo',
-            'bar' => 'bar',
-            'baz' => 'baz',
-        ), $routes->get('home')->getDefaults());
+        $this->assertEquals('1', $controller->getRoute()->getDefault('id'));
+        $this->assertEquals('Fabien', $controller->getRoute()->getDefault('name'));
+        $this->assertEquals('Twig', $controller->getRoute()->getDefault('extra'));
+    }
 
-        $this->assertEquals(array(
-            'foo'     => 'foo',
-            'bar'     => 'bar',
-            'baz'     => 'baz',
-            '_scheme' => 'https',
-            '_method' => 'get',
-        ), $routes->get('home')->getRequirements());
+    public function testConvert()
+    {
+        $controllers = new ControllerCollection();
+        $controllers->convert('id', '1');
+        $controller = $controllers->match('/{id}/{name}/{extra}', function () {})->convert('name', 'Fabien')->convert('extra', 'Symfony');
+        $controllers->convert('extra', 'Twig');
 
-        $this->assertEquals(array(
-            'foo' => $converterFoo,
-            'bar' => $converterBar,
-        ), $routes->get('home')->getOption('_converters'));
+        $this->assertEquals(array('id' => '1', 'name' => 'Fabien', 'extra' => 'Twig'), $controller->getRoute()->getOption('_converters'));
+    }
 
-        $this->assertEquals(array($middleware1, $middleware2), $routes->get('home')->getOption('_middlewares'));
+    public function testRequireHttp()
+    {
+        $controllers = new ControllerCollection();
+        $controllers->requireHttp();
+        $controller = $controllers->match('/{id}/{name}/{extra}', function () {})->requireHttps();
 
-        $this->assertEquals('http', $routes->get('home1')->getRequirement('_scheme'));
-        $this->assertEquals('post', $routes->get('home1')->getRequirement('_method'));
-        $this->assertEquals(array('foo' => $converterFoo1), $routes->get('home1')->getOption('_converters'));
+        $this->assertEquals('https', $controller->getRoute()->getRequirement('_scheme'));
+
+        $controllers->requireHttp();
+
+        $this->assertEquals('http', $controller->getRoute()->getRequirement('_scheme'));
+    }
+
+    public function testMiddleware()
+    {
+        $controllers = new ControllerCollection();
+        $controllers->middleware('mid1');
+        $controller = $controllers->match('/{id}/{name}/{extra}', function () {})->middleware('mid2');
+        $controllers->middleware('mid3');
+
+        $this->assertEquals(array('mid1', 'mid2', 'mid3'), $controller->getRoute()->getOption('_middlewares'));
     }
 }
