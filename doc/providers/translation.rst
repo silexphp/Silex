@@ -10,6 +10,8 @@ Parameters
 * **translator.messages**: A mapping of locales to message arrays. This
   parameter contains the translation data in all languages.
 
+* **translator.domains**: Same as above but stored by domains.
+
 * **locale** (optional): The locale for the translator. You will most likely
   want to set this based on some request parameter. Defaults to ``en``.
 
@@ -92,6 +94,33 @@ The above example will result in following routes:
 * ``/fr/hello/igor`` will return ``Bonjour igor``.
 
 * ``/it/hello/igor`` will return ``Hello igor`` (because of the fallback).
+
+The messages defined with ``translator.messages`` are automatically stored in
+the default domain. When you need to explicitly set the translation domain
+(for the validation error messages for instance), use the
+``translator.domains`` parameter instead::
+
+    $app['translator.domains'] = array(
+        'messages' => array(
+            'en' => array(
+                'hello'     => 'Hello %name%',
+                'goodbye'   => 'Goodbye %name%',
+            ),
+            'de' => array(
+                'hello'     => 'Hallo %name%',
+                'goodbye'   => 'Tschüss %name%',
+            ),
+            'fr' => array(
+                'hello'     => 'Bonjour %name%',
+                'goodbye'   => 'Au revoir %name%',
+            ),
+        ),
+        'validators' => array(
+            'fr' => array(
+                'This value should be a valid number.' => 'Cette valeur doit être un nombre.',
+            ),
+        ),
+    );
 
 Recipes
 -------

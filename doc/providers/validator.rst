@@ -102,5 +102,19 @@ getters::
 You will have to handle the display of these violations yourself. You can
 however use the *FormServiceProvider* which can make use of the *ValidatorServiceProvider*.
 
+Translation
+~~~~~~~~~~~
+
+To be able to translate the error messages, you can use the translator
+provider and register the messages under the ``validators`` domain::
+
+    $app['translator.domains'] = array(
+        'validators' => array(
+            'fr' => array(
+                'This value should be a valid number.' => 'Cette valeur doit être un nombre.',
+            ),
+        ),
+    );
+
 For more information, consult the `Symfony2 Validation documentation
 <http://symfony.com/doc/2.0/book/validation.html>`_.
