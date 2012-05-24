@@ -22,7 +22,9 @@ step.
 
 **Let's go!**::
 
-    require_once __DIR__.'/vendor/autoload.php';
+    // web/index.php
+
+    require_once __DIR__.'/../vendor/autoload.php';
 
     $app = new Silex\Application();
 
@@ -43,6 +45,6 @@ Finally, the app is run. Visit ``/hello/world`` to see the result.
 It's really that easy!
 
 Installing Silex is as easy as it can get. Download the `silex.zip`_ file,
-unzip it, and you're done!
+extract it, and you're done!
 
 .. _silex.zip: http://silex.sensiolabs.org/get/silex.zip

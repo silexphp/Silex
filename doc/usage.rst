@@ -3,6 +3,40 @@ Usage
 
 This chapter describes how to use Silex.
 
+Installation
+------------
+
+If you want to get started fast, download either the `silex.zip`_ or the
+`silex.tgz`_ archive and extract it, you should have the following directory
+structure:
+
+.. code-block:: text
+
+    ├── composer.json
+    ├── composer.lock
+    ├── vendor
+    │   └── ...
+    └── web
+        └── index.php
+
+If you want more flexibility, use Composer instead. Create a
+``composer.json``:
+
+.. code-block:: json
+
+    {
+        "require": {
+            "silex/silex": "dev-master"
+        }
+    }
+
+And run Composer to install Silex and all its dependencies:
+
+.. code-block:: bash
+
+    $ curl -s http://getcomposer.org/installer | php
+    $ composer.phar install
+
 Bootstrap
 ---------
 
@@ -10,7 +44,9 @@ To bootstrap Silex, all you need to do is require the ``vendor/autoload.php``
 file and create an instance of ``Silex\Application``. After your controller
 definitions, call the ``run`` method on your application::
 
-    require_once __DIR__.'/vendor/autoload.php';
+    // web/index.php
+
+    require_once __DIR__.'/../vendor/autoload.php';
 
     $app = new Silex\Application();
 
@@ -779,3 +815,5 @@ this sample ``web.config`` file:
     </configuration>
 
 .. _FallbackResource directive: http://www.adayinthelifeof.nl/2012/01/21/apaches-fallbackresource-your-new-htaccess-command/
+.. _silex.zip: http://silex.sensiolabs.org/get/silex.zip
+.. _silex.tgz: http://silex.sensiolabs.org/get/silex.tgz
