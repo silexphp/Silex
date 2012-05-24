@@ -104,3 +104,37 @@ however use the *FormServiceProvider* which can make use of the *ValidatorServic
 
 For more information, consult the `Symfony2 Validation documentation
 <http://symfony.com/doc/2.0/book/validation.html>`_.
+
+Validation in YAML files
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Simplicity is at the heart of Silex so there is no out of the box solution to use YAML files for validation.
+But this doesn't mean that this is not possible. Let's see how to do it.
+
+First, you need to install the YAML Component. If you want to take advantage of the autoloading mechanism you should clone https://github.com/symfony/Yaml into ``vendor/Symfony/Component``.
+
+Next, you need to tell the Validation Service that you are not using StaticMethodLoader to load your class metadata
+but a YAML file
+
+.. code-block:: php
+
+    $app->register(new ValidatorServiceProvider());
+
+    $app['validator.mapping.class_metadata_factory'] = new Symfony\Component\Validator\Mapping\ClassMetadataFactory(
+        new Symfony\Component\Validator\Mapping\Loader\YamlFileLoader(__DIR__.'/validation.yml')
+    );
+
+Now, we can remove the static method in the ``Post`` class and move all these rules to ``validation.yml``
+
+.. code-block:: yaml
+
+    # validation.yml
+    Post:
+      properties:
+        title:
+          - NotNull: ~
+          - NotBlank: ~
+        body:
+          - Min: 100
+
+And that's all. Now on you can use the Validator service as defined above.
