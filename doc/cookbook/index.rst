@@ -11,6 +11,7 @@ The cookbook section contains recipes for solving specific problems.
     translating_validation_messages
     session_storage
     form_no_csrf
+    validator_yaml
 
 Recipes
 -------
@@ -24,3 +25,5 @@ Recipes
 * :doc:`How to use PdoSessionStorage to store sessions in the database <session_storage>`.
 
 * :doc:`How to disable the CSRF Protection on a form using the FormExtension <form_no_csrf>`.
+
+* :doc:`How to use YAML to configure validation <validator_yaml>`.
