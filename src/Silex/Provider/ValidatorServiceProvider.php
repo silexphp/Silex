@@ -42,9 +42,5 @@ class ValidatorServiceProvider implements ServiceProviderInterface
         $app['validator.validator_factory'] = $app->share(function () {
             return new ConstraintValidatorFactory();
         });
-
-        if (isset($app['validator.class_path'])) {
-            $app['autoloader']->registerNamespace('Symfony\\Component\\Validator', $app['validator.class_path']);
-        }
     }
 }

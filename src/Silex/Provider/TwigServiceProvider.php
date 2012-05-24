@@ -85,9 +85,5 @@ class TwigServiceProvider implements ServiceProviderInterface
                 $app['twig.loader.array'],
             ));
         });
-
-        if (isset($app['twig.class_path'])) {
-            $app['autoloader']->registerPrefix('Twig_', $app['twig.class_path']);
-        }
     }
 }

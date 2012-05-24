@@ -23,8 +23,8 @@ Parameters
   * **encryption**: SMTP encryption, defaults to null.
   * **auth_mode**: SMTP authentication mode, defaults to null.
 
-* **swiftmailer.class_path** (optional): Path to where the
-  Swift Mailer library is located.
+* **swiftmailer.class_path** (optional): Path to where the Swift Mailer
+  library is located.
 
 Services
 --------
@@ -55,19 +55,22 @@ Services
 Registering
 -----------
 
-Make sure you place a copy of *Swift Mailer* in the ``vendor/swiftmailer``
-directory. Make sure you point the class path to ``/lib/classes``.
-
-::
+.. code-block:: php
 
     $app->register(new Silex\Provider\SwiftmailerServiceProvider(), array(
-        'swiftmailer.class_path'  => __DIR__.'/vendor/swiftmailer/lib/classes',
+        'swiftmailer.class_path'  => __DIR__.'/vendor/swiftmailer/swiftmailer/lib/classes',
     ));
 
 .. note::
 
-    Swift Mailer is not compiled into the ``silex.phar`` file. You have to
-    add your own copy of Swift Mailer to your application.
+    SwiftMailer does not come with the ``silex`` archives, so you need to add
+    it as a dependency to your ``composer.json`` file:
+
+    .. code-block:: json
+
+        "require": {
+            "swiftmailer/swiftmailer": ">=4.1.2,<4.2-dev"
+        }
 
 Usage
 -----

@@ -7,8 +7,7 @@ Symfony2 components and libraries.
 Parameters
 ----------
 
-* **symfony_bridges.class_path** (optional): Path to where
-  the Symfony2 Bridges are located.
+none
 
 Twig
 ----
@@ -34,13 +33,17 @@ provide you with the following additional capabilities:
 Registering
 -----------
 
-Make sure you place a copy of the Symfony2 Bridges in either
-``vendor/symfony/src`` by cloning `Symfony2 <https://github.com/symfony/symfony>`_ or
-``vendor/symfony/src/Symfony/Bridge/Twig`` by cloning `TwigBridge <https://github.com/symfony/TwigBridge>`_
-(the latter having a smaller footprint).
+.. code-block:: php
 
-Then, register the provider via::
+    $app->register(new Silex\Provider\SymfonyBridgesServiceProvider());
 
-    $app->register(new Silex\Provider\SymfonyBridgesServiceProvider(), array(
-        'symfony_bridges.class_path'  => __DIR__.'/vendor/symfony/src',
-    ));
+.. note::
+
+    The Symfony bridges do not come with the ``silex.zip`, so you need to add
+    them as a dependency to your ``composer.json`` file:
+
+    .. code-block:: json
+
+        "require": {
+            "symfony/twig-bridge": "2.1.*",
+        }

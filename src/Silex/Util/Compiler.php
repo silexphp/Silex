@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Silex;
+namespace Silex\Util;
 
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\Kernel;
@@ -17,6 +17,8 @@ use Symfony\Component\Process\Process;
 
 /**
  * The Compiler class compiles the Silex framework.
+ *
+ * This is deprecated. Use composer instead.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

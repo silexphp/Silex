@@ -8,8 +8,7 @@ standalone.
 Parameters
 ----------
 
-* **validator.class_path** (optional): Path to where
-  the Symfony2 Validator component is located.
+none
 
 Services
 --------
@@ -32,12 +31,20 @@ Services
 Registering
 -----------
 
-Make sure you place a copy of the Symfony2 Validator component in
-``vendor/symfony/src``. You can simply clone the whole Symfony2 into vendor::
+.. code-block:: php
 
-    $app->register(new Silex\Provider\ValidatorServiceProvider(), array(
-        'validator.class_path'    => __DIR__.'/vendor/symfony/src',
-    ));
+    $app->register(new Silex\Provider\ValidatorServiceProvider());
+
+.. note::
+
+    The Symfony Validator component does not come with the ``silex`` archives,
+    so you need to add it as a dependency to your ``composer.json`` file:
+
+    .. code-block:: json
+
+        "require": {
+            "symfony/validator": "2.1.*"
+        }
 
 Usage
 -----
