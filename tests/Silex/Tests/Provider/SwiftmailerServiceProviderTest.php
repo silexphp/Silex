@@ -47,8 +47,6 @@ class SwiftmailerServiceProviderTest extends \PHPUnit_Framework_TestCase
            return new \Swift_Transport_SpoolTransport($app['swiftmailer.transport.eventdispatcher'], new \Swift_MemorySpool());
         });
 
-        $test = $this;
-
         $app->get('/', function() use ($app) {
             $app['mailer']->send(\Swift_Message::newInstance());
         });
@@ -56,21 +54,21 @@ class SwiftmailerServiceProviderTest extends \PHPUnit_Framework_TestCase
         /**
          * Checks spool is empty before process
          */
-        $test->assertEquals(0, $app['swiftmailer.spooltransport']->getSpool()->flushQueue($app['swiftmailer.transport']));
+        $this->assertEquals(0, $app['swiftmailer.spooltransport']->getSpool()->flushQueue($app['swiftmailer.transport']));
 
         $request = Request::create('/');
         $app->handle($request);
         /**
          * Checks spool has the message that is sent in controller and regenerates it
          */
-        $test->assertEquals(1, $app['swiftmailer.spooltransport']->getSpool()->flushQueue($app['swiftmailer.transport']));
+        $this->assertEquals(1, $app['swiftmailer.spooltransport']->getSpool()->flushQueue($app['swiftmailer.transport']));
         $app['mailer']->send(\Swift_Message::newInstance());
 
         /**
          * Terminates app and checks that spool is empty
          */
         $app->terminate($request, new SendMailsResponse('should send e-mails'));
-        $test->assertEquals(0, $app['swiftmailer.spooltransport']->getSpool()->flushQueue($app['swiftmailer.transport']));
+        $this->assertEquals(0, $app['swiftmailer.spooltransport']->getSpool()->flushQueue($app['swiftmailer.transport']));
     }
 }
 
