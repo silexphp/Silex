@@ -41,6 +41,10 @@ class TwigServiceProvider implements ServiceProviderInterface
             $twig->addGlobal('app', $app);
             $twig->addExtension(new TwigCoreExtension());
 
+            if ($app['debug']) {
+                $twig->addExtension(new \Twig_Extension_Debug());
+            }
+
             if (isset($app['symfony_bridges'])) {
                 if (isset($app['url_generator'])) {
                     $twig->addExtension(new TwigRoutingExtension($app['url_generator']));
