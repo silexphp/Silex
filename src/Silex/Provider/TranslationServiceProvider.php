@@ -35,13 +35,18 @@ class TranslationServiceProvider implements ServiceProviderInterface
             }
 
             $translator->addLoader('array', $app['translator.loader']);
-            foreach ($app['translator.messages'] as $locale => $messages) {
-                $translator->addResource('array', $messages, $locale);
+
+            if (isset($app['translator.messages'])) {
+                foreach ($app['translator.messages'] as $locale => $messages) {
+                    $translator->addResource('array', $messages, $locale);
+                }
             }
 
-            foreach ($app['translator.domains'] as $domain => $data) {
-                foreach ($data as $locale => $messages) {
-                    $translator->addResource('array', $messages, $locale, $domain);
+            if (isset($app['translator.domains'])) {
+                foreach ($app['translator.domains'] as $domain => $data) {
+                    foreach ($data as $locale => $messages) {
+                        $translator->addResource('array', $messages, $locale, $domain);
+                    }
                 }
             }
 

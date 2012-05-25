@@ -7,10 +7,10 @@ application into different languages.
 Parameters
 ----------
 
-* **translator.messages**: A mapping of locales to message arrays. This
-  parameter contains the translation data in all languages.
+* **translator.messages** (optional): A mapping of locales to message arrays.
+  This parameter contains the translation data in all languages.
 
-* **translator.domains**: Same as above but stored by domains.
+* **translator.domains** (optional): Same as above but stored by domains.
 
 * **locale** (optional): The locale for the translator. You will most likely
   want to set this based on some request parameter. Defaults to ``en``.
