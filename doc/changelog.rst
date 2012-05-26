@@ -3,6 +3,8 @@ Changelog
 
 This changelog references all backward incompatibilities as we introduce them:
 
+* **2012-05-26**: Removed ``SymfonyBridgesServiceProvider``
+
 * **2012-05-26**: Removed the ``translator.messages`` parameter (use
   ``translator.domains`` instead).
 

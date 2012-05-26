@@ -53,6 +53,39 @@ Registering
             "twig/twig": ">=1.8,<2.0-dev"
         }
 
+Symfony2 Components Integration
+-------------------------------
+
+Symfony provides a Twig bridge that provides additional integration between
+some Symfony2 components and Twig. Add it as a dependency to your
+``composer.json`` file:
+
+.. code-block:: json
+
+    "require": {
+        "symfony/twig-bridge": "2.1.*",
+    }
+
+When present, the ``TwigServiceProvider`` will provide you with the following
+additional capabilities:
+
+* **UrlGeneratorServiceProvider**: If you are using the
+  ``UrlGeneratorServiceProvider``, you will have access to the ``path()`` and
+  ``url()`` functions. You can find more information in the `Symfony2 Routing
+  documentation
+  <http://symfony.com/doc/current/book/routing.html#generating-urls-from-a-template>`_.
+
+* **TranslationServiceProvider**: If you are using the
+  ``TranslationServiceProvider``, you will get the ``trans()`` and
+  ``transchoice()`` functions for translation in Twig templates. You can find
+  more information in the `Symfony2 Translation documentation
+  <http://symfony.com/doc/current/book/translation.html#twig-templates>`_.
+
+* **FormServiceProvider**: If you are using the ``FormServiceProvider``, you
+  will get a set of helpers for working with forms in templates. You can find
+  more information in the `Symfony2 Forms reference
+  <http://symfony.com/doc/current/reference/forms/twig_reference.html>`_.
+
 Usage
 -----
 
