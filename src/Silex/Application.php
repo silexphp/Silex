@@ -55,6 +55,8 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     {
         $app = $this;
 
+        $this['logger'] = null;
+
         $this['routes'] = $this->share(function () {
             return new RouteCollection();
         });
@@ -74,13 +76,13 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             $urlMatcher = new LazyUrlMatcher(function () use ($app) {
                 return $app['url_matcher'];
             });
-            $dispatcher->addSubscriber(new RouterListener($urlMatcher));
+            $dispatcher->addSubscriber(new RouterListener($urlMatcher, $app['logger']));
 
             return $dispatcher;
         });
 
         $this['resolver'] = $this->share(function () use ($app) {
-            return new ControllerResolver($app);
+            return new ControllerResolver($app, $app['logger']);
         });
 
         $this['kernel'] = $this->share(function () use ($app) {
