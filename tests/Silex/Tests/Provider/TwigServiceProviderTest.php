@@ -26,7 +26,7 @@ class TwigServiceProviderTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         if (!is_dir(__DIR__.'/../../../../vendor/twig/twig/lib')) {
-            $this->markTestSkipped('Twig submodule was not installed.');
+            $this->markTestSkipped('Twig dependency was not installed.');
         }
     }
 
