@@ -53,4 +53,8 @@ class TranslationServiceProvider implements ServiceProviderInterface
             return new MessageSelector();
         });
     }
+
+    public function boot(Application $app)
+    {
+    }
 }

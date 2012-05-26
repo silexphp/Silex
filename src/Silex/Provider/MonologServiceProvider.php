@@ -50,7 +50,10 @@ class MonologServiceProvider implements ServiceProviderInterface
                 return Logger::DEBUG;
             };
         }
+    }
 
+    public function boot(Application $app)
+    {
         $app->before(function (Request $request) use ($app) {
             $app['monolog']->addInfo('> '.$request->getMethod().' '.$request->getRequestUri());
         });
