@@ -1,14 +1,12 @@
 MonologServiceProvider
 ======================
 
-The *MonologServiceProvider* provides a default logging mechanism
-through Jordi Boggiano's `Monolog <https://github.com/Seldaek/monolog>`_
-library.
+The *MonologServiceProvider* provides a default logging mechanism through
+Jordi Boggiano's `Monolog <https://github.com/Seldaek/monolog>`_ library.
 
-It will log requests and errors and allow you to add debug
-logging to your application, so you don't have to use
-``var_dump`` so much anymore. You can use the grown-up
-version called ``tail -f``.
+It will log requests and errors and allow you to add debug logging to your
+application, so you don't have to use ``var_dump`` so much anymore. You can
+use the grown-up version called ``tail -f``.
 
 Parameters
 ----------
@@ -33,9 +31,8 @@ Services
 
     $app['monolog']->addDebug('Testing the Monolog logging.');
 
-* **monolog.configure**: Protected closure that takes the
-  logger as an argument. You can override it if you do not
-  want the default behavior.
+* **monolog.configure**: Protected closure that takes the logger as an
+  argument. You can override it if you do not want the default behavior.
 
 Registering
 -----------
@@ -60,11 +57,9 @@ Registering
 Usage
 -----
 
-The MonologServiceProvider provides a ``monolog`` service. You can use
-it to add log entries for any logging level through ``addDebug()``,
-``addInfo()``, ``addWarning()`` and ``addError()``.
-
-::
+The MonologServiceProvider provides a ``monolog`` service. You can use it to
+add log entries for any logging level through ``addDebug()``, ``addInfo()``,
+``addWarning()`` and ``addError()``:
 
     use Symfony\Component\HttpFoundation\Response;
 

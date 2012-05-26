@@ -31,26 +31,23 @@ will be set **before** the provider is registered::
 Conventions
 ~~~~~~~~~~~
 
-You need to watch out in what order you do certain things when
-interacting with providers. Just keep to these rules:
+You need to watch out in what order you do certain things when interacting
+with providers. Just keep to these rules:
 
-* Overriding existing services must occur **after** the
-  provider is registered.
+* Overriding existing services must occur **after** the provider is
+  registered.
 
-  *Reason: If the services already exist, the provider
-  will overwrite it.*
+  *Reason: If the services already exist, the provider will overwrite it.*
 
-* You can set parameters any time before the service is
-  accessed.
+* You can set parameters any time before the service is accessed.
 
-Make sure to stick to this behavior when creating your
-own providers.
+Make sure to stick to this behavior when creating your own providers.
 
 Included providers
 ~~~~~~~~~~~~~~~~~~
 
-There are a few provider that you get out of the box.
-All of these are within the ``Silex\Provider`` namespace.
+There are a few provider that you get out of the box. All of these are within
+the ``Silex\Provider`` namespace:
 
 * :doc:`DoctrineServiceProvider <providers/doctrine>`
 * :doc:`MonologServiceProvider <providers/monolog>`
@@ -66,8 +63,8 @@ All of these are within the ``Silex\Provider`` namespace.
 Third party providers
 ~~~~~~~~~~~~~~~~~~~~~
 
-Some service providers are developed by the community. Those 
-third-party providers are listed on `Silex' repository wiki 
+Some service providers are developed by the community. Those third-party
+providers are listed on `Silex' repository wiki
 <https://github.com/fabpot/Silex/wiki/Third-Party-ServiceProviders>`_.
 
 You are encouraged to share yours.
@@ -82,10 +79,9 @@ Providers must implement the ``Silex\ServiceProviderInterface``::
         function register(Application $app);
     }
 
-This is very straight forward, just create a new class that
-implements the ``register`` method.  In this method you must
-define services on the application which then may make use
-of other services and parameters.
+This is very straight forward, just create a new class that implements the
+``register`` method. In this method you must define services on the
+application which then may make use of other services and parameters.
 
 Here is an example of such a provider::
 
@@ -107,10 +103,9 @@ Here is an example of such a provider::
         }
     }
 
-This class provides a ``hello`` service which is a protected
-closure. It takes a ``name`` argument and will return
-``hello.default_name`` if no name is given. If the default
-is also missing, it will use an empty string.
+This class provides a ``hello`` service which is a protected closure. It takes
+a ``name`` argument and will return ``hello.default_name`` if no name is
+given. If the default is also missing, it will use an empty string.
 
 You can now use this provider as follows::
 
@@ -126,8 +121,8 @@ You can now use this provider as follows::
         return $app['hello']($name);
     });
 
-In this example we are getting the ``name`` parameter from the
-query string, so the request path would have to be ``/hello?name=Fabien``.
+In this example we are getting the ``name`` parameter from the query string,
+so the request path would have to be ``/hello?name=Fabien``.
 
 Controllers providers
 ---------------------

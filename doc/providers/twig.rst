@@ -29,9 +29,9 @@ Services
   that takes the Twig environment as an argument. You can use it to add more
   custom globals.
 
-* **twig.loader**: The loader for Twig templates which uses
-  the ``twig.path`` and the ``twig.templates`` options. You
-  can also replace the loader completely.
+* **twig.loader**: The loader for Twig templates which uses the ``twig.path``
+  and the ``twig.templates`` options. You can also replace the loader
+  completely.
 
 Registering
 -----------

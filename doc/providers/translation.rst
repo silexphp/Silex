@@ -24,7 +24,8 @@ Services
   that is used for translation.
 
 * **translator.loader**: An instance of an implementation of the translation
-  `LoaderInterface <http://api.symfony.com/master/Symfony/Component/Translation/Loader/LoaderInterface.html>`_,
+  `LoaderInterface
+  <http://api.symfony.com/master/Symfony/Component/Translation/Loader/LoaderInterface.html>`_,
   defaults to an `ArrayLoader
   <http://api.symfony.com/master/Symfony/Component/Translation/Loader/ArrayLoader.html>`_.
 
@@ -171,7 +172,8 @@ That's it.
 Accessing translations in Twig templates
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Once loaded, the translation service provider is available from within Twig templates:
+Once loaded, the translation service provider is available from within Twig
+templates:
 
 .. code-block:: jinja
 
