@@ -7,10 +7,8 @@ application into different languages.
 Parameters
 ----------
 
-* **translator.messages** (optional): A mapping of locales to message arrays.
-  This parameter contains the translation data in all languages.
-
-* **translator.domains** (optional): Same as above but stored by domains.
+* **translator.domains**: A mapping of domains/locales/messages. This
+  parameter contains the translation data for all languages and domains.
 
 * **locale** (optional): The locale for the translator. You will most likely
   want to set this based on some request parameter. Defaults to ``en``.
@@ -58,47 +56,7 @@ Usage
 -----
 
 The Translation provider provides a ``translator`` service and makes use of
-the ``translator.messages`` parameter::
-
-    $app['translator.messages'] = array(
-        'en' => array(
-            'hello'     => 'Hello %name%',
-            'goodbye'   => 'Goodbye %name%',
-        ),
-        'de' => array(
-            'hello'     => 'Hallo %name%',
-            'goodbye'   => 'Tschüss %name%',
-        ),
-        'fr' => array(
-            'hello'     => 'Bonjour %name%',
-            'goodbye'   => 'Au revoir %name%',
-        ),
-    );
-
-    $app->before(function () use ($app) {
-        if ($locale = $app['request']->get('locale')) {
-            $app['locale'] = $locale;
-        }
-    });
-
-    $app->get('/{locale}/{message}/{name}', function ($message, $name) use ($app) {
-        return $app['translator']->trans($message, array('%name%' => $name));
-    });
-
-The above example will result in following routes:
-
-* ``/en/hello/igor`` will return ``Hello igor``.
-
-* ``/de/hello/igor`` will return ``Hallo igor``.
-
-* ``/fr/hello/igor`` will return ``Bonjour igor``.
-
-* ``/it/hello/igor`` will return ``Hello igor`` (because of the fallback).
-
-The messages defined with ``translator.messages`` are automatically stored in
-the default domain. When you need to explicitly set the translation domain
-(for the validation error messages for instance), use the
-``translator.domains`` parameter instead::
+the ``translator.domains`` parameter::
 
     $app['translator.domains'] = array(
         'messages' => array(
@@ -121,6 +79,26 @@ the default domain. When you need to explicitly set the translation domain
             ),
         ),
     );
+
+    $app->before(function () use ($app) {
+        if ($locale = $app['request']->get('locale')) {
+            $app['locale'] = $locale;
+        }
+    });
+
+    $app->get('/{locale}/{message}/{name}', function ($message, $name) use ($app) {
+        return $app['translator']->trans($message, array('%name%' => $name));
+    });
+
+The above example will result in following routes:
+
+* ``/en/hello/igor`` will return ``Hello igor``.
+
+* ``/de/hello/igor`` will return ``Hallo igor``.
+
+* ``/fr/hello/igor`` will return ``Bonjour igor``.
+
+* ``/it/hello/igor`` will return ``Hello igor`` (because of the fallback).
 
 Recipes
 -------
@@ -149,13 +127,15 @@ use is ``locales/en.yml``. Just do the mapping in this file as follows:
     hello: Hello %name%
     goodbye: Goodbye %name%
 
-Repeat this for all of your languages. Then set up the ``translator.messages``
+Repeat this for all of your languages. Then set up the ``translator.domains``
 to map languages to files::
 
-    $app['translator.messages'] = array(
-        'en' => __DIR__.'/locales/en.yml',
-        'de' => __DIR__.'/locales/de.yml',
-        'fr' => __DIR__.'/locales/fr.yml',
+    $app['translator.domains'] = array(
+        'messages' => array(
+            'en' => __DIR__.'/locales/en.yml',
+            'de' => __DIR__.'/locales/de.yml',
+            'fr' => __DIR__.'/locales/fr.yml',
+        ),
     );
 
 Finally override the ``translator.loader`` to use a ``YamlFileLoader`` instead
@@ -176,7 +156,7 @@ Just as you would do with YAML translation files, you first need to add the
 Symfony2 ``Config`` component as a dependency (see above for details).
 
 Then, similarly, create XLIFF files in your locales directory and setup the
-``translator.messages`` to map to them.
+``translator.domains`` to map to them.
 
 Finally override the ``translator.loader`` to use a ``XliffFileLoader``::
 
