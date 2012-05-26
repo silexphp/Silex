@@ -49,8 +49,6 @@ class SessionServiceProvider implements ServiceProviderInterface
             );
         });
 
-        $app['dispatcher']->addListener(KernelEvents::REQUEST, array($this, 'onKernelRequest'), 128);
-
         if (!isset($app['session.storage.options'])) {
             $app['session.storage.options'] = array();
         }
@@ -69,5 +67,10 @@ class SessionServiceProvider implements ServiceProviderInterface
         if ($request->hasPreviousSession()) {
             $request->getSession()->start();
         }
+    }
+
+    public function boot(Application $app)
+    {
+        $app['dispatcher']->addListener(KernelEvents::REQUEST, array($this, 'onKernelRequest'), 128);
     }
 }
