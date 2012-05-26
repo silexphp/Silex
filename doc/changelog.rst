@@ -3,6 +3,9 @@ Changelog
 
 This changelog references all backward incompatibilities as we introduce them:
 
+* **2012-05-26**: Removed the ``translator.messages`` parameter (use
+  ``translator.domains`` instead).
+
 * **2012-05-24**: Removed the ``autoloader`` service (use composer instead).
   The ``*.class_path`` settings on all the built-in providers have also been
   removed in favor of Composer.
