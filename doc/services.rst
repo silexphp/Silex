@@ -215,6 +215,10 @@ don't want to mess with most of them.
   does not return a Response. Disable it with
   `unset($app['exception_handler'])`.
 
+* **logger**: A
+  `http://api.symfony.com/master/Symfony/Component/HttpKernel/Log/LoggerInterface.html`_
+  instance. By default, logging is disabled as the value is set to `null`.
+
 .. note::
 
     All of these Silex core services are shared.
