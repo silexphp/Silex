@@ -28,7 +28,7 @@ class MonologServiceProviderTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         if (!is_dir(__DIR__.'/../../../../vendor/monolog/monolog/src')) {
-            $this->markTestSkipped('Monolog submodule was not installed.');
+            $this->markTestSkipped('Monolog dependency was not installed.');
         }
     }
 
