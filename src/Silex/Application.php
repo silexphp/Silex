@@ -48,6 +48,9 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
 {
     const VERSION = '@package_version@';
 
+    private $providers = array();
+    private $booted = false;
+
     /**
      * Constructor.
      */
@@ -147,7 +150,20 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             $this[$key] = $value;
         }
 
+        $this->providers[] = $provider;
+
         $provider->register($this);
+    }
+
+    public function boot()
+    {
+        if (!$this->booted) {
+            foreach ($this->providers as $provider) {
+                $provider->boot($this);
+            }
+
+            $this->booted = true;
+        }
     }
 
     /**
@@ -439,6 +455,10 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function handle(Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true)
     {
+        if (!$this->booted) {
+            $this->boot();
+        }
+
         $this->beforeDispatched = false;
 
         $current = HttpKernelInterface::SUB_REQUEST === $type ? $this['request'] : $this['request_error'];
