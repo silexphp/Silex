@@ -43,4 +43,8 @@ class ValidatorServiceProvider implements ServiceProviderInterface
             return new ConstraintValidatorFactory();
         });
     }
+
+    public function boot(Application $app)
+    {
+    }
 }

@@ -42,4 +42,8 @@ class HttpCacheServiceProvider implements ServiceProviderInterface
             $app['http_cache.options'] = array();
         }
     }
+
+    public function boot(Application $app)
+    {
+    }
 }
