@@ -32,6 +32,7 @@
         "monolog/monolog": ">=1.0.0",
         "symfony/translation": "2.1.*",
         "symfony/twig-bridge": "2.1.*",
+        "symfony/monolog-bridge": "2.1.*",
         "symfony/validator": "2.1.*",
         "twig/twig": ">=1.2.0",
         "doctrine/dbal": "2.1.*"
