@@ -15,22 +15,10 @@
         {
             "package": "symfony/browser-kit",
             "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
-            "package": "symfony/browser-kit",
-            "version": "dev-master",
             "source-reference": "6d1864547be92e51972a416fae9460b8be4afe0e"
         },
         {
             "package": "symfony/browser-kit",
-            "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
-            "package": "symfony/css-selector",
             "version": "dev-master",
             "alias-pretty-version": "2.1.x-dev",
             "alias-version": "2.1.9999999.9999999-dev"
@@ -49,16 +37,16 @@
         {
             "package": "symfony/dom-crawler",
             "version": "dev-master",
-            "source-reference": "e3c4c8426881e7fae02cc3024bc0b4c75c952b63"
-        },
-        {
-            "package": "symfony/dom-crawler",
-            "version": "dev-master",
             "alias-pretty-version": "2.1.x-dev",
             "alias-version": "2.1.9999999.9999999-dev"
         },
         {
             "package": "symfony/dom-crawler",
+            "version": "dev-master",
+            "source-reference": "e3c4c8426881e7fae02cc3024bc0b4c75c952b63"
+        },
+        {
+            "package": "symfony/event-dispatcher",
             "version": "dev-master",
             "alias-pretty-version": "2.1.x-dev",
             "alias-version": "2.1.9999999.9999999-dev"
@@ -69,36 +57,12 @@
             "source-reference": "30d3f5da80c2aeab15bcdb5a7d448d15bc294b23"
         },
         {
-            "package": "symfony/event-dispatcher",
-            "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
-            "package": "symfony/event-dispatcher",
-            "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
-            "package": "symfony/finder",
-            "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
             "package": "symfony/finder",
             "version": "dev-master",
             "source-reference": "9ee9a907afeef52956187e862714a7702ca26590"
         },
         {
             "package": "symfony/finder",
-            "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
-            "package": "symfony/http-foundation",
             "version": "dev-master",
             "alias-pretty-version": "2.1.x-dev",
             "alias-version": "2.1.9999999.9999999-dev"
@@ -126,18 +90,6 @@
             "source-reference": "07babe5e04be9af637dc661eaa6ba1fd0ab44e42"
         },
         {
-            "package": "symfony/http-kernel",
-            "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
-            "package": "symfony/process",
-            "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
             "package": "symfony/process",
             "version": "dev-master",
             "alias-pretty-version": "2.1.x-dev",
@@ -158,12 +110,6 @@
             "package": "symfony/routing",
             "version": "dev-master",
             "source-reference": "17018b5a3d6b80f872d05330270e1d828456c183"
-        },
-        {
-            "package": "symfony/routing",
-            "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
         }
     ],
     "packages-dev": null,
