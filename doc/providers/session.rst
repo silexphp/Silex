@@ -24,8 +24,8 @@ Parameters
   * **secure**: Cookie secure (HTTPS)
   * **httponly**: Whether the cookie is http only
 
-  However, all of these are optional. Sessions last as long as the browser
-  is open. To override this, set the ``lifetime`` option.
+  However, all of these are optional. Sessions last as long as the browser is
+  open. To override this, set the ``lifetime`` option.
 
 Services
 --------
@@ -33,11 +33,12 @@ Services
 * **session**: An instance of Symfony2's `Session
   <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Session.html>`_.
 
-* **session.storage**: A service that is used for persistence of the
-  session data. Defaults to a ``NativeSessionStorage``
-  
-* **session.storage.handler**: A service that is used by the ``session.storage``
-  for data access. Defaults to a ``NativeFileSessionHandler`` storage handler.
+* **session.storage**: A service that is used for persistence of the session
+  data. Defaults to a ``NativeSessionStorage``.
+
+* **session.storage.handler**: A service that is used by the
+  ``session.storage`` for data access. Defaults to a
+  ``NativeFileSessionHandler`` storage handler.
 
 Registering
 -----------
@@ -49,8 +50,8 @@ Registering
 Usage
 -----
 
-The Session provider provides a ``session`` service. Here is an
-example that authenticates a user and creates a session for him::
+The Session provider provides a ``session`` service. Here is an example that
+authenticates a user and creates a session for him::
 
     use Symfony\Component\HttpFoundation\Response;
 

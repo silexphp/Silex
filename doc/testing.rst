@@ -3,30 +3,32 @@ Testing
 
 Because Silex is built on top of Symfony2, it is very easy to write functional
 tests for your application. Functional tests are automated software tests that
-ensure that your code is working correctly. They go through the user interface,
-using a fake browser, and mimic the actions a user would do.
+ensure that your code is working correctly. They go through the user
+interface, using a fake browser, and mimic the actions a user would do.
 
 Why
 ---
 
-If you are not familiar with software tests, you may be wondering why you would
-need this. Every time you make a change to your application, you have to test
-it. This means going through all the pages and making sure they are still
+If you are not familiar with software tests, you may be wondering why you
+would need this. Every time you make a change to your application, you have to
+test it. This means going through all the pages and making sure they are still
 working. Functional tests save you a lot of time, because they enable you to
 test your application in usually under a second by running a single command.
 
 For more information on functional testing, unit testing, and automated
-software tests in general, check out `PHPUnit <https://github.com/sebastianbergmann/phpunit>`_
-and `Bulat Shakirzyanov's talk on Clean Code <http://www.slideshare.net/avalanche123/clean-code-5609451>`_.
+software tests in general, check out `PHPUnit
+<https://github.com/sebastianbergmann/phpunit>`_ and `Bulat Shakirzyanov's
+talk on Clean Code
+<http://www.slideshare.net/avalanche123/clean-code-5609451>`_.
 
 PHPUnit
 -------
 
-`PHPUnit <https://github.com/sebastianbergmann/phpunit>`_
-is the de-facto standard testing framework for PHP. It was built for
-writing unit tests, but it can be used for functional tests too. You write
-tests by creating a new class, that extends the ``PHPUnit_Framework_TestCase``.
-Your test cases are methods prefixed with ``test``::
+`PHPUnit <https://github.com/sebastianbergmann/phpunit>`_ is the de-facto
+standard testing framework for PHP. It was built for writing unit tests, but
+it can be used for functional tests too. You write tests by creating a new
+class, that extends the ``PHPUnit_Framework_TestCase``. Your test cases are
+methods prefixed with ``test``::
 
     class ContactFormTest extends PHPUnit_Framework_TestCase
     {
@@ -120,8 +122,9 @@ executed before every test.
             // ...
         }
 
-The WebTestCase provides a ``createClient`` method. A client acts as a browser,
-and allows you to interact with your application. Here's how it works::
+The WebTestCase provides a ``createClient`` method. A client acts as a
+browser, and allows you to interact with your application. Here's how it
+works::
 
         public function testInitialPage()
         {
@@ -148,8 +151,8 @@ application.
 
 .. note::
 
-    You can find some documentation for it in `the client section of the testing
-    chapter of the Symfony2 documentation
+    You can find some documentation for it in `the client section of the
+    testing chapter of the Symfony2 documentation
     <http://symfony.com/doc/current/book/testing.html#the-test-client>`_.
 
 Crawler
@@ -168,8 +171,9 @@ Configuration
 -------------
 
 The suggested way to configure PHPUnit is to create a ``phpunit.xml.dist``
-file, a ``tests`` folder and your tests in ``tests/YourApp/Tests/YourTest.php``.
-The ``phpunit.xml.dist`` file should look like this:
+file, a ``tests`` folder and your tests in
+``tests/YourApp/Tests/YourTest.php``. The ``phpunit.xml.dist`` file should
+look like this:
 
 .. code-block:: xml
 

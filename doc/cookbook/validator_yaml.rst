@@ -15,9 +15,7 @@ your ``composer.json`` file:
     }
 
 Next, you need to tell the Validation Service that you are not using
-``StaticMethodLoader`` to load your class metadata but a YAML file:
-
-.. code-block:: php
+``StaticMethodLoader`` to load your class metadata but a YAML file::
 
     $app->register(new ValidatorServiceProvider());
 

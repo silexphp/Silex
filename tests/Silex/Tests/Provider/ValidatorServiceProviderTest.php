@@ -24,7 +24,7 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         if (!is_dir(__DIR__.'/../../../../vendor/symfony/validator')) {
-            $this->markTestSkipped('Validator submodule was not installed.');
+            $this->markTestSkipped('Validator dependency was not installed.');
         }
     }
 
