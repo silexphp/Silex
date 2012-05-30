@@ -83,14 +83,13 @@ route is matched.
 
 A route pattern consists of:
 
-* *Pattern*: The route pattern defines a path that points to a resource.
-  The pattern can include variable parts and you are able to set
-  RegExp requirements for them.
+* *Pattern*: The route pattern defines a path that points to a resource. The
+  pattern can include variable parts and you are able to set RegExp
+  requirements for them.
 
 * *Method*: One of the following HTTP methods: ``GET``, ``POST``, ``PUT``
-  ``DELETE``. This describes the interaction with the resource. Commonly
-  only ``GET`` and ``POST`` are used, but it is possible to use the
-  others as well.
+  ``DELETE``. This describes the interaction with the resource. Commonly only
+  ``GET`` and ``POST`` are used, but it is possible to use the others as well.
 
 The controller is defined using a closure like this::
 
@@ -98,22 +97,22 @@ The controller is defined using a closure like this::
         // do something
     }
 
-Closures are anonymous functions that may import state from outside
-of their definition. This is different from globals, because the outer
-state does not have to be global. For instance, you could define a
-closure in a function and import local variables of that function.
+Closures are anonymous functions that may import state from outside of their
+definition. This is different from globals, because the outer state does not
+have to be global. For instance, you could define a closure in a function and
+import local variables of that function.
 
 .. note::
 
-    Closures that do not import scope are referred to as lambdas.
-    Because in PHP all anonymous functions are instances of the
-    ``Closure`` class, we will not make a distinction here.
+    Closures that do not import scope are referred to as lambdas. Because in
+    PHP all anonymous functions are instances of the ``Closure`` class, we
+    will not make a distinction here.
 
 The return value of the closure becomes the content of the page.
 
-There is also an alternate way for defining controllers using a
-class method. The syntax for that is ``ClassName::methodName``.
-Static methods are also possible.
+There is also an alternate way for defining controllers using a class method.
+The syntax for that is ``ClassName::methodName``. Static methods are also
+possible.
 
 Example GET route
 ~~~~~~~~~~~~~~~~~
@@ -140,15 +139,14 @@ Here is an example definition of a ``GET`` route::
     });
 
 Visiting ``/blog`` will return a list of blog post titles. The ``use``
-statement means something different in this context. It tells the
-closure to import the $blogPosts variable from the outer scope. This
-allows you to use it from within the closure.
+statement means something different in this context. It tells the closure to
+import the $blogPosts variable from the outer scope. This allows you to use it
+from within the closure.
 
 Dynamic routing
 ~~~~~~~~~~~~~~~
 
-Now, you can create another controller for viewing individual blog
-posts::
+Now, you can create another controller for viewing individual blog posts::
 
     $app->get('/blog/show/{id}', function (Silex\Application $app, $id) use ($blogPosts) {
         if (!isset($blogPosts[$id])) {
@@ -161,8 +159,8 @@ posts::
                 "<p>{$post['body']}</p>";
     });
 
-This route definition has a variable ``{id}`` part which is passed
-to the closure.
+This route definition has a variable ``{id}`` part which is passed to the
+closure.
 
 When the post does not exist, we are using ``abort()`` to stop the request
 early. It actually throws an exception, which we will see how to handle later
@@ -188,19 +186,18 @@ It is pretty straightforward.
 
 .. note::
 
-    There is a :doc:`SwiftmailerServiceProvider <providers/swiftmailer>` included
-    that you can use instead of ``mail()``.
+    There is a :doc:`SwiftmailerServiceProvider <providers/swiftmailer>`
+    included that you can use instead of ``mail()``.
 
 The current ``request`` is automatically injected by Silex to the Closure
 thanks to the type hinting. It is an instance of `Request
 <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Request.html>`_,
 so you can fetch variables using the request ``get`` method.
 
-Instead of returning a string we are returning an instance of
-`Response
+Instead of returning a string we are returning an instance of `Response
 <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Response.html>`_.
-This allows setting an HTTP
-status code, in this case it is set to ``201 Created``.
+This allows setting an HTTP status code, in this case it is set to ``201
+Created``.
 
 .. note::
 
@@ -211,8 +208,8 @@ Other methods
 ~~~~~~~~~~~~~
 
 You can create controllers for most HTTP methods. Just call one of these
-methods on your application: ``get``, ``post``, ``put``, ``delete``. You
-can also call ``match``, which will match all methods::
+methods on your application: ``get``, ``post``, ``put``, ``delete``. You can
+also call ``match``, which will match all methods::
 
     $app->match('/blog', function () {
         ...
@@ -241,7 +238,8 @@ You can match multiple methods with one controller using regex syntax::
 Route variables
 ~~~~~~~~~~~~~~~
 
-As it has been shown before you can define variable parts in a route like this::
+As it has been shown before you can define variable parts in a route like
+this::
 
     $app->get('/blog/show/{id}', function ($id) {
         ...
@@ -254,7 +252,8 @@ closure arguments match the names of the variable parts::
         ...
     });
 
-While it's not suggested, you could also do this (note the switched arguments)::
+While it's not suggested, you could also do this (note the switched
+arguments)::
 
     $app->get('/blog/show/{postId}/{commentId}', function ($commentId, $postId) {
         ...
@@ -350,10 +349,10 @@ have the value ``index``.
 Named routes
 ~~~~~~~~~~~~
 
-Some providers (such as ``UrlGeneratorProvider``) can make use of named routes.
-By default Silex will generate a route name for you, that cannot really be
-used. You can give a route a name by calling ``bind`` on the ``Controller``
-object that is returned by the routing methods::
+Some providers (such as ``UrlGeneratorProvider``) can make use of named
+routes. By default Silex will generate a route name for you, that cannot
+really be used. You can give a route a name by calling ``bind`` on the
+``Controller`` object that is returned by the routing methods::
 
     $app->get('/', function () {
         ...
@@ -368,15 +367,15 @@ object that is returned by the routing methods::
 
 .. note::
 
-    It only makes sense to name routes if you use providers that make use
-    of the ``RouteCollection``.
+    It only makes sense to name routes if you use providers that make use of
+    the ``RouteCollection``.
 
 Before, after and finish filters
 --------------------------------
 
 Silex allows you to run code before, after every request and even after the
-response has been sent. This happens through ``before``, ``after`` and ``finish``
-filters. All you need to do is pass a closure::
+response has been sent. This happens through ``before``, ``after`` and
+``finish`` filters. All you need to do is pass a closure::
 
     $app->before(function () {
         // set up
@@ -390,8 +389,8 @@ filters. All you need to do is pass a closure::
         // after response has been sent
     });
 
-The before filter has access to the current Request, and can short-circuit
-the whole rendering by returning a Response::
+The before filter has access to the current Request, and can short-circuit the
+whole rendering by returning a Response::
 
     $app->before(function (Request $request) {
         // redirect the user to the login screen if access to the Resource is protected
@@ -491,12 +490,12 @@ the defaults for new controllers.
 Error handlers
 --------------
 
-If some part of your code throws an exception you will want to display
-some kind of error page to the user. This is what error handlers do. You
-can also use them to do additional things, such as logging.
+If some part of your code throws an exception you will want to display some
+kind of error page to the user. This is what error handlers do. You can also
+use them to do additional things, such as logging.
 
-To register an error handler, pass a closure to the ``error`` method
-which takes an ``Exception`` argument and returns a response::
+To register an error handler, pass a closure to the ``error`` method which
+takes an ``Exception`` argument and returns a response::
 
     use Symfony\Component\HttpFoundation\Response;
 
@@ -535,9 +534,9 @@ once a response is returned, the following handlers are ignored.
 
 .. note::
 
-    Silex ships with a provider for `Monolog <https://github.com/Seldaek/monolog>`_
-    which handles logging of errors. Check out the *Providers* chapter
-    for details.
+    Silex ships with a provider for `Monolog
+    <https://github.com/Seldaek/monolog>`_ which handles logging of errors.
+    Check out the *Providers* chapter for details.
 
 .. tip::
 
@@ -571,8 +570,8 @@ early::
 Redirects
 ---------
 
-You can redirect to another page by returning a redirect response, which
-you can create by calling the ``redirect`` method::
+You can redirect to another page by returning a redirect response, which you
+can create by calling the ``redirect`` method::
 
     $app->get('/', function () use ($app) {
         return $app->redirect('/hello');
@@ -672,10 +671,8 @@ JSON
 ----
 
 If you want to return JSON data, you can use the ``json`` helper method.
-Simply pass it your data, status code and headers, and it will create a
-JSON response for you.
-
-.. code-block:: php
+Simply pass it your data, status code and headers, and it will create a JSON
+response for you::
 
     $app->get('/users/{id}', function ($id) use ($app) {
         $user = getUser($id);
@@ -691,10 +688,8 @@ JSON response for you.
 Streaming
 ---------
 
-It's possible to create a streaming response, which is important in cases
-when you cannot buffer the data being sent.
-
-.. code-block:: php
+It's possible to create a streaming response, which is important in cases when
+you cannot buffer the data being sent::
 
     $app->get('/images/{file}', function ($file) use ($app) {
         if (!file_exists(__DIR__.'/images/'.$file)) {
@@ -708,10 +703,8 @@ when you cannot buffer the data being sent.
         return $app->stream($stream, 200, array('Content-Type' => 'image/png'));
     });
 
-If you need to send chunks, make sure you call ``ob_flush`` and ``flush`` after
-every chunk.
-
-.. code-block:: php
+If you need to send chunks, make sure you call ``ob_flush`` and ``flush``
+after every chunk::
 
     $stream = function () {
         $fh = fopen('http://www.example.com/', 'rb');
@@ -732,8 +725,8 @@ Escaping
 ~~~~~~~~
 
 When outputting any user input (either route variables GET/POST variables
-obtained from the request), you will have to make sure to escape it
-correctly, to prevent Cross-Site-Scripting attacks.
+obtained from the request), you will have to make sure to escape it correctly,
+to prevent Cross-Site-Scripting attacks.
 
 * **Escaping HTML**: PHP provides the ``htmlspecialchars`` function for this.
   Silex provides a shortcut ``escape`` method::

@@ -52,4 +52,8 @@ class FormServiceProvider implements ServiceProviderInterface
             return new DefaultCsrfProvider($app['form.secret']);
         });
     }
+
+    public function boot(Application $app)
+    {
+    }
 }

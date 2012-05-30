@@ -22,8 +22,10 @@ Recipes
 
 * :doc:`Translating Validation Messages<translating_validation_messages>`.
 
-* :doc:`How to use PdoSessionStorage to store sessions in the database <session_storage>`.
+* :doc:`How to use PdoSessionStorage to store sessions in the database
+  <session_storage>`.
 
-* :doc:`How to disable the CSRF Protection on a form using the FormExtension <form_no_csrf>`.
+* :doc:`How to disable the CSRF Protection on a form using the FormExtension
+  <form_no_csrf>`.
 
 * :doc:`How to use YAML to configure validation <validator_yaml>`.
