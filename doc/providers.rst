@@ -77,11 +77,15 @@ Providers must implement the ``Silex\ServiceProviderInterface``::
     interface ServiceProviderInterface
     {
         function register(Application $app);
+
+        function boot(Application $app);
     }
 
-This is very straight forward, just create a new class that implements the
-``register`` method. In this method you must define services on the
-application which then may make use of other services and parameters.
+This is very straight forward, just create a new class that implements the two
+methods. In the ``register()`` method, you can define services on the
+application which then may make use of other services and parameters. In the
+``boot()`` method, you can configure the application, just before it handles a
+request.
 
 Here is an example of such a provider::
 
@@ -100,6 +104,10 @@ Here is an example of such a provider::
 
                 return 'Hello '.$app->escape($name);
             });
+        }
+
+        public function boot(Application $app)
+        {
         }
     }
 
