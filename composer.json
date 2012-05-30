@@ -35,7 +35,8 @@
         "symfony/monolog-bridge": "2.1.*",
         "symfony/validator": "2.1.*",
         "twig/twig": ">=1.2.0",
-        "doctrine/dbal": "2.1.*"
+        "doctrine/dbal": "2.1.*",
+        "swiftmailer/swiftmailer": "4.1.*"
     },
     "autoload": {
         "psr-0": { "Silex": "src/" }
