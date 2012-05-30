@@ -487,6 +487,12 @@ middleware, a requirement, or a default value), you can configure it on
 These settings are applied to already registered controllers and they become
 the defaults for new controllers.
 
+.. note::
+
+    The global configuration does not apply to controller providers you might
+    mount as they have their own global configuration (see the Modularity
+    paragraph below).
+
 Error handlers
 --------------
 
