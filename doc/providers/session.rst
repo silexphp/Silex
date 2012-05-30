@@ -8,7 +8,7 @@ Parameters
 ----------
 
 * **session.storage.save_path** (optional): The path for the
-  ``NativeFileSessionHandler``, defaults to the value of
+  ``FileSessionHandler``, defaults to the value of
   ``sys_get_temp_dir()``.
 
 * **session.storage.options**: An array of options that is passed to the
@@ -38,7 +38,7 @@ Services
 
 * **session.storage.handler**: A service that is used by the
   ``session.storage`` for data access. Defaults to a
-  ``NativeFileSessionHandler`` storage handler.
+  ``FileSessionHandler`` storage handler.
 
 Registering
 -----------
