@@ -1,18 +1,17 @@
 SwiftmailerServiceProvider
 ==========================
 
-The *SwiftmailerServiceProvider* provides a service for sending
-email through the `Swift Mailer <http://swiftmailer.org>`_
-library.
+The *SwiftmailerServiceProvider* provides a service for sending email through
+the `Swift Mailer <http://swiftmailer.org>`_ library.
 
-You can use the ``mailer`` service to send messages easily.
-By default, it will attempt to send emails through SMTP.
+You can use the ``mailer`` service to send messages easily. By default, it
+will attempt to send emails through SMTP.
 
 Parameters
 ----------
 
-* **swiftmailer.options**: An array of options for the default
-  SMTP-based configuration.
+* **swiftmailer.options**: An array of options for the default SMTP-based
+  configuration.
 
   The following options can be set:
 
@@ -75,9 +74,7 @@ Registering
 Usage
 -----
 
-The Swiftmailer provider provides a ``mailer`` service.
-
-::
+The Swiftmailer provider provides a ``mailer`` service:
 
     $app->post('/feedback', function () use ($app) {
         $request = $app['request'];

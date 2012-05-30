@@ -29,6 +29,7 @@ class SwiftmailerServiceProviderTest extends \PHPUnit_Framework_TestCase
     public function testSwiftMailerServiceIsSwiftMailer()
     {
         $app = new Application();
+
         $app->register(new SwiftmailerServiceProvider(), array(
             'swiftmailer.class_path'  => __DIR__.'/../../../../vendor/swiftmailer/swiftmailer/lib/classes',
         ));
@@ -39,43 +40,25 @@ class SwiftmailerServiceProviderTest extends \PHPUnit_Framework_TestCase
     public function testSwiftMailerSendsMailsOnFinish()
     {
         $app = new Application();
+
         $app->register(new SwiftmailerServiceProvider(), array(
             'swiftmailer.class_path'  => __DIR__.'/../../../../vendor/swiftmailer/swiftmailer/lib/classes',
         ));
 
-        $app['swiftmailer.transport'] = $app->share(function () use ($app) {
-           return new \Swift_Transport_SpoolTransport($app['swiftmailer.transport.eventdispatcher'], new \Swift_MemorySpool());
-        });
+        $spool = new SpoolStub();
+        $app['swiftmailer.spooltransport'] = new \Swift_SpoolTransport($spool);
 
         $app->get('/', function() use ($app) {
             $app['mailer']->send(\Swift_Message::newInstance());
         });
 
-        /**
-         * Checks spool is empty before process
-         */
-        $this->assertEquals(0, $app['swiftmailer.spooltransport']->getSpool()->flushQueue($app['swiftmailer.transport']));
+        $this->assertCount(0, $spool->getMessages());
 
         $request = Request::create('/');
-        $app->handle($request);
-        /**
-         * Checks spool has the message that is sent in controller and regenerates it
-         */
-        $this->assertEquals(1, $app['swiftmailer.spooltransport']->getSpool()->flushQueue($app['swiftmailer.transport']));
-        $app['mailer']->send(\Swift_Message::newInstance());
+        $response = $app->handle($request);
+        $this->assertCount(1, $spool->getMessages());
 
-        /**
-         * Terminates app and checks that spool is empty
-         */
-        $app->terminate($request, new SendMailsResponse('should send e-mails'));
-        $this->assertEquals(0, $app['swiftmailer.spooltransport']->getSpool()->flushQueue($app['swiftmailer.transport']));
-    }
-}
-
-class SendMailsResponse extends Response
-{
-    public function send()
-    {
-        // do nothing
+        $app->terminate($request, $response);
+        $this->assertCount(0, $spool->getMessages());
     }
 }

@@ -1,8 +1,8 @@
 UrlGeneratorServiceProvider
 ===========================
 
-The *UrlGeneratorServiceProvider* provides a service for generating
-URLs for named routes.
+The *UrlGeneratorServiceProvider* provides a service for generating URLs for
+named routes.
 
 Parameters
 ----------
@@ -16,9 +16,9 @@ Services
   <http://api.symfony.com/master/Symfony/Component/Routing/Generator/UrlGenerator.html>`_,
   using the `RouteCollection
   <http://api.symfony.com/master/Symfony/Component/Routing/RouteCollection.html>`_
-  that is provided through the ``routes`` service.
-  It has a ``generate`` method, which takes the route name as an argument,
-  followed by an array of route parameters.
+  that is provided through the ``routes`` service. It has a ``generate``
+  method, which takes the route name as an argument, followed by an array of
+  route parameters.
 
 Registering
 -----------
