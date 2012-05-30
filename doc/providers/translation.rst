@@ -179,9 +179,7 @@ templates:
 
     {{ app.translator.trans('translation_key') }}
 
-Even better: register the :doc:`SymfonyBridgesServiceProvider
-</providers/symfony_bridges>` and you will get the TranslationExtension of the
-bridge allowing you to translate strings in the Twig way:
+Moreover, you will be allowed to translate strings in the Twig way:
 
 .. code-block:: jinja
 
