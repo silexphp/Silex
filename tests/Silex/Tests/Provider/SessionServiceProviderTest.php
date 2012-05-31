@@ -30,6 +30,11 @@ class SessionServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $app->register(new SessionServiceProvider());
 
+        /**
+         * Smoke test
+         */
+        $defaultStorage = $app['session.storage'];
+
         $app['session.storage'] = $app->share(function () use ($app) {
             return new MockArraySessionStorage();
         });
