@@ -56,7 +56,6 @@ class Compiler
             ->exclude('Tests')
             ->in(__DIR__.'/..')
             ->in(__DIR__.'/../../vendor/pimple/pimple/lib')
-            ->in(__DIR__.'/../../vendor/symfony/class-loader/Symfony/Component/ClassLoader')
             ->in(__DIR__.'/../../vendor/symfony/event-dispatcher/Symfony/Component/EventDispatcher')
             ->in(__DIR__.'/../../vendor/symfony/http-foundation/Symfony/Component/HttpFoundation')
             ->in(__DIR__.'/../../vendor/symfony/http-kernel/Symfony/Component/HttpKernel')
