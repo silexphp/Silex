@@ -3,9 +3,15 @@ Changelog
 
 This changelog references all backward incompatibilities as we introduce them:
 
-* **2012-05-26**: added ``boot()`` to ``ServiceProviderInterface``
+* **2012-05-31**: Made the ``BrowserKit``, ``CssSelector`` and ``DomCrawler``
+  components optional dependencies. Projects that have functional tests should
+  add those dependencies into the ``require-dev`` section of their
+  ``composer.json``.
 
-* **2012-05-26**: Removed ``SymfonyBridgesServiceProvider``
+* **2012-05-26**: added ``boot()`` to ``ServiceProviderInterface``.
+
+* **2012-05-26**: Removed ``SymfonyBridgesServiceProvider``. It is now implicit
+  by checking the existence of the bridge.
 
 * **2012-05-26**: Removed the ``translator.messages`` parameter (use
   ``translator.domains`` instead).
