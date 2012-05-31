@@ -69,8 +69,6 @@ Symfony2
 
 Following Symfony2 components are used by Silex:
 
-* **ClassLoader**: For autoloading classes.
-
 * **HttpFoundation**: For ``Request`` and ``Response``.
 
 * **HttpKernel**: Because we need a heart.
