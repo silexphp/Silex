@@ -3,10 +3,10 @@ Changelog
 
 This changelog references all backward incompatibilities as we introduce them:
 
-* **2012-05-31**: Made the ``BrowserKit``, ``CssSelector`` and ``DomCrawler``
-  components optional dependencies. Projects that have functional tests should
-  add those dependencies into the ``require-dev`` section of their
-  ``composer.json``.
+* **2012-05-31**: Made the ``BrowserKit``, ``CssSelector``, ``DomCrawler``,
+  ``Finder`` and ``Process`` components optional dependencies. Projects that
+  depend on them (e.g. through functional tests) should add those dependencies
+  to the ``require-dev`` section of their ``composer.json``.
 
 * **2012-05-26**: added ``boot()`` to ``ServiceProviderInterface``.
 
