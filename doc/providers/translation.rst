@@ -180,7 +180,7 @@ templates:
     {{ app.translator.trans('translation_key') }}
 
 Moreover, when using the Twig bridge provided by Symfony (see
-:doc:`TwigServiceProvider <twig>`), you will be allowed to translate
+:doc:`TwigServiceProvider </providers/twig>`), you will be allowed to translate
 strings in the Twig way:
 
 .. code-block:: jinja
