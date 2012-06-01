@@ -48,32 +48,34 @@ class Compiler
 
         $phar->startBuffering();
 
+        $root = __DIR__.'/../../..';
+
         $finder = new Finder();
         $finder->files()
             ->ignoreVCS(true)
             ->name('*.php')
             ->notName('Compiler.php')
             ->exclude('Tests')
-            ->in(__DIR__.'/..')
-            ->in(__DIR__.'/../../vendor/pimple/pimple/lib')
-            ->in(__DIR__.'/../../vendor/symfony/event-dispatcher/Symfony/Component/EventDispatcher')
-            ->in(__DIR__.'/../../vendor/symfony/http-foundation/Symfony/Component/HttpFoundation')
-            ->in(__DIR__.'/../../vendor/symfony/http-kernel/Symfony/Component/HttpKernel')
-            ->in(__DIR__.'/../../vendor/symfony/routing/Symfony/Component/Routing')
-            ->in(__DIR__.'/../../vendor/symfony/browser-kit/Symfony/Component/BrowserKit')
-            ->in(__DIR__.'/../../vendor/symfony/css-selector/Symfony/Component/CssSelector')
-            ->in(__DIR__.'/../../vendor/symfony/dom-crawler/Symfony/Component/DomCrawler')
+            ->in($root.'/src')
+            ->in($root.'/vendor/pimple/pimple/lib')
+            ->in($root.'/vendor/symfony/event-dispatcher/Symfony/Component/EventDispatcher')
+            ->in($root.'/vendor/symfony/http-foundation/Symfony/Component/HttpFoundation')
+            ->in($root.'/vendor/symfony/http-kernel/Symfony/Component/HttpKernel')
+            ->in($root.'/vendor/symfony/routing/Symfony/Component/Routing')
+            ->in($root.'/vendor/symfony/browser-kit/Symfony/Component/BrowserKit')
+            ->in($root.'/vendor/symfony/css-selector/Symfony/Component/CssSelector')
+            ->in($root.'/vendor/symfony/dom-crawler/Symfony/Component/DomCrawler')
         ;
 
         foreach ($finder as $file) {
             $this->addFile($phar, $file);
         }
 
-        $this->addFile($phar, new \SplFileInfo(__DIR__.'/../../LICENSE'), false);
-        $this->addFile($phar, new \SplFileInfo(__DIR__.'/../../vendor/autoload.php'));
-        $this->addFile($phar, new \SplFileInfo(__DIR__.'/../../vendor/composer/ClassLoader.php'));
-        $this->addFile($phar, new \SplFileInfo(__DIR__.'/../../vendor/composer/autoload_namespaces.php'));
-        $this->addFile($phar, new \SplFileInfo(__DIR__.'/../../vendor/composer/autoload_classmap.php'));
+        $this->addFile($phar, new \SplFileInfo($root.'/LICENSE'), false);
+        $this->addFile($phar, new \SplFileInfo($root.'/vendor/autoload.php'));
+        $this->addFile($phar, new \SplFileInfo($root.'/vendor/composer/ClassLoader.php'));
+        $this->addFile($phar, new \SplFileInfo($root.'/vendor/composer/autoload_namespaces.php'));
+        $this->addFile($phar, new \SplFileInfo($root.'/vendor/composer/autoload_classmap.php'));
 
         // Stubs
         $phar->setStub($this->getStub());
