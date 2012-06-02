@@ -3,7 +3,7 @@
 
 require_once __DIR__.'/../vendor/autoload.php';
 
-use Silex\Compiler\Util;
+use Silex\Util\Compiler;
 
 $compiler = new Compiler();
 $compiler->compile();
