@@ -56,6 +56,10 @@ class MonologServiceProvider implements ServiceProviderInterface
                 return Logger::DEBUG;
             };
         }
+
+        if (isset($app['monolog.class_path'])) {
+            throw new \RuntimeException('You have provided the monolog.class_path parameter. The autoloader has been removed from Silex. It is recommended that you use Composer to manage your dependencies and handle your autoloading. If you are already using Composer, you can remove the parameter. See http://getcomposer.org for more information.');
+        }
     }
 
     public function boot(Application $app)
