@@ -51,7 +51,7 @@ begins with ``application/json``. Since we want to do this for every request,
 the easiest solution is to use a before filter.
 
 We simply use ``json_decode`` to parse the content of the request and then
-replace the request data on the ``$request`` object:
+replace the request data on the ``$request`` object::
 
     use Symfony\Component\HttpFoundation\Request;
     use Symfony\Component\HttpFoundation\ParameterBag;
@@ -67,7 +67,7 @@ Controller implementation
 -------------------------
 
 Our controller will create a new blog post from the data provided and will
-return the post object, including its ``id``, as JSON:
+return the post object, including its ``id``, as JSON::
 
     use Symfony\Component\HttpFoundation\Request;
     use Symfony\Component\HttpFoundation\Response;
