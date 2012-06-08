@@ -273,6 +273,7 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
         // Since we throw a standard Exception above only
         // the second error handler should fire
         $app->error(function (\LogicException $e) { // Extends \Exception
+
             return "Caught LogicException";
         });
         $app->error(function (\Exception $e) {
@@ -298,6 +299,7 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
         // Since we throw a LogicException above
         // the first error handler should fire
         $app->error(function (\LogicException $e) { // Extends \Exception
+
             return "Caught LogicException";
         });
         $app->error(function (\Exception $e) {
@@ -328,6 +330,7 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
             return "Caught Exception";
         });
         $app->error(function (\LogicException $e) { // Extends \Exception
+
             return "Caught LogicException";
         });
 
