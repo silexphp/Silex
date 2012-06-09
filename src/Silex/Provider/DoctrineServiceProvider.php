@@ -12,8 +12,8 @@
 namespace Silex\Provider;
 
 use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Silex\Application;
-use Silex\ServiceProviderInterface;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Configuration;
 use Doctrine\Common\EventManager;
@@ -25,7 +25,7 @@ use Doctrine\Common\EventManager;
  */
 class DoctrineServiceProvider implements ServiceProviderInterface
 {
-    public function register(Application $app)
+    public function register(Container $app)
     {
         $app['db.default_options'] = array(
             'driver'   => 'pdo_mysql',
@@ -127,9 +127,5 @@ class DoctrineServiceProvider implements ServiceProviderInterface
         if (isset($app['db.common.class_path'])) {
             throw new \RuntimeException('You have provided the db.common.class_path parameter. The autoloader has been removed from Silex. It is recommended that you use Composer to manage your dependencies and handle your autoloading. If you are already using Composer, you can remove the parameter. See http://getcomposer.org for more information.');
         }
-    }
-
-    public function boot(Application $app)
-    {
     }
 }

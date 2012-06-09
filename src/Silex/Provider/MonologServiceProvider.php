@@ -11,6 +11,8 @@
 
 namespace Silex\Provider;
 
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Silex\Application;
@@ -25,7 +27,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class MonologServiceProvider implements ServiceProviderInterface
 {
-    public function register(Application $app)
+    public function register(Container $app)
     {
         if ($bridge = class_exists('Symfony\Bridge\Monolog\Logger')) {
             $app['logger'] = function () use ($app) {

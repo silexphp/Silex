@@ -11,8 +11,9 @@
 
 namespace Silex\Provider;
 
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Silex\Application;
-use Silex\ServiceProviderInterface;
 use Symfony\Component\Form\Extension\Csrf\CsrfProvider\DefaultCsrfProvider;
 use Symfony\Component\Form\Extension\Csrf\CsrfProvider\SessionCsrfProvider;
 use Symfony\Component\Form\FormFactory;
@@ -27,7 +28,7 @@ use Symfony\Component\Form\Extension\Csrf\CsrfExtension;
  */
 class FormServiceProvider implements ServiceProviderInterface
 {
-    public function register(Application $app)
+    public function register(Container $app)
     {
         $app['form.secret'] = md5(__DIR__);
 
@@ -55,9 +56,5 @@ class FormServiceProvider implements ServiceProviderInterface
         if (isset($app['form.class_path'])) {
             throw new \RuntimeException('You have provided the form.class_path parameter. The autoloader has been removed from Silex. It is recommended that you use Composer to manage your dependencies and handle your autoloading. If you are already using Composer, you can remove the parameter. See http://getcomposer.org for more information.');
         }
-    }
-
-    public function boot(Application $app)
-    {
     }
 }

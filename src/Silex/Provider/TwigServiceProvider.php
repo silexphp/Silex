@@ -11,9 +11,10 @@
 
 namespace Silex\Provider;
 
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-
 use Symfony\Bridge\Twig\Extension\RoutingExtension as TwigRoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension as TwigTranslationExtension;
 use Symfony\Bridge\Twig\Extension\FormExtension as TwigFormExtension;
@@ -25,7 +26,7 @@ use Symfony\Bridge\Twig\Extension\FormExtension as TwigFormExtension;
  */
 class TwigServiceProvider implements ServiceProviderInterface
 {
-    public function register(Application $app)
+    public function register(Container $app)
     {
         $app['twig'] = $app->share(function () use ($app) {
             $app['twig.options'] = array_replace(
@@ -93,9 +94,5 @@ class TwigServiceProvider implements ServiceProviderInterface
         if (isset($app['twig.class_path'])) {
             throw new \RuntimeException('You have provided the twig.class_path parameter. The autoloader has been removed from Silex. It is recommended that you use Composer to manage your dependencies and handle your autoloading. If you are already using Composer, you can remove the parameter. See http://getcomposer.org for more information.');
         }
-    }
-
-    public function boot(Application $app)
-    {
     }
 }

@@ -11,9 +11,10 @@
 
 namespace Silex\Provider;
 
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-
 use Symfony\Component\Translation\Translator;
 use Symfony\Component\Translation\MessageSelector;
 use Symfony\Component\Translation\Loader\ArrayLoader;
@@ -25,7 +26,7 @@ use Symfony\Component\Translation\Loader\ArrayLoader;
  */
 class TranslationServiceProvider implements ServiceProviderInterface
 {
-    public function register(Application $app)
+    public function register(Container $app)
     {
         $app['translator'] = $app->share(function () use ($app) {
             $translator = new Translator(isset($app['locale']) ? $app['locale'] : 'en', $app['translator.message_selector']);
@@ -56,9 +57,5 @@ class TranslationServiceProvider implements ServiceProviderInterface
         if (isset($app['translation.class_path'])) {
             throw new \RuntimeException('You have provided the translation.class_path parameter. The autoloader has been removed from Silex. It is recommended that you use Composer to manage your dependencies and handle your autoloading. If you are already using Composer, you can remove the parameter. See http://getcomposer.org for more information.');
         }
-    }
-
-    public function boot(Application $app)
-    {
     }
 }

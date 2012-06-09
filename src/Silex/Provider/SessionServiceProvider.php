@@ -11,9 +11,10 @@
 
 namespace Silex\Provider;
 
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\FileSessionHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -28,7 +29,7 @@ class SessionServiceProvider implements ServiceProviderInterface
 {
     private $app;
 
-    public function register(Application $app)
+    public function register(Container $app)
     {
         $this->app = $app;
 

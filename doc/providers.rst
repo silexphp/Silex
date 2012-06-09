@@ -72,19 +72,23 @@ You are encouraged to share yours.
 Creating a provider
 ~~~~~~~~~~~~~~~~~~~
 
-Providers must implement the ``Silex\ServiceProviderInterface``::
+Providers must implement the ``Pimple\ServiceProviderInterface``::
+
+    use Pimple\Container;
 
     interface ServiceProviderInterface
     {
-        function register(Application $app);
+        function register(Container $app);
 
         function boot(Application $app);
     }
 
-This is very straight forward, just create a new class that implements the two
-methods. In the ``register()`` method, you can define services on the
-application which then may make use of other services and parameters. In the
-``boot()`` method, you can configure the application, just before it handles a
+This is very straight forward, just create a new class that implements the
+``register()`` method. In this method you can define services on the container
+which then may make use of other services and parameters.
+
+Optionally you can define a ``boot()`` method that takes the application as an
+argument. You can run some custom setup code, just before it handles a
 request.
 
 Here is an example of such a provider::
@@ -92,7 +96,7 @@ Here is an example of such a provider::
     namespace Acme;
 
     use Silex\Application;
-    use Silex\ServiceProviderInterface;
+    use Pimple\ServiceProviderInterface;
 
     class HelloServiceProvider implements ServiceProviderInterface
     {

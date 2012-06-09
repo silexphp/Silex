@@ -11,9 +11,10 @@
 
 namespace Silex\Provider;
 
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-
 use Symfony\Component\Validator\Validator;
 use Symfony\Component\Validator\Mapping\ClassMetadataFactory;
 use Symfony\Component\Validator\Mapping\Loader\StaticMethodLoader;
@@ -57,9 +58,5 @@ class ValidatorServiceProvider implements ServiceProviderInterface
         if (isset($app['validator.class_path'])) {
             throw new \RuntimeException('You have provided the validator.class_path parameter. The autoloader has been removed from Silex. It is recommended that you use Composer to manage your dependencies and handle your autoloading. If you are already using Composer, you can remove the parameter. See http://getcomposer.org for more information.');
         }
-    }
-
-    public function boot(Application $app)
-    {
     }
 }

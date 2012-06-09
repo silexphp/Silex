@@ -11,8 +11,9 @@
 
 namespace Silex\Provider;
 
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Silex\Application;
-use Silex\ServiceProviderInterface;
 use Silex\HttpCache;
 use Symfony\Component\HttpKernel\HttpCache\Esi;
 use Symfony\Component\HttpKernel\HttpCache\Store;
@@ -24,7 +25,7 @@ use Symfony\Component\HttpKernel\HttpCache\Store;
  */
 class HttpCacheServiceProvider implements ServiceProviderInterface
 {
-    public function register(Application $app)
+    public function register(Container $app)
     {
         $app['http_cache'] = $app->share(function () use ($app) {
             return new HttpCache($app, $app['http_cache.store'], $app['http_cache.esi'], $app['http_cache.options']);
@@ -41,9 +42,5 @@ class HttpCacheServiceProvider implements ServiceProviderInterface
         if (!isset($app['http_cache.options'])) {
             $app['http_cache.options'] = array();
         }
-    }
-
-    public function boot(Application $app)
-    {
     }
 }

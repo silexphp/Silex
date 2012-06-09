@@ -49,7 +49,7 @@ class Application extends Container implements HttpKernelInterface, EventSubscri
 {
     const VERSION = '@package_version@';
 
-    private $providers = array();
+    private $bootableProviders = array();
     private $booted = false;
 
     /**
@@ -155,7 +155,9 @@ class Application extends Container implements HttpKernelInterface, EventSubscri
             $this[$key] = $value;
         }
 
-        $this->providers[] = $provider;
+        if (method_exists($provider, 'boot')) {
+            $this->bootableProviders[] = $provider;
+        }
 
         $provider->register($this);
     }
@@ -163,7 +165,7 @@ class Application extends Container implements HttpKernelInterface, EventSubscri
     public function boot()
     {
         if (!$this->booted) {
-            foreach ($this->providers as $provider) {
+            foreach ($this->bootableProviders as $provider) {
                 $provider->boot($this);
             }
 
