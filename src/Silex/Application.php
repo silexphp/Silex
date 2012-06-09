@@ -12,6 +12,7 @@
 namespace Silex;
 
 use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\TerminableInterface;
