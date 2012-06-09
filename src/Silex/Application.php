@@ -605,7 +605,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     /**
      * {@inheritdoc}
      */
-    static public function getSubscribedEvents()
+    public static function getSubscribedEvents()
     {
         return array(
             KernelEvents::REQUEST    => array(

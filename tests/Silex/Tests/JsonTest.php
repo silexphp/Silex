@@ -13,7 +13,6 @@ namespace Silex\Tests;
 
 use Silex\Application;
 
-
 /**
  * JSON test cases.
  *
