@@ -11,6 +11,8 @@
 
 namespace Silex\Tests;
 
+use Pimple\ServiceProviderInterface;
+
 use Silex\Application;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -366,6 +368,57 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('foo /', $app->handle($mainRequest)->getContent());
     }
+
+    public function testRegisterWithNonBootableServiceProvider()
+    {
+        $app = new Application();
+
+        $provider = $this->getMock('Pimple\ServiceProviderInterface');
+        $provider
+            ->expects($this->once())
+            ->method('register')
+            ->with($app);
+
+        $app->register($provider);
+    }
+
+    public function testRegisterAndBootWithBootableServiceProvider()
+    {
+        $app = new Application();
+
+        $provider = $this->getMock('Silex\Tests\StubServiceProvider');
+        $provider
+            ->expects($this->once())
+            ->method('register')
+            ->with($this->isInstanceOf('Silex\Application'));
+        $provider
+            ->expects($this->once())
+            ->method('boot')
+            ->with($this->isInstanceOf('Silex\Application'));
+
+        $app->register($provider);
+        $app->boot();
+    }
+
+    /**
+     * @expectedException RuntimeException
+     * @expectedExceptionMessage You cannot register a bootable service provider after the application is booted.
+     */
+    public function testRegisterAndBootWithBootableServiceProviderAfterBooted()
+    {
+        $app = new Application();
+
+        $provider = $this->getMock('Silex\Tests\StubServiceProvider');
+        $provider
+            ->expects($this->never())
+            ->method('register');
+        $provider
+            ->expects($this->never())
+            ->method('boot');
+
+        $app->boot();
+        $app->register($provider);
+    }
 }
 
 class FooController
@@ -373,5 +426,12 @@ class FooController
     public function barAction(Application $app, $name)
     {
         return 'Hello '.$app->escape($name);
+    }
+}
+
+abstract class StubServiceProvider implements ServiceProviderInterface
+{
+    public function boot(Application $app)
+    {
     }
 }

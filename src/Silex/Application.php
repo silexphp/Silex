@@ -157,6 +157,10 @@ class Application extends Container implements HttpKernelInterface, EventSubscri
         }
 
         if (method_exists($provider, 'boot')) {
+            if ($this->booted) {
+                throw new \RuntimeException('You cannot register a bootable service provider after the application is booted.');
+            }
+
             $this->bootableProviders[] = $provider;
         }
 
