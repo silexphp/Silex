@@ -28,6 +28,7 @@
         "symfony/browser-kit": "2.1.*",
         "symfony/css-selector": "2.1.*",
         "symfony/finder": "2.1.*",
+        "symfony/locale": "2.1.*",
         "symfony/monolog-bridge": "2.1.*",
         "symfony/process": "2.1.*",
         "symfony/translation": "2.1.*",
