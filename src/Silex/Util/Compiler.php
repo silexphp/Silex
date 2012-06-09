@@ -160,7 +160,7 @@ EOF;
      *
      * @return string The PHP string with the whitespace removed
      */
-    static public function stripWhitespace($source)
+    public static function stripWhitespace($source)
     {
         if (!function_exists('token_get_all')) {
             return $source;

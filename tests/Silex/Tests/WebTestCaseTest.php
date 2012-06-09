@@ -36,6 +36,7 @@ class WebTestCaseTest extends WebTestCase
         $app->match('/server', function () use ($app) {
             $user = $app['request']->server->get('PHP_AUTH_USER');
             $pass = $app['request']->server->get('PHP_AUTH_PW');
+
             return "<h1>$user:$pass</h1>";
         });
 
