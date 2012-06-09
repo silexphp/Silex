@@ -14,32 +14,29 @@ namespace Silex;
 use Pimple\Container;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\HttpKernel\TerminableInterface;
 use Symfony\Component\HttpKernel\Event\KernelEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\HttpKernel\EventListener\ResponseListener;
 use Symfony\Component\HttpKernel\EventListener\RouterListener;
-use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RequestContext;
-use Symfony\Component\Routing\Exception\ExceptionInterface as RoutingException;
-use Symfony\Component\Routing\Exception\MethodNotAllowedException;
-use Symfony\Component\Routing\Exception\ResourceNotFoundException;
-use Symfony\Component\ClassLoader\UniversalClassLoader;
 use Silex\RedirectableUrlMatcher;
 use Silex\ControllerResolver;
 
@@ -48,9 +45,12 @@ use Silex\ControllerResolver;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Application extends Container implements HttpKernelInterface, EventSubscriberInterface
+class Application extends Container implements HttpKernelInterface, EventSubscriberInterface, TerminableInterface
 {
     const VERSION = '@package_version@';
+
+    private $providers = array();
+    private $booted = false;
 
     /**
      * Constructor.
@@ -59,12 +59,11 @@ class Application extends Container implements HttpKernelInterface, EventSubscri
     {
         $app = $this;
 
-        $this['autoloader'] = $this->share(function () {
-            $loader = new UniversalClassLoader();
-            $loader->register();
+        $this['logger'] = null;
 
-            return $loader;
-        });
+        $this['autoloader'] = function () {
+            throw new \RuntimeException('You tried to access the autoloader service. The autoloader has been removed from Silex. It is recommended that you use Composer to manage your dependencies and handle your autoloading. See http://getcomposer.org for more information.');
+        };
 
         $this['routes'] = $this->share(function () {
             return new RouteCollection();
@@ -85,13 +84,13 @@ class Application extends Container implements HttpKernelInterface, EventSubscri
             $urlMatcher = new LazyUrlMatcher(function () use ($app) {
                 return $app['url_matcher'];
             });
-            $dispatcher->addSubscriber(new RouterListener($urlMatcher));
+            $dispatcher->addSubscriber(new RouterListener($urlMatcher, $app['logger']));
 
             return $dispatcher;
         });
 
         $this['resolver'] = $this->share(function () use ($app) {
-            return new ControllerResolver($app);
+            return new ControllerResolver($app, $app['logger']);
         });
 
         $this['kernel'] = $this->share(function () use ($app) {
@@ -111,6 +110,33 @@ class Application extends Container implements HttpKernelInterface, EventSubscri
             return new RedirectableUrlMatcher($app['routes'], $app['request_context']);
         });
 
+        $this['route_middlewares_trigger'] = $this->protect(function (KernelEvent $event) use ($app) {
+            $request = $event->getRequest();
+            $routeName = $request->attributes->get('_route');
+            if (!$route = $app['routes']->get($routeName)) {
+                return;
+            }
+
+            foreach ((array) $route->getOption('_middlewares') as $callback) {
+                $ret = call_user_func($callback, $request);
+                if ($ret instanceof Response) {
+                    $event->setResponse($ret);
+
+                    return;
+                } elseif (null !== $ret) {
+                    throw new \RuntimeException(sprintf('Middleware for route "%s" returned an invalid response value. Must return null or an instance of Response.', $routeName));
+                }
+            }
+        });
+
+        $this['request.default_locale'] = 'en';
+
+        $this['request_error'] = $this->protect(function () {
+            throw new \RuntimeException('Accessed request service outside of request scope. Try moving that call to a before handler or controller.');
+        });
+
+        $this['request'] = $this['request_error'];
+
         $this['request.http_port'] = 80;
         $this['request.https_port'] = 443;
         $this['debug'] = false;
@@ -121,7 +147,7 @@ class Application extends Container implements HttpKernelInterface, EventSubscri
      * Registers a service provider.
      *
      * @param ServiceProviderInterface $provider A ServiceProviderInterface instance
-     * @param array                    $values    An array of values that customizes the provider
+     * @param array                    $values   An array of values that customizes the provider
      */
     public function register(ServiceProviderInterface $provider, array $values = array())
     {
@@ -129,7 +155,20 @@ class Application extends Container implements HttpKernelInterface, EventSubscri
             $this[$key] = $value;
         }
 
+        $this->providers[] = $provider;
+
         $provider->register($this);
+    }
+
+    public function boot()
+    {
+        if (!$this->booted) {
+            foreach ($this->providers as $provider) {
+                $provider->boot($this);
+            }
+
+            $this->booted = true;
+        }
     }
 
     /**
@@ -138,7 +177,7 @@ class Application extends Container implements HttpKernelInterface, EventSubscri
      * You can optionally specify HTTP methods that should be matched.
      *
      * @param string $pattern Matched route pattern
-     * @param mixed $to Callback that returns the response when matched
+     * @param mixed  $to      Callback that returns the response when matched
      *
      * @return Silex\Controller
      */
@@ -151,7 +190,7 @@ class Application extends Container implements HttpKernelInterface, EventSubscri
      * Maps a GET request to a callable.
      *
      * @param string $pattern Matched route pattern
-     * @param mixed $to Callback that returns the response when matched
+     * @param mixed  $to      Callback that returns the response when matched
      *
      * @return Silex\Controller
      */
@@ -164,7 +203,7 @@ class Application extends Container implements HttpKernelInterface, EventSubscri
      * Maps a POST request to a callable.
      *
      * @param string $pattern Matched route pattern
-     * @param mixed $to Callback that returns the response when matched
+     * @param mixed  $to      Callback that returns the response when matched
      *
      * @return Silex\Controller
      */
@@ -177,7 +216,7 @@ class Application extends Container implements HttpKernelInterface, EventSubscri
      * Maps a PUT request to a callable.
      *
      * @param string $pattern Matched route pattern
-     * @param mixed $to Callback that returns the response when matched
+     * @param mixed  $to      Callback that returns the response when matched
      *
      * @return Silex\Controller
      */
@@ -190,7 +229,7 @@ class Application extends Container implements HttpKernelInterface, EventSubscri
      * Maps a DELETE request to a callable.
      *
      * @param string $pattern Matched route pattern
-     * @param mixed $to Callback that returns the response when matched
+     * @param mixed  $to      Callback that returns the response when matched
      *
      * @return Silex\Controller
      */
@@ -236,9 +275,26 @@ class Application extends Container implements HttpKernelInterface, EventSubscri
     }
 
     /**
+     * Registers a finish filter.
+     *
+     * Finish filters are run after the response has been sent.
+     *
+     * @param mixed   $callback Finish filter callback
+     * @param integer $priority The higher this value, the earlier an event
+     *                          listener will be triggered in the chain (defaults to 0)
+     */
+    public function finish($callback, $priority = 0)
+    {
+        $this['dispatcher']->addListener(SilexEvents::FINISH, function (PostResponseEvent $event) use ($callback) {
+            call_user_func($callback, $event->getRequest(), $event->getResponse());
+        }, $priority);
+    }
+
+    /**
      * Aborts the current request by sending a proper HTTP error.
      *
      * @param integer $statusCode The HTTP status code
+     * @param string  $message    The status message
      * @param array   $headers    An array of HTTP headers
      */
     public function abort($statusCode, $message = '', array $headers = array())
@@ -267,6 +323,24 @@ class Application extends Container implements HttpKernelInterface, EventSubscri
     {
         $this['dispatcher']->addListener(SilexEvents::ERROR, function (GetResponseForErrorEvent $event) use ($callback) {
             $exception = $event->getException();
+
+            if (is_array($callback)) {
+                $callbackReflection = new \ReflectionMethod($callback[0], $callback[1]);
+            } elseif (is_object($callback) && !$callback instanceof \Closure) {
+                $callbackReflection = new \ReflectionObject($callback);
+                $callbackReflection = $callbackReflection->getMethod('__invoke');
+            } else {
+                $callbackReflection = new \ReflectionFunction($callback);
+            }
+
+            if ($callbackReflection->getNumberOfParameters() > 0) {
+                $parameters = $callbackReflection->getParameters();
+                $expectedException = $parameters[0];
+                if ($expectedException->getClass() && !$expectedException->getClass()->isInstance($exception)) {
+                    return;
+                }
+            }
+
             $code = $exception instanceof HttpExceptionInterface ? $exception->getStatusCode() : 500;
 
             $result = call_user_func($callback, $exception, $code);
@@ -301,21 +375,53 @@ class Application extends Container implements HttpKernelInterface, EventSubscri
     }
 
     /**
+     * Creates a streaming response.
+     *
+     * @param mixed   $callback A valid PHP callback
+     * @param integer $status   The response status code
+     * @param array   $headers  An array of response headers
+     *
+     * @see Symfony\Component\HttpFoundation\StreamedResponse
+     */
+    public function stream($callback = null, $status = 200, $headers = array())
+    {
+        return new StreamedResponse($callback, $status, $headers);
+    }
+
+    /**
      * Escapes a text for HTML.
      *
-     * @param string $text The input text to be escaped
+     * @param string  $text         The input text to be escaped
+     * @param integer $flags        The flags (@see htmlspecialchars)
+     * @param string  $charset      The charset
+     * @param Boolean $doubleEncode Whether to try to avoid double escaping or not
+     *
      * @return string Escaped text
      */
-    public function escape($text, $flags = ENT_COMPAT, $charset = 'UTF-8', $doubleEncode = true)
+    public function escape($text, $flags = ENT_COMPAT, $charset = null, $doubleEncode = true)
     {
-        return htmlspecialchars($text, $flags, $charset, $doubleEncode);
+        return htmlspecialchars($text, $flags, $charset ?: $this['charset'], $doubleEncode);
+    }
+
+    /**
+     * Convert some data into a JSON response.
+     *
+     * @param mixed   $data    The response data
+     * @param integer $status  The response status code
+     * @param array   $headers An array of response headers
+     *
+     * @see Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function json($data = array(), $status = 200, $headers = array())
+    {
+        return new JsonResponse($data, $status, $headers);
     }
 
     /**
      * Mounts an application under the given route prefix.
      *
      * @param string                                           $prefix The route prefix
-     * @param ControllerCollection|ControllerProviderInterface $app    A ControllerCollection or an ControllerProviderInterface instance
+     * @param ControllerCollection|ControllerProviderInterface $app    A ControllerCollection or a ControllerProviderInterface instance
      */
     public function mount($prefix, $app)
     {
@@ -331,7 +437,7 @@ class Application extends Container implements HttpKernelInterface, EventSubscri
     }
 
     /**
-     * Handles the request and deliver the response.
+     * Handles the request and delivers the response.
      *
      * @param Request $request Request to process
      */
@@ -341,24 +447,53 @@ class Application extends Container implements HttpKernelInterface, EventSubscri
             $request = Request::createFromGlobals();
         }
 
-        $this->handle($request)->send();
-    }
-
-    public function handle(Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true)
-    {
-        $this->beforeDispatched = false;
-
-        $this['request'] = $request;
-
-        $this->flush();
-
-        return $this['kernel']->handle($request, $type, $catch);
+        $response = $this->handle($request);
+        $response->send();
+        $this->terminate($request, $response);
     }
 
     /**
-     * Handles onEarlyKernelRequest events.
+     * {@inheritdoc}
+     *
+     * If you call this method directly instead of run(), you must call the
+     * terminate() method yourself if you want the finish filters to be run.
      */
-    public function onEarlyKernelRequest(KernelEvent $event)
+    public function handle(Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true)
+    {
+        if (!$this->booted) {
+            $this->boot();
+        }
+
+        $this->beforeDispatched = false;
+
+        $current = HttpKernelInterface::SUB_REQUEST === $type ? $this['request'] : $this['request_error'];
+
+        $this['request'] = $request;
+        $this['request']->setDefaultLocale($this['request.default_locale']);
+
+        $this->flush();
+
+        $response = $this['kernel']->handle($request, $type, $catch);
+
+        $this['request'] = $current;
+
+        return $response;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function terminate(Request $request, Response $response)
+    {
+        $this['kernel']->terminate($request, $response);
+    }
+
+    /**
+     * Handles KernelEvents::REQUEST events registered early.
+     *
+     * @param GetResponseEvent $event The event to handle
+     */
+    public function onEarlyKernelRequest(GetResponseEvent $event)
     {
         if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
             if (isset($this['exception_handler'])) {
@@ -369,20 +504,25 @@ class Application extends Container implements HttpKernelInterface, EventSubscri
     }
 
     /**
-     * Handles onKernelRequest events.
+     * Runs before filters.
+     *
+     * @param GetResponseEvent $event The event to handle
+     *
+     * @see before()
      */
-    public function onKernelRequest(KernelEvent $event)
+    public function onKernelRequest(GetResponseEvent $event)
     {
         if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
             $this->beforeDispatched = true;
             $this['dispatcher']->dispatch(SilexEvents::BEFORE, $event);
+            $this['route_middlewares_trigger']($event);
         }
     }
 
     /**
      * Handles converters.
      *
-     * @param FilterControllerEvent $event A FilterControllerEvent instance
+     * @param FilterControllerEvent $event The event to handle
      */
     public function onKernelController(FilterControllerEvent $event)
     {
@@ -398,7 +538,7 @@ class Application extends Container implements HttpKernelInterface, EventSubscri
     /**
      * Handles string responses.
      *
-     * Handler for onKernelView.
+     * @param GetResponseForControllerResultEvent $event The event to handle
      */
     public function onKernelView(GetResponseForControllerResultEvent $event)
     {
@@ -410,9 +550,11 @@ class Application extends Container implements HttpKernelInterface, EventSubscri
     /**
      * Runs after filters.
      *
-     * Handler for onKernelResponse.
+     * @param FilterResponseEvent $event The event to handle
+     *
+     * @see after()
      */
-    public function onKernelResponse(Event $event)
+    public function onKernelResponse(FilterResponseEvent $event)
     {
         if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
             $this['dispatcher']->dispatch(SilexEvents::AFTER, $event);
@@ -420,10 +562,24 @@ class Application extends Container implements HttpKernelInterface, EventSubscri
     }
 
     /**
+     * Runs finish filters.
+     *
+     * @param PostResponseEvent $event The event to handle
+     *
+     * @see finish()
+     */
+    public function onKernelTerminate(PostResponseEvent $event)
+    {
+        $this['dispatcher']->dispatch(SilexEvents::FINISH, $event);
+    }
+
+    /**
+     * Runs error filters.
+     *
      * Executes registered error handlers until a response is returned,
      * in which case it returns it to the client.
      *
-     * Handler for onKernelException.
+     * @param GetResponseForExceptionEvent $event The event to handle
      *
      * @see error()
      */
@@ -431,7 +587,12 @@ class Application extends Container implements HttpKernelInterface, EventSubscri
     {
         if (!$this->beforeDispatched) {
             $this->beforeDispatched = true;
-            $this['dispatcher']->dispatch(SilexEvents::BEFORE, $event);
+            try {
+                $this['dispatcher']->dispatch(SilexEvents::BEFORE, $event);
+            } catch (\Exception $e) {
+                // as we are already handling an exception, ignore this one
+                // even if it might have been thrown on purpose by the developer
+            }
         }
 
         $errorEvent = new GetResponseForErrorEvent($this, $event->getRequest(), $event->getRequestType(), $event->getException());
@@ -445,7 +606,7 @@ class Application extends Container implements HttpKernelInterface, EventSubscri
     /**
      * {@inheritdoc}
      */
-    static public function getSubscribedEvents()
+    public static function getSubscribedEvents()
     {
         return array(
             KernelEvents::REQUEST    => array(
@@ -455,6 +616,7 @@ class Application extends Container implements HttpKernelInterface, EventSubscri
             KernelEvents::CONTROLLER => 'onKernelController',
             KernelEvents::RESPONSE   => 'onKernelResponse',
             KernelEvents::EXCEPTION  => 'onKernelException',
+            KernelEvents::TERMINATE  => 'onKernelTerminate',
             KernelEvents::VIEW       => array('onKernelView', -10),
         );
     }

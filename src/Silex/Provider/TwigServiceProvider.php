@@ -41,7 +41,11 @@ class TwigServiceProvider implements ServiceProviderInterface
             $twig->addGlobal('app', $app);
             $twig->addExtension(new TwigCoreExtension());
 
-            if (isset($app['symfony_bridges'])) {
+            if ($app['debug']) {
+                $twig->addExtension(new \Twig_Extension_Debug());
+            }
+
+            if (class_exists('Symfony\Bridge\Twig\Extension\RoutingExtension')) {
                 if (isset($app['url_generator'])) {
                     $twig->addExtension(new TwigRoutingExtension($app['url_generator']));
                 }
@@ -55,7 +59,7 @@ class TwigServiceProvider implements ServiceProviderInterface
                         $app['twig.form.templates'] = array('form_div_layout.html.twig');
                     }
 
-                    $twig->addExtension(new TwigFormExtension($app['twig.form.templates']));
+                    $twig->addExtension(new TwigFormExtension($app['form.csrf_provider'], $app['twig.form.templates']));
 
                     // add loader for Symfony built-in form templates
                     $reflected = new \ReflectionClass('Symfony\Bridge\Twig\Extension\FormExtension');
@@ -87,7 +91,11 @@ class TwigServiceProvider implements ServiceProviderInterface
         });
 
         if (isset($app['twig.class_path'])) {
-            $app['autoloader']->registerPrefix('Twig_', $app['twig.class_path']);
+            throw new \RuntimeException('You have provided the twig.class_path parameter. The autoloader has been removed from Silex. It is recommended that you use Composer to manage your dependencies and handle your autoloading. If you are already using Composer, you can remove the parameter. See http://getcomposer.org for more information.');
         }
+    }
+
+    public function boot(Application $app)
+    {
     }
 }

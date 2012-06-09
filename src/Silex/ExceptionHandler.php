@@ -11,8 +11,6 @@
 
 namespace Silex;
 
-use Silex\Application;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Debug\ExceptionHandler as DebugExceptionHandler;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -34,7 +32,7 @@ class ExceptionHandler implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    static public function getSubscribedEvents()
+    public static function getSubscribedEvents()
     {
         return array(SilexEvents::ERROR => array('onSilexError', -255));
     }

@@ -9,7 +9,9 @@ Silex
     services
     providers
     testing
+    cookbook/index
     internals
     contributing
     providers/index
     changelog
+    phar

@@ -8,7 +8,6 @@ Silex
     monolog
     session
     swiftmailer
-    symfony_bridges
     translation
     twig
     url_generator

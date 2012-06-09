@@ -12,7 +12,6 @@
 namespace Silex;
 
 use Symfony\Component\Routing\RouteCollection;
-use Symfony\Component\Routing\Route;
 use Silex\Controller;
 
 /**
@@ -27,7 +26,18 @@ use Silex\Controller;
  */
 class ControllerCollection
 {
-    private $controllers = array();
+    protected $controllers = array();
+    protected $defaultRoute;
+
+    /**
+     * Constructor.
+     *
+     * @param Route $route
+     */
+    public function __construct()
+    {
+        $this->defaultRoute = new Route('');
+    }
 
     /**
      * Maps a pattern to a callable.
@@ -35,15 +45,17 @@ class ControllerCollection
      * You can optionally specify HTTP methods that should be matched.
      *
      * @param string $pattern Matched route pattern
-     * @param mixed $to Callback that returns the response when matched
+     * @param mixed  $to      Callback that returns the response when matched
      *
      * @return Silex\Controller
      */
     public function match($pattern, $to)
     {
-        $route = new Route($pattern, array('_controller' => $to));
-        $controller = new Controller($route);
-        $this->add($controller);
+        $route = clone $this->defaultRoute;
+        $route->setPattern($pattern);
+        $route->setDefault('_controller', $to);
+
+        $this->controllers[] = $controller = new Controller($route);
 
         return $controller;
     }
@@ -52,7 +64,7 @@ class ControllerCollection
      * Maps a GET request to a callable.
      *
      * @param string $pattern Matched route pattern
-     * @param mixed $to Callback that returns the response when matched
+     * @param mixed  $to      Callback that returns the response when matched
      *
      * @return Silex\Controller
      */
@@ -65,7 +77,7 @@ class ControllerCollection
      * Maps a POST request to a callable.
      *
      * @param string $pattern Matched route pattern
-     * @param mixed $to Callback that returns the response when matched
+     * @param mixed  $to      Callback that returns the response when matched
      *
      * @return Silex\Controller
      */
@@ -78,7 +90,7 @@ class ControllerCollection
      * Maps a PUT request to a callable.
      *
      * @param string $pattern Matched route pattern
-     * @param mixed $to Callback that returns the response when matched
+     * @param mixed  $to      Callback that returns the response when matched
      *
      * @return Silex\Controller
      */
@@ -91,7 +103,7 @@ class ControllerCollection
      * Maps a DELETE request to a callable.
      *
      * @param string $pattern Matched route pattern
-     * @param mixed $to Callback that returns the response when matched
+     * @param mixed  $to      Callback that returns the response when matched
      *
      * @return Silex\Controller
      */
@@ -101,13 +113,129 @@ class ControllerCollection
     }
 
     /**
-     * Adds a controller to the staging area.
+     * Sets the requirement for a route variable.
      *
-     * @param Controller $controller
+     * @param string $variable The variable name
+     * @param string $regexp   The regexp to apply
+     *
+     * @return Controller $this The current Controller instance
      */
-    public function add(Controller $controller)
+    public function assert($variable, $regexp)
     {
-        $this->controllers[] = $controller;
+        $this->defaultRoute->assert($variable, $regexp);
+
+        foreach ($this->controllers as $controller) {
+            $controller->assert($variable, $regexp);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Sets the default value for a route variable.
+     *
+     * @param string $variable The variable name
+     * @param mixed  $default  The default value
+     *
+     * @return Controller $this The current Controller instance
+     */
+    public function value($variable, $default)
+    {
+        $this->defaultRoute->value($variable, $default);
+
+        foreach ($this->controllers as $controller) {
+            $controller->value($variable, $default);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Sets a converter for a route variable.
+     *
+     * @param string $variable The variable name
+     * @param mixed  $callback A PHP callback that converts the original value
+     *
+     * @return Controller $this The current Controller instance
+     */
+    public function convert($variable, $callback)
+    {
+        $this->defaultRoute->convert($variable, $callback);
+
+        foreach ($this->controllers as $controller) {
+            $controller->convert($variable, $callback);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Sets the requirement for the HTTP method.
+     *
+     * @param string $method The HTTP method name. Multiple methods can be supplied, delimited by a pipe character '|', eg. 'GET|POST'
+     *
+     * @return Controller $this The current Controller instance
+     */
+    public function method($method)
+    {
+        $this->defaultRoute->method($method);
+
+        foreach ($this->controllers as $controller) {
+            $controller->method($method);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Sets the requirement of HTTP (no HTTPS) on this controller.
+     *
+     * @return Controller $this The current Controller instance
+     */
+    public function requireHttp()
+    {
+        $this->defaultRoute->requireHttp();
+
+        foreach ($this->controllers as $controller) {
+            $controller->requireHttp();
+        }
+
+        return $this;
+    }
+
+    /**
+     * Sets the requirement of HTTPS on this controller.
+     *
+     * @return Controller $this The current Controller instance
+     */
+    public function requireHttps()
+    {
+        $this->defaultRoute->requireHttps();
+
+        foreach ($this->controllers as $controller) {
+            $controller->requireHttps();
+        }
+
+        return $this;
+    }
+
+    /**
+     * Sets a callback to handle before triggering the route callback.
+     * (a.k.a. "Route Middleware")
+     *
+     * @param mixed $callback A PHP callback to be triggered when the Route is matched, just before the route callback
+     *
+     * @return Controller $this The current Controller instance
+     */
+    public function middleware($callback)
+    {
+        $this->defaultRoute->middleware($callback);
+
+        foreach ($this->controllers as $controller) {
+            $controller->middleware($callback);
+        }
+
+        return $this;
     }
 
     /**
@@ -120,10 +248,14 @@ class ControllerCollection
         $routes = new RouteCollection();
 
         foreach ($this->controllers as $controller) {
-            if (!$controller->getRouteName()) {
-                $controller->bindDefaultRouteName($prefix);
+            if (!$name = $controller->getRouteName()) {
+                $name = $controller->generateRouteName($prefix);
+                while ($routes->get($name)) {
+                    $name .= '_';
+                }
+                $controller->bind($name);
             }
-            $routes->add($controller->getRouteName(), $controller->getRoute());
+            $routes->add($name, $controller->getRoute());
             $controller->freeze();
         }
 

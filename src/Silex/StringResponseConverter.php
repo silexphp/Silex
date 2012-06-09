@@ -23,9 +23,9 @@ class StringResponseConverter
     /**
      * Does the conversion
      *
-     * @param  $response The response string
+     * @param string $response The response string
      *
-     * @return A response object
+     * @return A Response object
      */
     public function convert($response)
     {

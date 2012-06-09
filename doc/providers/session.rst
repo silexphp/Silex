@@ -7,7 +7,9 @@ between requests.
 Parameters
 ----------
 
-* **session.default_locale**: The locale used by default in the session.
+* **session.storage.save_path** (optional): The path for the
+  ``FileSessionHandler``, defaults to the value of
+  ``sys_get_temp_dir()``.
 
 * **session.storage.options**: An array of options that is passed to the
   constructor of the ``session.storage`` service.
@@ -16,37 +18,40 @@ Parameters
 
   * **name**: The cookie name (_SESS by default)
   * **id**: The session id (null by default)
-  * **lifetime**: Cookie lifetime
+  * **cookie_lifetime**: Cookie lifetime
   * **path**: Cookie path
   * **domain**: Cookie domain
   * **secure**: Cookie secure (HTTPS)
   * **httponly**: Whether the cookie is http only
 
-  However, all of these are optional. Sessions last as long as the browser
-  is open. To override this, set the ``lifetime`` option.
+  However, all of these are optional. Sessions last as long as the browser is
+  open. To override this, set the ``lifetime`` option.
 
 Services
 --------
 
 * **session**: An instance of Symfony2's `Session
-  <http://api.symfony.com/2.0/Symfony/Component/HttpFoundation/Session.html>`_.
+  <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Session.html>`_.
 
-* **session.storage**: A service that is used for persistence of the
-  session data. Defaults to a `NativeSessionStorage
-  <http://api.symfony.com/2.0/Symfony/Component/HttpFoundation/SessionStorage/NativeSessionStorage.html>`_.
+* **session.storage**: A service that is used for persistence of the session
+  data. Defaults to a ``NativeSessionStorage``.
+
+* **session.storage.handler**: A service that is used by the
+  ``session.storage`` for data access. Defaults to a
+  ``FileSessionHandler`` storage handler.
 
 Registering
 -----------
 
-::
+.. code-block:: php
 
     $app->register(new Silex\Provider\SessionServiceProvider());
 
 Usage
 -----
 
-The Session provider provides a ``session`` service. Here is an
-example that authenticates a user and creates a session for him::
+The Session provider provides a ``session`` service. Here is an example that
+authenticates a user and creates a session for him::
 
     use Symfony\Component\HttpFoundation\Response;
 
@@ -55,6 +60,7 @@ example that authenticates a user and creates a session for him::
         $password = $app['request']->server->get('PHP_AUTH_PW');
 
         if ('igor' === $username && 'password' === $password) {
+            $app['session']->start();
             $app['session']->set('user', array('username' => $username));
             return $app->redirect('/account');
         }
@@ -66,6 +72,7 @@ example that authenticates a user and creates a session for him::
     });
 
     $app->get('/account', function () use ($app) {
+        $app['session']->start();
         if (null === $user = $app['session']->get('user')) {
             return $app->redirect('/login');
         }

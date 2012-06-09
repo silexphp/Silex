@@ -12,10 +12,8 @@
 namespace Silex\Tests\Provider;
 
 use Monolog\Handler\TestHandler;
-
 use Silex\Application;
 use Silex\Provider\MonologServiceProvider;
-
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -27,26 +25,48 @@ class MonologServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        if (!is_dir(__DIR__.'/../../../../vendor/monolog/src')) {
-            $this->markTestSkipped('Monolog submodule was not installed.');
+        if (!is_dir(__DIR__.'/../../../../vendor/monolog/monolog/src')) {
+            $this->markTestSkipped('Monolog dependency was not installed.');
         }
     }
 
-    public function testRegisterAndRender()
+    public function testRequestLogging()
     {
-        $app = new Application();
+        $app = $this->getApplication();
 
-        $app->register(new MonologServiceProvider(), array(
-            'monolog.class_path'    => __DIR__.'/../../../../vendor/monolog/src',
-        ));
-
-        $app['monolog.handler'] = $app->share(function () use ($app) {
-            return new TestHandler($app['monolog.level']);
+        $app->get('/foo', function () use ($app) {
+            return 'foo';
         });
+
+        $this->assertFalse($app['monolog.handler']->hasInfoRecords());
+
+        $request = Request::create('/foo');
+        $app->handle($request);
+
+        $this->assertTrue($app['monolog.handler']->hasInfo('> GET /foo'));
+        $this->assertTrue($app['monolog.handler']->hasInfo('< 200'));
+        $this->assertTrue($app['monolog.handler']->hasInfo('Matched route "GET_foo" (parameters: "_controller": "{}", "_route": "GET_foo")'));
+    }
+
+    public function testManualLogging()
+    {
+        $app = $this->getApplication();
 
         $app->get('/log', function () use ($app) {
             $app['monolog']->addDebug('logging a message');
         });
+
+        $this->assertFalse($app['monolog.handler']->hasDebugRecords());
+
+        $request = Request::create('/log');
+        $app->handle($request);
+
+        $this->assertTrue($app['monolog.handler']->hasDebug('logging a message'));
+    }
+
+    public function testErrorLogging()
+    {
+        $app = $this->getApplication();
 
         $app->get('/error', function () {
             throw new \RuntimeException('very bad error');
@@ -56,16 +76,24 @@ class MonologServiceProviderTest extends \PHPUnit_Framework_TestCase
             return 'error handled';
         });
 
-        $this->assertFalse($app['monolog.handler']->hasDebugRecords());
         $this->assertFalse($app['monolog.handler']->hasErrorRecords());
-
-        $request = Request::create('/log');
-        $app->handle($request);
 
         $request = Request::create('/error');
         $app->handle($request);
 
-        $this->assertTrue($app['monolog.handler']->hasDebugRecords());
-        $this->assertTrue($app['monolog.handler']->hasErrorRecords());
+        $this->assertTrue($app['monolog.handler']->hasError('very bad error'));
+    }
+
+    protected function getApplication()
+    {
+        $app = new Application();
+
+        $app->register(new MonologServiceProvider());
+
+        $app['monolog.handler'] = $app->share(function () use ($app) {
+            return new TestHandler($app['monolog.level']);
+        });
+
+        return $app;
     }
 }

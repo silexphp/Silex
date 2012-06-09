@@ -8,14 +8,13 @@ standalone.
 Parameters
 ----------
 
-* **validator.class_path** (optional): Path to where
-  the Symfony2 Validator component is located.
+none
 
 Services
 --------
 
 * **validator**: An instance of `Validator
-  <http://api.symfony.com/2.0/Symfony/Component/Validator/Validator.html>`_.
+  <http://api.symfony.com/master/Symfony/Component/Validator/Validator.html>`_.
 
 * **validator.mapping.class_metadata_factory**: Factory for metadata loaders,
   which can read validation constraint information from classes. Defaults to
@@ -32,12 +31,20 @@ Services
 Registering
 -----------
 
-Make sure you place a copy of the Symfony2 Validator component in
-``vendor/symfony/src``. You can simply clone the whole Symfony2 into vendor::
+.. code-block:: php
 
-    $app->register(new Silex\Provider\ValidatorServiceProvider(), array(
-        'validator.class_path'    => __DIR__.'/vendor/symfony/src',
-    ));
+    $app->register(new Silex\Provider\ValidatorServiceProvider());
+
+.. note::
+
+    The Symfony Validator component does not come with the ``silex`` archives,
+    so you need to add it as a dependency to your ``composer.json`` file:
+
+    .. code-block:: json
+
+        "require": {
+            "symfony/validator": "2.1.*"
+        }
 
 Usage
 -----
@@ -94,6 +101,20 @@ getters::
 
 You will have to handle the display of these violations yourself. You can
 however use the *FormServiceProvider* which can make use of the *ValidatorServiceProvider*.
+
+Translation
+~~~~~~~~~~~
+
+To be able to translate the error messages, you can use the translator
+provider and register the messages under the ``validators`` domain::
+
+    $app['translator.domains'] = array(
+        'validators' => array(
+            'fr' => array(
+                'This value should be a valid number.' => 'Cette valeur doit être un nombre.',
+            ),
+        ),
+    );
 
 For more information, consult the `Symfony2 Validation documentation
 <http://symfony.com/doc/2.0/book/validation.html>`_.

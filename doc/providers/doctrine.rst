@@ -35,12 +35,6 @@ Parameters
   These and additional options are described in detail in the `Doctrine DBAL
   configuration documentation <http://www.doctrine-project.org/docs/dbal/2.0/en/reference/configuration.html>`_.
 
-* **db.dbal.class_path** (optional): Path to where the
-  Doctrine DBAL is located.
-
-* **db.common.class_path** (optional): Path to where
-  Doctrine Common is located.
-
 Services
 --------
 
@@ -55,17 +49,25 @@ Services
 Registering
 -----------
 
-Make sure you place a copy of *Doctrine DBAL* in ``vendor/doctrine-dbal``
-and *Doctrine Common* in ``vendor/doctrine-common``::
+.. code-block:: php
 
     $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
         'db.options'            => array(
             'driver'    => 'pdo_sqlite',
             'path'      => __DIR__.'/app.db',
         ),
-        'db.dbal.class_path'    => __DIR__.'/vendor/doctrine-dbal/lib',
-        'db.common.class_path'  => __DIR__.'/vendor/doctrine-common/lib',
     ));
+
+.. note::
+
+    Doctrine does not come with the ``silex`` archives, so you need to add
+    Doctrine DBAL as a dependency to your ``composer.json`` file:
+
+    .. code-block:: json
+
+        "require": {
+            "doctrine/dbal": "2.2.*",
+         }
 
 Usage
 -----
@@ -106,8 +108,6 @@ and values are options::
                 'password'  => 'my_password',
             ),
         ),
-        'db.dbal.class_path'    => __DIR__.'/vendor/doctrine-dbal/lib',
-        'db.common.class_path'  => __DIR__.'/vendor/doctrine-common/lib',
     ));
 
 The first registered connection is the default and can simply be accessed as

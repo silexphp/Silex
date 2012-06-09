@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Silex;
+namespace Silex\Util;
 
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\Kernel;
@@ -18,12 +18,19 @@ use Symfony\Component\Process\Process;
 /**
  * The Compiler class compiles the Silex framework.
  *
+ * This is deprecated. Use composer instead.
+ *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class Compiler
 {
     protected $version;
 
+    /**
+     * Compiles the Silex source code into one single Phar file.
+     *
+     * @param string $pharFile Name of the output Phar file
+     */
     public function compile($pharFile = 'silex.phar')
     {
         if (file_exists($pharFile)) {
@@ -41,29 +48,34 @@ class Compiler
 
         $phar->startBuffering();
 
+        $root = __DIR__.'/../../..';
+
         $finder = new Finder();
         $finder->files()
             ->ignoreVCS(true)
             ->name('*.php')
             ->notName('Compiler.php')
-            ->in(__DIR__.'/..')
-            ->in(__DIR__.'/../../vendor/pimple/lib')
-            ->in(__DIR__.'/../../vendor/Symfony/Component/ClassLoader')
-            ->in(__DIR__.'/../../vendor/Symfony/Component/EventDispatcher')
-            ->in(__DIR__.'/../../vendor/Symfony/Component/HttpFoundation')
-            ->in(__DIR__.'/../../vendor/Symfony/Component/HttpKernel')
-            ->in(__DIR__.'/../../vendor/Symfony/Component/Routing')
-            ->in(__DIR__.'/../../vendor/Symfony/Component/BrowserKit')
-            ->in(__DIR__.'/../../vendor/Symfony/Component/CssSelector')
-            ->in(__DIR__.'/../../vendor/Symfony/Component/DomCrawler')
+            ->exclude('Tests')
+            ->in($root.'/src')
+            ->in($root.'/vendor/pimple/pimple/lib')
+            ->in($root.'/vendor/symfony/event-dispatcher/Symfony/Component/EventDispatcher')
+            ->in($root.'/vendor/symfony/http-foundation/Symfony/Component/HttpFoundation')
+            ->in($root.'/vendor/symfony/http-kernel/Symfony/Component/HttpKernel')
+            ->in($root.'/vendor/symfony/routing/Symfony/Component/Routing')
+            ->in($root.'/vendor/symfony/browser-kit/Symfony/Component/BrowserKit')
+            ->in($root.'/vendor/symfony/css-selector/Symfony/Component/CssSelector')
+            ->in($root.'/vendor/symfony/dom-crawler/Symfony/Component/DomCrawler')
         ;
 
         foreach ($finder as $file) {
             $this->addFile($phar, $file);
         }
 
-        $this->addFile($phar, new \SplFileInfo(__DIR__.'/../../LICENSE'), false);
-        $this->addFile($phar, new \SplFileInfo(__DIR__.'/../../autoload.php'));
+        $this->addFile($phar, new \SplFileInfo($root.'/LICENSE'), false);
+        $this->addFile($phar, new \SplFileInfo($root.'/vendor/autoload.php'));
+        $this->addFile($phar, new \SplFileInfo($root.'/vendor/composer/ClassLoader.php'));
+        $this->addFile($phar, new \SplFileInfo($root.'/vendor/composer/autoload_namespaces.php'));
+        $this->addFile($phar, new \SplFileInfo($root.'/vendor/composer/autoload_classmap.php'));
 
         // Stubs
         $phar->setStub($this->getStub());
@@ -80,7 +92,7 @@ class Compiler
         $path = str_replace(dirname(dirname(__DIR__)).DIRECTORY_SEPARATOR, '', $file->getRealPath());
         $content = file_get_contents($file);
         if ($strip) {
-            $content = Kernel::stripComments($content);
+            $content = self::stripWhitespace($content);
         }
 
         $content = str_replace('@package_version@', $this->version, $content);
@@ -103,7 +115,7 @@ class Compiler
 
 Phar::mapPhar('silex.phar');
 
-require_once 'phar://silex.phar/autoload.php';
+require_once 'phar://silex.phar/vendor/autoload.php';
 
 if ('cli' === php_sapi_name() && basename(__FILE__) === basename($_SERVER['argv'][0]) && isset($_SERVER['argv'][1])) {
     switch ($_SERVER['argv'][1]) {
@@ -137,5 +149,42 @@ if ('cli' === php_sapi_name() && basename(__FILE__) === basename($_SERVER['argv'
 
 __HALT_COMPILER();
 EOF;
+    }
+
+    /**
+     * Removes whitespace from a PHP source string while preserving line numbers.
+     *
+     * Based on Kernel::stripComments(), but keeps line numbers intact.
+     *
+     * @param string $source A PHP string
+     *
+     * @return string The PHP string with the whitespace removed
+     */
+    public static function stripWhitespace($source)
+    {
+        if (!function_exists('token_get_all')) {
+            return $source;
+        }
+
+        $output = '';
+        foreach (token_get_all($source) as $token) {
+            if (is_string($token)) {
+                $output .= $token;
+            } elseif (in_array($token[0], array(T_COMMENT, T_DOC_COMMENT))) {
+                $output .= str_repeat("\n", substr_count($token[1], "\n"));
+            } elseif (T_WHITESPACE === $token[0]) {
+                // reduce wide spaces
+                $whitespace = preg_replace('{[ \t]+}', ' ', $token[1]);
+                // normalize newlines to \n
+                $whitespace = preg_replace('{(?:\r\n|\r|\n)}', "\n", $whitespace);
+                // trim leading spaces
+                $whitespace = preg_replace('{\n +}', "\n", $whitespace);
+                $output .= $whitespace;
+            } else {
+                $output .= $token[1];
+            }
+        }
+
+        return $output;
     }
 }

@@ -33,6 +33,13 @@ class WebTestCaseTest extends WebTestCase
             return '<h1>title</h1>';
         });
 
+        $app->match('/server', function () use ($app) {
+            $user = $app['request']->server->get('PHP_AUTH_USER');
+            $pass = $app['request']->server->get('PHP_AUTH_PW');
+
+            return "<h1>$user:$pass</h1>";
+        });
+
         return $app;
     }
 
@@ -52,5 +59,19 @@ class WebTestCaseTest extends WebTestCase
 
         $crawler = $client->request('GET', '/html');
         $this->assertEquals('title', $crawler->filter('h1')->text());
+    }
+
+    public function testServerVariables()
+    {
+        $user = 'klaus';
+        $pass = '123456';
+
+        $client = $this->createClient(array(
+            'PHP_AUTH_USER' => $user,
+            'PHP_AUTH_PW'   => $pass,
+        ));
+
+        $crawler = $client->request('GET', '/server');
+        $this->assertEquals("$user:$pass", $crawler->filter('h1')->text());
     }
 }

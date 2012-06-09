@@ -102,6 +102,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     public function testMissingRoute()
     {
         $app = new Application();
+
         unset($app['exception_handler']);
 
         $request = Request::create('/baz');
@@ -145,24 +146,29 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $this->checkRouteResponse($app, '/resource', 'delete resource', 'delete');
     }
 
-    public function testRequestShouldBeStoredRegardlessOfRouting() {
+    public function testRequestShouldBeStoredRegardlessOfRouting()
+    {
         $app = new Application();
+
         $app->get('/foo', function () use ($app) {
             return new Response($app['request']->getRequestUri());
         });
+
         $app->error(function ($e) use ($app) {
             return new Response($app['request']->getRequestUri());
         });
-        foreach(array('/foo', '/bar') as $path) {
-          $request = Request::create($path);
-          $response = $app->handle($request);
-          $this->assertContains($path, $response->getContent());
+
+        foreach (array('/foo', '/bar') as $path) {
+            $request = Request::create($path);
+            $response = $app->handle($request);
+            $this->assertContains($path, $response->getContent());
         }
     }
 
     public function testTrailingSlashBehavior()
     {
         $app = new Application();
+
         $app->get('/foo/', function () use ($app) {
             return new Response('ok');
         });
@@ -172,6 +178,34 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(301, $response->getStatusCode());
         $this->assertEquals('/foo/', $response->headers->get('Location'));
+    }
+
+    public function testRequireHttpRedirect()
+    {
+        $app = new Application();
+
+        $app->match('/secured', function () {
+            return 'secured content';
+        })
+        ->requireHttp();
+
+        $request = Request::create('https://example.com/secured');
+        $response = $app->handle($request);
+        $this->assertTrue($response->isRedirect('http://example.com/secured'));
+    }
+
+    public function testRequireHttpsRedirect()
+    {
+        $app = new Application();
+
+        $app->match('/secured', function () {
+            return 'secured content';
+        })
+        ->requireHttps();
+
+        $request = Request::create('http://example.com/secured');
+        $response = $app->handle($request);
+        $this->assertTrue($response->isRedirect('https://example.com/secured'));
     }
 
     public function testClassNameControllerSyntax()
@@ -207,7 +241,7 @@ class MyController
         return 'foo';
     }
 
-    static public function getBar()
+    public static function getBar()
     {
         return 'bar';
     }

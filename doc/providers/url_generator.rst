@@ -1,8 +1,8 @@
 UrlGeneratorServiceProvider
 ===========================
 
-The *UrlGeneratorServiceProvider* provides a service for generating
-URLs for named routes.
+The *UrlGeneratorServiceProvider* provides a service for generating URLs for
+named routes.
 
 Parameters
 ----------
@@ -13,17 +13,17 @@ Services
 --------
 
 * **url_generator**: An instance of `UrlGenerator
-  <http://api.symfony.com/2.0/Symfony/Component/Routing/Generator/UrlGenerator.html>`_,
+  <http://api.symfony.com/master/Symfony/Component/Routing/Generator/UrlGenerator.html>`_,
   using the `RouteCollection
-  <http://api.symfony.com/2.0/Symfony/Component/Routing/RouteCollection.html>`_
-  that is provided through the ``routes`` service.
-  It has a ``generate`` method, which takes the route name as an argument,
-  followed by an array of route parameters.
+  <http://api.symfony.com/master/Symfony/Component/Routing/RouteCollection.html>`_
+  that is provided through the ``routes`` service. It has a ``generate``
+  method, which takes the route name as an argument, followed by an array of
+  route parameters.
 
 Registering
 -----------
 
-::
+.. code-block:: php
 
     $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 
@@ -47,3 +47,20 @@ The UrlGenerator provider provides a ``url_generator`` service::
                ' | '.
                '<a href="'.$app['url_generator']->generate('hello', array('name' => 'Igor')).'">Hello Igor</a>';
     });
+
+When using Twig, the service can be used like this:
+
+.. code-block:: jinja
+
+    {{ app.url_generator.generate('homepage') }}
+
+Moreover, if you register the ``SymfonyBridgesServiceProvider``, then you will
+have access to the ``path()`` and ``url()`` functions:
+
+.. code-block:: jinja
+
+    {{ path('homepage') }}
+    {{ url('homepage') }} {# generates the absolute url http://example.org/ #}
+
+You can find more information about this subject in the :doc:`Symfony bridges
+documentation <symfony_bridges>`.
