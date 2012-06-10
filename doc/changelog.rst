@@ -3,6 +3,9 @@ Changelog
 
 This changelog references all backward incompatibilities as we introduce them:
 
+* **2012-06-10**: Updated to ``Pimple`` 2.0, use its ``ServiceProviderInterface``.
+  In all existing service providers, the interfaces and type hints need to be updated.
+
 * **2012-05-31**: Made the ``BrowserKit``, ``CssSelector``, ``DomCrawler``,
   ``Finder`` and ``Process`` components optional dependencies. Projects that
   depend on them (e.g. through functional tests) should add those dependencies
