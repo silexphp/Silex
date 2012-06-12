@@ -27,6 +27,9 @@ Parameters
   However, all of these are optional. Sessions last as long as the browser is
   open. To override this, set the ``lifetime`` option.
 
+* **session.test**: Whether to simulate sessions or not (useful when writing
+  functional tests).
+
 Services
 --------
 
@@ -34,7 +37,7 @@ Services
   <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Session.html>`_.
 
 * **session.storage**: A service that is used for persistence of the session
-  data. Defaults to a ``NativeSessionStorage``.
+  data.
 
 * **session.storage.handler**: A service that is used by the
   ``session.storage`` for data access. Defaults to a
