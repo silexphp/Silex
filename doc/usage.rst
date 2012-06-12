@@ -753,8 +753,11 @@ to prevent Cross-Site-Scripting attacks.
           return $app->json(array('name' => $name));
       });
 
-Apache configuration
---------------------
+Webserver configuration
+-----------------------
+
+Apache
+~~~~~~
 
 If you are using Apache you can use a ``.htaccess`` file for this:
 
@@ -782,8 +785,30 @@ Alternatively, if you use Apache 2.2.16 or higher, you can use the
 
     FallbackResource index.php
 
-IIS configuration
------------------
+nginx
+~~~~~
+
+If you are using nginx, configure your vhost to forward non-existent
+resources to ``index.php``:
+
+.. code-block:: nginx
+
+    server { 
+        index index.php
+
+        location / {
+            try_files $uri $uri/ /index.php;
+        }
+
+        location ~ index\.php$ {
+            fastcgi_pass   /var/run/php5-fpm.sock;
+            fastcgi_index  index.php;
+            include fastcgi_params;
+        }
+    }
+
+IIS
+~~~
 
 If you are using the Internet Information Services from Windows, you can use
 this sample ``web.config`` file:
