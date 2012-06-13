@@ -50,6 +50,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
 
     private $providers = array();
     private $booted = false;
+    private $beforeDispatched = false;
 
     /**
      * Constructor.
