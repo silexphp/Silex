@@ -120,4 +120,20 @@ class Route extends BaseRoute
 
         return $this;
     }
+
+    /**
+     * Sets a callback to handle after the route callback.
+     *
+     * @param mixed $callback A PHP callback to be triggered after the route callback
+     *
+     * @return Controller $this The current Controller instance
+     */
+    public function after($callback)
+    {
+        $callbacks = $this->getOption('_after_middlewares');
+        $callbacks[] = $callback;
+        $this->setOption('_after_middlewares', $callbacks);
+
+        return $this;
+    }
 }

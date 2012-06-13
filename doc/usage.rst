@@ -419,8 +419,13 @@ Route middlewares
 -----------------
 
 Route middlewares are PHP callables which are triggered when their associated
-route is matched. They are fired just before the route callback, but after the
-application ``before`` filters.
+route is matched:
+
+* ``before`` middlewares are fired just before the route callback, but after
+  the application ``before`` filters;
+
+* ``after`` middlewares are fired just after the route callback, but before
+  the application ``after`` filters.
 
 This can be used for a lot of use cases; for instance, here is a simple
 "anonymous/logged user" check::
@@ -452,21 +457,24 @@ This can be used for a lot of use cases; for instance, here is a simple
     })
     ->before($mustBeLogged);
 
-The ``before`` function can be called several times for a given route, in
-which case they are triggered in the same order as you added them to the
-route.
+The ``before`` and ``after`` methods can be called several times for a given
+route, in which case they are triggered in the same order as you added them to
+the route.
 
-For convenience, the route before middlewares functions are triggered with the
-current ``Request`` instance as their only argument.
+For convenience, the ``before`` middlewares are called with the current
+``Request`` instance as an argument and the ``after`` middlewares are called
+with the current ``Request`` and ``Response`` instance as arguments.
 
-If any of the route before middlewares returns a Symfony HTTP Response, it
-will short-circuit the whole rendering: the next middlewares won't be run,
-neither the route callback. You can also redirect to another page by returning
-a redirect response, which you can create by calling the Application
+If any of the before middlewares returns a Symfony HTTP Response, it will
+short-circuit the whole rendering: the next middlewares won't be run, neither
+the route callback. You can also redirect to another page by returning a
+redirect response, which you can create by calling the Application
 ``redirect`` method.
 
-If a route before middleware does not return a Symfony HTTP Response or
-``null``, a ``RuntimeException`` is thrown.
+.. note::
+
+    If a before middleware does not return a Symfony HTTP Response or
+    ``null``, a ``RuntimeException`` is thrown.
 
 Global Configuration
 --------------------

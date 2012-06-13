@@ -3,7 +3,9 @@ Changelog
 
 This changelog references all backward incompatibilities as we introduce them:
 
-* **2012-06-13**: Renamed ``middleware`` to ``before``
+* **2012-06-13**: Added a route ``before`` middleware
+
+* **2012-06-13**: Renamed the route ``middleware`` to ``before``
 
 * **2012-06-13**: Added an extension for the Symfony Security component
 

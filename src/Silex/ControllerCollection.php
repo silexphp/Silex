@@ -222,7 +222,7 @@ class ControllerCollection
      *
      * @param mixed $callback A PHP callback to be triggered when the Route is matched, just before the route callback
      *
-     * @return ControllerCollection $this The current Controller instance
+     * @return ControllerCollection $this The current ControllerCollection instance
      */
     public function before($callback)
     {
@@ -230,6 +230,24 @@ class ControllerCollection
 
         foreach ($this->controllers as $controller) {
             $controller->before($callback);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Sets a callback to handle after the route callback.
+     *
+     * @param mixed $callback A PHP callback to be triggered after the route callback
+     *
+     * @return ControllerCollection $this The current ControllerCollection instance
+     */
+    public function after($callback)
+    {
+        $this->defaultRoute->after($callback);
+
+        foreach ($this->controllers as $controller) {
+            $controller->after($callback);
         }
 
         return $this;
