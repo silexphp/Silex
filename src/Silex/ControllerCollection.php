@@ -31,8 +31,6 @@ class ControllerCollection
 
     /**
      * Constructor.
-     *
-     * @param Route $route
      */
     public function __construct()
     {
@@ -47,7 +45,7 @@ class ControllerCollection
      * @param string $pattern Matched route pattern
      * @param mixed  $to      Callback that returns the response when matched
      *
-     * @return Silex\Controller
+     * @return Controller
      */
     public function match($pattern, $to)
     {
@@ -66,7 +64,7 @@ class ControllerCollection
      * @param string $pattern Matched route pattern
      * @param mixed  $to      Callback that returns the response when matched
      *
-     * @return Silex\Controller
+     * @return Controller
      */
     public function get($pattern, $to)
     {
@@ -79,7 +77,7 @@ class ControllerCollection
      * @param string $pattern Matched route pattern
      * @param mixed  $to      Callback that returns the response when matched
      *
-     * @return Silex\Controller
+     * @return Controller
      */
     public function post($pattern, $to)
     {
@@ -92,7 +90,7 @@ class ControllerCollection
      * @param string $pattern Matched route pattern
      * @param mixed  $to      Callback that returns the response when matched
      *
-     * @return Silex\Controller
+     * @return Controller
      */
     public function put($pattern, $to)
     {
@@ -105,7 +103,7 @@ class ControllerCollection
      * @param string $pattern Matched route pattern
      * @param mixed  $to      Callback that returns the response when matched
      *
-     * @return Silex\Controller
+     * @return Controller
      */
     public function delete($pattern, $to)
     {
@@ -118,7 +116,7 @@ class ControllerCollection
      * @param string $variable The variable name
      * @param string $regexp   The regexp to apply
      *
-     * @return Controller $this The current Controller instance
+     * @return ControllerCollection $this The current Controller instance
      */
     public function assert($variable, $regexp)
     {
@@ -137,7 +135,7 @@ class ControllerCollection
      * @param string $variable The variable name
      * @param mixed  $default  The default value
      *
-     * @return Controller $this The current Controller instance
+     * @return ControllerCollection $this The current Controller instance
      */
     public function value($variable, $default)
     {
@@ -156,7 +154,7 @@ class ControllerCollection
      * @param string $variable The variable name
      * @param mixed  $callback A PHP callback that converts the original value
      *
-     * @return Controller $this The current Controller instance
+     * @return ControllerCollection $this The current Controller instance
      */
     public function convert($variable, $callback)
     {
@@ -174,7 +172,7 @@ class ControllerCollection
      *
      * @param string $method The HTTP method name. Multiple methods can be supplied, delimited by a pipe character '|', eg. 'GET|POST'
      *
-     * @return Controller $this The current Controller instance
+     * @return ControllerCollection $this The current Controller instance
      */
     public function method($method)
     {
@@ -190,7 +188,7 @@ class ControllerCollection
     /**
      * Sets the requirement of HTTP (no HTTPS) on this controller.
      *
-     * @return Controller $this The current Controller instance
+     * @return ControllerCollection $this The current Controller instance
      */
     public function requireHttp()
     {
@@ -206,7 +204,7 @@ class ControllerCollection
     /**
      * Sets the requirement of HTTPS on this controller.
      *
-     * @return Controller $this The current Controller instance
+     * @return ControllerCollection $this The current Controller instance
      */
     public function requireHttps()
     {
@@ -225,7 +223,7 @@ class ControllerCollection
      *
      * @param mixed $callback A PHP callback to be triggered when the Route is matched, just before the route callback
      *
-     * @return Controller $this The current Controller instance
+     * @return ControllerCollection $this The current Controller instance
      */
     public function middleware($callback)
     {
@@ -240,6 +238,8 @@ class ControllerCollection
 
     /**
      * Persists and freezes staged controllers.
+     *
+     * @param string $prefix
      *
      * @return RouteCollection A RouteCollection instance
      */
