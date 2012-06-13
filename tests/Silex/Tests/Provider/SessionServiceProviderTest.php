@@ -16,7 +16,6 @@ use Silex\WebTestCase;
 use Silex\Provider\SessionServiceProvider;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
  * SessionProvider test cases.
