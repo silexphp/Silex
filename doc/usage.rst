@@ -602,9 +602,9 @@ round-trip to the browser (as for a redirect), use an internal sub-request::
 
 .. tip::
 
-If you are using ``UrlGeneratorProvider``, you can also generate the URI::
+    If you are using ``UrlGeneratorProvider``, you can also generate the URI::
 
-    $request = Request::create($app['url_generator']->generate('hello'), 'GET');
+        $request = Request::create($app['url_generator']->generate('hello'), 'GET');
 
 Modularity
 ----------

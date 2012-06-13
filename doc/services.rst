@@ -211,14 +211,14 @@ don't want to mess with most of them.
   the request that is used by the Router and the UrlGenerator.
 
 * **exception_handler**: The Exception handler is the default handler that is
-  used when you don't register one via the `error()` method or if your handler
+  used when you don't register one via the ``error()`` method or if your handler
   does not return a Response. Disable it with
-  `unset($app['exception_handler'])`.
+  ``unset($app['exception_handler'])``.
 
 * **logger**: A
   `LoggerInterface
   <http://api.symfony.com/master/Symfony/Component/HttpKernel/Log/LoggerInterface.html>`_
-  instance. By default, logging is disabled as the value is set to `null`.
+  instance. By default, logging is disabled as the value is set to ``null``.
   When the Symfony2 Monolog bridge is installed, Monolog is automatically used
   as the default logger.
 
