@@ -14,10 +14,10 @@ namespace Silex\Provider;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-use Symfony\Bridge\Twig\Extension\RoutingExtension as TwigRoutingExtension;
-use Symfony\Bridge\Twig\Extension\TranslationExtension as TwigTranslationExtension;
-use Symfony\Bridge\Twig\Extension\FormExtension as TwigFormExtension;
-use Symfony\Bridge\Twig\Extension\SecurityExtension as TwigSecurityExtension;
+use Symfony\Bridge\Twig\Extension\RoutingExtension;
+use Symfony\Bridge\Twig\Extension\TranslationExtension;
+use Symfony\Bridge\Twig\Extension\FormExtension;
+use Symfony\Bridge\Twig\Extension\SecurityExtension;
 
 /**
  * Twig Provider.
@@ -48,15 +48,15 @@ class TwigServiceProvider implements ServiceProviderInterface
 
             if (class_exists('Symfony\Bridge\Twig\Extension\RoutingExtension')) {
                 if (isset($app['url_generator'])) {
-                    $twig->addExtension(new TwigRoutingExtension($app['url_generator']));
+                    $twig->addExtension(new RoutingExtension($app['url_generator']));
                 }
 
                 if (isset($app['translator'])) {
-                    $twig->addExtension(new TwigTranslationExtension($app['translator']));
+                    $twig->addExtension(new TranslationExtension($app['translator']));
                 }
 
                 if (isset($app['security.context'])) {
-                    $twig->addExtension(new TwigSecurityExtension($app['security.context']));
+                    $twig->addExtension(new SecurityExtension($app['security.context']));
                 }
 
                 if (isset($app['form.factory'])) {
@@ -64,7 +64,7 @@ class TwigServiceProvider implements ServiceProviderInterface
                         $app['twig.form.templates'] = array('form_div_layout.html.twig');
                     }
 
-                    $twig->addExtension(new TwigFormExtension($app['form.csrf_provider'], $app['twig.form.templates']));
+                    $twig->addExtension(new FormExtension($app['form.csrf_provider'], $app['twig.form.templates']));
 
                     // add loader for Symfony built-in form templates
                     $reflected = new \ReflectionClass('Symfony\Bridge\Twig\Extension\FormExtension');
