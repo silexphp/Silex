@@ -3,8 +3,8 @@ Providers
 
 Providers allow the developer to reuse parts of an application into another
 one. Silex provides two types of providers defined by two interfaces:
-`ServiceProviderInterface` for services and `ControllerProviderInterface` for
-controllers.
+``ServiceProviderInterface`` for services and ``ControllerProviderInterface``
+for controllers.
 
 Service Providers
 -----------------
@@ -146,7 +146,7 @@ controllers under a path::
     $app->mount('/blog', new Acme\BlogControllerProvider());
 
 All controllers defined by the provider will now be available under the
-`/blog` path.
+``/blog`` path.
 
 Creating a provider
 ~~~~~~~~~~~~~~~~~~~
