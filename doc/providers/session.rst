@@ -14,7 +14,9 @@ Parameters
 * **session.storage.options**: An array of options that is passed to the
   constructor of the ``session.storage`` service.
 
-  In case of the default ``NativeSessionStorage``, the possible options are:
+  In case of the default `NativeSessionStorage
+  <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/NativeSessionStorage.html>`_,
+  the possible options are:
 
   * **name**: The cookie name (_SESS by default)
   * **id**: The session id (null by default)
@@ -40,8 +42,9 @@ Services
   data.
 
 * **session.storage.handler**: A service that is used by the
-  ``session.storage`` for data access. Defaults to a
-  ``FileSessionHandler`` storage handler.
+  ``session.storage`` for data access. Defaults to a `FileSessionHandler
+  <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/FileSessionHandler.html>`_
+  storage handler.
 
 Registering
 -----------
