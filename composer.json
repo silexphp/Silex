@@ -20,10 +20,10 @@
         "symfony/event-dispatcher": "2.1.*",
         "symfony/http-foundation": "2.1.*",
         "symfony/http-kernel": "2.1.*",
-        "symfony/security": "2.1.*",
         "symfony/routing": "2.1.*"
     },
     "require-dev": {
+        "symfony/security": "2.1.*",
         "symfony/form": "2.1.*",
         "monolog/monolog": ">=1.0.0",
         "symfony/browser-kit": "2.1.*",
