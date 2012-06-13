@@ -17,6 +17,7 @@ use Silex\ServiceProviderInterface;
 use Symfony\Bridge\Twig\Extension\RoutingExtension as TwigRoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension as TwigTranslationExtension;
 use Symfony\Bridge\Twig\Extension\FormExtension as TwigFormExtension;
+use Symfony\Bridge\Twig\Extension\SecurityExtension as TwigSecurityExtension;
 
 /**
  * Twig Provider.
@@ -52,6 +53,10 @@ class TwigServiceProvider implements ServiceProviderInterface
 
                 if (isset($app['translator'])) {
                     $twig->addExtension(new TwigTranslationExtension($app['translator']));
+                }
+
+                if (isset($app['security.context'])) {
+                    $twig->addExtension(new TwigSecurityExtension($app['security.context']));
                 }
 
                 if (isset($app['form.factory'])) {
