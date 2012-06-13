@@ -614,7 +614,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             ),
             KernelEvents::CONTROLLER => 'onKernelController',
             KernelEvents::RESPONSE   => 'onKernelResponse',
-            KernelEvents::EXCEPTION  => 'onKernelException',
+            KernelEvents::EXCEPTION  => array('onKernelException', -10),
             KernelEvents::TERMINATE  => 'onKernelTerminate',
             KernelEvents::VIEW       => array('onKernelView', -10),
         );
