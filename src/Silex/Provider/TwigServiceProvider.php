@@ -20,7 +20,7 @@ use Symfony\Bridge\Twig\Extension\FormExtension as TwigFormExtension;
 use Symfony\Bridge\Twig\Extension\SecurityExtension as TwigSecurityExtension;
 
 /**
- * Twig Provider.
+ * Twig integration for Silex.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
