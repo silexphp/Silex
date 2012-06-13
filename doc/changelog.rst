@@ -3,6 +3,8 @@ Changelog
 
 This changelog references all backward incompatibilities as we introduce them:
 
+* **2012-06-13**: Renamed ``middleware`` to ``before``
+
 * **2012-06-13**: Added an extension for the Symfony Security component
 
 * **2012-05-31**: Made the ``BrowserKit``, ``CssSelector``, ``DomCrawler``,

@@ -440,33 +440,33 @@ This can be used for a lot of use cases; for instance, here is a simple
     $app->get('/user/subscribe', function () {
         ...
     })
-    ->middleware($mustBeAnonymous);
+    ->before($mustBeAnonymous);
 
     $app->get('/user/login', function () {
         ...
     })
-    ->middleware($mustBeAnonymous);
+    ->before($mustBeAnonymous);
 
     $app->get('/user/my-profile', function () {
         ...
     })
-    ->middleware($mustBeLogged);
+    ->before($mustBeLogged);
 
-The ``middleware`` function can be called several times for a given route, in
+The ``before`` function can be called several times for a given route, in
 which case they are triggered in the same order as you added them to the
 route.
 
-For convenience, the route middlewares functions are triggered with the
+For convenience, the route before middlewares functions are triggered with the
 current ``Request`` instance as their only argument.
 
-If any of the route middlewares returns a Symfony HTTP Response, it will
-short-circuit the whole rendering: the next middlewares won't be run, neither
-the route callback. You can also redirect to another page by returning a
-redirect response, which you can create by calling the Application
+If any of the route before middlewares returns a Symfony HTTP Response, it
+will short-circuit the whole rendering: the next middlewares won't be run,
+neither the route callback. You can also redirect to another page by returning
+a redirect response, which you can create by calling the Application
 ``redirect`` method.
 
-If a route middleware does not return a Symfony HTTP Response or ``null``, a
-``RuntimeException`` is thrown.
+If a route before middleware does not return a Symfony HTTP Response or
+``null``, a ``RuntimeException`` is thrown.
 
 Global Configuration
 --------------------
@@ -481,7 +481,7 @@ middleware, a requirement, or a default value), you can configure it on
         ->requireHttps()
         ->method('get')
         ->convert('id', function () { // ... })
-        ->middleware(function () { // ... })
+        ->before(function () { // ... })
     ;
 
 These settings are applied to already registered controllers and they become
@@ -652,7 +652,7 @@ would secure all controllers for the backend collection::
     $backend = new ControllerCollection();
 
     // ensure that all controllers require logged-in users
-    $backend->middleware($mustBeLogged);
+    $backend->before($mustBeLogged);
 
 .. tip::
 
