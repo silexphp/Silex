@@ -74,7 +74,7 @@ Registering
 Usage
 -----
 
-The Swiftmailer provider provides a ``mailer`` service:
+The Swiftmailer provider provides a ``mailer`` service::
 
     $app->post('/feedback', function () use ($app) {
         $request = $app['request'];

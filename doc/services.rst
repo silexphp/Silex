@@ -216,7 +216,8 @@ don't want to mess with most of them.
   `unset($app['exception_handler'])`.
 
 * **logger**: A
-  `http://api.symfony.com/master/Symfony/Component/HttpKernel/Log/LoggerInterface.html`_
+  `LoggerInterface
+  <http://api.symfony.com/master/Symfony/Component/HttpKernel/Log/LoggerInterface.html>`_
   instance. By default, logging is disabled as the value is set to `null`.
   When the Symfony2 Monolog bridge is installed, Monolog is automatically used
   as the default logger.
