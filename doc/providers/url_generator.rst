@@ -54,13 +54,10 @@ When using Twig, the service can be used like this:
 
     {{ app.url_generator.generate('homepage') }}
 
-Moreover, if you register the ``SymfonyBridgesServiceProvider``, then you will
-have access to the ``path()`` and ``url()`` functions:
+Moreover, if you use Twig, you will have access to the ``path()`` and
+``url()`` functions:
 
 .. code-block:: jinja
 
     {{ path('homepage') }}
     {{ url('homepage') }} {# generates the absolute url http://example.org/ #}
-
-You can find more information about this subject in the :doc:`Symfony bridges
-documentation <symfony_bridges>`.
