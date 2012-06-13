@@ -53,7 +53,6 @@ the ``Silex\Provider`` namespace:
 * :doc:`MonologServiceProvider <providers/monolog>`
 * :doc:`SessionServiceProvider <providers/session>`
 * :doc:`SwiftmailerServiceProvider <providers/swiftmailer>`
-* :doc:`SymfonyBridgesServiceProvider <providers/symfony_bridges>`
 * :doc:`TwigServiceProvider <providers/twig>`
 * :doc:`TranslationServiceProvider <providers/translation>`
 * :doc:`UrlGeneratorServiceProvider <providers/url_generator>`
