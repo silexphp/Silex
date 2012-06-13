@@ -145,4 +145,14 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(array('mid1', 'mid2', 'mid3'), $controller->getRoute()->getOption('_before_middlewares'));
     }
+
+    public function testAfter()
+    {
+        $controllers = new ControllerCollection();
+        $controllers->after('mid1');
+        $controller = $controllers->match('/{id}/{name}/{extra}', function () {})->after('mid2');
+        $controllers->after('mid3');
+
+        $this->assertEquals(array('mid1', 'mid2', 'mid3'), $controller->getRoute()->getOption('_after_middlewares'));
+    }
 }
