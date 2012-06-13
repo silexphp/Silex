@@ -200,9 +200,9 @@ Create the associated template:
 
 .. note::
 
-    The ``admin_login_check`` route is automatically defined by Symfony and
-    its name is derived from the ``check_path`` value (all ``/`` are replaced
-    with ``_`` and the leading ``/`` is stripped).
+    The ``admin_login_check`` route is automatically defined by Silex and its
+    name is derived from the ``check_path`` value (all ``/`` are replaced with
+    ``_`` and the leading ``/`` is stripped).
 
 Defining more than one Firewall
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -289,7 +289,7 @@ You can check roles in Twig templates too:
 .. code-block:: jinja
 
     {% if is_granted('ROLE_ADMIN') %}
-        <a href="?_switch_user=fabien">Switch to Fabien</a>
+        <a href="/secured?_switch_user=fabien">Switch to Fabien</a>
     {% endif %}
 
 You can check is a user is "fully authenticated" (not an anonymous user for
@@ -306,6 +306,11 @@ instance) with the special ``IS_AUTHENTICATED_FULLY`` role:
 .. tip::
 
     Don't use the ``getRoles()`` method to check user roles.
+
+.. caution::
+
+    ``isGranted()`` throws an exception when no authentication information is
+    available (which is the case on non-secured area).
 
 Impersonating a User
 ~~~~~~~~~~~~~~~~~~~~
