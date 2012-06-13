@@ -166,7 +166,9 @@ Here is how to secure all URLs under ``/admin/`` with a form::
 
 Always keep in mind the following two golden rules:
 
-* The ``login_path`` path must always be defined **outside** the secured area;
+* The ``login_path`` path must always be defined **outside** the secured area
+  (or if it is in the secured area, the ``anonymous`` authentication mechanism
+  must be enabled -- see below);
 
 * The ``check_path`` path must always be defined **inside** the secured area.
 
