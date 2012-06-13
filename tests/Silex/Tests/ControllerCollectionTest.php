@@ -136,13 +136,13 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('http', $controller->getRoute()->getRequirement('_scheme'));
     }
 
-    public function testMiddleware()
+    public function testBefore()
     {
         $controllers = new ControllerCollection();
-        $controllers->middleware('mid1');
-        $controller = $controllers->match('/{id}/{name}/{extra}', function () {})->middleware('mid2');
-        $controllers->middleware('mid3');
+        $controllers->before('mid1');
+        $controller = $controllers->match('/{id}/{name}/{extra}', function () {})->before('mid2');
+        $controllers->before('mid3');
 
-        $this->assertEquals(array('mid1', 'mid2', 'mid3'), $controller->getRoute()->getOption('_middlewares'));
+        $this->assertEquals(array('mid1', 'mid2', 'mid3'), $controller->getRoute()->getOption('_before_middlewares'));
     }
 }

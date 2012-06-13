@@ -112,21 +112,21 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             return new RedirectableUrlMatcher($app['routes'], $app['request_context']);
         });
 
-        $this['route_middlewares_trigger'] = $this->protect(function (KernelEvent $event) use ($app) {
+        $this['route_before_middlewares_trigger'] = $this->protect(function (KernelEvent $event) use ($app) {
             $request = $event->getRequest();
             $routeName = $request->attributes->get('_route');
             if (!$route = $app['routes']->get($routeName)) {
                 return;
             }
 
-            foreach ((array) $route->getOption('_middlewares') as $callback) {
+            foreach ((array) $route->getOption('_before_middlewares') as $callback) {
                 $ret = call_user_func($callback, $request);
                 if ($ret instanceof Response) {
                     $event->setResponse($ret);
 
                     return;
                 } elseif (null !== $ret) {
-                    throw new \RuntimeException(sprintf('Middleware for route "%s" returned an invalid response value. Must return null or an instance of Response.', $routeName));
+                    throw new \RuntimeException(sprintf('The before middleware for route "%s" returned an invalid response value. Must return null or an instance of Response.', $routeName));
                 }
             }
         });
@@ -516,7 +516,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
             $this->beforeDispatched = true;
             $this['dispatcher']->dispatch(SilexEvents::BEFORE, $event);
-            $this['route_middlewares_trigger']($event);
+            $this['route_before_middlewares_trigger']($event);
         }
     }
 

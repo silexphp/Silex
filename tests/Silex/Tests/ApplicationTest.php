@@ -167,7 +167,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('text/html; charset=ISO-8859-1', $response->headers->get('Content-Type'));
     }
 
-    public function testRoutesMiddlewares()
+    public function testRoutesBeforeMiddlewares()
     {
         $app = new Application();
 
@@ -191,13 +191,13 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
             return 'hello';
         })
-        ->middleware($middleware1)
-        ->middleware($middleware2);
+        ->before($middleware1)
+        ->before($middleware2);
 
         $app->get('/never-reached', function () use (&$middlewareTarget) {
             throw new \Exception('This route shouldn\'t run!');
         })
-        ->middleware($middleware3);
+        ->before($middleware3);
 
         $result = $app->handle(Request::create('/reached'));
 
@@ -205,14 +205,14 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('hello', $result->getContent());
     }
 
-    public function testRoutesMiddlewaresWithResponseObject()
+    public function testRoutesBeforeMiddlewaresWithResponseObject()
     {
         $app = new Application();
 
         $app->get('/foo', function () {
             throw new \Exception('This route shouldn\'t run!');
         })
-        ->middleware(function () {
+        ->before(function () {
             return new Response('foo');
         });
 
@@ -222,14 +222,14 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('foo', $result->getContent());
     }
 
-    public function testRoutesMiddlewaresWithRedirectResponseObject()
+    public function testRoutesBeforeMiddlewaresWithRedirectResponseObject()
     {
         $app = new Application();
 
         $app->get('/foo', function () {
             throw new \Exception('This route shouldn\'t run!');
         })
-        ->middleware(function () use ($app) {
+        ->before(function () use ($app) {
             return $app->redirect('/bar');
         });
 
@@ -240,7 +240,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('/bar', $result->getTargetUrl());
     }
 
-    public function testRoutesMiddlewaresTriggeredAfterSilexBeforeFilters()
+    public function testRoutesBeforeMiddlewaresTriggeredAfterSilexBeforeFilters()
     {
         $app = new Application();
 
@@ -252,7 +252,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $app->get('/foo', function () use (&$middlewareTarget) {
             $middlewareTarget[] = 'route_triggered';
         })
-        ->middleware($middleware);
+        ->before($middleware);
 
         $app->before(function () use (&$middlewareTarget) {
             $middlewareTarget[] = 'before_triggered';
@@ -293,7 +293,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException RuntimeException
      */
-    public function testNonResponseAndNonNullReturnFromRouteMiddlewareShouldThrowRuntimeException()
+    public function testNonResponseAndNonNullReturnFromRouteBeforeMiddlewareShouldThrowRuntimeException()
     {
         $app = new Application();
 
@@ -304,7 +304,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $app->get('/', function () {
             return 'hello';
         })
-        ->middleware($middleware);
+        ->before($middleware);
 
         $app->handle(Request::create('/'), HttpKernelInterface::MASTER_REQUEST, false);
     }
