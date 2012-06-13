@@ -36,7 +36,7 @@ abstract class WebTestCase extends \PHPUnit_Framework_TestCase
     /**
      * Creates the application.
      *
-     * @return Symfony\Component\HttpKernel\HttpKernel
+     * @return \Symfony\Component\HttpKernel\HttpKernel
      */
     abstract public function createApplication();
 
