@@ -13,3 +13,4 @@ Silex
     url_generator
     validator
     http_cache
+    security
