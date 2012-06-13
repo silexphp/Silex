@@ -22,7 +22,6 @@ use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
 class LazyUrlMatcher implements UrlMatcherInterface
 {
     private $factory;
-    private $urlMatcher;
 
     public function __construct(\Closure $factory)
     {
