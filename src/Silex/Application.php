@@ -178,7 +178,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      * @param string $pattern Matched route pattern
      * @param mixed  $to      Callback that returns the response when matched
      *
-     * @return Silex\Controller
+     * @return Controller
      */
     public function match($pattern, $to)
     {
@@ -191,7 +191,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      * @param string $pattern Matched route pattern
      * @param mixed  $to      Callback that returns the response when matched
      *
-     * @return Silex\Controller
+     * @return Controller
      */
     public function get($pattern, $to)
     {
@@ -204,7 +204,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      * @param string $pattern Matched route pattern
      * @param mixed  $to      Callback that returns the response when matched
      *
-     * @return Silex\Controller
+     * @return Controller
      */
     public function post($pattern, $to)
     {
@@ -217,7 +217,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      * @param string $pattern Matched route pattern
      * @param mixed  $to      Callback that returns the response when matched
      *
-     * @return Silex\Controller
+     * @return Controller
      */
     public function put($pattern, $to)
     {
@@ -230,7 +230,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      * @param string $pattern Matched route pattern
      * @param mixed  $to      Callback that returns the response when matched
      *
-     * @return Silex\Controller
+     * @return Controller
      */
     public function delete($pattern, $to)
     {
@@ -366,7 +366,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      * @param string  $url    The URL to redirect to
      * @param integer $status The status code (302 by default)
      *
-     * @see Symfony\Component\HttpFoundation\RedirectResponse
+     * @see RedirectResponse
      */
     public function redirect($url, $status = 302)
     {
@@ -380,7 +380,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      * @param integer $status   The response status code
      * @param array   $headers  An array of response headers
      *
-     * @see Symfony\Component\HttpFoundation\StreamedResponse
+     * @see StreamedResponse
      */
     public function stream($callback = null, $status = 200, $headers = array())
     {
@@ -409,7 +409,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      * @param integer $status  The response status code
      * @param array   $headers An array of response headers
      *
-     * @see Symfony\Component\HttpFoundation\JsonResponse
+     * @see JsonResponse
      */
     public function json($data = array(), $status = 200, $headers = array())
     {
