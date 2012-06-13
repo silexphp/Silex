@@ -21,6 +21,7 @@ use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
+use Symfony\Component\HttpKernel\EventListener\LocaleListener;
 use Symfony\Component\HttpKernel\EventListener\ResponseListener;
 use Symfony\Component\HttpKernel\EventListener\RouterListener;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
@@ -85,6 +86,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
                 return $app['url_matcher'];
             });
             $dispatcher->addSubscriber(new RouterListener($urlMatcher, $app['logger']));
+            $dispatcher->addSubscriber(new LocaleListener($app['request.default_locale'], $urlMatcher));
 
             return $dispatcher;
         });
@@ -469,7 +471,6 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         $current = HttpKernelInterface::SUB_REQUEST === $type ? $this['request'] : $this['request_error'];
 
         $this['request'] = $request;
-        $this['request']->setDefaultLocale($this['request.default_locale']);
 
         $this->flush();
 
