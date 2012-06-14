@@ -219,18 +219,35 @@ class ControllerCollection
 
     /**
      * Sets a callback to handle before triggering the route callback.
-     * (a.k.a. "Route Middleware")
      *
      * @param mixed $callback A PHP callback to be triggered when the Route is matched, just before the route callback
      *
-     * @return ControllerCollection $this The current Controller instance
+     * @return ControllerCollection $this The current ControllerCollection instance
      */
-    public function middleware($callback)
+    public function before($callback)
     {
-        $this->defaultRoute->middleware($callback);
+        $this->defaultRoute->before($callback);
 
         foreach ($this->controllers as $controller) {
-            $controller->middleware($callback);
+            $controller->before($callback);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Sets a callback to handle after the route callback.
+     *
+     * @param mixed $callback A PHP callback to be triggered after the route callback
+     *
+     * @return ControllerCollection $this The current ControllerCollection instance
+     */
+    public function after($callback)
+    {
+        $this->defaultRoute->after($callback);
+
+        foreach ($this->controllers as $controller) {
+            $controller->after($callback);
         }
 
         return $this;
