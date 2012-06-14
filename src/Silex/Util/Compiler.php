@@ -95,7 +95,7 @@ class Compiler
             $content = self::stripWhitespace($content);
         }
 
-        $content = str_replace('@package_version@', $this->version, $content);
+        $content = preg_replace("/const VERSION = '.*?';/", "const VERSION = '".$this->version."';", $content);
 
         $phar->addFromString($path, $content);
     }
