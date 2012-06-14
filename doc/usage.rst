@@ -801,16 +801,16 @@ resources to ``index.php``:
 .. code-block:: nginx
 
     server { 
-        index index.php
-
         location / {
-            try_files $uri $uri/ /index.php;
+            try_files $uri @site;
         }
 
-        location ~ index\.php$ {
-            fastcgi_pass   /var/run/php5-fpm.sock;
-            fastcgi_index  index.php;
+        location @site {
+            fastcgi_pass /var/run/php5-fpm.sock;
             include fastcgi_params;
+            fastcgi_param SCRIPT_FILENAME $document_root/index.php;
+            fastcgi_param HTTPS $https;
+            fastcgi_ignore_client_abort on;
         }
     }
 
