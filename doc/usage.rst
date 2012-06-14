@@ -25,7 +25,7 @@ If you want more flexibility, use Composer instead. Create a
 
     {
         "require": {
-            "silex/silex": "dev-master"
+            "silex/silex": "1.0.*"
         }
     }
 
@@ -35,6 +35,14 @@ And run Composer to install Silex and all its dependencies:
 
     $ curl -s http://getcomposer.org/installer | php
     $ composer.phar install
+
+Upgrading
+---------
+
+Upgrading Silex to the latest version is as easy as running the ``update``
+command::
+
+    $ composer.phar update
 
 Bootstrap
 ---------
