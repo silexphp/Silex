@@ -107,17 +107,32 @@ class Route extends BaseRoute
 
     /**
      * Sets a callback to handle before triggering the route callback.
-     * (a.k.a. "Route Middleware")
      *
      * @param mixed $callback A PHP callback to be triggered when the Route is matched, just before the route callback
      *
      * @return Controller $this The current Controller instance
      */
-    public function middleware($callback)
+    public function before($callback)
     {
-        $middlewareCallbacks = $this->getOption('_middlewares');
-        $middlewareCallbacks[] = $callback;
-        $this->setOption('_middlewares', $middlewareCallbacks);
+        $callbacks = $this->getOption('_before_middlewares');
+        $callbacks[] = $callback;
+        $this->setOption('_before_middlewares', $callbacks);
+
+        return $this;
+    }
+
+    /**
+     * Sets a callback to handle after the route callback.
+     *
+     * @param mixed $callback A PHP callback to be triggered after the route callback
+     *
+     * @return Controller $this The current Controller instance
+     */
+    public function after($callback)
+    {
+        $callbacks = $this->getOption('_after_middlewares');
+        $callbacks[] = $callback;
+        $this->setOption('_after_middlewares', $callbacks);
 
         return $this;
     }
