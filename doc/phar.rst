@@ -1,5 +1,5 @@
 Phar File
----------
+=========
 
 .. caution::
 
@@ -8,7 +8,7 @@ Phar File
     archives.
 
 Installing
-~~~~~~~~~~
+----------
 
 Installing Silex is as easy as downloading the `phar
 <http://silex.sensiolabs.org/get/silex.phar>`_ and storing it somewhere on
@@ -27,7 +27,7 @@ the disk. Then, require it in your script::
     $app->run();
 
 Console
-~~~~~~~
+-------
 
 Silex includes a lightweight console for updating to the latest version.
 
@@ -56,7 +56,7 @@ This will automatically download a new ``silex.phar`` from
 ``silex.sensiolabs.org`` and replace the existing one.
 
 Pitfalls
-~~~~~~~~
+--------
 
 There are some things that can go wrong. Here we will try and outline the
 most frequent ones.
