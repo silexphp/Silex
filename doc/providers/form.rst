@@ -49,8 +49,9 @@ Registering
 
 .. note::
 
-    The Symfony Form component does not come with the ``silex`` archives, so
-    you need to add it as a dependency to your ``composer.json`` file:
+    The Symfony Form Component comes with the "fat" Silex archive but not with
+    the regular one. If you are using Composer, add it as a dependency to your
+    ``composer.json`` file:
 
     .. code-block:: json
 

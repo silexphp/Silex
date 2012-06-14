@@ -60,8 +60,9 @@ Registering
 
 .. note::
 
-    Doctrine does not come with the ``silex`` archives, so you need to add
-    Doctrine DBAL as a dependency to your ``composer.json`` file:
+    Doctrine DBAL comes with the "fat" Silex archive but not with the regular
+    one. If you are using Composer, add it as a dependency to your
+    ``composer.json`` file:
 
     .. code-block:: json
 
