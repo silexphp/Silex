@@ -256,7 +256,7 @@ class ControllerCollection
     /**
      * Persists and freezes staged controllers.
      *
-     * @param string $prefix
+     * @param string|null $prefix
      *
      * @return RouteCollection A RouteCollection instance
      */
