@@ -42,7 +42,7 @@ back to the client.
 Finally, the app is run. Visit ``/hello/world`` to see the result. It's really
 that easy!
 
-Installing Silex is as easy as it can get. Download the `silex.zip`_ file,
+Installing Silex is as easy as it can get. `Download`_ the archive file,
 extract it, and you're done!
 
-.. _silex.zip: http://silex.sensiolabs.org/get/silex.zip
+.. _Download: http://silex.sensiolabs.org/download
