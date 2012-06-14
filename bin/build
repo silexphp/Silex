@@ -52,7 +52,7 @@ do
 
     cd "$DIR/build/tmp"
 
-    if [ "slim" == "$TYPE" ]; then
+    if [ "slim" = "$TYPE" ]; then
         NAME="silex"
     else
         NAME="silex_fat"
