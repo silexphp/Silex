@@ -47,7 +47,7 @@ use Silex\ControllerResolver;
  */
 class Application extends \Pimple implements HttpKernelInterface, EventSubscriberInterface, TerminableInterface
 {
-    const VERSION = '@package_version@';
+    const VERSION = '1.0-DEV';
 
     private $providers = array();
     private $booted = false;
