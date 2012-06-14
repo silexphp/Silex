@@ -44,5 +44,5 @@ To run the test suite, you need [composer](http://getcomposer.org) and
 Silex is licensed under the MIT license.
 
 [1]: http://symfony.com
-[2]: http://silex.sensiolabs.org/get/silex.zip
+[2]: http://silex.sensiolabs.org/download
 [3]: http://silex.sensiolabs.org/documentation
