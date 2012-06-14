@@ -6,9 +6,8 @@ This chapter describes how to use Silex.
 Installation
 ------------
 
-If you want to get started fast, download either the `silex.zip`_ or the
-`silex.tgz`_ archive and extract it, you should have the following directory
-structure:
+If you want to get started fast, `download`_ Silex as an archive and extract
+it, you should have the following directory structure:
 
 .. code-block:: text
 
@@ -839,5 +838,4 @@ this sample ``web.config`` file:
     </configuration>
 
 .. _FallbackResource directive: http://www.adayinthelifeof.nl/2012/01/21/apaches-fallbackresource-your-new-htaccess-command/
-.. _silex.zip: http://silex.sensiolabs.org/get/silex.zip
-.. _silex.tgz: http://silex.sensiolabs.org/get/silex.tgz
+.. _download: http://silex.sensiolabs.org/download
