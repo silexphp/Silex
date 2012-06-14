@@ -7,13 +7,10 @@ your application with the Symfony2 Form component.
 Parameters
 ----------
 
-* **form.secret**: This secret value is used for generating and validating the CSRF token
-  for a specific page. It is very important for you to set this value to a static randomly
-  generated value, to prevent hijacking of your forms.
-  Defaults to md5(__DIR__).
-
-* **form.class_path** (optional): Path to where
-  Symfony2 Form component is located.
+* **form.secret**: This secret value is used for generating and validating the
+  CSRF token for a specific page. It is very important for you to set this
+  value to a static randomly generated value, to prevent hijacking of your
+  forms. Defaults to ``md5(__DIR__)``.
 
 Services
 --------
@@ -22,7 +19,8 @@ Services
   <http://api.symfony.com/master/Symfony/Component/Form/FormFactory.html>`_,
   that is used for build a form.
 
-* **form.csrf_provider**: An instance of an implementation of the `CsrfProviderInterface
+* **form.csrf_provider**: An instance of an implementation of the
+  `CsrfProviderInterface
   <http://api.symfony.com/master/Symfony/Component/Form/Extension/Csrf/CsrfProvider/CsrfProviderInterface.html>`_,
   defaults to a `DefaultCsrfProvider
   <http://api.symfony.com/master/Symfony/Component/Form/Extension/Csrf/CsrfProvider/DefaultCsrfProvider.html>`_.
@@ -30,8 +28,7 @@ Services
 Registering
 -----------
 
-Make sure you place a copy of the Symfony2 Form component in
-``vendor/symfony/src``. You can simply clone the whole Symfony2 into vendor::
+.. code-block:: php
 
     use Silex\Provider\SymfonyBridgesServiceProvider;
     use Silex\Provider\TranslationServiceProvider;
@@ -50,6 +47,17 @@ Make sure you place a copy of the Symfony2 Form component in
         'form.class_path' => __DIR__.'/vendor/symfony/src'
     ));
 
+.. note::
+
+    The Symfony Form component does not come with the ``silex`` archives, so
+    you need to add it as a dependency to your ``composer.json`` file:
+
+    .. code-block:: json
+
+        "require": {
+            "symfony/form": "2.1.*"
+        }
+
 Usage
 -----
 
@@ -61,7 +69,6 @@ example::
     })->bind('hello');
 
     $app->match('/', function () use ($app) {
-
         $validation_constraint = new Collection(array(
             'name' => new NotBlank(),
         ));
@@ -96,11 +103,11 @@ Put this in your template file named ``views/index.twig``:
         <input type="submit" name="submit" />
     </form>
 
-You can also add validation to your form by creating a constraint and pass it as the
-`validation_constraint` option::
+You can also add validation to your form by creating a constraint and pass it
+as the `validation_constraint` option::
 
     $validation_constraint = new Collection(array(
-            'name' => new NotBlank(),
+        'name' => new NotBlank(),
     ));
 
     $form = $app['form.factory']->createBuilder('form', null, array(
@@ -108,4 +115,4 @@ You can also add validation to your form by creating a constraint and pass it as
     ));
 
 For more information, consult the `Symfony2 Forms documentation
-<http://symfony.com/doc/2.0/book/forms.html>`_.
+<http://symfony.com/doc/2.1/book/forms.html>`_.
