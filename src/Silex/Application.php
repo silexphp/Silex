@@ -14,7 +14,6 @@ namespace Silex;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\TerminableInterface;
-use Symfony\Component\HttpKernel\Event\KernelEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
@@ -112,21 +111,38 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             return new RedirectableUrlMatcher($app['routes'], $app['request_context']);
         });
 
-        $this['route_middlewares_trigger'] = $this->protect(function (KernelEvent $event) use ($app) {
+        $this['route_before_middlewares_trigger'] = $this->protect(function (GetResponseEvent $event) use ($app) {
             $request = $event->getRequest();
             $routeName = $request->attributes->get('_route');
             if (!$route = $app['routes']->get($routeName)) {
                 return;
             }
 
-            foreach ((array) $route->getOption('_middlewares') as $callback) {
+            foreach ((array) $route->getOption('_before_middlewares') as $callback) {
                 $ret = call_user_func($callback, $request);
                 if ($ret instanceof Response) {
                     $event->setResponse($ret);
 
                     return;
                 } elseif (null !== $ret) {
-                    throw new \RuntimeException(sprintf('Middleware for route "%s" returned an invalid response value. Must return null or an instance of Response.', $routeName));
+                    throw new \RuntimeException(sprintf('A before middleware for route "%s" returned an invalid response value. Must return null or an instance of Response.', $routeName));
+                }
+            }
+        });
+
+        $this['route_after_middlewares_trigger'] = $this->protect(function (FilterResponseEvent $event) use ($app) {
+            $request = $event->getRequest();
+            $routeName = $request->attributes->get('_route');
+            if (!$route = $app['routes']->get($routeName)) {
+                return;
+            }
+
+            foreach ((array) $route->getOption('_after_middlewares') as $callback) {
+                $response = call_user_func($callback, $request, $event->getResponse());
+                if ($response instanceof Response) {
+                    $event->setResponse($response);
+                } elseif (null !== $response) {
+                    throw new \RuntimeException(sprintf('An after middleware for route "%s" returned an invalid response value. Must return null or an instance of Response.', $routeName));
                 }
             }
         });
@@ -516,8 +532,9 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
             $this->beforeDispatched = true;
             $this['dispatcher']->dispatch(SilexEvents::BEFORE, $event);
-            $this['route_middlewares_trigger']($event);
         }
+
+        $this['route_before_middlewares_trigger']($event);
     }
 
     /**
@@ -557,6 +574,8 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function onKernelResponse(FilterResponseEvent $event)
     {
+        $this['route_after_middlewares_trigger']($event);
+
         if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
             $this['dispatcher']->dispatch(SilexEvents::AFTER, $event);
         }
