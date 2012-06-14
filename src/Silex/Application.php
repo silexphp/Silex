@@ -165,7 +165,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      * Registers a service provider.
      *
      * @param ServiceProviderInterface $provider A ServiceProviderInterface instance
-     * @param array                    $values   An array of values that customizes the provider
+     * @param array|null               $values   An array of values that customizes the provider
      */
     public function register(ServiceProviderInterface $provider, array $values = array())
     {
@@ -261,8 +261,8 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      *
      * Before filters are run before any route has been matched.
      *
-     * @param mixed   $callback Before filter callback
-     * @param integer $priority The higher this value, the earlier an event
+     * @param mixed        $callback Before filter callback
+     * @param integer|null $priority The higher this value, the earlier an event
      *                          listener will be triggered in the chain (defaults to 0)
      */
     public function before($callback, $priority = 0)
@@ -281,8 +281,8 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      *
      * After filters are run after the controller has been executed.
      *
-     * @param mixed   $callback After filter callback
-     * @param integer $priority The higher this value, the earlier an event
+     * @param mixed        $callback After filter callback
+     * @param integer|null $priority The higher this value, the earlier an event
      *                          listener will be triggered in the chain (defaults to 0)
      */
     public function after($callback, $priority = 0)
@@ -297,8 +297,8 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      *
      * Finish filters are run after the response has been sent.
      *
-     * @param mixed   $callback Finish filter callback
-     * @param integer $priority The higher this value, the earlier an event
+     * @param mixed        $callback Finish filter callback
+     * @param integer|null $priority The higher this value, the earlier an event
      *                          listener will be triggered in the chain (defaults to 0)
      */
     public function finish($callback, $priority = 0)
@@ -311,9 +311,9 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     /**
      * Aborts the current request by sending a proper HTTP error.
      *
-     * @param integer $statusCode The HTTP status code
-     * @param string  $message    The status message
-     * @param array   $headers    An array of HTTP headers
+     * @param integer     $statusCode The HTTP status code
+     * @param string|null $message    The status message
+     * @param array|null  $headers    An array of HTTP headers
      */
     public function abort($statusCode, $message = '', array $headers = array())
     {
@@ -333,8 +333,8 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      *
      * For this reason you should add logging handlers before output handlers.
      *
-     * @param mixed   $callback Error handler callback, takes an Exception argument
-     * @param integer $priority The higher this value, the earlier an event
+     * @param mixed        $callback Error handler callback, takes an Exception argument
+     * @param integer|null $priority The higher this value, the earlier an event
      *                          listener will be triggered in the chain (defaults to 0)
      */
     public function error($callback, $priority = 0)
@@ -372,7 +372,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     /**
      * Flushes the controller collection.
      *
-     * @param string $prefix The route prefix
+     * @param string|null $prefix The route prefix
      */
     public function flush($prefix = '')
     {
@@ -382,8 +382,8 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     /**
      * Redirects the user to another URL.
      *
-     * @param string  $url    The URL to redirect to
-     * @param integer $status The status code (302 by default)
+     * @param string       $url    The URL to redirect to
+     * @param integer|null $status The status code (302 by default)
      *
      * @see RedirectResponse
      */
@@ -395,9 +395,9 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     /**
      * Creates a streaming response.
      *
-     * @param mixed   $callback A valid PHP callback
-     * @param integer $status   The response status code
-     * @param array   $headers  An array of response headers
+     * @param mixed|null   $callback A valid PHP callback
+     * @param integer|null $status   The response status code
+     * @param array|null   $headers  An array of response headers
      *
      * @see StreamedResponse
      */
@@ -409,10 +409,10 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     /**
      * Escapes a text for HTML.
      *
-     * @param string  $text         The input text to be escaped
-     * @param integer $flags        The flags (@see htmlspecialchars)
-     * @param string  $charset      The charset
-     * @param Boolean $doubleEncode Whether to try to avoid double escaping or not
+     * @param string       $text         The input text to be escaped
+     * @param integer|null $flags        The flags (@see htmlspecialchars)
+     * @param string|null  $charset      The charset
+     * @param Boolean|null $doubleEncode Whether to try to avoid double escaping or not
      *
      * @return string Escaped text
      */
@@ -424,9 +424,9 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     /**
      * Convert some data into a JSON response.
      *
-     * @param mixed   $data    The response data
-     * @param integer $status  The response status code
-     * @param array   $headers An array of response headers
+     * @param mixed|null   $data    The response data
+     * @param integer|null $status  The response status code
+     * @param array|null   $headers An array of response headers
      *
      * @see JsonResponse
      */
@@ -457,7 +457,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     /**
      * Handles the request and delivers the response.
      *
-     * @param Request $request Request to process
+     * @param Request|null $request Request to process
      */
     public function run(Request $request = null)
     {

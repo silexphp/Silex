@@ -27,8 +27,8 @@ class ControllerResolver extends BaseControllerResolver
     /**
      * Constructor.
      *
-     * @param Application     $app    An Application instance
-     * @param LoggerInterface $logger A LoggerInterface instance
+     * @param Application          $app    An Application instance
+     * @param LoggerInterface|null $logger A LoggerInterface instance
      */
     public function __construct(Application $app, LoggerInterface $logger = null)
     {
