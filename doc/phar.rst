@@ -7,6 +7,25 @@ Phar File
     instead to install Silex and its dependencies or download one of the
     archives.
 
+Installing
+~~~~~~~~~~
+
+Installing Silex is as easy as downloading the `phar
+<http://silex.sensiolabs.org/get/silex.phar>`_ and storing it somewhere on
+the disk. Then, require it in your script::
+
+    <?php
+
+    require_once __DIR__.'/silex.phar';
+
+    $app = new Silex\Application();
+
+    $app->get('/hello/{name}', function ($name) use ($app) {
+        return 'Hello '.$app->escape($name);
+    });
+
+    $app->run();
+
 Console
 ~~~~~~~
 
