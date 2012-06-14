@@ -1,5 +1,5 @@
 {
     "require": {
-        "silex/silex": "dev-master"
+        "silex/silex": "1.0.*"
     }
 }
