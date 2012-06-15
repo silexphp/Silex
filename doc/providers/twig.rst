@@ -25,10 +25,6 @@ Services
 * **twig**: The ``Twig_Environment`` instance. The main way of
   interacting with Twig.
 
-* **twig.configure**: :doc:`Protected closure </services#protected-closures>`
-  that takes the Twig environment as an argument. You can use it to add more
-  custom globals.
-
 * **twig.loader**: The loader for Twig templates which uses the ``twig.path``
   and the ``twig.templates`` options. You can also replace the loader
   completely.
@@ -117,6 +113,19 @@ from a template:
 
     {# or if you are also using UrlGeneratorServiceProvider with the SymfonyBridgesServiceProvider #}
     {{ render(path('sidebar')) }}
+
+Customization
+-------------
+
+You can configure the Twig environment before using it by extending the
+``twig`` service::
+
+    $app['twig'] = $app->extend('twig', function($twig, $app) {
+        $twig->addGlobal('pi', 3.14);
+        $twig->addFilter('levenshtein', new \Twig_Filter_Function('levenshtein'));
+
+        return $twig;
+    });
 
 For more information, check out the `Twig documentation
 <http://twig.sensiolabs.org>`_.
