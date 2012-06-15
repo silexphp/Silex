@@ -12,11 +12,11 @@ Changelog
 
     After::
 
-        $app['twig'] = $app->extend('twig', function($twig, $app) {
+        $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
             // do something
 
             return $twig;
-        });
+        }));
 
 * **2012-06-13**: Added a route ``before`` middleware
 
