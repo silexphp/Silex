@@ -26,13 +26,25 @@ class SwiftmailerServiceProviderTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    public function testSwiftMailerServiceWhenClassPathIsDefinedLate()
+    {
+        $app = new Application();
+
+        $app->register(new SwiftmailerServiceProvider());
+        $app['swiftmailer.class_path'] = __DIR__.'/../../../../vendor/swiftmailer/swiftmailer/lib/classes';
+        $app->boot();
+
+        $this->assertInstanceOf('Swift_Mailer', $app['mailer']);
+    }
+
     public function testSwiftMailerServiceIsSwiftMailer()
     {
         $app = new Application();
 
         $app->register(new SwiftmailerServiceProvider(), array(
-            'swiftmailer.class_path'  => __DIR__.'/../../../../vendor/swiftmailer/swiftmailer/lib/classes',
+            'swiftmailer.class_path' => __DIR__.'/../../../../vendor/swiftmailer/swiftmailer/lib/classes',
         ));
+        $app->boot();
 
         $this->assertInstanceOf('Swift_Mailer', $app['mailer']);
     }
@@ -44,6 +56,7 @@ class SwiftmailerServiceProviderTest extends \PHPUnit_Framework_TestCase
         $app->register(new SwiftmailerServiceProvider(), array(
             'swiftmailer.class_path'  => __DIR__.'/../../../../vendor/swiftmailer/swiftmailer/lib/classes',
         ));
+        $app->boot();
 
         $app['swiftmailer.spool'] = $app->share(function () {
             return new SpoolStub();

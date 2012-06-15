@@ -79,16 +79,16 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface
         $app['swiftmailer.transport.eventdispatcher'] = $app->share(function () {
             return new \Swift_Events_SimpleEventDispatcher();
         });
+    }
 
+    public function boot(Application $app)
+    {
         if (isset($app['swiftmailer.class_path'])) {
             require_once $app['swiftmailer.class_path'].'/Swift.php';
 
             \Swift::registerAutoload($app['swiftmailer.class_path'].'/../swift_init.php');
         }
-    }
 
-    public function boot(Application $app)
-    {
         $app->finish(function () use ($app) {
             $app['swiftmailer.spooltransport']->getSpool()->flushQueue($app['swiftmailer.transport']);
         });
