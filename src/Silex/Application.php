@@ -370,7 +370,9 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             $result = call_user_func($callback, $exception, $code);
 
             if (null !== $result) {
-                $event->setResponse($result instanceof Response ? $result : new Response((string) $result));
+                $response = $result instanceof Response ? $result : new Response((string) $result);
+
+                $event->setResponse($response);
             }
         }, $priority);
     }
@@ -567,8 +569,9 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     public function onKernelView(GetResponseForControllerResultEvent $event)
     {
         $response = $event->getControllerResult();
+        $response = $response instanceof Response ? $response : new Response((string) $response);
 
-        $event->setResponse($response instanceof Response ? $response : new Response((string) $response));
+        $event->setResponse($response);
     }
 
     /**
