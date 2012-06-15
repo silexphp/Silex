@@ -65,6 +65,9 @@ class SecurityServiceProvider implements ServiceProviderInterface
 
         $that = $this;
 
+        $app['security.role_hierarchy'] = array();
+        $app['security.access_rules'] = array();
+
         $app['security.context'] = $app->share(function () use ($app) {
             return new SecurityContext($app['security.authentication_manager'], $app['security.access_manager']);
         });
@@ -92,10 +95,6 @@ class SecurityServiceProvider implements ServiceProviderInterface
         });
 
         $app['security.access_manager'] = $app->share(function () use ($app) {
-            if (!isset($app['security.role_hierarchy'])) {
-                $app['security.role_hierarchy'] = array();
-            }
-
             return new AccessDecisionManager(array(
                 new RoleHierarchyVoter(new RoleHierarchy($app['security.role_hierarchy'])),
                 new AuthenticatedVoter($app['security.trust_resolver']),
@@ -222,10 +221,6 @@ class SecurityServiceProvider implements ServiceProviderInterface
 
         $app['security.access_map'] = $app->share(function () use ($app) {
             $map = new AccessMap();
-
-            if (!isset($app['security.access_rules'])) {
-                $app['security.access_rules'] = array();
-            }
 
             foreach ($app['security.access_rules'] as $rule) {
                 if (is_string($rule[0])) {

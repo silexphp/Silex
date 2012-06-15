@@ -38,9 +38,7 @@ class HttpCacheServiceProvider implements ServiceProviderInterface
             return new Store($app['http_cache.cache_dir']);
         });
 
-        if (!isset($app['http_cache.options'])) {
-            $app['http_cache.options'] = array();
-        }
+        $app['http_cache.options'] = array();
     }
 
     public function boot(Application $app)

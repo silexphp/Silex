@@ -23,14 +23,7 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
-        $app['swiftmailer.options'] = array_replace(array(
-            'host'       => 'localhost',
-            'port'       => 25,
-            'username'   => '',
-            'password'   => '',
-            'encryption' => null,
-            'auth_mode'  => null,
-        ), isset($app['swiftmailer.options']) ? $app['swiftmailer.options'] : array());
+        $app['swiftmailer.options'] = array();
 
         $app['mailer'] = $app->share(function () use ($app) {
             $r = new \ReflectionClass('Swift_Mailer');
@@ -54,12 +47,21 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface
                 $app['swiftmailer.transport.eventdispatcher']
             );
 
-            $transport->setHost($app['swiftmailer.options']['host']);
-            $transport->setPort($app['swiftmailer.options']['port']);
-            $transport->setEncryption($app['swiftmailer.options']['encryption']);
-            $transport->setUsername($app['swiftmailer.options']['username']);
-            $transport->setPassword($app['swiftmailer.options']['password']);
-            $transport->setAuthMode($app['swiftmailer.options']['auth_mode']);
+            $options = $app['swiftmailer.options'] = array_replace(array(
+                'host'       => 'localhost',
+                'port'       => 25,
+                'username'   => '',
+                'password'   => '',
+                'encryption' => null,
+                'auth_mode'  => null,
+            ), $app['swiftmailer.options']);
+
+            $transport->setHost($options['host']);
+            $transport->setPort($options['port']);
+            $transport->setEncryption($options['encryption']);
+            $transport->setUsername($options['username']);
+            $transport->setPassword($options['password']);
+            $transport->setAuthMode($options['auth_mode']);
 
             return $transport;
         });
