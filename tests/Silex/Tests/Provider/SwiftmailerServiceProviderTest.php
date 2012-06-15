@@ -45,20 +45,21 @@ class SwiftmailerServiceProviderTest extends \PHPUnit_Framework_TestCase
             'swiftmailer.class_path'  => __DIR__.'/../../../../vendor/swiftmailer/swiftmailer/lib/classes',
         ));
 
-        $spool = new SpoolStub();
-        $app['swiftmailer.spooltransport'] = new \Swift_SpoolTransport($spool);
+        $app['swiftmailer.spool'] = $app->share(function () {
+            return new SpoolStub();
+        });
 
         $app->get('/', function() use ($app) {
             $app['mailer']->send(\Swift_Message::newInstance());
         });
 
-        $this->assertCount(0, $spool->getMessages());
+        $this->assertCount(0, $app['swiftmailer.spool']->getMessages());
 
         $request = Request::create('/');
         $response = $app->handle($request);
-        $this->assertCount(1, $spool->getMessages());
+        $this->assertCount(1, $app['swiftmailer.spool']->getMessages());
 
         $app->terminate($request, $response);
-        $this->assertCount(0, $spool->getMessages());
+        $this->assertCount(0, $app['swiftmailer.spool']->getMessages());
     }
 }
