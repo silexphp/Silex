@@ -58,10 +58,11 @@ Validating values
 You can validate values directly using the ``validateValue`` validator
 method::
 
-    use Symfony\Component\Validator\Constraints;
+    use Symfony\Component\Validator\Constraints as Assert;
 
     $app->get('/validate-url', function () use ($app) {
-        $violations = $app['validator']->validateValue($app['request']->get('url'), new Constraints\Url());
+        $violations = $app['validator']->validateValue($app['request']->get('url'), new Assert\Url());
+
         return $violations;
     });
 
@@ -76,7 +77,7 @@ you to define constraints for your object properties. It also works with
 getters::
 
     use Symfony\Component\Validator\Mapping\ClassMetadata;
-    use Symfony\Component\Validator\Constraints;
+    use Symfony\Component\Validator\Constraints as Assert;
 
     class Post
     {
@@ -85,9 +86,9 @@ getters::
 
         static public function loadValidatorMetadata(ClassMetadata $metadata)
         {
-            $metadata->addPropertyConstraint('title', new Constraints\NotNull());
-            $metadata->addPropertyConstraint('title', new Constraints\NotBlank());
-            $metadata->addPropertyConstraint('body', new Constraints\MinLength(array('limit' => 10)));
+            $metadata->addPropertyConstraint('title', new Assert\NotNull());
+            $metadata->addPropertyConstraint('title', new Assert\NotBlank());
+            $metadata->addPropertyConstraint('body', new Assert\MinLength(array('limit' => 10)));
         }
     }
 
@@ -97,6 +98,7 @@ getters::
         $post->body = $app['request']->get('body');
 
         $violations = $app['validator']->validate($post);
+
         return $violations;
     });
 

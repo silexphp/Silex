@@ -30,22 +30,9 @@ Registering
 
 .. code-block:: php
 
-    use Silex\Provider\SymfonyBridgesServiceProvider;
-    use Silex\Provider\TranslationServiceProvider;
     use Silex\Provider\FormServiceProvider;
 
-    $app->register(new SymfonyBridgesServiceProvider(), array(
-        'symfony_bridges.class_path' => __DIR__.'/vendor/symfony/src'
-    ));
-
-    $app->register(new TranslationServiceProvider(), array(
-        'translation.class_path' => __DIR__.'/vendor/symfony/src',
-        'translator.messages'    => array()
-    ));
-
-    $app->register(new FormServiceProvider(), array(
-        'form.class_path' => __DIR__.'/vendor/symfony/src'
-    ));
+    $app->register(new FormServiceProvider());
 
 .. note::
 
@@ -69,16 +56,10 @@ example::
         return "Hello $name!";
     })->bind('hello');
 
-    $app->match('/', function () use ($app) {
-        $validation_constraint = new Collection(array(
-            'name' => new NotBlank(),
-        ));
-
+    $app->match('/', function (Request $request) use ($app) {
         $form = $app['form.factory']->createBuilder('form')
             ->add('name', 'text')
             ->getForm();
-
-        $request = $app['request'];
 
         if ('POST' == $request->getMethod()) {
             $form->bindRequest($request);
@@ -86,34 +67,40 @@ example::
             if ($form->isValid()) {
                 $data = $form->getData();
 
+                // do something with the data
+
                 return $app->redirect('/hello/{name}');
             }
         }
 
         return $app['twig']->render('index.twig', array('form' => $form->createView()));
-    })
-    ->method('GET|POST')
-    ->bind('index');
+    });
 
 Put this in your template file named ``views/index.twig``:
 
 .. code-block:: jinja
 
-    <form action="{{ app.request.requestUri }}" method="post">
+    <form action="#" method="post">
         {{ form_widget(form) }}
+
         <input type="submit" name="submit" />
     </form>
 
-You can also add validation to your form by creating a constraint and pass it
-as the `validation_constraint` option::
+If you are using the validator provider, you can also add validation to your
+form by adding constraints on the fields::
 
-    $validation_constraint = new Collection(array(
-        'name' => new NotBlank(),
+    use Symfony\Component\Validator\Constraints as Assert;
+
+    $app->register(new Silex\Provider\ValidatorServiceProvider());
+    $app->register(new Silex\Provider\TranslationServiceProvider(), array(
+        'translator.messages' => array(),
     ));
 
-    $form = $app['form.factory']->createBuilder('form', null, array(
-        'validation_constraint' => $validation_constraint,
-    ));
+    $form = $app['form.factory']->createBuilder('form')
+        ->add('name', 'text', array(
+            'constraints' => array(new Assert\NotBlank(), new Assert\MinLength(5))
+        ))
+        ->getForm();
 
 For more information, consult the `Symfony2 Forms documentation
 <http://symfony.com/doc/2.1/book/forms.html>`_.
