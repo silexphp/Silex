@@ -17,8 +17,6 @@ use Silex\ServiceProviderInterface;
 use Symfony\Component\Validator\Validator;
 use Symfony\Component\Validator\Mapping\ClassMetadataFactory;
 use Symfony\Component\Validator\Mapping\Loader\StaticMethodLoader;
-use Symfony\Component\Validator\Mapping\Loader\LoaderChain;
-use Symfony\Component\Validator\Mapping\Loader\XmlFileLoader;
 use Symfony\Component\Validator\ConstraintValidatorFactory;
 
 /**
@@ -38,15 +36,6 @@ class ValidatorServiceProvider implements ServiceProviderInterface
         });
 
         $app['validator.mapping.class_metadata_factory'] = $app->share(function () use ($app) {
-            if (isset($app['form.factory'])) {
-                $reflClass = new \ReflectionClass('Symfony\\Component\\Form\\FormInterface');
-
-                return new ClassMetadataFactory(new LoaderChain(array(
-                    new StaticMethodLoader(),
-                    new XmlFileLoader(dirname($reflClass->getFileName()) . '/Resources/config/validation.xml')
-                )));
-            }
-
             return new ClassMetadataFactory(new StaticMethodLoader());
         });
 
