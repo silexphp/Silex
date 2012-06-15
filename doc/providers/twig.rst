@@ -83,6 +83,12 @@ additional capabilities:
   more information in the `Symfony2 Forms reference
   <http://symfony.com/doc/current/reference/forms/twig_reference.html>`_.
 
+* **SecurityServiceProvider**: If you are using the
+  ``SecurityServiceProvider``, you will have access to the ``is_granted()``
+  function in templates. You can find more information in the `Symfony2
+  Security documentation
+  <http://symfony.com/doc/current/book/security.html#access-control-in-templates>`_.
+
 Usage
 -----
 
