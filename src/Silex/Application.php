@@ -345,7 +345,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function error($callback, $priority = 0)
     {
-        $this['dispatcher']->addListener(SilexEvents::ERROR, function (GetResponseForErrorEvent $event) use ($callback) {
+        $this['dispatcher']->addListener(SilexEvents::ERROR, function (GetResponseForExceptionEvent $event) use ($callback) {
             $exception = $event->getException();
 
             if (is_array($callback)) {
@@ -370,7 +370,9 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             $result = call_user_func($callback, $exception, $code);
 
             if (null !== $result) {
-                $event->setStringResponse($result);
+                $response = $result instanceof Response ? $result : new Response((string) $result);
+
+                $event->setResponse($response);
             }
         }, $priority);
     }
@@ -567,8 +569,9 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     public function onKernelView(GetResponseForControllerResultEvent $event)
     {
         $response = $event->getControllerResult();
-        $converter = new StringResponseConverter();
-        $event->setResponse($converter->convert($response));
+        $response = $response instanceof Response ? $response : new Response((string) $response);
+
+        $event->setResponse($response);
     }
 
     /**
@@ -621,7 +624,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             }
         }
 
-        $errorEvent = new GetResponseForErrorEvent($this, $event->getRequest(), $event->getRequestType(), $event->getException());
+        $errorEvent = new GetResponseForExceptionEvent($this, $event->getRequest(), $event->getRequestType(), $event->getException());
         $this['dispatcher']->dispatch(SilexEvents::ERROR, $errorEvent);
 
         if ($errorEvent->hasResponse()) {
