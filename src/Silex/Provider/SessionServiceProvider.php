@@ -37,9 +37,7 @@ class SessionServiceProvider implements ServiceProviderInterface
     {
         $this->app = $app;
 
-        if (!isset($app['session.test'])) {
-            $app['session.test'] = false;
-        }
+        $app['session.test'] = false;
 
         $app['session'] = $app->share(function () use ($app) {
             if (!isset($app['session.storage'])) {
@@ -54,9 +52,7 @@ class SessionServiceProvider implements ServiceProviderInterface
         });
 
         $app['session.storage.handler'] = $app->share(function () use ($app) {
-            return new FileSessionHandler(
-                isset($app['session.storage.save_path']) ? $app['session.storage.save_path'] : null
-            );
+            return new FileSessionHandler($app['session.storage.save_path']);
         });
 
         $app['session.storage.native'] = $app->share(function () use ($app) {
@@ -70,13 +66,9 @@ class SessionServiceProvider implements ServiceProviderInterface
             return new MockFileSessionStorage();
         });
 
-        if (!isset($app['session.storage.options'])) {
-            $app['session.storage.options'] = array();
-        }
-
-        if (!isset($app['session.default_locale'])) {
-            $app['session.default_locale'] = 'en';
-        }
+        $app['session.storage.options'] = array();
+        $app['session.default_locale'] = 'en';
+        $app['session.storage.save_path'] = null;
     }
 
     public function onEarlyKernelRequest(GetResponseEvent $event)

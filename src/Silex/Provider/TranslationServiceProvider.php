@@ -27,8 +27,10 @@ class TranslationServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
+        $app['locale'] = 'en';
+
         $app['translator'] = $app->share(function () use ($app) {
-            $translator = new Translator(isset($app['locale']) ? $app['locale'] : 'en', $app['translator.message_selector']);
+            $translator = new Translator($app['locale'], $app['translator.message_selector']);
 
             if (isset($app['locale_fallback'])) {
                 $translator->setFallbackLocale($app['locale_fallback']);

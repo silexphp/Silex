@@ -36,7 +36,7 @@ class MonologServiceProvider implements ServiceProviderInterface
         $app['monolog'] = $app->share(function () use ($app, $bridge) {
             $class = $bridge ? 'Symfony\Bridge\Monolog\Logger' : 'Monolog\Logger';
 
-            $log = new $class(isset($app['monolog.name']) ? $app['monolog.name'] : 'myapp');
+            $log = new $class($app['monolog.name']);
 
             $app['monolog.configure']($log);
 
@@ -51,11 +51,11 @@ class MonologServiceProvider implements ServiceProviderInterface
             return new StreamHandler($app['monolog.logfile'], $app['monolog.level']);
         };
 
-        if (!isset($app['monolog.level'])) {
-            $app['monolog.level'] = function () {
-                return Logger::DEBUG;
-            };
-        }
+        $app['monolog.level'] = function () {
+            return Logger::DEBUG;
+        };
+
+        $app['monolog.name'] = 'myapp';
     }
 
     public function boot(Application $app)

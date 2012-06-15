@@ -28,14 +28,18 @@ class TwigServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
+        $app['twig.options'] = array();
+        $app['twig.form.templates'] = array('form_div_layout.html.twig');
+        $app['twig.path'] = array();
+        $app['twig.templates'] = array();
+
         $app['twig'] = $app->share(function () use ($app) {
             $app['twig.options'] = array_replace(
                 array(
                     'charset'          => $app['charset'],
                     'debug'            => $app['debug'],
                     'strict_variables' => $app['debug'],
-                ),
-                isset($app['twig.options']) ? $app['twig.options'] : array()
+                ), $app['twig.options']
             );
 
             $twig = new \Twig_Environment($app['twig.loader'], $app['twig.options']);
@@ -60,10 +64,6 @@ class TwigServiceProvider implements ServiceProviderInterface
                 }
 
                 if (isset($app['form.factory'])) {
-                    if (!isset($app['twig.form.templates'])) {
-                        $app['twig.form.templates'] = array('form_div_layout.html.twig');
-                    }
-
                     $twig->addExtension(new FormExtension($app['form.csrf_provider'], $app['twig.form.templates']));
 
                     // add loader for Symfony built-in form templates
@@ -81,11 +81,11 @@ class TwigServiceProvider implements ServiceProviderInterface
         });
 
         $app['twig.loader.filesystem'] = $app->share(function () use ($app) {
-            return new \Twig_Loader_Filesystem(isset($app['twig.path']) ? $app['twig.path'] : array());
+            return new \Twig_Loader_Filesystem($app['twig.path']);
         });
 
         $app['twig.loader.array'] = $app->share(function () use ($app) {
-            return new \Twig_Loader_Array(isset($app['twig.templates']) ? $app['twig.templates'] : array());
+            return new \Twig_Loader_Array($app['twig.templates']);
         });
 
         $app['twig.loader'] = $app->share(function () use ($app) {
