@@ -52,7 +52,7 @@ Usage
 
 The Validator provider provides a ``validator`` service.
 
-Validating values
+Validating Values
 ~~~~~~~~~~~~~~~~~
 
 You can validate values directly using the ``validateValue`` validator
@@ -60,50 +60,148 @@ method::
 
     use Symfony\Component\Validator\Constraints as Assert;
 
-    $app->get('/validate-url', function () use ($app) {
-        $violations = $app['validator']->validateValue($app['request']->get('url'), new Assert\Url());
+    $app->get('/validate/{email}', function ($email) use ($app) {
+        $errors = $app['validator']->validateValue($email, new Assert\Email());
 
-        return $violations;
+        if (count($errors) > 0) {
+            return (string) $errors;
+        } else {
+            return 'The email is valid';
+        }
     });
 
-This is relatively limited.
+Validating Arrays
+~~~~~~~~~~~~~~~~~
 
-Validating object properties
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    use Symfony\Component\Validator\Constraints as Assert;
 
-If you want to add validations to a class, you can implement a static
-``loadValidatorMetadata`` method as described under *Services*. This allows
-you to define constraints for your object properties. It also works with
-getters::
+    class Book
+    {
+        public $title;
+        public $author;
+    }
+
+    class Author
+    {
+        public $first_name;
+        public $last_name;
+    }
+
+    $book = array(
+        'title' => 'My Book',
+        'author' => array(
+            'first_name' => 'Fabien',
+            'last_name'  => 'Potencier',
+        ),
+    );
+
+    $constraint = new Assert\Collection(array(
+        'title' => new Assert\MinLength(10),
+        'author' => new Assert\Collection(array(
+            'first_name' => array(new Assert\NotBlank(), new Assert\MinLength(10)),
+            'last_name'  => new Assert\MinLength(10),
+        )),
+    ));
+    $errors = $app['validator']->validateValue($book, $constraint);
+
+    if (count($errors) > 0) {
+        foreach ($errors as $error) {
+            echo $error->getPropertyPath().' '.$error->getMessage()."\n";
+        }
+    } else {
+        echo 'The book is valid';
+    }
+
+Validating Objects
+~~~~~~~~~~~~~~~~~~
+
+If you want to add validations to a class, you can define the constraint for
+the class properties and getters, and then call the ``validate`` method::
+
+    use Symfony\Component\Validator\Constraints as Assert;
+
+    $author = new Author();
+    $author->first_name = 'Fabien';
+    $author->last_name = 'Potencier';
+
+    $book = new Book();
+    $book->title = 'My Book';
+    $book->author = $author;
+
+    $metadata = $app['validator.mapping.class_metadata_factory']->getClassMetadata('Author');
+    $metadata->addPropertyConstraint('first_name', new Assert\NotBlank());
+    $metadata->addPropertyConstraint('first_name', new Assert\MinLength(10));
+    $metadata->addPropertyConstraint('last_name', new Assert\MinLength(10));
+
+    $metadata = $app['validator.mapping.class_metadata_factory']->getClassMetadata('Book');
+    $metadata->addPropertyConstraint('title', new Assert\MinLength(10));
+    $metadata->addPropertyConstraint('author', new Assert\Valid());
+
+    $errors = $app['validator']->validate($book);
+
+    if (count($errors) > 0) {
+        foreach ($errors as $error) {
+            echo $error->getPropertyPath().' '.$error->getMessage()."\n";
+        }
+    } else {
+        echo 'The author is valid';
+    }
+
+You can also declare the class constraint by adding a static
+``loadValidatorMetadata`` method to your classes::
 
     use Symfony\Component\Validator\Mapping\ClassMetadata;
     use Symfony\Component\Validator\Constraints as Assert;
 
-    class Post
+    class Book
     {
         public $title;
-        public $body;
+        public $author;
 
         static public function loadValidatorMetadata(ClassMetadata $metadata)
         {
-            $metadata->addPropertyConstraint('title', new Assert\NotNull());
-            $metadata->addPropertyConstraint('title', new Assert\NotBlank());
-            $metadata->addPropertyConstraint('body', new Assert\MinLength(array('limit' => 10)));
+            $metadata->addPropertyConstraint('title', new Assert\MinLength(10));
+            $metadata->addPropertyConstraint('author', new Assert\Valid());
         }
     }
 
-    $app->post('/posts/new', function () use ($app) {
-        $post = new Post();
-        $post->title = $app['request']->get('title');
-        $post->body = $app['request']->get('body');
+    class Author
+    {
+        public $first_name;
+        public $last_name;
 
-        $violations = $app['validator']->validate($post);
+        static public function loadValidatorMetadata(ClassMetadata $metadata)
+        {
+            $metadata->addPropertyConstraint('first_name', new Assert\NotBlank());
+            $metadata->addPropertyConstraint('first_name', new Assert\MinLength(10));
+            $metadata->addPropertyConstraint('last_name', new Assert\MinLength(10));
+        }
+    }
 
-        return $violations;
+    $app->get('/validate/{email}', function ($email) use ($app) {
+        $author = new Author();
+        $author->first_name = 'Fabien';
+        $author->last_name = 'Potencier';
+
+        $book = new Book();
+        $book->title = 'My Book';
+        $book->author = $author;
+
+        $errors = $app['validator']->validate($book);
+
+        if (count($errors) > 0) {
+            foreach ($errors as $error) {
+                echo $error->getPropertyPath().' '.$error->getMessage()."\n";
+            }
+        } else {
+            echo 'The author is valid';
+        }
     });
 
-You will have to handle the display of these violations yourself. You can
-however use the *FormServiceProvider* which can make use of the *ValidatorServiceProvider*.
+.. note::
+
+    Use ``addGetterConstraint()`` to add constraints on getter methods and
+    ``addConstraint()`` to add constraints on the class itself.
 
 Translation
 ~~~~~~~~~~~
