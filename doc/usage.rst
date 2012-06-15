@@ -809,16 +809,14 @@ resources to ``index.php``:
 .. code-block:: nginx
 
     server { 
-        index index.php
-
         location / {
-            try_files $uri $uri/ /index.php;
+            try_files $uri /index.php$is_args$args;
         }
 
-        location ~ index\.php$ {
+        location ~ \.php($|/) {
             fastcgi_pass   /var/run/php5-fpm.sock;
-            fastcgi_index  index.php;
             include fastcgi_params;
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
         }
     }
 
