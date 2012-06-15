@@ -178,6 +178,12 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         $provider->register($this);
     }
 
+    /**
+     * Boots all service providers.
+     *
+     * This method is automatically called by handle(), but you can use it
+     * to boot all service providers when not handling a request.
+     */
     public function boot()
     {
         if (!$this->booted) {
