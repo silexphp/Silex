@@ -57,6 +57,7 @@ class ValidatorServiceProvider implements ServiceProviderInterface
 
     public function boot(Application $app)
     {
+        // BC: to be removed before 1.0
         if (isset($app['validator.class_path'])) {
             throw new \RuntimeException('You have provided the validator.class_path parameter. The autoloader has been removed from Silex. It is recommended that you use Composer to manage your dependencies and handle your autoloading. If you are already using Composer, you can remove the parameter. See http://getcomposer.org for more information.');
         }
