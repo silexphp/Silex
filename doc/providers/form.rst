@@ -52,13 +52,20 @@ Usage
 The FormServiceProvider provides a ``form.factory`` service. Here is a usage
 example::
 
-    $app->get('/hello/{name}', function ($name) use ($app) {
-        return "Hello $name!";
-    })->bind('hello');
+    $app->match('/form', function (Request $request) use ($app) {
+        // some default data for when the form is displayed the first time
+        $data = array(
+            'name' => 'Your name',
+            'email' => 'Your email',
+        );
 
-    $app->match('/', function (Request $request) use ($app) {
-        $form = $app['form.factory']->createBuilder('form')
-            ->add('name', 'text')
+        $form = $app['form.factory']->createBuilder('form', $data)
+            ->add('name')
+            ->add('email')
+            ->add('gender', 'choice', array(
+                'choices' => array(1 => 'male', 2 => 'female'),
+                'expanded' => true,
+            ))
             ->getForm();
 
         if ('POST' == $request->getMethod()) {
@@ -69,14 +76,16 @@ example::
 
                 // do something with the data
 
-                return $app->redirect('/hello/{name}');
+                // redirect somewhere
+                return $app->redirect('...');
             }
         }
 
+        // display the form
         return $app['twig']->render('index.twig', array('form' => $form->createView()));
     });
 
-Put this in your template file named ``views/index.twig``:
+And here is the ``index.twig`` form template:
 
 .. code-block:: jinja
 
@@ -99,6 +108,14 @@ form by adding constraints on the fields::
     $form = $app['form.factory']->createBuilder('form')
         ->add('name', 'text', array(
             'constraints' => array(new Assert\NotBlank(), new Assert\MinLength(5))
+        ))
+        ->add('email', 'text', array(
+            'constraints' => new Assert\Email()
+        ))
+        ->add('gender', 'choice', array(
+            'choices' => array(1 => 'male', 2 => 'female'),
+            'expanded' => true,
+            'constraints' => new Assert\Choice(array(1, 2)),
         ))
         ->getForm();
 
