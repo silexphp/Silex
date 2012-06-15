@@ -1,5 +1,5 @@
 {
-    "hash": "cb84b3fe6b1c0f5846880d387eb21ead",
+    "hash": "e30e4b42f5fb1991fa491aefe225cc2e",
     "packages": [
         {
             "package": "pimple/pimple",
@@ -35,12 +35,6 @@
             "source-reference": "5d15807c883c6a927eb3ac3c04e9a3f62b92e5b4"
         },
         {
-            "package": "symfony/http-foundation",
-            "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
             "package": "symfony/http-kernel",
             "version": "dev-master",
             "alias-pretty-version": "2.1.x-dev",
@@ -52,12 +46,6 @@
             "source-reference": "cca9802587090c5d24ed015437cebdb4e6a770c0"
         },
         {
-            "package": "symfony/http-kernel",
-            "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
             "package": "symfony/routing",
             "version": "dev-master",
             "alias-pretty-version": "2.1.x-dev",
@@ -67,12 +55,6 @@
             "package": "symfony/routing",
             "version": "dev-master",
             "source-reference": "9e0b9b0d4143a6b90752e1111d9948416ef62b50"
-        },
-        {
-            "package": "symfony/routing",
-            "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
         }
     ],
     "packages-dev": [
@@ -99,13 +81,13 @@
         {
             "package": "swiftmailer/swiftmailer",
             "version": "dev-master",
-            "source-reference": "d33d54cc8a081b0b85734744936ede1ba230dd64"
+            "alias-pretty-version": "4.1.x-dev",
+            "alias-version": "4.1.9999999.9999999-dev"
         },
         {
             "package": "swiftmailer/swiftmailer",
             "version": "dev-master",
-            "alias-pretty-version": "4.1.x-dev",
-            "alias-version": "4.1.9999999.9999999-dev"
+            "source-reference": "0ba1372991110629f44ed076dfc5b93240a4a19a"
         },
         {
             "package": "symfony/browser-kit",
@@ -121,10 +103,16 @@
         {
             "package": "symfony/css-selector",
             "version": "dev-master",
-            "source-reference": "d0a98b37fbb57188766fd7c7d757354397ee6ead"
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
         },
         {
             "package": "symfony/css-selector",
+            "version": "dev-master",
+            "source-reference": "d0a98b37fbb57188766fd7c7d757354397ee6ead"
+        },
+        {
+            "package": "symfony/dom-crawler",
             "version": "dev-master",
             "alias-pretty-version": "2.1.x-dev",
             "alias-version": "2.1.9999999.9999999-dev"
@@ -135,7 +123,7 @@
             "source-reference": "2e27527036c4cd608692718414835173c40f52bd"
         },
         {
-            "package": "symfony/dom-crawler",
+            "package": "symfony/finder",
             "version": "dev-master",
             "alias-pretty-version": "2.1.x-dev",
             "alias-version": "2.1.9999999.9999999-dev"
@@ -146,7 +134,7 @@
             "source-reference": "9ee9a907afeef52956187e862714a7702ca26590"
         },
         {
-            "package": "symfony/finder",
+            "package": "symfony/form",
             "version": "dev-master",
             "alias-pretty-version": "2.1.x-dev",
             "alias-version": "2.1.9999999.9999999-dev"
@@ -155,18 +143,6 @@
             "package": "symfony/form",
             "version": "dev-master",
             "source-reference": "678c4b40815c322c9fae6e2b5b3d6a951c0e021f"
-        },
-        {
-            "package": "symfony/form",
-            "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
-            "package": "symfony/form",
-            "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
         },
         {
             "package": "symfony/locale",
@@ -182,10 +158,16 @@
         {
             "package": "symfony/monolog-bridge",
             "version": "dev-master",
-            "source-reference": "ee24f08e2e74ee964018ce9d5de2a37977f6ec6b"
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
         },
         {
             "package": "symfony/monolog-bridge",
+            "version": "dev-master",
+            "source-reference": "ee24f08e2e74ee964018ce9d5de2a37977f6ec6b"
+        },
+        {
+            "package": "symfony/options-resolver",
             "version": "dev-master",
             "alias-pretty-version": "2.1.x-dev",
             "alias-version": "2.1.9999999.9999999-dev"
@@ -196,13 +178,7 @@
             "source-reference": "915b39d1e0ad1c1f2526b93a16a10e5e504aefad"
         },
         {
-            "package": "symfony/options-resolver",
-            "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
-            "package": "symfony/options-resolver",
+            "package": "symfony/process",
             "version": "dev-master",
             "alias-pretty-version": "2.1.x-dev",
             "alias-version": "2.1.9999999.9999999-dev"
@@ -211,12 +187,6 @@
             "package": "symfony/process",
             "version": "dev-master",
             "source-reference": "f4f101fc7c1adb8b157058dcc1715f28f1d53208"
-        },
-        {
-            "package": "symfony/process",
-            "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
         },
         {
             "package": "symfony/security",
@@ -230,7 +200,7 @@
             "source-reference": "81db3fb8af37dd884580433a647df23d6de5347e"
         },
         {
-            "package": "symfony/security",
+            "package": "symfony/translation",
             "version": "dev-master",
             "alias-pretty-version": "2.1.x-dev",
             "alias-version": "2.1.9999999.9999999-dev"
@@ -241,7 +211,7 @@
             "source-reference": "db3e85934353a130d743b2ddd53dd678c8ebca12"
         },
         {
-            "package": "symfony/translation",
+            "package": "symfony/twig-bridge",
             "version": "dev-master",
             "alias-pretty-version": "2.1.x-dev",
             "alias-version": "2.1.9999999.9999999-dev"
@@ -252,12 +222,6 @@
             "source-reference": "97752ed347a8466bb33c70cfb8ddbc00b6e70512"
         },
         {
-            "package": "symfony/twig-bridge",
-            "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
             "package": "symfony/validator",
             "version": "dev-master",
             "alias-pretty-version": "2.1.x-dev",
@@ -266,24 +230,24 @@
         {
             "package": "symfony/validator",
             "version": "dev-master",
-            "source-reference": "563cda58cdde910cb900a4f28974b999924d4a0b"
-        },
-        {
-            "package": "symfony/validator",
-            "version": "dev-master",
             "alias-pretty-version": "2.1.x-dev",
             "alias-version": "2.1.9999999.9999999-dev"
         },
         {
-            "package": "twig/twig",
+            "package": "symfony/validator",
             "version": "dev-master",
-            "source-reference": "ca33207bb22fe6365d13bdaf034f936e30b53560"
+            "source-reference": "8dc28e8b8f0c829322b6349979efc069f03db0c2"
         },
         {
             "package": "twig/twig",
             "version": "dev-master",
             "alias-pretty-version": "1.8.x-dev",
             "alias-version": "1.8.9999999.9999999-dev"
+        },
+        {
+            "package": "twig/twig",
+            "version": "dev-master",
+            "source-reference": "120c44d68f07ced5b1e08f582f94016f4f2685d6"
         }
     ],
     "aliases": [
