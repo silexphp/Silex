@@ -40,7 +40,11 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface
         });
 
         $app['swiftmailer.spooltransport'] = $app->share(function () use ($app) {
-            return new \Swift_SpoolTransport(new \Swift_MemorySpool());
+            return new \Swift_SpoolTransport($app['swiftmailer.spool']);
+        });
+
+        $app['swiftmailer.spool'] = $app->share(function () use ($app) {
+            return new \Swift_MemorySpool();
         });
 
         $app['swiftmailer.transport'] = $app->share(function () use ($app) {
