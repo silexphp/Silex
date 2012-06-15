@@ -74,7 +74,7 @@ class TwigServiceProvider implements ServiceProviderInterface
             }
 
             if (isset($app['twig.configure'])) {
-                $app['twig.configure']($twig);
+                throw new \RuntimeException('The twig.configure service has been removed. Read the changelog to learn how you can upgrade your code.');
             }
 
             return $twig;

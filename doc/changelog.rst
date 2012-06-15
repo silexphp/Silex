@@ -1,7 +1,22 @@
 Changelog
 =========
 
-This changelog references all backward incompatibilities as we introduce them:
+* **2012-06-15**: removed the ``twig.configure`` service. Use the ``extend``
+  method instead:
+
+    Before::
+
+        $app['twig.configure'] = $app->protect(function ($twig) use ($app) {
+            // do something
+        });
+
+    After::
+
+        $app['twig'] = $app->extend('twig', function($twig, $app) {
+            // do something
+
+            return $twig;
+        });
 
 * **2012-06-13**: Added a route ``before`` middleware
 
