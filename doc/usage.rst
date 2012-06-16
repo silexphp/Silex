@@ -822,6 +822,21 @@ resources to ``index.php``:
         }
     }
 
+Lighttpd
+~~~~~
+
+If you are using lighttpd, you can use this sample ``simple-vhost``:
+
+.. code-block:: lighttpd
+
+    server.document-root = "/path/to/app"
+
+    url.rewrite-once = (
+        "^/assets/.+" => "$0", # directories with static files
+        "^/favicon\.ico$" => "$0",
+        "^(/[^\?]*)(\?.*)?" => "/index.php$1$2"
+    )
+
 IIS
 ~~~
 
