@@ -12,8 +12,8 @@ n/a
 Services
 --------
 
-* **security.context**: The main entry point for the security provider. Use it
-  to get the current user token.
+* **security**: The main entry point for the security provider. Use it to get
+  the current user token.
 
 * **security.authentication_manager**: An instance of
   `AuthenticationProviderManager
@@ -78,9 +78,9 @@ Accessing the current User
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The current user information is stored in a token that is accessible via the
-``security.context`` service::
+``security`` service::
 
-    $token = $app['security.context']->getToken();
+    $token = $app['security']->getToken();
 
 If there is no information about the user, the token is ``null``. If the user
 is known, you can get it with a call to ``getUser()``::
@@ -281,7 +281,7 @@ Checking User Roles
 To check if a user is granted some role, use the ``isGranted()`` method on the
 security context::
 
-    if ($app['security.context']->isGranted('ROLE_ADMIN') {
+    if ($app['security']->isGranted('ROLE_ADMIN') {
         // ...
     }
 
