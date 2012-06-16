@@ -1,5 +1,5 @@
 {
-    "hash": "e30e4b42f5fb1991fa491aefe225cc2e",
+    "hash": "0fe59be3a3e94c9b77fc20e18faaea0e",
     "packages": [
         {
             "package": "pimple/pimple",
@@ -87,7 +87,7 @@
         {
             "package": "swiftmailer/swiftmailer",
             "version": "dev-master",
-            "source-reference": "0ba1372991110629f44ed076dfc5b93240a4a19a"
+            "source-reference": "c013c12c925f9cacd1834b49f2c4bd6cfb2a52d3"
         },
         {
             "package": "symfony/browser-kit",
@@ -99,6 +99,17 @@
             "package": "symfony/browser-kit",
             "version": "dev-master",
             "source-reference": "6d1864547be92e51972a416fae9460b8be4afe0e"
+        },
+        {
+            "package": "symfony/config",
+            "version": "dev-master",
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/config",
+            "version": "dev-master",
+            "source-reference": "ac127ca0a1002726953eced989897e7b5c454292"
         },
         {
             "package": "symfony/css-selector",
@@ -142,7 +153,7 @@
         {
             "package": "symfony/form",
             "version": "dev-master",
-            "source-reference": "678c4b40815c322c9fae6e2b5b3d6a951c0e021f"
+            "source-reference": "810e9ddffab12d0c90dc5bd7c430aa04cdb053a1"
         },
         {
             "package": "symfony/locale",
@@ -230,13 +241,7 @@
         {
             "package": "symfony/validator",
             "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
-            "package": "symfony/validator",
-            "version": "dev-master",
-            "source-reference": "8dc28e8b8f0c829322b6349979efc069f03db0c2"
+            "source-reference": "2787f1d5725874054275cdd03730a258d4460582"
         },
         {
             "package": "twig/twig",
