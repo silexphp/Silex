@@ -1,6 +1,8 @@
 Changelog
 =========
 
+* **2012-06-16**: renamed ``request.default_locale`` to ``locale``
+
 * **2012-06-16**: Removed the ``translator.loader`` service. See documentation
   for how to use XLIFF or YAML-based translation files.
 
