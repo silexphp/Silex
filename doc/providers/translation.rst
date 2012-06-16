@@ -81,12 +81,6 @@ the ``translator.domains`` parameter::
         ),
     );
 
-    $app->before(function () use ($app) {
-        if ($locale = $app['request']->get('locale')) {
-            $app['locale'] = $locale;
-        }
-    });
-
     $app->get('/{locale}/{message}/{name}', function ($message, $name) use ($app) {
         return $app['translator']->trans($message, array('%name%' => $name));
     });
