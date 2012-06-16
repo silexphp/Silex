@@ -59,8 +59,8 @@ class TwigServiceProvider implements ServiceProviderInterface
                     $twig->addExtension(new TranslationExtension($app['translator']));
                 }
 
-                if (isset($app['security.context'])) {
-                    $twig->addExtension(new SecurityExtension($app['security.context']));
+                if (isset($app['security'])) {
+                    $twig->addExtension(new SecurityExtension($app['security']));
                 }
 
                 if (isset($app['form.factory'])) {

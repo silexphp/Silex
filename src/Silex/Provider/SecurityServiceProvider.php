@@ -68,7 +68,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
         $app['security.role_hierarchy'] = array();
         $app['security.access_rules'] = array();
 
-        $app['security.context'] = $app->share(function () use ($app) {
+        $app['security'] = $app->share(function () use ($app) {
             return new SecurityContext($app['security.authentication_manager'], $app['security.access_manager']);
         });
 
@@ -211,7 +211,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
 
         $app['security.access_listener'] = $app->share(function () use ($app) {
             return new AccessListener(
-                $app['security.context'],
+                $app['security'],
                 $app['security.access_manager'],
                 $app['security.access_map'],
                 $app['security.authentication_manager'],
@@ -263,7 +263,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
 
         $app['security.context_listener._proto'] = $app->protect(function ($providerKey, $userProviders) use ($app) {
             return new ContextListener(
-                $app['security.context'],
+                $app['security'],
                 $userProviders,
                 $providerKey,
                 $app['logger'],
@@ -286,7 +286,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
             }
 
             return new ExceptionListener(
-                $app['security.context'],
+                $app['security'],
                 $app['security.trust_resolver'],
                 $app['security.http_utils'],
                 $app['security.entry_point.'.$entryPoint.'.'.$name],
@@ -300,7 +300,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
             $that->addFakeRoute(array('post', $tmp = isset($options['check_path']) ? $options['check_path'] : '/login_check', str_replace('/', '_', ltrim($tmp, '/'))));
 
             return new UsernamePasswordFormAuthenticationListener(
-                $app['security.context'],
+                $app['security'],
                 $app['security.authentication_manager'],
                 $app['security.session_strategy'],
                 $app['security.http_utils'],
@@ -316,7 +316,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
 
         $app['security.authentication.http._proto'] = $app->protect(function ($providerKey, $options) use ($app) {
             return new BasicAuthenticationListener(
-                $app['security.context'],
+                $app['security'],
                 $app['security.authentication_manager'],
                 $providerKey,
                 $app['security.entry_point.http'],
@@ -326,7 +326,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
 
         $app['security.authentication.anonymous._proto'] = $app->protect(function ($providerKey, $options) use ($app) {
             return new AnonymousAuthenticationListener(
-                $app['security.context'],
+                $app['security'],
                 $providerKey,
                 $app['logger']
             );
@@ -336,7 +336,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
             $that->addFakeRoute(array('get', $tmp = isset($options['logout_path']) ? $options['logout_path'] : '/logout', str_replace('/', '_', ltrim($tmp, '/'))));
 
             $listener = new LogoutListener(
-                $app['security.context'],
+                $app['security'],
                 $app['security.http_utils'],
                 $options,
                 null, // LogoutSuccessHandlerInterface
@@ -350,7 +350,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
 
         $app['security.authentication.switch_user._proto'] = $app->protect(function ($name, $options) use ($app, $that) {
             return new SwitchUserListener(
-                $app['security.context'],
+                $app['security'],
                 $app['security.user_provider.'.$name],
                 $app['security.user_checker'],
                 $name,

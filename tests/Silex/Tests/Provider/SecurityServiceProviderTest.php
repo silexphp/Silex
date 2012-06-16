@@ -117,15 +117,15 @@ class SecurityServiceProviderTest extends WebTestCase
         });
 
         $app->get('/', function() use ($app) {
-            $user = $app['security.context']->getToken()->getUser();
+            $user = $app['security']->getToken()->getUser();
 
             $content = is_object($user) ? $user->getUsername() : 'ANONYMOUS';
 
-            if ($app['security.context']->isGranted('IS_AUTHENTICATED_FULLY')) {
+            if ($app['security']->isGranted('IS_AUTHENTICATED_FULLY')) {
                 $content .= 'AUTHENTICATED';
             }
 
-            if ($app['security.context']->isGranted('ROLE_ADMIN')) {
+            if ($app['security']->isGranted('ROLE_ADMIN')) {
                 $content .= 'ADMIN';
             }
 
