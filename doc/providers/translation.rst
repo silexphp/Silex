@@ -128,19 +128,17 @@ use is ``locales/en.yml``. Just do the mapping in this file as follows:
     hello: Hello %name%
     goodbye: Goodbye %name%
 
-Repeat this for all of your languages. Then add the files to the
-``translator``::
-
-    $app['translator']->addResource('yaml', __DIR__.'/locales/en.yml', 'en');
-    $app['translator']->addResource('yaml', __DIR__.'/locales/de.yml', 'de');
-    $app['translator']->addResource('yaml', __DIR__.'/locales/fr.yml', 'fr');
-
-Finally, register the ``YamlFileLoader`` on the translator::
+Then, register the ``YamlFileLoader`` on the ``translator`` and add all your
+translation files::
 
     use Symfony\Component\Translation\Loader\YamlFileLoader;
 
     $app['translator'] = $app->share($app->extend('translator', function($translator, $app) {
         $translator->addLoader('yaml', return new YamlFileLoader());
+
+        $translator->addResource('yaml', __DIR__.'/locales/en.yml', 'en');
+        $translator->addResource('yaml', __DIR__.'/locales/de.yml', 'de');
+        $translator->addResource('yaml', __DIR__.'/locales/fr.yml', 'fr');
 
         return $translator;
     }));
@@ -154,9 +152,9 @@ Symfony2 ``Config`` component as a dependency (see above for details).
 Then, similarly, create XLIFF files in your locales directory and add them to
 the translator::
 
-    $app['translator']->addResource('xliff', __DIR__.'/locales/en.xlf', 'en');
-    $app['translator']->addResource('xliff', __DIR__.'/locales/de.xlf', 'de');
-    $app['translator']->addResource('xliff', __DIR__.'/locales/fr.xlf', 'fr');
+    $translator->addResource('xliff', __DIR__.'/locales/en.xlf', 'en');
+    $translator->addResource('xliff', __DIR__.'/locales/de.xlf', 'de');
+    $translator->addResource('xliff', __DIR__.'/locales/fr.xlf', 'fr');
 
 .. note::
 
