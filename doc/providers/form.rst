@@ -46,6 +46,16 @@ Registering
             "symfony/form": "2.1.*"
         }
 
+If you are going to use the validation extension with forms, you must also
+register the ``symfony/config`` and ```symfony/translation`` components::
+
+.. code-block:: json
+
+    "require": {
+        "symfony/config": "2.1.*",
+        "symfony/translation": "2.1.*"
+    }
+
 Usage
 -----
 
