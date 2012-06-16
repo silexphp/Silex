@@ -17,6 +17,7 @@ use Silex\ServiceProviderInterface;
 use Symfony\Component\Translation\Translator;
 use Symfony\Component\Translation\MessageSelector;
 use Symfony\Component\Translation\Loader\ArrayLoader;
+use Symfony\Component\Translation\Loader\XliffFileLoader;
 
 /**
  * Symfony Translation component Provider.
@@ -36,7 +37,8 @@ class TranslationServiceProvider implements ServiceProviderInterface
                 $translator->setFallbackLocale($app['locale_fallback']);
             }
 
-            $translator->addLoader('array', $app['translator.loader']);
+            $translator->addLoader('array', new ArrayLoader());
+            $translator->addLoader('xliff', new XliffFileLoader());
 
             foreach ($app['translator.domains'] as $domain => $data) {
                 foreach ($data as $locale => $messages) {
@@ -45,10 +47,6 @@ class TranslationServiceProvider implements ServiceProviderInterface
             }
 
             return $translator;
-        });
-
-        $app['translator.loader'] = $app->share(function () {
-            return new ArrayLoader();
         });
 
         $app['translator.message_selector'] = $app->share(function () {

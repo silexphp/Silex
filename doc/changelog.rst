@@ -1,6 +1,9 @@
 Changelog
 =========
 
+* **2012-06-16**: Removed the ``translator.loader`` service. See documentation
+  for how to use XLIFF or YAML-based translation files.
+
 * **2012-06-15**: removed the ``twig.configure`` service. Use the ``extend``
   method instead:
 

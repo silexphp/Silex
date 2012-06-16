@@ -117,7 +117,7 @@ file:
 
     "require": {
         "symfony/config": "2.1.*",
-        "symfony/yaml": "2.1.*",
+        "symfony/yaml": "2.1.*"
     }
 
 Next, you have to create the language mappings in YAML files. A naming you can
@@ -128,27 +128,22 @@ use is ``locales/en.yml``. Just do the mapping in this file as follows:
     hello: Hello %name%
     goodbye: Goodbye %name%
 
-Repeat this for all of your languages. Then set up the ``translator.domains``
-to map languages to files::
+Repeat this for all of your languages. Then add the files to the
+``translator``::
 
-    $app['translator.domains'] = array(
-        'messages' => array(
-            'en' => __DIR__.'/locales/en.yml',
-            'de' => __DIR__.'/locales/de.yml',
-            'fr' => __DIR__.'/locales/fr.yml',
-        ),
-    );
+    $app['translator']->addResource('yaml', __DIR__.'/locales/en.yml', 'en');
+    $app['translator']->addResource('yaml', __DIR__.'/locales/de.yml', 'de');
+    $app['translator']->addResource('yaml', __DIR__.'/locales/fr.yml', 'fr');
 
-Finally override the ``translator.loader`` to use a ``YamlFileLoader`` instead
-of the default ``ArrayLoader``::
+Finally, register the ``YamlFileLoader`` on the translator::
 
     use Symfony\Component\Translation\Loader\YamlFileLoader;
 
-    $app['translator.loader'] = $app->share(function () {
-        return new YamlFileLoader();
-    });
+    $app['translator'] = $app->share($app->extend('translator', function($translator, $app) {
+        $translator->addLoader('yaml', return new YamlFileLoader());
 
-That's all you need to load translations from YAML files.
+        return $translator;
+    }));
 
 XLIFF-based language files
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -156,18 +151,16 @@ XLIFF-based language files
 Just as you would do with YAML translation files, you first need to add the
 Symfony2 ``Config`` component as a dependency (see above for details).
 
-Then, similarly, create XLIFF files in your locales directory and setup the
-``translator.domains`` to map to them.
+Then, similarly, create XLIFF files in your locales directory and add them to
+the translator::
 
-Finally override the ``translator.loader`` to use a ``XliffFileLoader``::
+    $app['translator']->addResource('xliff', __DIR__.'/locales/en.xlf', 'en');
+    $app['translator']->addResource('xliff', __DIR__.'/locales/de.xlf', 'de');
+    $app['translator']->addResource('xliff', __DIR__.'/locales/fr.xlf', 'fr');
 
-    use Symfony\Component\Translation\Loader\XliffFileLoader;
+.. note::
 
-    $app['translator.loader'] = $app->share(function () {
-        return new XliffFileLoader();
-    });
-
-That's it.
+    The XLIFF loader is already pre-configured by the extension.
 
 Accessing translations in Twig templates
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
