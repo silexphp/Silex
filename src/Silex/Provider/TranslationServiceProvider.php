@@ -28,8 +28,6 @@ class TranslationServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
-        $app['locale'] = 'en';
-
         $app['translator'] = $app->share(function () use ($app) {
             $translator = new Translator($app['locale'], $app['translator.message_selector']);
 

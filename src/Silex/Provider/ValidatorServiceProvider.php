@@ -31,7 +31,7 @@ class ValidatorServiceProvider implements ServiceProviderInterface
         $app['validator'] = $app->share(function () use ($app) {
             if (isset($app['translator'])) {
                 $r = new \ReflectionClass('Symfony\Component\Validator\Validator');
-                $app['translator']->addResource('xliff', dirname($r->getFilename()).'/Resources/translations/validators.en.xlf', 'en', 'validators');
+                $app['translator']->addResource('xliff', dirname($r->getFilename()).'/Resources/translations/validators.'.$app['locale'].'.xlf', $app['locale'], 'validators');
             }
 
             return new Validator(

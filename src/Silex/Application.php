@@ -85,7 +85,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
                 return $app['url_matcher'];
             });
             $dispatcher->addSubscriber(new RouterListener($urlMatcher, $app['logger']));
-            $dispatcher->addSubscriber(new LocaleListener($app['request.default_locale'], $urlMatcher));
+            $dispatcher->addSubscriber(new LocaleListener($app['locale'], $urlMatcher));
 
             return $dispatcher;
         });
@@ -147,8 +147,6 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             }
         });
 
-        $this['request.default_locale'] = 'en';
-
         $this['request_error'] = $this->protect(function () {
             throw new \RuntimeException('Accessed request service outside of request scope. Try moving that call to a before handler or controller.');
         });
@@ -159,6 +157,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         $this['request.https_port'] = 443;
         $this['debug'] = false;
         $this['charset'] = 'UTF-8';
+        $this['locale'] = 'en';
     }
 
     /**
@@ -537,6 +536,8 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
+        $this['locale'] = $event->getRequest()->getLocale();
+
         if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
             $this->beforeDispatched = true;
             $this['dispatcher']->dispatch(SilexEvents::BEFORE, $event);
