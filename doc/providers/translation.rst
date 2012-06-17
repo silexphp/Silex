@@ -128,7 +128,7 @@ translation files::
     use Symfony\Component\Translation\Loader\YamlFileLoader;
 
     $app['translator'] = $app->share($app->extend('translator', function($translator, $app) {
-        $translator->addLoader('yaml', return new YamlFileLoader());
+        $translator->addLoader('yaml', new YamlFileLoader());
 
         $translator->addResource('yaml', __DIR__.'/locales/en.yml', 'en');
         $translator->addResource('yaml', __DIR__.'/locales/de.yml', 'de');
