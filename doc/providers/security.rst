@@ -466,3 +466,18 @@ sample users::
     If you are using the Doctrine ORM, the Symfony bridge for Doctrine
     provides a user provider class that is able to load users from your
     entities.
+
+Traits
+------
+
+``Silex\Application\SecurityTrait`` adds the following shortcuts:
+
+* **user**: Returns the current user.
+
+* **encodePassword**: Encode a given password.
+
+.. code-block:: php
+
+    $user = $app->user();
+
+    $encoded = $app->encodePassword($user, 'foo');
