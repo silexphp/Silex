@@ -127,10 +127,10 @@ Each user is defined with the following information:
 
 The default configuration of the extension enforces encoded passwords. To
 generate a valid encoded password from a raw password, use the
-``security.encoder`` service::
+``security.encoder.digest`` service::
 
     // find the encoded password for foo
-    $password = $app['security.encoder']->encodePassword('foo', null);
+    $password = $app['security.encoder.digest']->encodePassword('foo', null);
 
 The second argument is the salt to be used for the user (defaults to
 ``null``).
