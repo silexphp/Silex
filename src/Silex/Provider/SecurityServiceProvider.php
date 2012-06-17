@@ -116,7 +116,6 @@ class SecurityServiceProvider implements ServiceProviderInterface
         $app['security.firewall_map'] = $app->share(function () use ($app) {
             $map = new FirewallMap();
             $entryPoint = 'form';
-            $providers = array();
             foreach ($app['security.firewalls'] as $name => $firewall) {
                 $pattern = isset($firewall['pattern']) ? $firewall['pattern'] : null;
                 $users = isset($firewall['users']) ? $firewall['users'] : array();
@@ -160,6 +159,10 @@ class SecurityServiceProvider implements ServiceProviderInterface
                             }
 
                             if (!isset($app['security.authentication.'.$name.'.'.$type])) {
+                                if (!isset($app['security.entry_point.'.$entryPoint.'.'.$name])) {
+                                    $app['security.entry_point.'.$entryPoint.'.'.$name] = $app['security.entry_point.'.$entryPoint.'._proto']($name);
+                                }
+
                                 $app['security.authentication.'.$name.'.'.$type] = $app['security.authentication.'.$type.'._proto']($name, $options);
                             }
 
@@ -319,7 +322,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
                 $app['security'],
                 $app['security.authentication_manager'],
                 $providerKey,
-                $app['security.entry_point.http'],
+                $app['security.entry_point.http.'.$providerKey],
                 $app['logger']
             );
         });
