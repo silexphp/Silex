@@ -50,6 +50,8 @@ class TranslationServiceProvider implements ServiceProviderInterface
         $app['translator.message_selector'] = $app->share(function () {
             return new MessageSelector();
         });
+
+        $app['translator.domains'] = array();
     }
 
     public function boot(Application $app)
