@@ -87,7 +87,13 @@
         {
             "package": "swiftmailer/swiftmailer",
             "version": "dev-master",
-            "source-reference": "c013c12c925f9cacd1834b49f2c4bd6cfb2a52d3"
+            "alias-pretty-version": "4.1.x-dev",
+            "alias-version": "4.1.9999999.9999999-dev"
+        },
+        {
+            "package": "swiftmailer/swiftmailer",
+            "version": "dev-master",
+            "source-reference": "42223cb8ca2009dc6361bf4569ca52ec0fae51c2"
         },
         {
             "package": "symfony/browser-kit",
