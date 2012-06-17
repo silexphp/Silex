@@ -72,5 +72,16 @@ add log entries for any logging level through ``addDebug()``, ``addInfo()``,
         return new Response('', 201);
     });
 
+Traits
+------
+
+``MonologTrait`` adds the following shortcuts:
+
+* **log**: Logs a message.
+
+.. code-block:: php
+
+    $app->log(sprintf("User '%s' registered.", $username));
+
 For more information, check out the `Monolog documentation
 <https://github.com/Seldaek/monolog>`_.
