@@ -15,6 +15,7 @@ use Silex\Application;
 use Silex\WebTestCase;
 use Silex\Provider\SecurityServiceProvider;
 use Silex\Provider\SessionServiceProvider;
+use Symfony\Component\HttpKernel\Client;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -29,15 +30,13 @@ class SecurityServiceProviderTest extends WebTestCase
         if (!is_dir(__DIR__.'/../../../../vendor/symfony/security')) {
             $this->markTestSkipped('Security dependency was not installed.');
         }
-
-        parent::setUp();
     }
 
-    public function test()
+    public function testFormAuthentication()
     {
-        $app = $this->app;
+        $app = $this->createApplication('form');
 
-        $client = $this->createClient();
+        $client = new Client($app);
 
         $client->request('get', '/');
         $this->assertEquals('ANONYMOUS', $client->getResponse()->getContent());
@@ -81,10 +80,47 @@ class SecurityServiceProviderTest extends WebTestCase
         $this->assertEquals('admin', $client->getResponse()->getContent());
     }
 
-    public function createApplication()
+    public function testHttpAuthentication()
+    {
+        $app = $this->createApplication('http');
+
+        $client = new Client($app);
+
+        $client->request('get', '/');
+        $this->assertEquals(401, $client->getResponse()->getStatusCode());
+        $this->assertEquals('Basic realm="Secured"', $client->getResponse()->headers->get('www-authenticate'));
+
+        $client->request('get', '/', array(), array(), array('PHP_AUTH_USER' => 'dennis', 'PHP_AUTH_PW' => 'foo'));
+        $this->assertEquals('dennisAUTHENTICATED', $client->getResponse()->getContent());
+        $client->request('get', '/admin');
+        $this->assertEquals(403, $client->getResponse()->getStatusCode());
+
+        $client->restart();
+
+        $client->request('get', '/');
+        $this->assertEquals(401, $client->getResponse()->getStatusCode());
+        $this->assertEquals('Basic realm="Secured"', $client->getResponse()->headers->get('www-authenticate'));
+
+        $client->request('get', '/', array(), array(), array('PHP_AUTH_USER' => 'admin', 'PHP_AUTH_PW' => 'foo'));
+        $this->assertEquals('adminAUTHENTICATEDADMIN', $client->getResponse()->getContent());
+        $client->request('get', '/admin');
+        $this->assertEquals('admin', $client->getResponse()->getContent());
+    }
+
+    public function createApplication($authenticationMethod = 'form')
     {
         $app = new Application();
         $app->register(new SessionServiceProvider());
+
+        $app = call_user_func(array($this, 'add'.ucfirst($authenticationMethod).'Authentication'), $app);
+
+        $app['session.test'] = true;
+
+        return $app;
+    }
+
+    private function addFormAuthentication($app)
+    {
         $app->register(new SecurityServiceProvider(), array(
             'security.firewalls' => array(
                 'login' => array(
@@ -136,7 +172,50 @@ class SecurityServiceProviderTest extends WebTestCase
             return 'admin';
         });
 
-        $app['session.test'] = true;
+        return $app;
+    }
+
+    private function addHttpAuthentication($app)
+    {
+        $app->register(new SecurityServiceProvider(), array(
+            'security.firewalls' => array(
+                'http-auth' => array(
+                    'pattern' => '^.*$',
+                    'http' => true,
+                    'users' => array(
+                        // password is foo
+                        'dennis' => array('ROLE_USER', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg=='),
+                        'admin'  => array('ROLE_ADMIN', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg=='),
+                    ),
+                ),
+            ),
+            'security.access_rules' => array(
+                array('^/admin', 'ROLE_ADMIN'),
+            ),
+            'security.role_hierarchy' => array(
+                'ROLE_ADMIN' => array('ROLE_USER'),
+            ),
+        ));
+
+        $app->get('/', function() use ($app) {
+            $user = $app['security']->getToken()->getUser();
+
+            $content = is_object($user) ? $user->getUsername() : 'ANONYMOUS';
+
+            if ($app['security']->isGranted('IS_AUTHENTICATED_FULLY')) {
+                $content .= 'AUTHENTICATED';
+            }
+
+            if ($app['security']->isGranted('ROLE_ADMIN')) {
+                $content .= 'ADMIN';
+            }
+
+            return $content;
+        });
+
+        $app->get('/admin', function() use ($app) {
+            return 'admin';
+        });
 
         return $app;
     }
