@@ -34,7 +34,7 @@ And run Composer to install Silex and all its dependencies:
 .. code-block:: bash
 
     $ curl -s http://getcomposer.org/installer | php
-    $ composer.phar install
+    $ php composer.phar install
 
 Upgrading
 ---------
@@ -42,7 +42,7 @@ Upgrading
 Upgrading Silex to the latest version is as easy as running the ``update``
 command::
 
-    $ composer.phar update
+    $ php composer.phar update
 
 Bootstrap
 ---------
