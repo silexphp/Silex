@@ -738,6 +738,34 @@ after every chunk::
         fclose($fh);
     };
 
+Traits
+------
+
+Silex comes with PHP traits that add some shortcut methods to your Application
+class.
+
+.. caution::
+
+    You need to use PHP 5.4 or later to benefit from this feature.
+
+Almost all built-in service providers have a corresponding PHP trait. To use
+them, define your own application and include the traits you want::
+
+    use Silex\Application;
+
+    class MyApplication extends Application
+    {
+        use Application\TwigTrait;
+        use Application\SecurityTrait;
+        use Application\FormTrait;
+        use Application\UrlGeneratorTrait;
+        use Application\SwiftmailerTrait;
+        use Application\MonologTrait;
+        use Application\TranslationTrait;
+    }
+
+Read each provider chapter to learn more about the added methods.
+
 Security
 --------
 

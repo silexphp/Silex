@@ -95,6 +95,22 @@ The above example will result in following routes:
 
 * ``/it/hello/igor`` will return ``Hello igor`` (because of the fallback).
 
+Traits
+------
+
+``Silex\Application\TranslationTrait`` adds the following shortcuts:
+
+* **trans**: Translates the given message.
+
+* **transChoice**: Translates the given choice message by choosing a
+  translation according to a number.
+
+.. code-block:: php
+
+    $app->trans('Hello World');
+
+    $app->transChoice('Hello World');
+
 Recipes
 -------
 
