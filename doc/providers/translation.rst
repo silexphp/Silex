@@ -7,8 +7,8 @@ application into different languages.
 Parameters
 ----------
 
-* **translator.domains**: A mapping of domains/locales/messages. This
-  parameter contains the translation data for all languages and domains.
+* **translator.domains** (optional): A mapping of domains/locales/messages.
+  This parameter contains the translation data for all languages and domains.
 
 * **locale** (optional): The locale for the translator. You will most likely
   want to set this based on some request parameter. Defaults to ``en``.
