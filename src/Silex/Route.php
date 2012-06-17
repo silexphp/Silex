@@ -20,6 +20,11 @@ use Symfony\Component\Routing\Route as BaseRoute;
  */
 class Route extends BaseRoute
 {
+    public function __construct($pattern = '', array $defaults = array(), array $requirements = array(), array $options = array())
+    {
+        parent::__construct($pattern, $defaults, $requirements, $options);
+    }
+
     /**
      * Sets the requirement for a route variable.
      *

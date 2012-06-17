@@ -70,8 +70,16 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         });
 
         $this['controllers'] = $this->share(function () use ($app) {
-            return new ControllerCollection();
+            return $app['controllers_factory'];
         });
+
+        $this['controllers_factory'] = function () use ($app) {
+            return new ControllerCollection($app['route_factory']);
+        };
+
+        $this['route_factory'] = function () {
+            return new Route();
+        };
 
         $this['exception_handler'] = $this->share(function () {
             return new ExceptionHandler();
@@ -119,7 +127,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             }
 
             foreach ((array) $route->getOption('_before_middlewares') as $callback) {
-                $ret = call_user_func($callback, $request);
+                $ret = call_user_func($callback, $request, $app);
                 if ($ret instanceof Response) {
                     $event->setResponse($ret);
 
