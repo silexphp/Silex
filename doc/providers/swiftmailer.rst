@@ -22,9 +22,6 @@ Parameters
   * **encryption**: SMTP encryption, defaults to null.
   * **auth_mode**: SMTP authentication mode, defaults to null.
 
-* **swiftmailer.class_path** (optional): Path to where the Swift Mailer
-  library is located.
-
 Services
 --------
 
@@ -56,9 +53,7 @@ Registering
 
 .. code-block:: php
 
-    $app->register(new Silex\Provider\SwiftmailerServiceProvider(), array(
-        'swiftmailer.class_path'  => __DIR__.'/vendor/swiftmailer/swiftmailer/lib/classes',
-    ));
+    $app->register(new Silex\Provider\SwiftmailerServiceProvider());
 
 .. note::
 
