@@ -84,17 +84,20 @@ this sample ``web.config`` file:
     </configuration>
 
 Lighttpd
-~~~~~
+~~~~~~~~
 
-If you are using lighttpd, you can use this sample ``simple-vhost``:
+If you are using lighttpd, use this sample ``simple-vhost`` as a starting
+point:
 
 .. code-block:: lighttpd
 
     server.document-root = "/path/to/app"
 
     url.rewrite-once = (
-        "^/assets/.+" => "$0", # directories with static files
+        # configure some static files
+        "^/assets/.+" => "$0",
         "^/favicon\.ico$" => "$0",
+
         "^(/[^\?]*)(\?.*)?" => "/index.php$1$2"
     )
 
