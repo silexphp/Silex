@@ -86,5 +86,20 @@ The Swiftmailer provider provides a ``mailer`` service::
         return new Response('Thank you for your feedback!', 201);
     });
 
+Traits
+------
+
+``SwiftmailerTrait`` adds the following shortcuts:
+
+* **mail**: Sends an email.
+
+.. code-block:: php
+
+    $app->mail(\Swift_Message::newInstance()
+        ->setSubject('[YourSite] Feedback')
+        ->setFrom(array('noreply@yoursite.com'))
+        ->setTo(array('feedback@yoursite.com'))
+        ->setBody($request->get('message')));
+
 For more information, check out the `Swift Mailer documentation
 <http://swiftmailer.org>`_.
