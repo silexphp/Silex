@@ -155,4 +155,35 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(array('mid1', 'mid2', 'mid3'), $controller->getRoute()->getOption('_after_middlewares'));
     }
+
+    public function testRouteExtension()
+    {
+        $route = new MyRoute1();
+
+        $controller = new ControllerCollection($route);
+        $controller->foo('foo');
+
+        $this->assertEquals('foo', $route->foo);
+    }
+
+    /**
+     * @expectedException \BadMethodCallException
+     */
+    public function testRouteMethodDoesNotExist()
+    {
+        $route = new MyRoute1();
+
+        $controller = new ControllerCollection($route);
+        $controller->bar();
+    }
+}
+
+class MyRoute1 extends Route
+{
+    public $foo;
+
+    public function foo($value)
+    {
+        $this->foo = $value;
+    }
 }
