@@ -12,6 +12,7 @@
 namespace Silex\Tests;
 
 use Silex\Application;
+use Silex\Route;
 use Silex\ControllerCollection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -45,7 +46,7 @@ class FunctionalTest extends \PHPUnit_Framework_TestCase
 
     public function testMount()
     {
-        $mounted = new ControllerCollection();
+        $mounted = new ControllerCollection(new Route());
         $mounted->get('/{name}', function ($name) { return new Response($name); });
 
         $app = new Application();

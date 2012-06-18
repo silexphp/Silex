@@ -72,113 +72,13 @@ class Controller
         return $this;
     }
 
-    /**
-     * Sets the requirement for a route variable.
-     *
-     * @param string $variable The variable name
-     * @param string $regexp   The regexp to apply
-     *
-     * @return Controller $this The current Controller instance
-     */
-    public function assert($variable, $regexp)
+    public function __call($method, $arguments)
     {
-        $this->route->assert($variable, $regexp);
+        if (!method_exists($this->route, $method)) {
+            throw new \BadMethodCallException(sprintf('Method "%s::%s" does not exist.', get_class($this->route), $method));
+        }
 
-        return $this;
-    }
-
-    /**
-     * Sets the default value for a route variable.
-     *
-     * @param string $variable The variable name
-     * @param mixed  $default  The default value
-     *
-     * @return Controller $this The current Controller instance
-     */
-    public function value($variable, $default)
-    {
-        $this->route->value($variable, $default);
-
-        return $this;
-    }
-
-    /**
-     * Sets a converter for a route variable.
-     *
-     * @param string $variable The variable name
-     * @param mixed  $callback A PHP callback that converts the original value
-     *
-     * @return Controller $this The current Controller instance
-     */
-    public function convert($variable, $callback)
-    {
-        $this->route->convert($variable, $callback);
-
-        return $this;
-    }
-
-    /**
-     * Sets the requirement for the HTTP method.
-     *
-     * @param string $method The HTTP method name. Multiple methods can be supplied, delimited by a pipe character '|', eg. 'GET|POST'
-     *
-     * @return Controller $this The current Controller instance
-     */
-    public function method($method)
-    {
-        $this->route->method($method);
-
-        return $this;
-    }
-
-    /**
-     * Sets the requirement of HTTP (no HTTPS) on this controller.
-     *
-     * @return Controller $this The current Controller instance
-     */
-    public function requireHttp()
-    {
-        $this->route->requireHttp();
-
-        return $this;
-    }
-
-    /**
-     * Sets the requirement of HTTPS on this controller.
-     *
-     * @return Controller $this The current Controller instance
-     */
-    public function requireHttps()
-    {
-        $this->route->requireHttps();
-
-        return $this;
-    }
-
-    /**
-     * Sets a callback to handle before triggering the route callback.
-     *
-     * @param mixed $callback A PHP callback to be triggered when the Route is matched, just before the route callback
-     *
-     * @return Controller $this The current Controller instance
-     */
-    public function before($callback)
-    {
-        $this->route->before($callback);
-
-        return $this;
-    }
-
-    /**
-     * Sets a callback to handle after the route callback.
-     *
-     * @param mixed $callback A PHP callback to be triggered after the route callback
-     *
-     * @return Controller $this The current Controller instance
-     */
-    public function after($callback)
-    {
-        $this->route->after($callback);
+        call_user_func_array(array($this->route, $method), $arguments);
 
         return $this;
     }
