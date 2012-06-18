@@ -32,9 +32,9 @@ class ControllerCollection
     /**
      * Constructor.
      */
-    public function __construct()
+    public function __construct(Route $defaultRoute)
     {
-        $this->defaultRoute = new Route('');
+        $this->defaultRoute = $defaultRoute;
     }
 
     /**
@@ -110,144 +110,16 @@ class ControllerCollection
         return $this->match($pattern, $to)->method('DELETE');
     }
 
-    /**
-     * Sets the requirement for a route variable.
-     *
-     * @param string $variable The variable name
-     * @param string $regexp   The regexp to apply
-     *
-     * @return ControllerCollection $this The current Controller instance
-     */
-    public function assert($variable, $regexp)
+    public function __call($method, $arguments)
     {
-        $this->defaultRoute->assert($variable, $regexp);
-
-        foreach ($this->controllers as $controller) {
-            $controller->assert($variable, $regexp);
+        if (!method_exists($this->defaultRoute, $method)) {
+            throw new \BadMethodCallException(sprintf('Method "%s::%s" does not exist.', get_class($this->defaultRoute), $method));
         }
 
-        return $this;
-    }
-
-    /**
-     * Sets the default value for a route variable.
-     *
-     * @param string $variable The variable name
-     * @param mixed  $default  The default value
-     *
-     * @return ControllerCollection $this The current Controller instance
-     */
-    public function value($variable, $default)
-    {
-        $this->defaultRoute->value($variable, $default);
+        call_user_func_array(array($this->defaultRoute, $method), $arguments);
 
         foreach ($this->controllers as $controller) {
-            $controller->value($variable, $default);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Sets a converter for a route variable.
-     *
-     * @param string $variable The variable name
-     * @param mixed  $callback A PHP callback that converts the original value
-     *
-     * @return ControllerCollection $this The current Controller instance
-     */
-    public function convert($variable, $callback)
-    {
-        $this->defaultRoute->convert($variable, $callback);
-
-        foreach ($this->controllers as $controller) {
-            $controller->convert($variable, $callback);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Sets the requirement for the HTTP method.
-     *
-     * @param string $method The HTTP method name. Multiple methods can be supplied, delimited by a pipe character '|', eg. 'GET|POST'
-     *
-     * @return ControllerCollection $this The current Controller instance
-     */
-    public function method($method)
-    {
-        $this->defaultRoute->method($method);
-
-        foreach ($this->controllers as $controller) {
-            $controller->method($method);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Sets the requirement of HTTP (no HTTPS) on this controller.
-     *
-     * @return ControllerCollection $this The current Controller instance
-     */
-    public function requireHttp()
-    {
-        $this->defaultRoute->requireHttp();
-
-        foreach ($this->controllers as $controller) {
-            $controller->requireHttp();
-        }
-
-        return $this;
-    }
-
-    /**
-     * Sets the requirement of HTTPS on this controller.
-     *
-     * @return ControllerCollection $this The current Controller instance
-     */
-    public function requireHttps()
-    {
-        $this->defaultRoute->requireHttps();
-
-        foreach ($this->controllers as $controller) {
-            $controller->requireHttps();
-        }
-
-        return $this;
-    }
-
-    /**
-     * Sets a callback to handle before triggering the route callback.
-     *
-     * @param mixed $callback A PHP callback to be triggered when the Route is matched, just before the route callback
-     *
-     * @return ControllerCollection $this The current ControllerCollection instance
-     */
-    public function before($callback)
-    {
-        $this->defaultRoute->before($callback);
-
-        foreach ($this->controllers as $controller) {
-            $controller->before($callback);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Sets a callback to handle after the route callback.
-     *
-     * @param mixed $callback A PHP callback to be triggered after the route callback
-     *
-     * @return ControllerCollection $this The current ControllerCollection instance
-     */
-    public function after($callback)
-    {
-        $this->defaultRoute->after($callback);
-
-        foreach ($this->controllers as $controller) {
-            $controller->after($callback);
+            call_user_func_array(array($controller, $method), $arguments);
         }
 
         return $this;
