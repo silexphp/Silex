@@ -34,6 +34,19 @@ Services
 * **monolog.configure**: Protected closure that takes the logger as an
   argument. You can override it if you do not want the default behavior.
 
+* **monolog.factory**: Protected closure that takes a channel name as an
+  argument, returning a new logger configured like the existing **monolog**
+  instance (via **monolog.configure**), but with the supplied argument as the
+  channel.
+
+  Example Usage::
+
+    $app['monolog.users'] = $app->share(function($app) {
+        return $app['monolog.factory']("users");
+    });
+
+    $app['monolog.users']->addDebug("Someone did something");
+
 Registering
 -----------
 
