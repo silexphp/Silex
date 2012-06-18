@@ -129,19 +129,11 @@ The default configuration of the extension enforces encoded passwords. To
 generate a valid encoded password from a raw password, use the
 ``security.encoder_factory`` service::
 
-    // find the encoder for the User class (which is the default)
-    $encoder = $app['security.encoder_factory']->getEncoder('Symfony\Component\Security\Core\User\User');
+    // find the encoder for a UserInterface instance
+    $encoder = $app['security.encoder_factory']->getEncoder($user);
 
     // compute the encoded password for foo
-    $password = $encoder->encodePassword('foo', null);
-
-The second argument is the salt to be used for the user (defaults to
-``null``).
-
-You can also get the encoder directly by its name. By default, use the
-``security.encoder.digest`` service::
-
-    $password = $app['security.encoder.digest']->encodePassword('foo', null);
+    $password = $encoder->encodePassword('foo', $user->getSalt());
 
 When the user is authenticated, the user stored in the token is an instance of
 `User
