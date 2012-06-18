@@ -112,6 +112,10 @@ class ControllerCollection
 
     public function __call($method, $arguments)
     {
+        if (!method_exists($this->defaultRoute, $method)) {
+            throw new \BadMethodCallException(sprintf('Method "%s::%s" does not exist.', get_class($this->defaultRoute), $method));
+        }
+
         call_user_func_array(array($this->defaultRoute, $method), $arguments);
 
         foreach ($this->controllers as $controller) {
