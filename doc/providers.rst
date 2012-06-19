@@ -170,7 +170,8 @@ Here is an example of such a provider::
     {
         public function connect(Application $app)
         {
-            $controllers = new ControllerCollection();
+            // creates a new controller based on the default route
+            $controllers = $app['controllers_factory'];
 
             $controllers->get('/', function (Application $app) {
                 return $app->redirect('/hello');
