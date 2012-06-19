@@ -627,17 +627,15 @@ Modularity
 When your application starts to define too many controllers, you might want to
 group them logically::
 
-    use Silex\ControllerCollection;
-
     // define controllers for a blog
-    $blog = new ControllerCollection();
+    $blog = $app['controllers_factory'];
     $blog->get('/', function () {
         return 'Blog home page';
     });
     // ...
 
     // define controllers for a forum
-    $forum = new ControllerCollection();
+    $forum = $app['controllers_factory'];
     $forum->get('/', function () {
         return 'Forum home page';
     });
@@ -649,6 +647,11 @@ group them logically::
 
     $app->mount('/blog', $blog);
     $app->mount('/forum', $forum);
+
+.. note::
+
+    ``$app['controllers_factory']`` is a factory that returns a new instance
+    of ``ControllerCollection`` when used.
 
 ``mount()`` prefixes all routes with the given prefix and merges them into the
 main Application. So, ``/`` will map to the main home page, ``/blog/`` to the
@@ -664,7 +667,7 @@ Another benefit is the ability to apply settings on a set of controllers very
 easily. Building on the example from the middleware section, here is how you
 would secure all controllers for the backend collection::
 
-    $backend = new ControllerCollection();
+    $backend = $app['controllers_factory'];
 
     // ensure that all controllers require logged-in users
     $backend->before($mustBeLogged);
@@ -675,9 +678,7 @@ would secure all controllers for the backend collection::
     separate file::
 
         // blog.php
-        use Silex\ControllerCollection;
-
-        $blog = new ControllerCollection();
+        $blog = $app['controllers_factory'];
         $blog->get('/', function () { return 'Blog home page'; });
 
         return $blog;
