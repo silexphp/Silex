@@ -24,6 +24,8 @@ trait TwigTrait
     /**
      * Renders a view and returns a Response.
      *
+     * To stream a view, pass an instance of StreamedResponse as a third argument.
+     *
      * @param string   $view       The view name
      * @param array    $parameters An array of parameters to pass to the view
      * @param Response $response   A Response instance
@@ -36,33 +38,15 @@ trait TwigTrait
             $response = new Response();
         }
 
-        $response->setContent($this->renderView($view, $parameters));
-
-        return $response;
-    }
-
-    /**
-     * Streams a view.
-     *
-     * @param string           $view       The view name
-     * @param array            $parameters An array of parameters to pass to the view
-     * @param StreamedResponse $response   A response instance
-     *
-     * @return StreamedResponse A StreamedResponse instance
-     */
-    public function stream($view, array $parameters = array(), StreamedResponse $response = null)
-    {
         $twig = $this['twig'];
 
-        $callback = function () use ($twig, $view, $parameters) {
-            $this['twig']->display($view, $parameters);
-        };
-
-        if (null === $response) {
-            return new StreamedResponse($callback);
+        if ($response instanceof StreamedResponse) {
+            $response->setCallback(function () use ($twig, $view, $parameters) {
+                $this['twig']->display($view, $parameters);
+            });
+        } else {
+            $response->setContent($twig->render($view, $parameters));
         }
-
-        $response->setCallback($callback);
 
         return $response;
     }
