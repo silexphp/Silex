@@ -15,6 +15,8 @@ Changelog
         // or even better
         $controllers = $app['controllers_factory'];
 
+* **2012-06-17**: added application traits for PHP 5.4
+
 * **2012-06-16**: renamed ``request.default_locale`` to ``locale``
 
 * **2012-06-16**: Removed the ``translator.loader`` service. See documentation

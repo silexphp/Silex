@@ -143,5 +143,16 @@ form by adding constraints on the fields::
         ))
         ->getForm();
 
+Traits
+------
+
+``Silex\Application\FormTrait`` adds the following shortcuts:
+
+* **form**: Creates a FormBuilder instance.
+
+.. code-block:: php
+
+    $app->form('form', $data);
+
 For more information, consult the `Symfony2 Forms documentation
 <http://symfony.com/doc/2.1/book/forms.html>`_.

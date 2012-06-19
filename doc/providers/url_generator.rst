@@ -61,3 +61,17 @@ Moreover, if you use Twig, you will have access to the ``path()`` and
 
     {{ path('homepage') }}
     {{ url('homepage') }} {# generates the absolute url http://example.org/ #}
+
+Traits
+------
+
+``Silex\Application\UrlGeneratorTrait`` adds the following shortcuts:
+
+* **path**: Generates a path.
+
+* **url**: Generates an absolute URL.
+
+.. code-block:: php
+
+    $app->path('homepage');
+    $app->url('homepage');

@@ -120,6 +120,30 @@ from a template:
     {# or if you are also using UrlGeneratorServiceProvider with the SymfonyBridgesServiceProvider #}
     {{ render(path('sidebar')) }}
 
+Traits
+------
+
+``Silex\Application\TwigTrait`` adds the following shortcuts:
+
+* **render**: Renders a view with the given parameters and returns a Response
+  object.
+
+.. code-block:: php
+
+    return $app->render('index.html', ['name': 'Fabien']);
+
+    $response = new Response();
+    $response->setTtl(10);
+
+    return $app->render('index.html', ['name': 'Fabien'], $response);
+
+.. code-block:: php
+
+    // stream a view
+    use Symfony\Component\HttpFoundation\StreamedResponse;
+
+    return $app->render('index.html', ['name': 'Fabien'], new StreamedResponse());
+
 Customization
 -------------
 
