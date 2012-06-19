@@ -1,6 +1,20 @@
 Changelog
 =========
 
+* **2012-06-17**: ``ControllerCollection`` now takes a required route instance
+  as a constructor argument.
+
+    Before::
+
+        $controllers = new ControllerCollection();
+
+    After::
+
+        $controllers = new ControllerCollection(new Route());
+
+        // or even better
+        $controllers = $app['controllers_factory'];
+
 * **2012-06-16**: renamed ``request.default_locale`` to ``locale``
 
 * **2012-06-16**: Removed the ``translator.loader`` service. See documentation
