@@ -741,15 +741,14 @@ after every chunk::
 Traits
 ------
 
-Silex comes with PHP traits that add some shortcut methods to your Application
-class.
+Silex comes with PHP traits that define shortcut methods.
 
 .. caution::
 
     You need to use PHP 5.4 or later to benefit from this feature.
 
-Almost all built-in service providers have a corresponding PHP trait. To use
-them, define your own application and include the traits you want::
+Almost all built-in service providers have some corresponding PHP traits. To
+use them, define your own Application class and include the traits you want::
 
     use Silex\Application;
 
@@ -763,6 +762,20 @@ them, define your own application and include the traits you want::
         use Application\MonologTrait;
         use Application\TranslationTrait;
     }
+
+You can also define your own Route class and use some traits::
+
+    use Silex\Route;
+
+    class MyRoute extends Route
+    {
+        use Route\SecurityTrait;
+    }
+
+To use your newly defined route, override the ``$app['route_class']``
+setting::
+
+    $app['route_class'] = 'MyRoute';
 
 Read each provider chapter to learn more about the added methods.
 

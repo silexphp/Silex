@@ -481,3 +481,13 @@ Traits
     $user = $app->user();
 
     $encoded = $app->encodePassword($user, 'foo');
+
+``Silex\Route\SecurityTrait`` adds the following methods to the controllers:
+
+* **secure**: Secures a controller for the given roles.
+
+.. code-block:: php
+
+    $app->get('/', function () {
+        // do something but only for admins
+    })->secure('ROLE_ADMIN');
