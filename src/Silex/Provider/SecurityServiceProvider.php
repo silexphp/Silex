@@ -95,10 +95,14 @@ class SecurityServiceProvider implements ServiceProviderInterface
         });
 
         $app['security.access_manager'] = $app->share(function () use ($app) {
-            return new AccessDecisionManager(array(
+            return new AccessDecisionManager($app['security.voters']);
+        });
+
+        $app['security.voters'] = $app->share(function () use ($app) {
+            return array(
                 new RoleHierarchyVoter(new RoleHierarchy($app['security.role_hierarchy'])),
                 new AuthenticatedVoter($app['security.trust_resolver']),
-            ));
+            );
         });
 
         $app['security.firewall'] = $app->share(function () use ($app) {
