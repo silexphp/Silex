@@ -56,6 +56,25 @@ register the ``symfony/config`` and ```symfony/translation`` components::
         "symfony/translation": "2.1.*"
     }
 
+The Symfony Form Component relies on the PHP intl extension. If you don't have
+it, you can install the Symfony Locale Component as a replacement::
+
+.. code-block:: json
+
+    "require": {
+        "symfony/locale": "2.1.*"
+    }
+
+Then, enable it in your code::
+
+    $path = __DIR__.'/vendor/symfony/locale/Symfony/Component/Locale/Resources/stubs';
+
+    require_once $path.'/functions.php';
+    require_once $path.'/Collator.php';
+    require_once $path.'/IntlDateFormatter.php';
+    require_once $path.'/Locale.php';
+    require_once $path.'/NumberFormatter.php';
+
 Usage
 -----
 
