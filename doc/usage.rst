@@ -627,17 +627,15 @@ Modularity
 When your application starts to define too many controllers, you might want to
 group them logically::
 
-    use Silex\ControllerCollection;
-
     // define controllers for a blog
-    $blog = new ControllerCollection();
+    $blog = $app['controllers_factory'];
     $blog->get('/', function () {
         return 'Blog home page';
     });
     // ...
 
     // define controllers for a forum
-    $forum = new ControllerCollection();
+    $forum = $app['controllers_factory'];
     $forum->get('/', function () {
         return 'Forum home page';
     });
@@ -649,6 +647,11 @@ group them logically::
 
     $app->mount('/blog', $blog);
     $app->mount('/forum', $forum);
+
+.. note::
+
+    ``$app['controllers_factory']`` is a factory that returns a new instance
+    of ``ControllerCollection`` when used.
 
 ``mount()`` prefixes all routes with the given prefix and merges them into the
 main Application. So, ``/`` will map to the main home page, ``/blog/`` to the
@@ -664,7 +667,7 @@ Another benefit is the ability to apply settings on a set of controllers very
 easily. Building on the example from the middleware section, here is how you
 would secure all controllers for the backend collection::
 
-    $backend = new ControllerCollection();
+    $backend = $app['controllers_factory'];
 
     // ensure that all controllers require logged-in users
     $backend->before($mustBeLogged);
@@ -675,9 +678,7 @@ would secure all controllers for the backend collection::
     separate file::
 
         // blog.php
-        use Silex\ControllerCollection;
-
-        $blog = new ControllerCollection();
+        $blog = $app['controllers_factory'];
         $blog->get('/', function () { return 'Blog home page'; });
 
         return $blog;
@@ -736,6 +737,47 @@ after every chunk::
         }
         fclose($fh);
     };
+
+Traits
+------
+
+Silex comes with PHP traits that define shortcut methods.
+
+.. caution::
+
+    You need to use PHP 5.4 or later to benefit from this feature.
+
+Almost all built-in service providers have some corresponding PHP traits. To
+use them, define your own Application class and include the traits you want::
+
+    use Silex\Application;
+
+    class MyApplication extends Application
+    {
+        use Application\TwigTrait;
+        use Application\SecurityTrait;
+        use Application\FormTrait;
+        use Application\UrlGeneratorTrait;
+        use Application\SwiftmailerTrait;
+        use Application\MonologTrait;
+        use Application\TranslationTrait;
+    }
+
+You can also define your own Route class and use some traits::
+
+    use Silex\Route;
+
+    class MyRoute extends Route
+    {
+        use Route\SecurityTrait;
+    }
+
+To use your newly defined route, override the ``$app['route_class']``
+setting::
+
+    $app['route_class'] = 'MyRoute';
+
+Read each provider chapter to learn more about the added methods.
 
 Security
 --------

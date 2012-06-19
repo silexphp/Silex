@@ -56,6 +56,20 @@ register the ``symfony/config`` and ```symfony/translation`` components::
         "symfony/translation": "2.1.*"
     }
 
+The Symfony Form Component relies on the PHP intl extension. If you don't have
+it, you can install the Symfony Locale Component as a replacement::
+
+.. code-block:: json
+
+    "require": {
+        "symfony/locale": "2.1.*"
+    }
+
+.. note::
+
+    If you want to benefit from the internationalization of your form, you
+    must install the PHP intl extension.
+
 Usage
 -----
 
@@ -128,6 +142,17 @@ form by adding constraints on the fields::
             'constraints' => new Assert\Choice(array(1, 2)),
         ))
         ->getForm();
+
+Traits
+------
+
+``Silex\Application\FormTrait`` adds the following shortcuts:
+
+* **form**: Creates a FormBuilder instance.
+
+.. code-block:: php
+
+    $app->form('form', $data);
 
 For more information, consult the `Symfony2 Forms documentation
 <http://symfony.com/doc/2.1/book/forms.html>`_.
