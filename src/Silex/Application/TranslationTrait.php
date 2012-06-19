@@ -30,7 +30,7 @@ trait TranslationTrait
      */
     public function trans($id, array $parameters = array(), $domain = 'messages', $locale = null)
     {
-        return $app['translator']->trans($id, $parameters, $domain, $locale);
+        return $this['translator']->trans($id, $parameters, $domain, $locale);
     }
 
     /**
@@ -46,6 +46,6 @@ trait TranslationTrait
      */
     public function transChoice($id, $number, array $parameters = array(), $domain = 'messages', $locale = null)
     {
-        return $app['translator']->transChoice($id, $number, $parameters, $domain, $locale);
+        return $this['translator']->transChoice($id, $number, $parameters, $domain, $locale);
     }
 }
