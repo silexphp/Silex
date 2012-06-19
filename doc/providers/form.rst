@@ -65,15 +65,10 @@ it, you can install the Symfony Locale Component as a replacement::
         "symfony/locale": "2.1.*"
     }
 
-Then, enable it in your code::
+.. note::
 
-    $path = __DIR__.'/vendor/symfony/locale/Symfony/Component/Locale/Resources/stubs';
-
-    require_once $path.'/functions.php';
-    require_once $path.'/Collator.php';
-    require_once $path.'/IntlDateFormatter.php';
-    require_once $path.'/Locale.php';
-    require_once $path.'/NumberFormatter.php';
+    If you want to benefit from the internationalization of your form, you
+    must install the PHP intl extension.
 
 Usage
 -----

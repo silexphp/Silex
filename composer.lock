@@ -1,5 +1,5 @@
 {
-    "hash": "0fe59be3a3e94c9b77fc20e18faaea0e",
+    "hash": "3ec54c6c3e37fe1b74143cc1c9631567",
     "packages": [
         {
             "package": "pimple/pimple",
@@ -67,7 +67,13 @@
         {
             "package": "doctrine/common",
             "version": "dev-master",
-            "source-reference": "80838882abc04270fb9bc5812da4ab64e2ee3f88"
+            "alias-pretty-version": "2.3.x-dev",
+            "alias-version": "2.3.9999999.9999999-dev"
+        },
+        {
+            "package": "doctrine/common",
+            "version": "dev-master",
+            "source-reference": "f0b548aa55bb7dac36d79061270a085dd38635b4"
         },
         {
             "package": "doctrine/dbal",
@@ -87,13 +93,7 @@
         {
             "package": "swiftmailer/swiftmailer",
             "version": "dev-master",
-            "alias-pretty-version": "4.1.x-dev",
-            "alias-version": "4.1.9999999.9999999-dev"
-        },
-        {
-            "package": "swiftmailer/swiftmailer",
-            "version": "dev-master",
-            "source-reference": "42223cb8ca2009dc6361bf4569ca52ec0fae51c2"
+            "source-reference": "0509c682d482940949ea7f7128c582d9d8b628e2"
         },
         {
             "package": "symfony/browser-kit",
@@ -159,7 +159,7 @@
         {
             "package": "symfony/form",
             "version": "dev-master",
-            "source-reference": "810e9ddffab12d0c90dc5bd7c430aa04cdb053a1"
+            "source-reference": "803a9ce43732bb27341920019dd880323171f5ad"
         },
         {
             "package": "symfony/locale",
@@ -214,7 +214,13 @@
         {
             "package": "symfony/security",
             "version": "dev-master",
-            "source-reference": "81db3fb8af37dd884580433a647df23d6de5347e"
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/security",
+            "version": "dev-master",
+            "source-reference": "e13a63c0cbbd938589e2ecdf6af0402651cbb673"
         },
         {
             "package": "symfony/translation",
@@ -258,7 +264,7 @@
         {
             "package": "twig/twig",
             "version": "dev-master",
-            "source-reference": "120c44d68f07ced5b1e08f582f94016f4f2685d6"
+            "source-reference": "4679ad51c5390648b7ea4c8f0ecd2c0c344145ba"
         }
     ],
     "aliases": [
