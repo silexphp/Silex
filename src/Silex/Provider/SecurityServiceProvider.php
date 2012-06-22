@@ -163,11 +163,13 @@ class SecurityServiceProvider implements ServiceProviderInterface
                             $options = array();
                         }
 
-                        if (isset($app['security.authentication.factory.'.$type])) {
-                            list($listener, $entryPoint) = $app['security.authentication.factory.'.$type]($name, $options);
-
-                            $listeners[] = $listener;
+                        if (!isset($app['security.authentication.factory.'.$type])) {
+                            throw new \LogicException(sprintf('The "%s" authentication entry is not registered.', $type));
                         }
+
+                        list($listener, $entryPoint) = $app['security.authentication.factory.'.$type]($name, $options);
+
+                        $listeners[] = $listener;
                     }
 
                     $listeners[] = $app['security.access_listener'];
