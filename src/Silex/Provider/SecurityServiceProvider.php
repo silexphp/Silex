@@ -117,19 +117,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
             );
         });
 
-        $app['security.authentication.factory._proto'] = $app->protect(function ($name, $options, $type, $entryPoint = 'form') use ($app) {
-            if (!isset($app['security.authentication.'.$name.'.'.$type])) {
-                if (!isset($app['security.entry_point.'.$entryPoint.'.'.$name])) {
-                    $app['security.entry_point.'.$entryPoint.'.'.$name] = $app['security.entry_point.'.$entryPoint.'._proto']($name);
-                }
-
-                $app['security.authentication.'.$name.'.'.$type] = $app['security.authentication.'.$type.'._proto']($name, $options);
-            }
-            return $app['security.authentication.'.$name.'.'.$type];
-        });
-
         foreach (array('logout', 'pre_auth', 'form', 'http', 'remember_me', 'anonymous') as $type) {
-
             $entryPoint = $type == 'http' ? 'http' : 'form';
 
             $app['security.authentication.factory.'.$type] = $app->protect(function($name, $options) use ($type, $app, $entryPoint) {
@@ -166,7 +154,6 @@ class SecurityServiceProvider implements ServiceProviderInterface
                     $listeners[] = $app['security.context_listener.'.$name];
 
                     foreach ($firewall as $type => $options) {
-
                         // normalize options
                         if (!is_array($options)) {
                             if (!$options) {
@@ -178,6 +165,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
 
                         if (isset($app['security.authentication.factory.'.$type])) {
                             list($listener, $entryPoint) = $app['security.authentication.factory.'.$type]($name, $options);
+
                             $listeners[] = $listener;
                         }
                     }
@@ -394,6 +382,18 @@ class SecurityServiceProvider implements ServiceProviderInterface
 
         $app['security.authentication_provider.anonymous._proto'] = $app->protect(function ($name) use ($app) {
             return new AnonymousAuthenticationProvider($name);
+        });
+
+        $app['security.authentication.factory._proto'] = $app->protect(function ($name, $options, $type, $entryPoint = 'form') use ($app) {
+            if (!isset($app['security.authentication.'.$name.'.'.$type])) {
+                if (!isset($app['security.entry_point.'.$entryPoint.'.'.$name])) {
+                    $app['security.entry_point.'.$entryPoint.'.'.$name] = $app['security.entry_point.'.$entryPoint.'._proto']($name);
+                }
+
+                $app['security.authentication.'.$name.'.'.$type] = $app['security.authentication.'.$type.'._proto']($name, $options);
+            }
+
+            return $app['security.authentication.'.$name.'.'.$type];
         });
     }
 
