@@ -117,6 +117,28 @@ class SecurityServiceProvider implements ServiceProviderInterface
             );
         });
 
+        $app['security.authentication.factory._proto'] = $app->protect(function ($name, $options, $type, $entryPoint = 'form') use ($app) {
+            if (!isset($app['security.authentication.'.$name.'.'.$type])) {
+                if (!isset($app['security.entry_point.'.$entryPoint.'.'.$name])) {
+                    $app['security.entry_point.'.$entryPoint.'.'.$name] = $app['security.entry_point.'.$entryPoint.'._proto']($name);
+                }
+
+                $app['security.authentication.'.$name.'.'.$type] = $app['security.authentication.'.$type.'._proto']($name, $options);
+            }
+            return $app['security.authentication.'.$name.'.'.$type];
+        });
+
+        foreach (array('logout', 'pre_auth', 'form', 'http', 'remember_me', 'anonymous') as $type) {
+
+            $entryPoint = $type == 'http' ? 'http' : 'form';
+
+            $app['security.authentication.factory.'.$type] = $app->protect(function($name, $options) use ($type, $app, $entryPoint) {
+                $app['security.authentication.'.$name.'.'.$type] = $app['security.authentication.factory._proto']($name, $options, $type, $entryPoint);
+
+                return array($app['security.authentication.'.$name.'.'.$type], $entryPoint);
+            });
+        }
+
         $app['security.firewall_map'] = $app->share(function () use ($app) {
             $map = new FirewallMap();
             $entryPoint = 'form';
@@ -142,49 +164,33 @@ class SecurityServiceProvider implements ServiceProviderInterface
                     }
 
                     $listeners[] = $app['security.context_listener.'.$name];
-                }
 
-                if (count($firewall)) {
-                    foreach (array('logout', 'pre_auth', 'form', 'http', 'remember_me', 'anonymous') as $type) {
-                        if (isset($firewall[$type])) {
-                            $options = $firewall[$type];
+                    foreach ($firewall as $type => $options) {
 
-                            // normalize options
-                            if (!is_array($options)) {
-                                if (!$options) {
-                                    continue;
-                                }
-
-                                $options = array();
+                        // normalize options
+                        if (!is_array($options)) {
+                            if (!$options) {
+                                continue;
                             }
 
-                            if ('http' == $type) {
-                                $entryPoint = 'http';
-                            }
+                            $options = array();
+                        }
 
-                            if (!isset($app['security.authentication.'.$name.'.'.$type])) {
-                                if (!isset($app['security.entry_point.'.$entryPoint.'.'.$name])) {
-                                    $app['security.entry_point.'.$entryPoint.'.'.$name] = $app['security.entry_point.'.$entryPoint.'._proto']($name);
-                                }
-
-                                $app['security.authentication.'.$name.'.'.$type] = $app['security.authentication.'.$type.'._proto']($name, $options);
-                            }
-
-                            $listeners[] = $app['security.authentication.'.$name.'.'.$type];
+                        if (isset($app['security.authentication.factory.'.$type])) {
+                            list($listener, $entryPoint) = $app['security.authentication.factory.'.$type]($name, $options);
+                            $listeners[] = $listener;
                         }
                     }
 
-                    if ($protected) {
-                        $listeners[] = $app['security.access_listener'];
+                    $listeners[] = $app['security.access_listener'];
 
-                        if (isset($firewall['switch_user'])) {
-                            $listeners[] = $app['security.authentication.switch_user._proto']($name, $firewall['switch_user']);
-                        }
+                    if (isset($firewall['switch_user'])) {
+                        $listeners[] = $app['security.authentication.switch_user._proto']($name, $firewall['switch_user']);
                     }
-                }
 
-                if ($protected && !isset($app['security.exception_listener.'.$name])) {
-                    $app['security.exception_listener.'.$name] = $app['security.exception_listener._proto']($entryPoint, $name);
+                    if (!isset($app['security.exception_listener.'.$name])) {
+                        $app['security.exception_listener.'.$name] = $app['security.exception_listener._proto']($entryPoint, $name);
+                    }
                 }
 
                 $map->add(
