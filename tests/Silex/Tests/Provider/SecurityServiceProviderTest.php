@@ -32,6 +32,24 @@ class SecurityServiceProviderTest extends WebTestCase
         }
     }
 
+    /**
+     * @expectedException \LogicException
+     */
+    public function testWrongAuthenticationType()
+    {
+        $app = new Application();
+        $app->register(new SecurityServiceProvider(), array(
+            'security.firewalls' => array(
+                'wrong' => array(
+                    'foobar' => true,
+                    'users' => array(),
+                ),
+            ),
+        ));
+        $app->get('/', function () {});
+        $app->handle(Request::create('/'));
+    }
+
     public function testFormAuthentication()
     {
         $app = $this->createApplication('form');
