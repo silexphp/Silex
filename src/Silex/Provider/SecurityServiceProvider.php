@@ -129,12 +129,13 @@ class SecurityServiceProvider implements ServiceProviderInterface
                     $app['security.authentication.'.$name.'.'.$type] = $app['security.authentication.'.$type.'._proto']($name, $options);
                 }
 
-                return array($app['security.authentication.'.$name.'.'.$type], $app['security.entry_point.'.$name.'.'.$entryPoint]);
+                return array($app['security.authentication.'.$name.'.'.$type], $app['security.entry_point.'.$name.'.'.$entryPoint], $type);
             });
         }
 
         $app['security.firewall_map'] = $app->share(function () use ($app) {
             $map = new FirewallMap();
+            $positions = array('logout', 'pre_auth', 'form', 'http', 'remember_me', 'anonymous');
             foreach ($app['security.firewalls'] as $name => $firewall) {
                 $entryPoint = 'form';
                 $pattern = isset($firewall['pattern']) ? $firewall['pattern'] : null;
@@ -159,6 +160,11 @@ class SecurityServiceProvider implements ServiceProviderInterface
 
                     $listeners[] = $app['security.context_listener.'.$name];
 
+                    $factories = array();
+                    foreach ($positions as $position) {
+                        $factories[$position] = array();
+                    }
+
                     foreach ($firewall as $type => $options) {
                         // normalize options
                         if (!is_array($options)) {
@@ -173,9 +179,15 @@ class SecurityServiceProvider implements ServiceProviderInterface
                             throw new \LogicException(sprintf('The "%s" authentication entry is not registered.', $type));
                         }
 
-                        list($listener, $entryPoint) = $app['security.authentication.factory.'.$type]($name, $options);
+                        list($listener, $entryPoint, $position) = $app['security.authentication.factory.'.$type]($name, $options);
 
-                        $listeners[] = $listener;
+                        $factories[$position][] = $listener;
+                    }
+
+                    foreach ($positions as $position) {
+                        foreach ($factories[$position] as $listener) {
+                            $listeners[] = $listener;
+                        }
                     }
 
                     $listeners[] = $app['security.access_listener'];
