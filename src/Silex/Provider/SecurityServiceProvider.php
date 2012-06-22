@@ -121,16 +121,22 @@ class SecurityServiceProvider implements ServiceProviderInterface
             $entryPoint = $type == 'http' ? 'http' : 'form';
 
             $app['security.authentication.factory.'.$type] = $app->protect(function($name, $options) use ($type, $app, $entryPoint) {
-                $app['security.authentication.'.$name.'.'.$type] = $app['security.authentication.factory._proto']($name, $options, $type, $entryPoint);
+                if (!isset($app['security.entry_point.'.$entryPoint.'.'.$name])) {
+                    $app['security.entry_point.'.$entryPoint.'.'.$name] = $app['security.entry_point.'.$entryPoint.'._proto']($name);
+                }
 
-                return array($app['security.authentication.'.$name.'.'.$type], $entryPoint);
+                if (!isset($app['security.authentication.'.$name.'.'.$type])) {
+                    $app['security.authentication.'.$name.'.'.$type] = $app['security.authentication.'.$type.'._proto']($name, $options);
+                }
+
+                return array($app['security.authentication.'.$name.'.'.$type], $app['security.entry_point.'.$entryPoint.'.'.$name]);
             });
         }
 
         $app['security.firewall_map'] = $app->share(function () use ($app) {
             $map = new FirewallMap();
-            $entryPoint = 'form';
             foreach ($app['security.firewalls'] as $name => $firewall) {
+                $entryPoint = 'form';
                 $pattern = isset($firewall['pattern']) ? $firewall['pattern'] : null;
                 $users = isset($firewall['users']) ? $firewall['users'] : array();
                 unset($firewall['pattern'], $firewall['users']);
@@ -284,15 +290,11 @@ class SecurityServiceProvider implements ServiceProviderInterface
         });
 
         $app['security.exception_listener._proto'] = $app->protect(function ($entryPoint, $name) use ($app) {
-            if (!isset($app['security.entry_point.'.$entryPoint.'.'.$name])) {
-                $app['security.entry_point.'.$entryPoint.'.'.$name] = $app['security.entry_point.'.$entryPoint.'._proto']($name);
-            }
-
             return new ExceptionListener(
                 $app['security'],
                 $app['security.trust_resolver'],
                 $app['security.http_utils'],
-                $app['security.entry_point.'.$entryPoint.'.'.$name],
+                $entryPoint,
                 null, // errorPage
                 null, // AccessDeniedHandlerInterface
                 $app['logger']
@@ -384,18 +386,6 @@ class SecurityServiceProvider implements ServiceProviderInterface
 
         $app['security.authentication_provider.anonymous._proto'] = $app->protect(function ($name) use ($app) {
             return new AnonymousAuthenticationProvider($name);
-        });
-
-        $app['security.authentication.factory._proto'] = $app->protect(function ($name, $options, $type, $entryPoint = 'form') use ($app) {
-            if (!isset($app['security.authentication.'.$name.'.'.$type])) {
-                if (!isset($app['security.entry_point.'.$entryPoint.'.'.$name])) {
-                    $app['security.entry_point.'.$entryPoint.'.'.$name] = $app['security.entry_point.'.$entryPoint.'._proto']($name);
-                }
-
-                $app['security.authentication.'.$name.'.'.$type] = $app['security.authentication.'.$type.'._proto']($name, $options);
-            }
-
-            return $app['security.authentication.'.$name.'.'.$type];
         });
     }
 
