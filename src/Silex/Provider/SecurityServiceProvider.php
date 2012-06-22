@@ -121,15 +121,15 @@ class SecurityServiceProvider implements ServiceProviderInterface
             $entryPoint = $type == 'http' ? 'http' : 'form';
 
             $app['security.authentication.factory.'.$type] = $app->protect(function($name, $options) use ($type, $app, $entryPoint) {
-                if (!isset($app['security.entry_point.'.$entryPoint.'.'.$name])) {
-                    $app['security.entry_point.'.$entryPoint.'.'.$name] = $app['security.entry_point.'.$entryPoint.'._proto']($name);
+                if (!isset($app['security.entry_point.'.$name.'.'.$entryPoint])) {
+                    $app['security.entry_point.'.$name.'.'.$entryPoint] = $app['security.entry_point.'.$entryPoint.'._proto']($name);
                 }
 
                 if (!isset($app['security.authentication.'.$name.'.'.$type])) {
                     $app['security.authentication.'.$name.'.'.$type] = $app['security.authentication.'.$type.'._proto']($name, $options);
                 }
 
-                return array($app['security.authentication.'.$name.'.'.$type], $app['security.entry_point.'.$entryPoint.'.'.$name]);
+                return array($app['security.authentication.'.$name.'.'.$type], $app['security.entry_point.'.$name.'.'.$entryPoint]);
             });
         }
 
@@ -324,7 +324,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
                 $app['security'],
                 $app['security.authentication_manager'],
                 $providerKey,
-                $app['security.entry_point.http.'.$providerKey],
+                $app['security.entry_point.'.$providerKey.'.http'],
                 $app['logger']
             );
         });
