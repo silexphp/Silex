@@ -33,8 +33,7 @@ Read the [documentation][3] for more information.
 
 ## Tests
 
-To run the test suite, you need [composer](http://getcomposer.org) and
-[PHPUnit](https://github.com/sebastianbergmann/phpunit).
+To run the test suite, you need [PHPUnit](https://github.com/sebastianbergmann/phpunit).
 
     $ curl -s http://getcomposer.org/installer | php
     $ php composer.phar install --dev
