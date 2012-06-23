@@ -467,6 +467,58 @@ sample users::
     provides a user provider class that is able to load users from your
     entities.
 
+Defining a custom Authentication Provider
+-----------------------------------------
+
+The Symfony Security components provides a lot of ready-to-use authentication
+providers (form, HTTP, X509, remember me, ...), but you can add new ones
+easily. To register a new authentication provider, create a service named
+``security.authentication.factory.XXX`` where ``XXX``is the name you want to
+use in your configuration::
+
+    $app['security.authentication.factory.wsse'] = $app->protect(function ($name, $options) use ($app) {
+        // define the authentication provider object
+        $app['security.authentication_provider.'.$name.'.wsse'] = $app->share(function () use ($app) {
+            return new WsseProvider($app['security.user_provider.default'], __DIR__.'/security_cache');
+        });
+
+        // define the authentication listener object
+        $app['security.authentication_listener.'.$name.'.wsse'] = $app->share(function () use ($app) {
+            return new WsseListener($app['security'], $app['security.authentication_manager']);
+        });
+
+        return array(
+            // the authentication provider id
+            'security.authentication_provider.'.$name.'.wsse',
+            // the authentication listener id
+            'security.authentication_listener.'.$name.'.wsse',
+            // the entry point id
+            null,
+            // the position of the listener in the stack
+            'pre_auth'
+        );
+    });
+
+You can now use it in your configuration like any other built-in
+authentication provider::
+
+    $app->register(new SecurityServiceProvider(), array(
+        'security.firewalls' => array(
+            'default' => array(
+                'wsse' => true,
+
+                // ...
+            ),
+        ),
+    ));
+
+Instead of ``true``, you can also define an array of options that customize
+the behavior of your authentication factory; it will be passed as the second
+argument of your authentication factory (see above).
+
+This example uses the authentication provider classes as described in the
+Symfony `cookbook`_.
+
 Traits
 ------
 
@@ -491,3 +543,5 @@ Traits
     $app->get('/', function () {
         // do something but only for admins
     })->secure('ROLE_ADMIN');
+
+.. _cookbook: http://symfony.com/doc/current/cookbook/security/custom_authentication_provider.html
