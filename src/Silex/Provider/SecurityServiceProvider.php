@@ -121,13 +121,13 @@ class SecurityServiceProvider implements ServiceProviderInterface
         foreach (array('logout', 'pre_auth', 'form', 'http', 'remember_me', 'anonymous') as $type) {
             $entryPoint = $type == 'http' ? 'http' : 'form';
 
-            $app['security.authentication.factory.'.$type] = $app->protect(function($name, $options) use ($type, $app, $entryPoint) {
+            $app['security.authentication_listener.factory.'.$type] = $app->protect(function($name, $options) use ($type, $app, $entryPoint) {
                 if (!isset($app['security.entry_point.'.$name.'.'.$entryPoint])) {
                     $app['security.entry_point.'.$name.'.'.$entryPoint] = $app['security.entry_point.'.$entryPoint.'._proto']($name);
                 }
 
-                if (!isset($app['security.authentication.'.$name.'.'.$type])) {
-                    $app['security.authentication.'.$name.'.'.$type] = $app['security.authentication.'.$type.'._proto']($name, $options);
+                if (!isset($app['security.authentication_listener.'.$name.'.'.$type])) {
+                    $app['security.authentication_listener.'.$name.'.'.$type] = $app['security.authentication_listener.'.$type.'._proto']($name, $options);
                 }
 
                 if (!isset($app['security.authentication_provider.'.$name])) {
@@ -136,7 +136,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
 
                 return array(
                     'security.authentication_provider.'.$name,
-                    'security.authentication.'.$name.'.'.$type,
+                    'security.authentication_listener.'.$name.'.'.$type,
                     'security.entry_point.'.$name.'.'.$entryPoint,
                     $type
                 );
@@ -183,11 +183,11 @@ class SecurityServiceProvider implements ServiceProviderInterface
                             $options = array();
                         }
 
-                        if (!isset($app['security.authentication.factory.'.$type])) {
+                        if (!isset($app['security.authentication_listener.factory.'.$type])) {
                             throw new \LogicException(sprintf('The "%s" authentication entry is not registered.', $type));
                         }
 
-                        list($providerId, $listenerId, $entryPointId, $position) = $app['security.authentication.factory.'.$type]($name, $options);
+                        list($providerId, $listenerId, $entryPointId, $position) = $app['security.authentication_listener.factory.'.$type]($name, $options);
 
                         if (null !== $entryPointId) {
                             $entryPoint = $entryPointId;
@@ -206,7 +206,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
                     $listeners[] = 'security.access_listener';
 
                     if (isset($firewall['switch_user'])) {
-                        $app['security.switch_user.'.$name] = $app['security.authentication.switch_user._proto']($name, $firewall['switch_user']);
+                        $app['security.switch_user.'.$name] = $app['security.authentication_listener.switch_user._proto']($name, $firewall['switch_user']);
 
                         $listeners[] = 'security.switch_user.'.$name;
                     }
@@ -327,7 +327,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
             });
         });
 
-        $app['security.authentication.form._proto'] = $app->protect(function ($providerKey, $options) use ($app, $that) {
+        $app['security.authentication_listener.form._proto'] = $app->protect(function ($providerKey, $options) use ($app, $that) {
             return $app->share(function () use ($app, $providerKey, $options, $that) {
                 $that->addFakeRoute(array('post', $tmp = isset($options['check_path']) ? $options['check_path'] : '/login_check', str_replace('/', '_', ltrim($tmp, '/'))));
 
@@ -347,7 +347,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
             });
         });
 
-        $app['security.authentication.http._proto'] = $app->protect(function ($providerKey, $options) use ($app) {
+        $app['security.authentication_listener.http._proto'] = $app->protect(function ($providerKey, $options) use ($app) {
             return $app->share(function () use ($app, $providerKey, $options) {
                 return new BasicAuthenticationListener(
                     $app['security'],
@@ -359,7 +359,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
             });
         });
 
-        $app['security.authentication.anonymous._proto'] = $app->protect(function ($providerKey, $options) use ($app) {
+        $app['security.authentication_listener.anonymous._proto'] = $app->protect(function ($providerKey, $options) use ($app) {
             return $app->share(function () use ($app, $providerKey, $options) {
                 return new AnonymousAuthenticationListener(
                     $app['security'],
@@ -369,7 +369,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
             });
         });
 
-        $app['security.authentication.logout._proto'] = $app->protect(function ($providerKey, $options) use ($app, $that) {
+        $app['security.authentication_listener.logout._proto'] = $app->protect(function ($providerKey, $options) use ($app, $that) {
             return $app->share(function () use ($app, $providerKey, $options, $that) {
                 $that->addFakeRoute(array('get', $tmp = isset($options['logout_path']) ? $options['logout_path'] : '/logout', str_replace('/', '_', ltrim($tmp, '/'))));
 
@@ -387,7 +387,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
             });
         });
 
-        $app['security.authentication.switch_user._proto'] = $app->protect(function ($name, $options) use ($app, $that) {
+        $app['security.authentication_listener.switch_user._proto'] = $app->protect(function ($name, $options) use ($app, $that) {
             return $app->share(function () use ($app, $name, $options, $that) {
                 return new SwitchUserListener(
                     $app['security'],
