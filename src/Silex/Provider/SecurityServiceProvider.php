@@ -117,6 +117,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
             );
         });
 
+        // generate the build-in authentication factories
         foreach (array('logout', 'pre_auth', 'form', 'http', 'remember_me', 'anonymous') as $type) {
             $entryPoint = $type == 'http' ? 'http' : 'form';
 
@@ -147,7 +148,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
             $providers = array();
             $configs = array();
             foreach ($app['security.firewalls'] as $name => $firewall) {
-                $entryPoint = 'form';
+                $entryPoint = null;
                 $pattern = isset($firewall['pattern']) ? $firewall['pattern'] : null;
                 $users = isset($firewall['users']) ? $firewall['users'] : array();
                 unset($firewall['pattern'], $firewall['users']);
@@ -211,6 +212,9 @@ class SecurityServiceProvider implements ServiceProviderInterface
                     }
 
                     if (!isset($app['security.exception_listener.'.$name])) {
+                        if (null == $entryPoint) {
+                            $app[$entryPoint = 'security.entry_point.'.$name.'.form'] = $app['security.entry_point.form._proto']($name);
+                        }
                         $app['security.exception_listener.'.$name] = $app['security.exception_listener._proto']($entryPoint, $name);
                     }
                 }
@@ -218,7 +222,9 @@ class SecurityServiceProvider implements ServiceProviderInterface
                 $configs[] = array($pattern, $listeners, $protected);
             }
 
-            $app['security.authentication_providers'] = array_map(function ($provider) use ($app) { return $app[$provider]; }, $providers);
+            $app['security.authentication_providers'] = array_map(function ($provider) use ($app) {
+                return $app[$provider];
+            }, $providers);
 
             $map = new FirewallMap();
             foreach ($configs as $config) {
