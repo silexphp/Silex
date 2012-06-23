@@ -21,8 +21,8 @@ trait UrlGeneratorTrait
     /**
      * Generates a path from the given parameters.
      *
-     * @param string  $route      The name of the route
-     * @param mixed   $parameters An array of parameters
+     * @param string $route      The name of the route
+     * @param mixed  $parameters An array of parameters
      *
      * @return string The generated path
      */
@@ -34,8 +34,8 @@ trait UrlGeneratorTrait
     /**
      * Generates an absolute URL from the given parameters.
      *
-     * @param string  $route      The name of the route
-     * @param mixed   $parameters An array of parameters
+     * @param string $route      The name of the route
+     * @param mixed  $parameters An array of parameters
      *
      * @return string The generated URL
      */
