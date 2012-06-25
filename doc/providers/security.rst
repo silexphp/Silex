@@ -476,7 +476,7 @@ easily. To register a new authentication provider, create a service named
 ``security.authentication.factory.XXX`` where ``XXX`` is the name you want to
 use in your configuration::
 
-    $app['security.authentication.factory.wsse'] = $app->protect(function ($name, $options) use ($app) {
+    $app['security.authentication_listener.factory.wsse'] = $app->protect(function ($name, $options) use ($app) {
         // define the authentication provider object
         $app['security.authentication_provider.'.$name.'.wsse'] = $app->share(function () use ($app) {
             return new WsseProvider($app['security.user_provider.default'], __DIR__.'/security_cache');
