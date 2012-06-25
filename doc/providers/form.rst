@@ -47,7 +47,7 @@ Registering
         }
 
 If you are going to use the validation extension with forms, you must also
-register the ``symfony/config`` and ```symfony/translation`` components::
+register the ``symfony/config`` and ```symfony/translation`` components:
 
 .. code-block:: json
 
@@ -57,7 +57,7 @@ register the ``symfony/config`` and ```symfony/translation`` components::
     }
 
 The Symfony Form Component relies on the PHP intl extension. If you don't have
-it, you can install the Symfony Locale Component as a replacement::
+it, you can install the Symfony Locale Component as a replacement:
 
 .. code-block:: json
 
