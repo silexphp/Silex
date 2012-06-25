@@ -219,7 +219,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
                     }
                 }
 
-                $configs[] = array($pattern, $listeners, $protected);
+                $configs[$name] = array($pattern, $listeners, $protected);
             }
 
             $app['security.authentication_providers'] = array_map(function ($provider) use ($app) {
@@ -227,7 +227,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
             }, $providers);
 
             $map = new FirewallMap();
-            foreach ($configs as $config) {
+            foreach ($configs as $name => $config) {
                 $map->add(
                     is_string($config[0]) ? new RequestMatcher($config[0]) : $config[0],
                     array_map(function ($listener) use ($app) { return $app[$listener]; }, $config[1]),
