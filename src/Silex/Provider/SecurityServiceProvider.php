@@ -174,6 +174,10 @@ class SecurityServiceProvider implements ServiceProviderInterface
                     }
 
                     foreach ($firewall as $type => $options) {
+                        if ('switch_user' === $type) {
+                            continue;
+                        }
+
                         // normalize options
                         if (!is_array($options)) {
                             if (!$options) {
