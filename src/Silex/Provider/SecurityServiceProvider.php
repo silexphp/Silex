@@ -292,7 +292,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
 
         $app['security.context_listener._proto'] = $app->protect(function ($providerKey, $userProviders) use ($app) {
             return $app->share(function () use ($app, $userProviders, $providerKey) {
-                    return new ContextListener(
+                return new ContextListener(
                     $app['security'],
                     $userProviders,
                     $providerKey,
