@@ -118,10 +118,15 @@ class SecurityServiceProvider implements ServiceProviderInterface
 
         // generate the build-in authentication factories
         foreach (array('logout', 'pre_auth', 'form', 'http', 'remember_me', 'anonymous') as $type) {
-            $entryPoint = $type == 'http' ? 'http' : 'form';
+            $entryPoint = null;
+            if ('http' === $type) {
+                $entryPoint = 'http';
+            } elseif ('form' === $type) {
+                $entryPoint = 'form';
+            }
 
             $app['security.authentication_listener.factory.'.$type] = $app->protect(function($name, $options) use ($type, $app, $entryPoint) {
-                if (!isset($app['security.entry_point.'.$name.'.'.$entryPoint])) {
+                if ($entryPoint && !isset($app['security.entry_point.'.$name.'.'.$entryPoint])) {
                     $app['security.entry_point.'.$name.'.'.$entryPoint] = $app['security.entry_point.'.$entryPoint.'._proto']($name);
                 }
 
@@ -136,7 +141,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
                 return array(
                     'security.authentication_provider.'.$name,
                     'security.authentication_listener.'.$name.'.'.$type,
-                    'security.entry_point.'.$name.'.'.$entryPoint,
+                    $entryPoint ? 'security.entry_point.'.$name.'.'.$entryPoint : null,
                     $type
                 );
             });
