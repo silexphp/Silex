@@ -33,7 +33,6 @@ use Symfony\Component\Security\Core\Role\RoleHierarchy;
 use Symfony\Component\Security\Http\Firewall;
 use Symfony\Component\Security\Http\FirewallMap;
 use Symfony\Component\Security\Http\Firewall\AccessListener;
-use Symfony\Component\Security\Http\Firewall\UsernamePasswordFormAuthenticationListener;
 use Symfony\Component\Security\Http\Firewall\BasicAuthenticationListener;
 use Symfony\Component\Security\Http\Firewall\LogoutListener;
 use Symfony\Component\Security\Http\Firewall\SwitchUserListener;
@@ -331,19 +330,23 @@ class SecurityServiceProvider implements ServiceProviderInterface
             });
         });
 
-        $app['security.authentication_listener.form._proto'] = $app->protect(function ($providerKey, $options) use ($app, $that) {
-            return $app->share(function () use ($app, $providerKey, $options, $that) {
-                $that->addFakeRoute(array('post', $tmp = isset($options['check_path']) ? $options['check_path'] : '/login_check', str_replace('/', '_', ltrim($tmp, '/'))));
+        $app['security.authentication_listener.form._proto'] = $app->protect(function ($name, $options, $class = null) use ($app, $that) {
+            return $app->share(function () use ($app, $name, $options, $that, $class) {
+                $that->addFakeRoute(array('match', $tmp = isset($options['check_path']) ? $options['check_path'] : '/login_check', str_replace('/', '_', ltrim($tmp, '/'))));
 
-                return new UsernamePasswordFormAuthenticationListener(
+                if (null === $class) {
+                    $class = 'Symfony\\Component\\Security\\Http\\Firewall\\UsernamePasswordFormAuthenticationListener';
+                }
+
+                return new $class(
                     $app['security'],
                     $app['security.authentication_manager'],
-                    $app['security.session_strategy'],
+                    isset($app['security.session_strategy.'.$name]) ? $app['security.session_strategy.'.$name] : $app['security.session_strategy'],
                     $app['security.http_utils'],
-                    $providerKey,
+                    $name,
                     $options,
-                    null, // AuthenticationSuccessHandlerInterface
-                    null, // AuthenticationFailureHandlerInterface
+                    isset($app['security.authentication.success_handler.'.$name]) ? $app['security.authentication.success_handler.'.$name] : null,
+                    isset($app['security.authentication.failure_handler.'.$name]) ? $app['security.authentication.failure_handler.'.$name] : null,
                     $app['logger'],
                     $app['dispatcher'],
                     isset($options['with_csrf']) && $options['with_csrf'] && isset($app['form.csrf_provider']) ? $app['form.csrf_provider'] : null
