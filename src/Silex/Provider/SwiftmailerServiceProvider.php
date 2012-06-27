@@ -21,7 +21,6 @@ use Silex\ServiceProviderInterface;
  */
 class SwiftmailerServiceProvider implements ServiceProviderInterface
 {
-    private $mailerFactory;
     private $mailerCreated;
 
     public function register(Application $app)
@@ -29,7 +28,7 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface
         $app['swiftmailer.options'] = array();
 
         $self = $this;
-        $app['mailer'] = $this->mailerFactory = $app->share(function () use ($app, $self) {
+        $app['mailer'] = $app->share(function () use ($app, $self) {
             $self->mailerCreated = true;
             return new \Swift_Mailer($app['swiftmailer.spooltransport']);
         });
@@ -94,12 +93,11 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface
 
         $self = $this;
         $app->finish(function () use ($app, $self) {
-            //To speed things up (by avoiding Swift Mailer initialization), flush messages only if
-            //our mailer has been "used" or got replaced by another service we have no knowledge off.
-            if ($app->raw('mailer') === $self->mailerFactory && !$self->mailerCreated) {
-                return;
+            //To speed things up (by avoiding Swift Mailer initialization), flush
+            //messages only if our mailer has been created (potentially used)
+            if ($self->mailerCreated) {
+                $app['swiftmailer.spooltransport']->getSpool()->flushQueue($app['swiftmailer.transport']);
             }
-            $app['swiftmailer.spooltransport']->getSpool()->flushQueue($app['swiftmailer.transport']);
         });
     }
 }
