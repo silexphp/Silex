@@ -143,6 +143,14 @@ form by adding constraints on the fields::
         ))
         ->getForm();
 
+You can register form extensions by extending ``form.extensions``::
+
+    $app['form.extensions'] = $app->share($app->extend('form.extensions', function ($extensions) use ($app) {
+        $extensions[] = new YourTopFormExtension();
+
+        return $extensions;
+    }));
+
 Traits
 ------
 
