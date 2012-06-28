@@ -23,6 +23,7 @@ use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
  * Symfony Serializer component Provider.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ * @author Marijn Huizendveld <marijn@pink-tie.com>
  */
 class SerializerServiceProvider implements ServiceProviderInterface
 {
