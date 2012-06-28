@@ -12,17 +12,17 @@ Services
 --------
 
 * **serializer**: An instance of `Symfony\Component\Serializer\Serializer
-  <http://api.symfony.com/master/Symfony/Component/Serializer/Serializer.html>`_,
-  using the `Symfony\Component\Serializer\Encoder\JsonEncoder
+  <http://api.symfony.com/master/Symfony/Component/Serializer/Serializer.html>`_.
+
+* **serializer.encoders**: `Symfony\Component\Serializer\Encoder\JsonEncoder
   <http://api.symfony.com/master/Symfony/Component/Serializer/Encoder/JsonEncoder.html>`_
   and `Symfony\Component\Serializer\Encoder\XmlEncoder
-  <http://api.symfony.com/master/Symfony/Component/Serializer/Encoder/XmlEncoder>`_
-  that is provided through the ``serializer.encoders`` service. 
-  It also provides the default `Symfony\Component\Serializer\Normalizer\CustomNormalizer
+  <http://api.symfony.com/master/Symfony/Component/Serializer/Encoder/XmlEncoder>`_.
+
+* **serializer.normalizers**: `Symfony\Component\Serializer\Normalizer\CustomNormalizer
   <http://api.symfony.com/master/Symfony/Component/Serializer/Normalizer/CustomNormalizer>`_
   and `Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer
-  <http://api.symfony.com/master/Symfony/Component/Serializer/Normalizer/GetSetMethodNormalizer>`_
-  that is provided through the ``serializer.normalizers`` service.
+  <http://api.symfony.com/master/Symfony/Component/Serializer/Normalizer/GetSetMethodNormalizer>`_.
 
 Registering
 -----------
@@ -47,7 +47,7 @@ The ``SerializerServiceProvider`` provider provides a ``serializer`` service::
     
     $app = new Application();
     
-    $app->register(new SerializerServiceProvider);
+    $app->register(new SerializerServiceProvider());
     
     // only accept content types supported by the serializer via the assert method.
     $app->get("/pages/{id}.{_format}", function ($id) use ($app) {
