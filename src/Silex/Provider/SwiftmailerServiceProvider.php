@@ -21,11 +21,15 @@ use Silex\ServiceProviderInterface;
  */
 class SwiftmailerServiceProvider implements ServiceProviderInterface
 {
+    private $mailerCreated;
+
     public function register(Application $app)
     {
         $app['swiftmailer.options'] = array();
 
-        $app['mailer'] = $app->share(function () use ($app) {
+        $self = $this;
+        $app['mailer'] = $app->share(function () use ($app, $self) {
+            $self->mailerCreated = true;
             return new \Swift_Mailer($app['swiftmailer.spooltransport']);
         });
 
@@ -87,8 +91,13 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface
             throw new \RuntimeException('You have provided the swiftmailer.class_path parameter. The autoloader has been removed from Silex. It is recommended that you use Composer to manage your dependencies and handle your autoloading. If you are already using Composer, you can remove the parameter. See http://getcomposer.org for more information.');
         }
 
-        $app->finish(function () use ($app) {
-            $app['swiftmailer.spooltransport']->getSpool()->flushQueue($app['swiftmailer.transport']);
+        $self = $this;
+        $app->finish(function () use ($app, $self) {
+            //To speed things up (by avoiding Swift Mailer initialization), flush
+            //messages only if our mailer has been created (potentially used)
+            if ($self->mailerCreated) {
+                $app['swiftmailer.spooltransport']->getSpool()->flushQueue($app['swiftmailer.transport']);
+            }
         });
     }
 }

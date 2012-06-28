@@ -58,6 +58,28 @@ class SwiftmailerServiceProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $app['swiftmailer.spool']->getMessages());
 
         $app->terminate($request, $response);
+        $this->assertTrue($app['swiftmailer.spool']->hasFlushed);
         $this->assertCount(0, $app['swiftmailer.spool']->getMessages());
+    }
+
+    public function testSwiftMailerAvoidsFlushesIfMailerIsUnused()
+    {
+        $app = new Application();
+
+        $app->register(new SwiftmailerServiceProvider());
+        $app->boot();
+
+        $app['swiftmailer.spool'] = $app->share(function () {
+            return new SpoolStub();
+        });
+
+        $app->get('/', function() use ($app) { });
+
+        $request = Request::create('/');
+        $response = $app->handle($request);
+        $this->assertCount(0, $app['swiftmailer.spool']->getMessages());
+
+        $app->terminate($request, $response);
+        $this->assertFalse($app['swiftmailer.spool']->hasFlushed);
     }
 }
