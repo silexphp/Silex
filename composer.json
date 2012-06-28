@@ -20,7 +20,8 @@
         "symfony/event-dispatcher": "2.1.*",
         "symfony/http-foundation": "2.1.*",
         "symfony/http-kernel": "2.1.*",
-        "symfony/routing": "2.1.*"
+        "symfony/routing": "2.1.*",
+        "symfony/serializer": "2.1.*"
     },
     "require-dev": {
         "symfony/security": "2.1.*",
