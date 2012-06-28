@@ -1,5 +1,5 @@
 {
-    "hash": "ac2550dbe7aa2e4979887cd4664da5eb",
+    "hash": "80f7ebb825c3b49c5aea743e4828a320",
     "packages": [
         {
             "package": "pimple/pimple",
@@ -22,8 +22,7 @@
         {
             "package": "symfony/event-dispatcher",
             "version": "dev-master",
-            "source-reference": "0dc437f2eca7dea19facfde6db7f7f5e8e71d0bc",
-            "commit-date": "1341838460"
+            "source-reference": "0dc437f2eca7dea19facfde6db7f7f5e8e71d0bc"
         },
         {
             "package": "symfony/http-foundation",
@@ -34,8 +33,7 @@
         {
             "package": "symfony/http-foundation",
             "version": "dev-master",
-            "source-reference": "985f3aa6c9f8074b2d1a12345e0768f8c24aa72d",
-            "commit-date": "1341838460"
+            "source-reference": "985f3aa6c9f8074b2d1a12345e0768f8c24aa72d"
         },
         {
             "package": "symfony/http-kernel",
@@ -72,14 +70,12 @@
         {
             "package": "doctrine/common",
             "version": "dev-master",
-            "source-reference": "b3afbb80506d909743475c5b0904285ab0c07941",
-            "commit-date": "1341670930"
+            "source-reference": "b3afbb80506d909743475c5b0904285ab0c07941"
         },
         {
             "package": "doctrine/dbal",
             "version": "2.1.x-dev",
-            "source-reference": "76799960a54af583e82bedcf246e8c9c18006e94",
-            "commit-date": "1338146238"
+            "source-reference": "76799960a54af583e82bedcf246e8c9c18006e94"
         },
         {
             "package": "monolog/monolog",
@@ -106,8 +102,7 @@
         {
             "package": "symfony/browser-kit",
             "version": "dev-master",
-            "source-reference": "8ea03fae14e2938b0d177a8812c5201d5510f9b7",
-            "commit-date": "1341838460"
+            "source-reference": "8ea03fae14e2938b0d177a8812c5201d5510f9b7"
         },
         {
             "package": "symfony/config",
@@ -118,8 +113,7 @@
         {
             "package": "symfony/config",
             "version": "dev-master",
-            "source-reference": "bb18f5131f785483d3750a771df594eed1e5f863",
-            "commit-date": "1341838460"
+            "source-reference": "bb18f5131f785483d3750a771df594eed1e5f863"
         },
         {
             "package": "symfony/css-selector",
@@ -130,8 +124,7 @@
         {
             "package": "symfony/css-selector",
             "version": "dev-master",
-            "source-reference": "389349c90d9ac4f967ed74634186ce922d68cf93",
-            "commit-date": "1341838460"
+            "source-reference": "389349c90d9ac4f967ed74634186ce922d68cf93"
         },
         {
             "package": "symfony/dom-crawler",
@@ -142,8 +135,7 @@
         {
             "package": "symfony/dom-crawler",
             "version": "dev-master",
-            "source-reference": "f0f531c1808745a85ada3cc5519d54bd5f9b25c2",
-            "commit-date": "1341838460"
+            "source-reference": "f0f531c1808745a85ada3cc5519d54bd5f9b25c2"
         },
         {
             "package": "symfony/finder",
@@ -178,8 +170,7 @@
         {
             "package": "symfony/locale",
             "version": "dev-master",
-            "source-reference": "f804763887593f362156ec62c53efbee8ff04557",
-            "commit-date": "1341838460"
+            "source-reference": "f804763887593f362156ec62c53efbee8ff04557"
         },
         {
             "package": "symfony/monolog-bridge",
@@ -202,8 +193,7 @@
         {
             "package": "symfony/options-resolver",
             "version": "dev-master",
-            "source-reference": "0ad85af9ec3e1696056901fcf38bffedc683d0c4",
-            "commit-date": "1341838460"
+            "source-reference": "0ad85af9ec3e1696056901fcf38bffedc683d0c4"
         },
         {
             "package": "symfony/process",
@@ -226,8 +216,19 @@
         {
             "package": "symfony/security",
             "version": "dev-master",
-            "source-reference": "47fcb4bfc03c74ae5b7ba6c6f2c32169e455be02",
-            "commit-date": "1341840540"
+            "source-reference": "47fcb4bfc03c74ae5b7ba6c6f2c32169e455be02"
+        },
+        {
+            "package": "symfony/serializer",
+            "version": "dev-master",
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/serializer",
+            "version": "dev-master",
+            "source-reference": "cf9b6a457c4ed5a147e3438867049bd1f97e0917",
+            "commit-date": "1341838460"
         },
         {
             "package": "symfony/translation",

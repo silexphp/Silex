@@ -20,8 +20,7 @@
         "symfony/event-dispatcher": "2.1.*",
         "symfony/http-foundation": "2.1.*",
         "symfony/http-kernel": "2.1.*",
-        "symfony/routing": "2.1.*",
-        "symfony/serializer": "2.1.*"
+        "symfony/routing": "2.1.*"
     },
     "require-dev": {
         "symfony/security": "2.1.*",
@@ -34,6 +33,7 @@
         "symfony/finder": "2.1.*",
         "symfony/monolog-bridge": "2.1.*",
         "symfony/process": "2.1.*",
+        "symfony/serializer": "2.1.*",
         "symfony/translation": "2.1.*",
         "symfony/twig-bridge": "2.1.*",
         "symfony/validator": "2.1.*",
