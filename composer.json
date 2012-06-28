@@ -33,6 +33,7 @@
         "symfony/finder": "2.1.*",
         "symfony/monolog-bridge": "2.1.*",
         "symfony/process": "2.1.*",
+        "symfony/serializer": "2.1.*",
         "symfony/translation": "2.1.*",
         "symfony/twig-bridge": "2.1.*",
         "symfony/validator": "2.1.*",

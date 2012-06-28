@@ -52,6 +52,7 @@ the ``Silex\Provider`` namespace:
 * :doc:`DoctrineServiceProvider <providers/doctrine>`
 * :doc:`MonologServiceProvider <providers/monolog>`
 * :doc:`SessionServiceProvider <providers/session>`
+* :doc:`SerializerServiceProvider <providers/serializer>`
 * :doc:`SwiftmailerServiceProvider <providers/swiftmailer>`
 * :doc:`TwigServiceProvider <providers/twig>`
 * :doc:`TranslationServiceProvider <providers/translation>`
