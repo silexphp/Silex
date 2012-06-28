@@ -30,11 +30,8 @@ class SerializerServiceProvider implements ServiceProviderInterface
     /**
      * {@inheritDoc}
      *
-     * This method registers three services:
-     *
-     * - serializer
-     * - serializer.encoders
-     * - serializer.normalizers
+     * This method registers a serializer service. {@link http://api.symfony.com/master/Symfony/Component/Serializer/Serializer.html
+     * The service is provided by the Symfony Serializer component}.
      *
      * @param Silex\Application $app
      */
