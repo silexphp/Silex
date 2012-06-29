@@ -39,15 +39,26 @@ resources to ``index.php``:
 .. code-block:: nginx
 
     server {
-        index index.php
-
-        location / {
-            try_files $uri $uri/ /index.php;
+        #site root is redirected to the app boot script
+        location = / {
+            try_files @site @site;
         }
-
-        location ~ index\.php$ {
-            fastcgi_pass   /var/run/php5-fpm.sock;
-            fastcgi_index  index.php;
+        
+        #all other locations try other files first and go to our front controller if none of them exists
+        location / {
+            try_files $uri $uri/ @site;
+        }
+        
+        #return 404 for all php files as we do have a front controller
+        location ~ \.php$ {
+            return 404;
+        }
+        
+        location @site {
+            fastcgi_pass   unix:/var/run/php-fpm/www.sock;
+            fastcgi_param  SCRIPT_FILENAME $document_root/index.php;
+            #uncomment when running via https
+            #fastcgi_param HTTPS on;
             include fastcgi_params;
         }
     }
