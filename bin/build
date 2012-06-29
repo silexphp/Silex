@@ -3,6 +3,14 @@
 PHP=`which php`
 GIT=`which git`
 DIR=`$PHP -r "echo dirname(dirname(realpath('$0')));"`
+CMDS=("curl -s" "wget -q -O /dev/stdout" "lwp-request -m GET")
+
+# choose the first available command to download composer
+for i in ${!CMDS[*]}
+do
+    CMD=${CMDS[$i]}
+    which ${CMD%% *} &> /dev/null && break
+done
 
 if [ ! -d "$DIR/build" ]; then
     mkdir -p $DIR/build
@@ -11,7 +19,7 @@ fi
 cd $DIR/build
 
 if [ ! -f "composer.phar" ]; then
-    curl -s http://getcomposer.org/installer 2>/dev/null | $PHP >/dev/null 2>/dev/null
+    $CMD http://getcomposer.org/installer 2>/dev/null | $PHP >/dev/null 2>/dev/null
 else
     $PHP composer.phar self-update >/dev/null 2>/dev/null
 fi
