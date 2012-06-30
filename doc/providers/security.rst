@@ -173,11 +173,9 @@ Always keep in mind the following two golden rules:
 
 * The ``check_path`` path must always be defined **inside** the secured area.
 
-For the login form to work, create a controller where you start the session::
+For the login form to work, create a controller like the following::
 
     $app->get('/login', function(Request $request) use ($app) {
-        $app['session']->start();
-
         return $app['twig']->render('login.html', array(
             'error'         => $app['security.last_error']($request),
             'last_username' => $app['session']->get('_security.last_username'),
