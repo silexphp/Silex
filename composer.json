@@ -36,9 +36,9 @@
         "symfony/translation": "2.1.*",
         "symfony/twig-bridge": "2.1.*",
         "symfony/validator": "2.1.*",
-        "twig/twig": ">=1.2.0,<2.0-dev",
+        "twig/twig": ">=1.8.0,<2.0-dev",
         "doctrine/dbal": "2.1.*",
-        "swiftmailer/swiftmailer": "4.1.*"
+        "swiftmailer/swiftmailer": "4.2.*"
     },
     "suggest": {
         "symfony/browser-kit": "2.1.*",
