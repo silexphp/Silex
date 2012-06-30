@@ -66,7 +66,6 @@ authenticates a user and creates a session for him::
         $password = $app['request']->server->get('PHP_AUTH_PW');
 
         if ('igor' === $username && 'password' === $password) {
-            $app['session']->start();
             $app['session']->set('user', array('username' => $username));
             return $app->redirect('/account');
         }
@@ -78,7 +77,6 @@ authenticates a user and creates a session for him::
     });
 
     $app->get('/account', function () use ($app) {
-        $app['session']->start();
         if (null === $user = $app['session']->get('user')) {
             return $app->redirect('/login');
         }
