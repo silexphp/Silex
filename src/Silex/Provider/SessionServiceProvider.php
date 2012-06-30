@@ -73,13 +73,7 @@ class SessionServiceProvider implements ServiceProviderInterface
 
     public function onEarlyKernelRequest(GetResponseEvent $event)
     {
-        $request = $event->getRequest();
-        $request->setSession($this->app['session']);
-
-        // starts the session if a session cookie already exists in the request...
-        if ($request->hasPreviousSession()) {
-            $request->getSession()->start();
-        }
+        $event->getRequest()->setSession($this->app['session']);
     }
 
     public function onKernelRequest(GetResponseEvent $event)
