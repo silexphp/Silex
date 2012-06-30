@@ -34,14 +34,8 @@
         {
             "package": "symfony/http-foundation",
             "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
-            "package": "symfony/http-foundation",
-            "version": "dev-master",
-            "source-reference": "e14cccb290443379bfd14f7c48901e07d076013e",
-            "commit-date": "1340922909"
+            "source-reference": "ee1c424f8ee48db84a60f8c5bd8dd3b25706e4e9",
+            "commit-date": "1340989514"
         },
         {
             "package": "symfony/http-kernel",
@@ -52,14 +46,8 @@
         {
             "package": "symfony/http-kernel",
             "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
-            "package": "symfony/http-kernel",
-            "version": "dev-master",
-            "source-reference": "6d69fa82c21aa752e7d6aa7c35b70923fd55f450",
-            "commit-date": "1340951462"
+            "source-reference": "3c13c8b8f78d8c0a20b1aeac5e0fb84d840ce365",
+            "commit-date": "1340951895"
         },
         {
             "package": "symfony/routing",
@@ -90,8 +78,8 @@
         {
             "package": "doctrine/common",
             "version": "dev-master",
-            "source-reference": "0e454a92409ee594a93c362f74a3e0f42424d663",
-            "commit-date": "1340828547"
+            "source-reference": "e9f9a27a5bf3b8d95077de475a4dff495deaf39c",
+            "commit-date": "1340963135"
         },
         {
             "package": "doctrine/dbal",
@@ -105,21 +93,7 @@
         },
         {
             "package": "swiftmailer/swiftmailer",
-            "version": "dev-master",
-            "alias-pretty-version": "4.1.x-dev",
-            "alias-version": "4.1.9999999.9999999-dev"
-        },
-        {
-            "package": "swiftmailer/swiftmailer",
-            "version": "dev-master",
-            "alias-pretty-version": "4.2.x-dev",
-            "alias-version": "4.2.9999999.9999999-dev"
-        },
-        {
-            "package": "swiftmailer/swiftmailer",
-            "version": "dev-master",
-            "source-reference": "3074ff27ad510889737310a7389bba48fafe4665",
-            "commit-date": "1340876123"
+            "version": "v4.1.8"
         },
         {
             "package": "symfony/browser-kit",
@@ -142,8 +116,14 @@
         {
             "package": "symfony/config",
             "version": "dev-master",
-            "source-reference": "v2.1.0-BETA1",
-            "commit-date": "1340300540"
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/config",
+            "version": "dev-master",
+            "source-reference": "5b1a7a0a205b2c465a957142b03f1fc3202966e1",
+            "commit-date": "1340892719"
         },
         {
             "package": "symfony/css-selector",
@@ -196,7 +176,7 @@
         {
             "package": "symfony/form",
             "version": "dev-master",
-            "source-reference": "afe2e7afb94905ae3f3bfbc1ec88c094f823844e",
+            "source-reference": "b02f6c4edcfc43f65ab68e56112a0dac86f6d12e",
             "commit-date": "1340892642"
         },
         {
@@ -208,8 +188,14 @@
         {
             "package": "symfony/locale",
             "version": "dev-master",
-            "source-reference": "v2.1.0-BETA1",
-            "commit-date": "1338433443"
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/locale",
+            "version": "dev-master",
+            "source-reference": "3e6e0c21835c958a131c4455bcad207a1faefcad",
+            "commit-date": "1340985661"
         },
         {
             "package": "symfony/monolog-bridge",
@@ -256,12 +242,6 @@
         {
             "package": "symfony/security",
             "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
-            "package": "symfony/security",
-            "version": "dev-master",
             "source-reference": "95445692fd3b2209611c2c5258c0d00ff4be9a15",
             "commit-date": "1340705165"
         },
@@ -298,20 +278,8 @@
         {
             "package": "symfony/validator",
             "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
-            "package": "symfony/validator",
-            "version": "dev-master",
             "source-reference": "c9dea6774d68a56e2652282afcc39adbed22cd8e",
             "commit-date": "1340707414"
-        },
-        {
-            "package": "twig/twig",
-            "version": "dev-master",
-            "alias-pretty-version": "1.8.x-dev",
-            "alias-version": "1.8.9999999.9999999-dev"
         },
         {
             "package": "twig/twig",
