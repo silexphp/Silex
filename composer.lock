@@ -1,5 +1,5 @@
 {
-    "hash": "3ec54c6c3e37fe1b74143cc1c9631567",
+    "hash": "bd90711641b078681e124d35baf3291c",
     "packages": [
         {
             "package": "pimple/pimple",
@@ -72,12 +72,6 @@
         {
             "package": "doctrine/common",
             "version": "dev-master",
-            "alias-pretty-version": "2.3.x-dev",
-            "alias-version": "2.3.9999999.9999999-dev"
-        },
-        {
-            "package": "doctrine/common",
-            "version": "dev-master",
             "source-reference": "e9f9a27a5bf3b8d95077de475a4dff495deaf39c",
             "commit-date": "1340963135"
         },
@@ -93,7 +87,15 @@
         },
         {
             "package": "swiftmailer/swiftmailer",
-            "version": "v4.1.8"
+            "version": "dev-master",
+            "alias-pretty-version": "4.2.x-dev",
+            "alias-version": "4.2.9999999.9999999-dev"
+        },
+        {
+            "package": "swiftmailer/swiftmailer",
+            "version": "dev-master",
+            "source-reference": "627e1f7a7952e6659d7125931024a97a5482a15c",
+            "commit-date": "1340984297"
         },
         {
             "package": "symfony/browser-kit",
@@ -106,12 +108,6 @@
             "version": "dev-master",
             "source-reference": "v2.1.0-BETA1",
             "commit-date": "1337339299"
-        },
-        {
-            "package": "symfony/config",
-            "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
         },
         {
             "package": "symfony/config",
@@ -170,20 +166,8 @@
         {
             "package": "symfony/form",
             "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
-            "package": "symfony/form",
-            "version": "dev-master",
             "source-reference": "b02f6c4edcfc43f65ab68e56112a0dac86f6d12e",
             "commit-date": "1340892642"
-        },
-        {
-            "package": "symfony/locale",
-            "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
         },
         {
             "package": "symfony/locale",
