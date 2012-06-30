@@ -14,7 +14,7 @@ namespace Silex\Tests;
 use Silex\LazyUrlMatcher;
 
 /**
- * LazyUrlMatcher test cases.
+ * LazyUrlMatcher test case.
  *
  * @author Leszek Prabucki <leszek.prabucki@gmail.com>
  */
