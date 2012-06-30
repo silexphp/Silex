@@ -46,7 +46,7 @@ class FunctionalTest extends \PHPUnit_Framework_TestCase
 
     public function testMount()
     {
-        $mounted = new ControllerCollection(new Route());
+        $mounted = new ControllerCollection(new Route(), null);
         $mounted->get('/{name}', function ($name) { return new Response($name); });
 
         $app = new Application();

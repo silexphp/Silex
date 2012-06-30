@@ -214,10 +214,10 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         ->before($beforeMiddleware3)
         ->after($afterMiddleware3);
 
-        $result = $app->handle(Request::create('/reached'));
+        $response = $app->handle(Request::create('/reached'));
 
         $this->assertSame(array('before_middleware1_triggered', 'before_middleware2_triggered', 'route_triggered', 'after_middleware1_triggered', 'after_middleware2_triggered'), $middlewareTarget);
-        $this->assertEquals('hello', $result->getContent());
+        $this->assertEquals('hello', $response->getContent());
     }
 
     public function testRoutesBeforeMiddlewaresWithResponseObject()
@@ -232,9 +232,9 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         });
 
         $request = Request::create('/foo');
-        $result = $app->handle($request);
+        $response = $app->handle($request);
 
-        $this->assertEquals('foo', $result->getContent());
+        $this->assertEquals('foo', $response->getContent());
     }
 
     public function testRoutesAfterMiddlewaresWithResponseObject()
@@ -249,9 +249,9 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         });
 
         $request = Request::create('/foo');
-        $result = $app->handle($request);
+        $response = $app->handle($request);
 
-        $this->assertEquals('bar', $result->getContent());
+        $this->assertEquals('bar', $response->getContent());
     }
 
     public function testRoutesBeforeMiddlewaresWithRedirectResponseObject()
@@ -266,10 +266,10 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         });
 
         $request = Request::create('/foo');
-        $result = $app->handle($request);
+        $response = $app->handle($request);
 
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $result);
-        $this->assertEquals('/bar', $result->getTargetUrl());
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $response);
+        $this->assertEquals('/bar', $response->getTargetUrl());
     }
 
     public function testRoutesBeforeMiddlewaresTriggeredAfterSilexBeforeFilters()
@@ -439,6 +439,50 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         });
 
         $this->assertEquals('foo /', $app->handle($mainRequest)->getContent());
+    }
+
+    public function testClosureRebinding()
+    {
+        if (version_compare(phpversion(), '5.4.0', '<')) {
+            $this->markTestSkipped('PHP 5.4 is required for this test');
+        }
+
+        $app = new Application();
+
+        $app['called'] = array();
+
+        $app->before(function () {
+            $this['called'] = array_merge($this['called'], array('before'));
+        });
+
+        $app->after(function () {
+            $this['called'] = array_merge($this['called'], array('after'));
+        });
+
+        $app->get('/', function () {
+            $this['called'] = array_merge($this['called'], array('controller'));
+            return 'foo';
+        });
+
+        $app->finish(function () {
+            $this['called'] = array_merge($this['called'], array('finish'));
+        });
+
+        $app->error(function () {
+            $this['called'] = array_merge($this['called'], array('error'));
+        });
+
+        $request = Request::create('/');
+        $response = $app->handle($request);
+        $app->terminate($request, $response);
+        $this->assertEquals(array('before', 'controller', 'after', 'finish'), $app['called']);
+
+        $app['called'] = array();
+
+        $request = Request::create('/non_existent');
+        $response = $app->handle($request);
+        $app->terminate($request, $response);
+        $this->assertEquals(array('before', 'error', 'after', 'finish'), $app['called']);
     }
 }
 

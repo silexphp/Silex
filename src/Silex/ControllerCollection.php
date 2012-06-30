@@ -28,13 +28,20 @@ class ControllerCollection
 {
     protected $controllers = array();
     protected $defaultRoute;
+    protected $closureRebinder;
 
     /**
      * Constructor.
      */
-    public function __construct(Route $defaultRoute)
+    public function __construct(Route $defaultRoute, $closureRebinder)
     {
         $this->defaultRoute = $defaultRoute;
+        $this->closureRebinder = $closureRebinder;
+    }
+
+    public function disableClosureRebinding()
+    {
+        $this->closureRebinder = null;
     }
 
     /**
@@ -49,6 +56,8 @@ class ControllerCollection
      */
     public function match($pattern, $to)
     {
+        $to = $this->rebind($to);
+
         $route = clone $this->defaultRoute;
         $route->setPattern($pattern);
         $route->setDefault('_controller', $to);
@@ -110,16 +119,47 @@ class ControllerCollection
         return $this->match($pattern, $to)->method('DELETE');
     }
 
+    public function convert($variable, $callback)
+    {
+        $callback = $this->rebind($callback);
+
+        $this->__call(__FUNCTION__, array($variable, $callback));
+
+        return $this;
+    }
+
+    public function before($callback)
+    {
+        $callback = $this->rebind($callback);
+
+        $this->__call(__FUNCTION__, array($callback));
+
+        return $this;
+    }
+
+    public function after($callback)
+    {
+        $callback = $this->rebind($callback);
+
+        $this->__call(__FUNCTION__, array($callback));
+
+        return $this;
+    }
+
     public function __call($method, $arguments)
     {
         if (!method_exists($this->defaultRoute, $method)) {
             throw new \BadMethodCallException(sprintf('Method "%s::%s" does not exist.', get_class($this->defaultRoute), $method));
         }
 
-        call_user_func_array(array($this->defaultRoute, $method), $arguments);
+        $value = call_user_func_array(array($this->defaultRoute, $method), $arguments);
 
         foreach ($this->controllers as $controller) {
             call_user_func_array(array($controller, $method), $arguments);
+        }
+
+        if ($value && !$value instanceof Route) {
+            return $value;
         }
 
         return $this;
@@ -151,5 +191,15 @@ class ControllerCollection
         $this->controllers = array();
 
         return $routes;
+    }
+
+    private function rebind($callback)
+    {
+        if (null !== $this->closureRebinder) {
+            $rebinder = $this->closureRebinder;
+            $callback = $rebinder($callback);
+        }
+
+        return $callback;
     }
 }

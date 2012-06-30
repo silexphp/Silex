@@ -65,6 +65,14 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             throw new \RuntimeException('You tried to access the autoloader service. The autoloader has been removed from Silex. It is recommended that you use Composer to manage your dependencies and handle your autoloading. See http://getcomposer.org for more information.');
         };
 
+        $this['closure_rebinder'] = $this->share($this->protect(function ($controller) use ($app) {
+            if (version_compare(PHP_VERSION, '5.4.0', '<') || !$controller instanceof \Closure) {
+                return $controller;
+            }
+
+            return $controller->bindTo($app);
+        }));
+
         $this['routes'] = $this->share(function () {
             return new RouteCollection();
         });
@@ -74,7 +82,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         });
 
         $this['controllers_factory'] = function () use ($app) {
-            return new ControllerCollection($app['route_factory']);
+            return new ControllerCollection($app['route_factory'], $app['closure_rebinder']);
         };
 
         $this['route_class'] = 'Silex\\Route';
@@ -281,6 +289,8 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function before($callback, $priority = 0)
     {
+        $callback = $this['closure_rebinder']($callback);
+
         $this['dispatcher']->addListener(SilexEvents::BEFORE, function (GetResponseEvent $event) use ($callback) {
             $ret = call_user_func($callback, $event->getRequest());
 
@@ -301,6 +311,8 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function after($callback, $priority = 0)
     {
+        $callback = $this['closure_rebinder']($callback);
+
         $this['dispatcher']->addListener(SilexEvents::AFTER, function (FilterResponseEvent $event) use ($callback) {
             call_user_func($callback, $event->getRequest(), $event->getResponse());
         }, $priority);
@@ -317,6 +329,8 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function finish($callback, $priority = 0)
     {
+        $callback = $this['closure_rebinder']($callback);
+
         $this['dispatcher']->addListener(SilexEvents::FINISH, function (PostResponseEvent $event) use ($callback) {
             call_user_func($callback, $event->getRequest(), $event->getResponse());
         }, $priority);
@@ -353,6 +367,8 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function error($callback, $priority = 0)
     {
+        $callback = $this['closure_rebinder']($callback);
+
         $this['dispatcher']->addListener(SilexEvents::ERROR, function (GetResponseForExceptionEvent $event) use ($callback) {
             $exception = $event->getException();
 

@@ -25,14 +25,14 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetRouteCollectionWithNoRoutes()
     {
-        $controllers = new ControllerCollection(new Route());
+        $controllers = new ControllerCollection(new Route(), null);
         $routes = $controllers->flush();
         $this->assertEquals(0, count($routes->all()));
     }
 
     public function testGetRouteCollectionWithRoutes()
     {
-        $controllers = new ControllerCollection(new Route());
+        $controllers = new ControllerCollection(new Route(), null);
         $controllers->match('/foo', function () {});
         $controllers->match('/bar', function () {});
 
@@ -42,7 +42,7 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
 
     public function testControllerFreezing()
     {
-        $controllers = new ControllerCollection(new Route());
+        $controllers = new ControllerCollection(new Route(), null);
 
         $fooController = $controllers->match('/foo', function () {})->bind('foo');
         $barController = $controllers->match('/bar', function () {})->bind('bar');
@@ -64,7 +64,7 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
 
     public function testConflictingRouteNames()
     {
-        $controllers = new ControllerCollection(new Route());
+        $controllers = new ControllerCollection(new Route(), null);
 
         $mountedRootController = $controllers->match('/', function () {});
 
@@ -78,7 +78,7 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
 
     public function testUniqueGeneratedRouteNames()
     {
-        $controllers = new ControllerCollection(new Route());
+        $controllers = new ControllerCollection(new Route(), null);
 
         $controllers->match('/a-a', function () {});
         $controllers->match('/a_a', function () {});
@@ -91,7 +91,7 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
 
     public function testAssert()
     {
-        $controllers = new ControllerCollection(new Route());
+        $controllers = new ControllerCollection(new Route(), null);
         $controllers->assert('id', '\d+');
         $controller = $controllers->match('/{id}/{name}/{extra}', function () {})->assert('name', '\w+')->assert('extra', '.*');
         $controllers->assert('extra', '\w+');
@@ -103,7 +103,7 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
 
     public function testValue()
     {
-        $controllers = new ControllerCollection(new Route());
+        $controllers = new ControllerCollection(new Route(), null);
         $controllers->value('id', '1');
         $controller = $controllers->match('/{id}/{name}/{extra}', function () {})->value('name', 'Fabien')->value('extra', 'Symfony');
         $controllers->value('extra', 'Twig');
@@ -115,7 +115,7 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
 
     public function testConvert()
     {
-        $controllers = new ControllerCollection(new Route());
+        $controllers = new ControllerCollection(new Route(), null);
         $controllers->convert('id', '1');
         $controller = $controllers->match('/{id}/{name}/{extra}', function () {})->convert('name', 'Fabien')->convert('extra', 'Symfony');
         $controllers->convert('extra', 'Twig');
@@ -125,7 +125,7 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
 
     public function testRequireHttp()
     {
-        $controllers = new ControllerCollection(new Route());
+        $controllers = new ControllerCollection(new Route(), null);
         $controllers->requireHttp();
         $controller = $controllers->match('/{id}/{name}/{extra}', function () {})->requireHttps();
 
@@ -138,7 +138,7 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
 
     public function testBefore()
     {
-        $controllers = new ControllerCollection(new Route());
+        $controllers = new ControllerCollection(new Route(), null);
         $controllers->before('mid1');
         $controller = $controllers->match('/{id}/{name}/{extra}', function () {})->before('mid2');
         $controllers->before('mid3');
@@ -148,7 +148,7 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
 
     public function testAfter()
     {
-        $controllers = new ControllerCollection(new Route());
+        $controllers = new ControllerCollection(new Route(), null);
         $controllers->after('mid1');
         $controller = $controllers->match('/{id}/{name}/{extra}', function () {})->after('mid2');
         $controllers->after('mid3');
@@ -160,7 +160,7 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
     {
         $route = new MyRoute1();
 
-        $controller = new ControllerCollection($route);
+        $controller = new ControllerCollection($route, null);
         $controller->foo('foo');
 
         $this->assertEquals('foo', $route->foo);
@@ -173,7 +173,7 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
     {
         $route = new MyRoute1();
 
-        $controller = new ControllerCollection($route);
+        $controller = new ControllerCollection($route, null);
         $controller->bar();
     }
 }
