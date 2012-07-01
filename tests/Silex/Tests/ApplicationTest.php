@@ -484,6 +484,23 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $app->terminate($request, $response);
         $this->assertEquals(array('before', 'error', 'after', 'finish'), $app['called']);
     }
+
+    public function testClosureRebindingWithServices()
+    {
+        if (version_compare(phpversion(), '5.4.0', '<')) {
+            $this->markTestSkipped('PHP 5.4 is required for this test');
+        }
+
+        $app = new Application();
+
+        $app['param'] = 'foobar';
+
+        $app['service'] = $app->share(function () {
+            return $this['param'];
+        });
+
+        $this->assertSame('foobar', $app['service']);
+    }
 }
 
 class FooController

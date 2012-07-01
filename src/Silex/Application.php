@@ -184,6 +184,30 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function offsetSet($id, $value)
+    {
+        if (isset($this['closure_rebinder']) && $value instanceof \Closure) {
+            $value = $this['closure_rebinder']($value);
+        }
+
+        return parent::offsetSet($id, $value);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function share(\Closure $callable)
+    {
+        if (isset($this['closure_rebinder']) && $callable instanceof \Closure) {
+            $callable = $this['closure_rebinder']($callable);
+        }
+
+        return parent::share($callable);
+    }
+
+    /**
      * Registers a service provider.
      *
      * @param ServiceProviderInterface $provider A ServiceProviderInterface instance
