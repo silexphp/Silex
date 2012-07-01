@@ -738,8 +738,11 @@ after every chunk::
         fclose($fh);
     };
 
+PHP 5.4 features
+----------------
+
 Traits
-------
+~~~~~~
 
 Silex comes with PHP traits that define shortcut methods.
 
@@ -778,6 +781,44 @@ setting::
     $app['route_class'] = 'MyRoute';
 
 Read each provider chapter to learn more about the added methods.
+
+Closure re-binding
+~~~~~~~~~~~~~~~~~~
+
+With PHP 5.4 the ``$this`` of all controllers, listeners and services gets re-
+bound to the ``Silex\Application`` object. This means that instead of writing::
+
+    $app->get('/', function () use ($app) {
+        return $app->redirect('/foo');
+    });
+
+You can now omit the ``use ($app)`` and replace ``$app`` with ``$this``::
+
+    $app->get('/', function () {
+        return $this->redirect('/foo');
+    });
+
+It also works for services::
+
+    $app['bar'] = $app->share(function () {
+        return new Bar($this['foo']);
+    });
+
+In order to disable this behavior, you can replace the ``closure_rebinder``
+service::
+
+    $this['closure_rebinder'] = $this->protect(function ($closure) {
+        return $closure;
+    });
+
+If you want to disable it at the ``ControllerCollection`` level, you can call
+the ``disableClosureRebinding`` method::
+
+    $controllers = $app['controllers_factory'];
+    $controllers->disableClosureRebinding();
+    $controllers->get('/', function () {
+        ...
+    });
 
 Security
 --------
