@@ -28,20 +28,13 @@ class ControllerCollection
 {
     protected $controllers = array();
     protected $defaultRoute;
-    protected $closureRebinder;
 
     /**
      * Constructor.
      */
-    public function __construct(Route $defaultRoute, \Closure $closureRebinder = null)
+    public function __construct(Route $defaultRoute)
     {
         $this->defaultRoute = $defaultRoute;
-        $this->closureRebinder = $closureRebinder;
-    }
-
-    public function disableClosureRebinding()
-    {
-        $this->closureRebinder = null;
     }
 
     /**
@@ -56,11 +49,8 @@ class ControllerCollection
      */
     public function match($pattern, $to)
     {
-        $to = $this->rebind($to);
-
         $route = clone $this->defaultRoute;
-        $route->setPattern($pattern);
-        $route->setDefault('_controller', $to);
+        $route->match($pattern, $to);
 
         $this->controllers[] = $controller = new Controller($route);
 
@@ -119,33 +109,6 @@ class ControllerCollection
         return $this->match($pattern, $to)->method('DELETE');
     }
 
-    public function convert($variable, $callback)
-    {
-        $callback = $this->rebind($callback);
-
-        $this->__call(__FUNCTION__, array($variable, $callback));
-
-        return $this;
-    }
-
-    public function before($callback)
-    {
-        $callback = $this->rebind($callback);
-
-        $this->__call(__FUNCTION__, array($callback));
-
-        return $this;
-    }
-
-    public function after($callback)
-    {
-        $callback = $this->rebind($callback);
-
-        $this->__call(__FUNCTION__, array($callback));
-
-        return $this;
-    }
-
     public function __call($method, $arguments)
     {
         if (!method_exists($this->defaultRoute, $method)) {
@@ -191,15 +154,5 @@ class ControllerCollection
         $this->controllers = array();
 
         return $routes;
-    }
-
-    private function rebind($callback)
-    {
-        if (null !== $this->closureRebinder) {
-            $rebinder = $this->closureRebinder;
-            $callback = $rebinder($callback);
-        }
-
-        return $callback;
     }
 }

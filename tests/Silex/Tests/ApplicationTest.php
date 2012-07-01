@@ -485,6 +485,36 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array('before', 'error', 'after', 'finish'), $app['called']);
     }
 
+    public function testClosureRebindingWithControllerCollection()
+    {
+        if (version_compare(phpversion(), '5.4.0', '<')) {
+            $this->markTestSkipped('PHP 5.4 is required for this test');
+        }
+
+        $app = new Application();
+
+        $app['called'] = array();
+
+        $app->get('/', function () {
+            $this['called'] = array_merge($this['called'], array('controller'));
+            return 'foo';
+        })
+        ->convert('foo', function ($foo) {
+            $this['called'] = array_merge($this['called'], array('convert'));
+        })
+        ->before(function () {
+            $this['called'] = array_merge($this['called'], array('before'));
+        })
+        ->after(function () {
+            $this['called'] = array_merge($this['called'], array('after'));
+        });
+
+        $request = Request::create('/?foo=bar');
+        $response = $app->handle($request);
+        $app->terminate($request, $response);
+        $this->assertEquals(array('before', 'convert', 'controller', 'after'), $app['called']);
+    }
+
     public function testClosureRebindingWithServices()
     {
         if (version_compare(phpversion(), '5.4.0', '<')) {

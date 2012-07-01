@@ -88,12 +88,14 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         });
 
         $this['controllers_factory'] = function () use ($app) {
-            return new ControllerCollection($app['route_factory'], $app['closure_rebinder']);
+            return new ControllerCollection($app['route_factory']);
         };
 
         $this['route_class'] = 'Silex\\Route';
         $this['route_factory'] = function () use ($app) {
-            return new $app['route_class']();
+            $route = new $app['route_class']();
+            $route->setOption('_closure_rebinder', $app['closure_rebinder']);
+            return $route;
         };
 
         $this['exception_handler'] = $this->share(function () {

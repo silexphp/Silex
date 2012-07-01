@@ -65,6 +65,8 @@ class Route extends BaseRoute
      */
     public function convert($variable, $callback)
     {
+        $callback = $this->rebind($callback);
+
         $converters = $this->getOption('_converters');
         $converters[$variable] = $callback;
         $this->setOption('_converters', $converters);
@@ -119,6 +121,8 @@ class Route extends BaseRoute
      */
     public function before($callback)
     {
+        $callback = $this->rebind($callback);
+
         $callbacks = $this->getOption('_before_middlewares');
         $callbacks[] = $callback;
         $this->setOption('_before_middlewares', $callbacks);
@@ -135,10 +139,30 @@ class Route extends BaseRoute
      */
     public function after($callback)
     {
+        $callback = $this->rebind($callback);
+
         $callbacks = $this->getOption('_after_middlewares');
         $callbacks[] = $callback;
         $this->setOption('_after_middlewares', $callbacks);
 
         return $this;
+    }
+
+    public function match($pattern, $to)
+    {
+        $to = $this->rebind($to);
+
+        $this->setPattern($pattern);
+        $this->setDefault('_controller', $to);
+    }
+
+    private function rebind($callback)
+    {
+        $rebinder = $this->getOption('_closure_rebinder');
+        if (null !== $rebinder) {
+            $callback = $rebinder($callback);
+        }
+
+        return $callback;
     }
 }
