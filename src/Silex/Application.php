@@ -65,13 +65,19 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             throw new \RuntimeException('You tried to access the autoloader service. The autoloader has been removed from Silex. It is recommended that you use Composer to manage your dependencies and handle your autoloading. See http://getcomposer.org for more information.');
         };
 
-        $this['closure_rebinder'] = $this->share($this->protect(function ($controller) use ($app) {
-            if (version_compare(PHP_VERSION, '5.4.0', '<') || !$controller instanceof \Closure) {
+        if (version_compare(PHP_VERSION, '5.4.0', '<')) {
+            $this['closure_rebinder'] = $this->protect(function ($controller) use ($app) {
                 return $controller;
-            }
+            });
+        } else {
+            $this['closure_rebinder'] = $this->protect(function ($controller) use ($app) {
+                if (!$controller instanceof \Closure) {
+                    return $controller;
+                }
 
-            return $controller->bindTo($app);
-        }));
+                return $controller->bindTo($app);
+            });
+        }
 
         $this['routes'] = $this->share(function () {
             return new RouteCollection();
