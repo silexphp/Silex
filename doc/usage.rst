@@ -657,6 +657,12 @@ group them logically::
 main Application. So, ``/`` will map to the main home page, ``/blog/`` to the
 blog home page, and ``/forum/`` to the forum home page.
 
+.. caution::
+
+    When mounting a route collection under ``/blog``, it is not possible to
+    define a route for the ``/blog`` URL. The shortest possible URL is
+    ``/blog/``.
+
 .. note::
 
     When calling ``get()``, ``match()``, or any other HTTP methods on the
