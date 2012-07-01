@@ -46,8 +46,14 @@
         {
             "package": "symfony/http-kernel",
             "version": "dev-master",
-            "source-reference": "3c13c8b8f78d8c0a20b1aeac5e0fb84d840ce365",
-            "commit-date": "1340951895"
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/http-kernel",
+            "version": "dev-master",
+            "source-reference": "c20bfcfb35eafb95e92b82fca56fdbfbd1da971f",
+            "commit-date": "1341176956"
         },
         {
             "package": "symfony/routing",
@@ -58,14 +64,8 @@
         {
             "package": "symfony/routing",
             "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
-            "package": "symfony/routing",
-            "version": "dev-master",
-            "source-reference": "3559f342da691b98f78e13680291724b94340d8d",
-            "commit-date": "1341162125"
+            "source-reference": "6efe2369ad32ccdb648018f2eac83997d2d9b33b",
+            "commit-date": "1341176956"
         }
     ],
     "packages-dev": [
@@ -172,8 +172,8 @@
         {
             "package": "symfony/form",
             "version": "dev-master",
-            "source-reference": "b02f6c4edcfc43f65ab68e56112a0dac86f6d12e",
-            "commit-date": "1340892642"
+            "source-reference": "55d7fe70afe21f7a756efe6d871b1b56c09007ff",
+            "commit-date": "1341175087"
         },
         {
             "package": "symfony/locale",

@@ -93,7 +93,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             $urlMatcher = new LazyUrlMatcher(function () use ($app) {
                 return $app['url_matcher'];
             });
-            $dispatcher->addSubscriber(new RouterListener($urlMatcher, $app['logger']));
+            $dispatcher->addSubscriber(new RouterListener($urlMatcher, $app['request_context'], $app['logger']));
             $dispatcher->addSubscriber(new LocaleListener($app['locale'], $urlMatcher));
 
             return $dispatcher;
