@@ -33,7 +33,7 @@ class ControllerCollection
     /**
      * Constructor.
      */
-    public function __construct(Route $defaultRoute, $closureRebinder)
+    public function __construct(Route $defaultRoute, \Closure $closureRebinder = null)
     {
         $this->defaultRoute = $defaultRoute;
         $this->closureRebinder = $closureRebinder;
