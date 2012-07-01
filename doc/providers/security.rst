@@ -110,9 +110,10 @@ under ``/admin/``::
         ),
     );
 
-The ``pattern`` is a regular expression; the ``http`` setting tells the
-security layer to use HTTP basic authentication and the ``users`` entry
-defines valid users.
+The ``pattern`` is a regular expression (it can also be a `RequestMatcher
+<http://api.symfony.com/master/Symfony/Component/HttpFoundation/RequestMatcher.html>`_
+instance); the ``http`` setting tells the security layer to use HTTP basic
+authentication and the ``users`` entry defines valid users.
 
 Each user is defined with the following information:
 
@@ -375,6 +376,12 @@ With the above configuration, users must have the ``ROLE_ADMIN`` to access the
 ``/admin`` section of the website, and ``ROLE_USER`` for everything else.
 Furthermore, the admin section can only be accessible via HTTPS (if that's not
 the case, the user will be automatically redirected).
+
+.. note::
+
+    The first argument can also be a `RequestMatcher
+    <http://api.symfony.com/master/Symfony/Component/HttpFoundation/RequestMatcher.html>`_
+    instance.
 
 Defining a custom User Provider
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
