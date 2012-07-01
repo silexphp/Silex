@@ -148,6 +148,11 @@ class Route extends BaseRoute
         return $this;
     }
 
+    public function disableClosureRebinding()
+    {
+        $this->setOption('_closure_rebinder', null);
+    }
+
     public function match($pattern, $to)
     {
         $to = $this->rebind($to);
