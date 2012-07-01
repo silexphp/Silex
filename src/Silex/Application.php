@@ -66,16 +66,16 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         };
 
         if (version_compare(PHP_VERSION, '5.4.0', '<')) {
-            $this['closure_rebinder'] = $this->protect(function ($controller) use ($app) {
-                return $controller;
+            $this['closure_rebinder'] = $this->protect(function ($closure) {
+                return $closure;
             });
         } else {
-            $this['closure_rebinder'] = $this->protect(function ($controller) use ($app) {
-                if (!$controller instanceof \Closure) {
-                    return $controller;
+            $this['closure_rebinder'] = $this->protect(function ($closure) use ($app) {
+                if (!$closure instanceof \Closure) {
+                    return $closure;
                 }
 
-                return $controller->bindTo($app);
+                return $closure->bindTo($app);
             });
         }
 
