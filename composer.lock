@@ -10,8 +10,8 @@
         {
             "package": "pimple/pimple",
             "version": "dev-master",
-            "source-reference": "86cae5c9e85cd02f1703c774ddf12f2448a5938c",
-            "commit-date": "1340285678"
+            "source-reference": "d2cfa2f02f50abef65c238747c753a5f6786f6be",
+            "commit-date": "1341139100"
         },
         {
             "package": "symfony/event-dispatcher",
@@ -58,8 +58,14 @@
         {
             "package": "symfony/routing",
             "version": "dev-master",
-            "source-reference": "ed1a7d9118dd1ee332b485f19b920a9e0077022a",
-            "commit-date": "1340625003"
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/routing",
+            "version": "dev-master",
+            "source-reference": "3559f342da691b98f78e13680291724b94340d8d",
+            "commit-date": "1341162125"
         }
     ],
     "packages-dev": [
@@ -72,8 +78,8 @@
         {
             "package": "doctrine/common",
             "version": "dev-master",
-            "source-reference": "e9f9a27a5bf3b8d95077de475a4dff495deaf39c",
-            "commit-date": "1340963135"
+            "source-reference": "d2f8a36b8696b446bf25cfe2b0b3aaf03e0835e6",
+            "commit-date": "1341088911"
         },
         {
             "package": "doctrine/dbal",
@@ -94,8 +100,8 @@
         {
             "package": "swiftmailer/swiftmailer",
             "version": "dev-master",
-            "source-reference": "627e1f7a7952e6659d7125931024a97a5482a15c",
-            "commit-date": "1340984297"
+            "source-reference": "05b497ee28355a33eb521dcaf7526824e0dda3b2",
+            "commit-date": "1341154877"
         },
         {
             "package": "symfony/browser-kit",
