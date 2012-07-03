@@ -23,6 +23,7 @@
         "symfony/routing": "2.1.*"
     },
     "require-dev": {
+        "jms/serializer-bundle": ">=0.9",
         "symfony/security": "2.1.*",
         "symfony/config": "2.1.*",
         "symfony/locale": "2.1.*",

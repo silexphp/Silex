@@ -50,6 +50,7 @@ There are a few provider that you get out of the box. All of these are within
 the ``Silex\Provider`` namespace:
 
 * :doc:`DoctrineServiceProvider <providers/doctrine>`
+* :doc:`JMSSerializerProvider <providers/jms_serializer>`
 * :doc:`MonologServiceProvider <providers/monolog>`
 * :doc:`SessionServiceProvider <providers/session>`
 * :doc:`SwiftmailerServiceProvider <providers/swiftmailer>`
