@@ -70,8 +70,11 @@ method::
         }
     });
 
-Validating Arrays
-~~~~~~~~~~~~~~~~~
+Validating Associative Arrays
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Validating associative arrays is like validating simple values, with a
+collection of constraints::
 
     use Symfony\Component\Validator\Constraints as Assert;
 
