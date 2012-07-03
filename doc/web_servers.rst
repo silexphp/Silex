@@ -84,7 +84,7 @@ this sample ``web.config`` file:
     </configuration>
 
 Lighttpd
-~~~~~~~~
+--------
 
 If you are using lighttpd, use this sample ``simple-vhost`` as a starting
 point:
