@@ -102,3 +102,22 @@ point:
     )
 
 .. _FallbackResource directive: http://www.adayinthelifeof.nl/2012/01/21/apaches-fallbackresource-your-new-htaccess-command/
+
+PHP 5.4
+-------
+
+PHP 5.4 ships with a built-in webserver for development. This server allows
+you to run silex without any configuration. Assuming your front controller is
+at ``web/index.php``, you can start the server from the command-line with this
+command:
+
+.. code-block:: text
+
+    $ php -S localhost:8080 -t web
+
+Now the application should be running at ``http://localhost:8080``.
+
+.. note::
+
+    This server is for development only. It is **not** recommended to use it
+    in production.
