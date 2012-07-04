@@ -29,6 +29,7 @@ composer](http://getcomposer.org). Just create a `composer.json` file and
 run the `php composer.phar install` command to install it:
 
     {
+        "minimum-stability": "dev",
         "require": {
             "silex/silex": "1.0.*"
         }
