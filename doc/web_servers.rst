@@ -107,13 +107,27 @@ PHP 5.4
 -------
 
 PHP 5.4 ships with a built-in webserver for development. This server allows
-you to run silex without any configuration. Assuming your front controller is
-at ``web/index.php``, you can start the server from the command-line with this
-command:
+you to run silex without any configuration. However, in order to serve static
+files, you'll have to make sure your front controller returns false in that
+case::
+
+    // web/index.php
+
+    $filename = __DIR__.preg_replace('#(\?.*)$#', '', $_SERVER['REQUEST_URI']);
+    if (php_sapi_name() === 'cli-server' && is_file($filename)) {
+        return false;
+    }
+
+    $app = require __DIR__.'/../src/app.php';
+    $app->run();
+
+
+Assuming your front controller is at ``web/index.php``, you can start the
+server from the command-line with this command:
 
 .. code-block:: text
 
-    $ php -S localhost:8080 -t web
+    $ php -S localhost:8080 -t web web/index.php
 
 Now the application should be running at ``http://localhost:8080``.
 
