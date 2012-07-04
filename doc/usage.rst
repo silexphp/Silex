@@ -24,6 +24,7 @@ If you want more flexibility, use Composer instead. Create a
 .. code-block:: json
 
     {
+        "minimum-stability": "dev",
         "require": {
             "silex/silex": "1.0.*"
         }
