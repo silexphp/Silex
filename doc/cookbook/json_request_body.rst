@@ -72,7 +72,7 @@ return the post object, including its ``id``, as JSON::
     use Symfony\Component\HttpFoundation\Request;
     use Symfony\Component\HttpFoundation\Response;
 
-    $app->post('/blog/posts', function (Request $request) {
+    $app->post('/blog/posts', function (Request $request) use ($app) {
         $post = array(
             'title' => $request->request->get('title'),
             'body'  => $request->request->get('body'),
