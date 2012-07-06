@@ -327,6 +327,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
                     $app['security'],
                     $app['security.trust_resolver'],
                     $app['security.http_utils'],
+                    $name,
                     $app[$entryPoint],
                     null, // errorPage
                     null, // AccessDeniedHandlerInterface

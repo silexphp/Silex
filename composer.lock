@@ -226,8 +226,8 @@
         {
             "package": "symfony/security",
             "version": "dev-master",
-            "source-reference": "4cdc2febdf2536098323a9a96533b4bb083da018",
-            "commit-date": "1341177900"
+            "source-reference": "b0257cd46a78251a25c17b91acb4dbbf6890590a",
+            "commit-date": "1341583159"
         },
         {
             "package": "symfony/translation",
