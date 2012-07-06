@@ -48,6 +48,7 @@
     "autoload": {
         "psr-0": { "Silex": "src/" }
     },
+    "min-stability": "dev",
     "extra": {
         "branch-alias": {
             "dev-master": "1.0-dev"

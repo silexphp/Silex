@@ -1,5 +1,5 @@
 {
-    "hash": "bd90711641b078681e124d35baf3291c",
+    "hash": "d3a6b3fd2919aac4eb3feec2f5a55b9e",
     "packages": [
         {
             "package": "pimple/pimple",
@@ -34,8 +34,8 @@
         {
             "package": "symfony/http-foundation",
             "version": "dev-master",
-            "source-reference": "ee1c424f8ee48db84a60f8c5bd8dd3b25706e4e9",
-            "commit-date": "1340989514"
+            "source-reference": "3e53f0a9f802dc1f34a722109df0b0d2679671a8",
+            "commit-date": "1341379664"
         },
         {
             "package": "symfony/http-kernel",
@@ -46,14 +46,8 @@
         {
             "package": "symfony/http-kernel",
             "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
-            "package": "symfony/http-kernel",
-            "version": "dev-master",
-            "source-reference": "c20bfcfb35eafb95e92b82fca56fdbfbd1da971f",
-            "commit-date": "1341176956"
+            "source-reference": "6d6f55f6b07b8bfed741a192def8d1bfbf6c590f",
+            "commit-date": "1341332120"
         },
         {
             "package": "symfony/routing",
@@ -64,8 +58,8 @@
         {
             "package": "symfony/routing",
             "version": "dev-master",
-            "source-reference": "6efe2369ad32ccdb648018f2eac83997d2d9b33b",
-            "commit-date": "1341176956"
+            "source-reference": "622a168a3be54a87e34ad65e9d50a738fb89ff7e",
+            "commit-date": "1341312726"
         }
     ],
     "packages-dev": [
@@ -100,8 +94,8 @@
         {
             "package": "swiftmailer/swiftmailer",
             "version": "dev-master",
-            "source-reference": "05b497ee28355a33eb521dcaf7526824e0dda3b2",
-            "commit-date": "1341154877"
+            "source-reference": "1829c40b70f3fc45a3696349bfcb99fb755aa926",
+            "commit-date": "1341418063"
         },
         {
             "package": "symfony/browser-kit",
@@ -124,8 +118,8 @@
         {
             "package": "symfony/config",
             "version": "dev-master",
-            "source-reference": "5b1a7a0a205b2c465a957142b03f1fc3202966e1",
-            "commit-date": "1340892719"
+            "source-reference": "a261cb1571e1f3921a632541299a9f39753a62a7",
+            "commit-date": "1341329671"
         },
         {
             "package": "symfony/css-selector",
@@ -160,8 +154,8 @@
         {
             "package": "symfony/finder",
             "version": "dev-master",
-            "source-reference": "v2.1.0-BETA1",
-            "commit-date": "1340118982"
+            "source-reference": "4d6a965beae234bd0fa7f61681bd8a54df60f042",
+            "commit-date": "1341212719"
         },
         {
             "package": "symfony/form",
@@ -172,8 +166,8 @@
         {
             "package": "symfony/form",
             "version": "dev-master",
-            "source-reference": "55d7fe70afe21f7a756efe6d871b1b56c09007ff",
-            "commit-date": "1341175087"
+            "source-reference": "213a6ae38699e90ce48520b670e60c56529a3b56",
+            "commit-date": "1341564098"
         },
         {
             "package": "symfony/locale",
@@ -184,8 +178,8 @@
         {
             "package": "symfony/locale",
             "version": "dev-master",
-            "source-reference": "3e6e0c21835c958a131c4455bcad207a1faefcad",
-            "commit-date": "1340985661"
+            "source-reference": "34c160e7ca53800a8497fdc54f8792118e4aa57e",
+            "commit-date": "1341379868"
         },
         {
             "package": "symfony/monolog-bridge",
@@ -208,8 +202,8 @@
         {
             "package": "symfony/options-resolver",
             "version": "dev-master",
-            "source-reference": "915b39d1e0ad1c1f2526b93a16a10e5e504aefad",
-            "commit-date": "1339503799"
+            "source-reference": "30a23259bb9c82b09c7ad271e5d47027cd01466c",
+            "commit-date": "1341534395"
         },
         {
             "package": "symfony/process",
@@ -220,8 +214,8 @@
         {
             "package": "symfony/process",
             "version": "dev-master",
-            "source-reference": "v2.1.0-BETA1",
-            "commit-date": "1337882028"
+            "source-reference": "abbb6c9a4fcbd070af4e6296753d449dcd4723aa",
+            "commit-date": "1341334717"
         },
         {
             "package": "symfony/security",
@@ -232,8 +226,8 @@
         {
             "package": "symfony/security",
             "version": "dev-master",
-            "source-reference": "95445692fd3b2209611c2c5258c0d00ff4be9a15",
-            "commit-date": "1340705165"
+            "source-reference": "4cdc2febdf2536098323a9a96533b4bb083da018",
+            "commit-date": "1341177900"
         },
         {
             "package": "symfony/translation",
@@ -256,8 +250,8 @@
         {
             "package": "symfony/twig-bridge",
             "version": "dev-master",
-            "source-reference": "v2.1.0-BETA1",
-            "commit-date": "1339357889"
+            "source-reference": "2a577b6cf0fe32f383acf4a972c1d5d8f48ae1e2",
+            "commit-date": "1340549862"
         },
         {
             "package": "symfony/validator",
@@ -268,8 +262,8 @@
         {
             "package": "symfony/validator",
             "version": "dev-master",
-            "source-reference": "c9dea6774d68a56e2652282afcc39adbed22cd8e",
-            "commit-date": "1340707414"
+            "source-reference": "8e54bffa0853fe66e92bb67c96c80e3a9e1b3cf2",
+            "commit-date": "1341422834"
         },
         {
             "package": "twig/twig",
@@ -280,14 +274,20 @@
         {
             "package": "twig/twig",
             "version": "dev-master",
-            "source-reference": "73da773aaad0f97f2e967ec8241b8adf7b1e03d2",
-            "commit-date": "1340890758"
+            "alias-pretty-version": "1.9.x-dev",
+            "alias-version": "1.9.9999999.9999999-dev"
+        },
+        {
+            "package": "twig/twig",
+            "version": "dev-master",
+            "source-reference": "26eb0a2653eade50dffdd31b11ca454232dea8cf",
+            "commit-date": "1341423205"
         }
     ],
     "aliases": [
 
     ],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "stability-flags": [
 
     ]
