@@ -127,7 +127,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
 
             $app['security.authentication_listener.factory.'.$type] = $app->protect(function($name, $options) use ($type, $app, $entryPoint) {
                 if ($entryPoint && !isset($app['security.entry_point.'.$name.'.'.$entryPoint])) {
-                    $app['security.entry_point.'.$name.'.'.$entryPoint] = $app['security.entry_point.'.$entryPoint.'._proto']($name);
+                    $app['security.entry_point.'.$name.'.'.$entryPoint] = $app['security.entry_point.'.$entryPoint.'._proto']($name, $options);
                 }
 
                 if (!isset($app['security.authentication_listener.'.$name.'.'.$type])) {
@@ -416,15 +416,18 @@ class SecurityServiceProvider implements ServiceProviderInterface
             });
         });
 
-        $app['security.entry_point.form._proto'] = $app->protect(function ($name, $loginPath = '/login', $useForward = false) use ($app) {
-            return $app->share(function () use ($app, $loginPath, $useForward) {
+        $app['security.entry_point.form._proto'] = $app->protect(function ($name, array $options) use ($app) {
+            return $app->share(function () use ($app, $options) {
+                $loginPath = isset($options['login_path']) ? $options['login_path'] : '/login';
+                $useForward = isset($options['use_forward']) ? $options['use_forward'] : false;
+
                 return new FormAuthenticationEntryPoint($app, $app['security.http_utils'], $loginPath, $useForward);
             });
         });
 
-        $app['security.entry_point.http._proto'] = $app->protect(function ($name, $realName = 'Secured') use ($app) {
-            return $app->share(function () use ($app, $name, $realName) {
-                return new BasicAuthenticationEntryPoint($realName);
+        $app['security.entry_point.http._proto'] = $app->protect(function ($name, array $options) use ($app) {
+            return $app->share(function () use ($app, $name, $options) {
+                return new BasicAuthenticationEntryPoint(isset($options['real_name']) ? $options['real_name'] : 'Secured');
             });
         });
 
