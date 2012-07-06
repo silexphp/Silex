@@ -1,5 +1,5 @@
 {
-    "hash": "d3a6b3fd2919aac4eb3feec2f5a55b9e",
+    "hash": "e6e70518ed416cbc558237a189fdce1b",
     "packages": [
         {
             "package": "pimple/pimple",
@@ -268,12 +268,6 @@
         {
             "package": "twig/twig",
             "version": "dev-master",
-            "alias-pretty-version": "1.8.x-dev",
-            "alias-version": "1.8.9999999.9999999-dev"
-        },
-        {
-            "package": "twig/twig",
-            "version": "dev-master",
             "alias-pretty-version": "1.9.x-dev",
             "alias-version": "1.9.9999999.9999999-dev"
         },
@@ -287,7 +281,7 @@
     "aliases": [
 
     ],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "stability-flags": [
 
     ]
