@@ -49,6 +49,10 @@ To run the test suite, you need [composer](http://getcomposer.org) and
     $ php composer.phar install --dev
     $ phpunit
 
+## Community
+
+Check out #silex-php on irc.freenode.net.
+
 ## License
 
 Silex is licensed under the MIT license.
