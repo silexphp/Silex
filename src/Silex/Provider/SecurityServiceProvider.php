@@ -26,6 +26,8 @@ use Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationPro
 use Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider;
 use Symfony\Component\Security\Core\Authentication\AuthenticationProviderManager;
 use Symfony\Component\Security\Core\Authentication\AuthenticationTrustResolver;
+use Symfony\Component\Security\Http\Authentication\DefaultAuthenticationSuccessHandler;
+use Symfony\Component\Security\Http\Authentication\DefaultAuthenticationFailureHandler;
 use Symfony\Component\Security\Core\Authorization\Voter\RoleHierarchyVoter;
 use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManager;
@@ -336,6 +338,27 @@ class SecurityServiceProvider implements ServiceProviderInterface
             });
         });
 
+        $app['security.authentication.success_handler._proto'] = $app->protect(function ($name, $options) use ($app) {
+            return $app->share(function () use ($name, $options, $app) {
+                return new DefaultAuthenticationSuccessHandler(
+                    $app['security.http_utils'],
+                    $name,
+                    $options
+                );
+            });
+        });
+
+        $app['security.authentication.failure_handler._proto'] = $app->protect(function ($name, $options) use ($app) {
+            return $app->share(function () use ($name, $options, $app) {
+                return new DefaultAuthenticationFailureHandler(
+                    $app,
+                    $app['security.http_utils'],
+                    $options,
+                    $app['logger']
+                );
+            });
+        });
+
         $app['security.authentication_listener.form._proto'] = $app->protect(function ($name, $options, $class = null) use ($app, $that) {
             return $app->share(function () use ($app, $name, $options, $that, $class) {
                 $that->addFakeRoute(array('match', $tmp = isset($options['check_path']) ? $options['check_path'] : '/login_check', str_replace('/', '_', ltrim($tmp, '/'))));
@@ -344,15 +367,23 @@ class SecurityServiceProvider implements ServiceProviderInterface
                     $class = 'Symfony\\Component\\Security\\Http\\Firewall\\UsernamePasswordFormAuthenticationListener';
                 }
 
+                if (!isset($app['security.authentication.success_handler.'.$name])) {
+                    $app['security.authentication.success_handler.'.$name] = $app['security.authentication.success_handler._proto']($name, $options);
+                }
+
+                if (!isset($app['security.authentication.failure_handler.'.$name])) {
+                    $app['security.authentication.failure_handler.'.$name] = $app['security.authentication.failure_handler._proto']($name, $options);
+                }
+
                 return new $class(
                     $app['security'],
                     $app['security.authentication_manager'],
                     isset($app['security.session_strategy.'.$name]) ? $app['security.session_strategy.'.$name] : $app['security.session_strategy'],
                     $app['security.http_utils'],
                     $name,
+                    $app['security.authentication.success_handler.'.$name],
+                    $app['security.authentication.failure_handler.'.$name],
                     $options,
-                    isset($app['security.authentication.success_handler.'.$name]) ? $app['security.authentication.success_handler.'.$name] : null,
-                    isset($app['security.authentication.failure_handler.'.$name]) ? $app['security.authentication.failure_handler.'.$name] : null,
                     $app['logger'],
                     $app['dispatcher'],
                     isset($options['with_csrf']) && $options['with_csrf'] && isset($app['form.csrf_provider']) ? $app['form.csrf_provider'] : null
