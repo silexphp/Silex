@@ -14,6 +14,7 @@ namespace Silex\Tests;
 use Silex\Application;
 use Silex\PimpleAwareEventDispatcher;
 use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Application test cases.
@@ -64,6 +65,15 @@ class PimpleAwareEventDispatcherTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("bar1", $this->application['foo.service']->string);
     }
 
+    /**
+     * @expectedException InvalidArgumentException
+     */
+    public function testAddSubscriberThrowsIfClassNotImplementEventSubscriberInterface()
+    {
+        $this->dispatcher->addSubscriberService('foo.service', 'stdClass');
+    }
+
+
     public function testAddSubscriberService()
     {
         $this->dispatcher->addSubscriberService('foo.service', 'Silex\Tests\FooService');
@@ -77,7 +87,7 @@ class PimpleAwareEventDispatcherTest extends \PHPUnit_Framework_TestCase
 
 }
 
-class FooService
+class FooService implements EventSubscriberInterface
 {
     public $string = '';
 
