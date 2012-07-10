@@ -223,7 +223,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
 
                     if (!isset($app['security.exception_listener.'.$name])) {
                         if (null == $entryPoint) {
-                            $app[$entryPoint = 'security.entry_point.'.$name.'.form'] = $app['security.entry_point.form._proto']($name);
+                            $app[$entryPoint = 'security.entry_point.'.$name.'.form'] = $app['security.entry_point.form._proto']($name, array());
                         }
                         $app['security.exception_listener.'.$name] = $app['security.exception_listener._proto']($entryPoint, $name);
                     }
