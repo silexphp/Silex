@@ -43,7 +43,6 @@ The ``SerializerServiceProvider`` provider provides a ``serializer`` service::
     use Silex\Application;
     use Silex\Provider\SerializerServiceProvider;
     use Symfony\Component\HttpFoundation\Response;
-    use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
     
     $app = new Application();
     
@@ -57,7 +56,7 @@ The ``SerializerServiceProvider`` provider provides a ``serializer`` service::
         $format = $app['request']->getFormat();
     
         if (!$page instanceof Page) {
-            throw new NotFoundHttpException("No page found for id: $id");
+            $app->abort("No page found for id: $id");
         }
     
         return new Response($app['serializer']->serialize($page, $format), 200, array(
