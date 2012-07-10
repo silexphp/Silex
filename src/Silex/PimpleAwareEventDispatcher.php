@@ -29,7 +29,7 @@ class PimpleAwareEventDispatcher extends EventDispatcher
     /**
      * Constructor.
      *
-     * @param Pimole $app
+     * @param Pimple $app
      */
     public function __construct(Pimple $app)
     {
