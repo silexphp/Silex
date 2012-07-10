@@ -13,7 +13,7 @@ namespace Silex;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\Event;
-use Silex\Application;
+use Pimple;
 
 /**
  * Wraps listeners in closures to allow lazy loading of services
@@ -29,9 +29,9 @@ class PimpleAwareEventDispatcher extends EventDispatcher
     /**
      * Constructor.
      *
-     * @param Application $app
+     * @param Pimole $app
      */
-    public function __construct(Application $app)
+    public function __construct(Pimple $app)
     {
         $this->app = $app;
     }
