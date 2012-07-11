@@ -44,8 +44,8 @@ trait SecurityTrait
     /**
      * Encodes the raw password.
      *
-     * @param UserInterface $user A UserInterface instance
-     * @param string        $raw  The password to encode
+     * @param UserInterface $user     A UserInterface instance
+     * @param string        $password The password to encode
      *
      * @return string The encoded password
      *
