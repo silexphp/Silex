@@ -46,7 +46,7 @@ resources to ``index.php``:
         }
 
         location ~ index\.php$ {
-            fastcgi_pass   /var/run/php5-fpm.sock;
+            fastcgi_pass   unix:/var/run/php5-fpm.sock;
             fastcgi_index  index.php;
             include fastcgi_params;
         }
