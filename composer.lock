@@ -34,8 +34,8 @@
         {
             "package": "symfony/http-foundation",
             "version": "dev-master",
-            "source-reference": "985f3aa6c9f8074b2d1a12345e0768f8c24aa72d",
-            "commit-date": "1341838460"
+            "source-reference": "3399f6f068cd41f1b42140699db1f1e6d3bcb361",
+            "commit-date": "1342107786"
         },
         {
             "package": "symfony/http-kernel",
@@ -46,8 +46,8 @@
         {
             "package": "symfony/http-kernel",
             "version": "dev-master",
-            "source-reference": "3ed400b75c0c2eae3e8f6f991210a8930bdd7467",
-            "commit-date": "1341838460"
+            "source-reference": "5032709c51ac154be997d99690f80c08b0943057",
+            "commit-date": "1341987182"
         },
         {
             "package": "symfony/routing",
@@ -58,8 +58,8 @@
         {
             "package": "symfony/routing",
             "version": "dev-master",
-            "source-reference": "48c201da53b7c3b787609b0f6702456b86939577",
-            "commit-date": "1341838460"
+            "source-reference": "67c72b042d753e6ee3675eb4b0c2165243d34055",
+            "commit-date": "1341890620"
         }
     ],
     "packages-dev": [
@@ -72,8 +72,8 @@
         {
             "package": "doctrine/common",
             "version": "dev-master",
-            "source-reference": "b3afbb80506d909743475c5b0904285ab0c07941",
-            "commit-date": "1341670930"
+            "source-reference": "ee3aeae972386d761d8358bab3d67e246f4261ba",
+            "commit-date": "1342078708"
         },
         {
             "package": "doctrine/dbal",
@@ -94,8 +94,8 @@
         {
             "package": "swiftmailer/swiftmailer",
             "version": "dev-master",
-            "source-reference": "f51b5f33c83b48faea75f1285f99a2e8f1c66f75",
-            "commit-date": "1341746460"
+            "source-reference": "420e227f2238d2c21e464c15f103540d83b0d23b",
+            "commit-date": "1341949155"
         },
         {
             "package": "symfony/browser-kit",
@@ -118,8 +118,8 @@
         {
             "package": "symfony/config",
             "version": "dev-master",
-            "source-reference": "bb18f5131f785483d3750a771df594eed1e5f863",
-            "commit-date": "1341838460"
+            "source-reference": "c69e45e6744a607a8b2b9067008a47a0517c7cad",
+            "commit-date": "1341929657"
         },
         {
             "package": "symfony/css-selector",
@@ -154,8 +154,8 @@
         {
             "package": "symfony/finder",
             "version": "dev-master",
-            "source-reference": "fccf904140dd00656a7cea17ff6f54d78b095649",
-            "commit-date": "1341838460"
+            "source-reference": "53377047bae92edd04e232c79b653d2beb309bf6",
+            "commit-date": "1341846417"
         },
         {
             "package": "symfony/form",
@@ -166,8 +166,8 @@
         {
             "package": "symfony/form",
             "version": "dev-master",
-            "source-reference": "57d3b508c1522a1343f7b505b573c307e7ad0023",
-            "commit-date": "1341838460"
+            "source-reference": "56a3edb4ddf5fcbece6f403bfe9573b2f6b4b7ba",
+            "commit-date": "1342089356"
         },
         {
             "package": "symfony/locale",
@@ -178,8 +178,8 @@
         {
             "package": "symfony/locale",
             "version": "dev-master",
-            "source-reference": "f804763887593f362156ec62c53efbee8ff04557",
-            "commit-date": "1341838460"
+            "source-reference": "04a4515e6eb050a3f637b7a56c0fb942a4119c4f",
+            "commit-date": "1341993367"
         },
         {
             "package": "symfony/monolog-bridge",
@@ -214,8 +214,8 @@
         {
             "package": "symfony/process",
             "version": "dev-master",
-            "source-reference": "2cd16e5708670cc53ed0ae1fae20ad6759ffe3ab",
-            "commit-date": "1341838460"
+            "source-reference": "f78e5d1e0f74532ff2e9269a18c7202dc25159e9",
+            "commit-date": "1342010717"
         },
         {
             "package": "symfony/security",
@@ -226,8 +226,8 @@
         {
             "package": "symfony/security",
             "version": "dev-master",
-            "source-reference": "47fcb4bfc03c74ae5b7ba6c6f2c32169e455be02",
-            "commit-date": "1341840540"
+            "source-reference": "77e63cb1bad01c2632557391373b04a8da82e099",
+            "commit-date": "1342092727"
         },
         {
             "package": "symfony/translation",
@@ -238,8 +238,8 @@
         {
             "package": "symfony/translation",
             "version": "dev-master",
-            "source-reference": "1b50bdbbd88e091a9fdd362b3a0c5e1fb93cf53f",
-            "commit-date": "1341838460"
+            "source-reference": "d2ce6bcdaf479b2121e35fa850fd229817c1ee2a",
+            "commit-date": "1341851012"
         },
         {
             "package": "symfony/twig-bridge",
@@ -250,8 +250,8 @@
         {
             "package": "symfony/twig-bridge",
             "version": "dev-master",
-            "source-reference": "33295b10cad60026f074d0ee614e9a0cbe04e232",
-            "commit-date": "1341838460"
+            "source-reference": "5d3e234a5d366f510185a9de3a545b730f327632",
+            "commit-date": "1341913448"
         },
         {
             "package": "symfony/validator",
@@ -262,8 +262,8 @@
         {
             "package": "symfony/validator",
             "version": "dev-master",
-            "source-reference": "2d02293c193be5e93019fe7961922a7ce05cddb0",
-            "commit-date": "1341838460"
+            "source-reference": "a9c3cff2694e159f531e04a4c8b7399f3bf13043",
+            "commit-date": "1342108491"
         },
         {
             "package": "twig/twig",
@@ -274,8 +274,8 @@
         {
             "package": "twig/twig",
             "version": "dev-master",
-            "source-reference": "26eb0a2653eade50dffdd31b11ca454232dea8cf",
-            "commit-date": "1341423205"
+            "source-reference": "a36aa04decb2e77219e198a7050e5c663020a38e",
+            "commit-date": "1342104720"
         }
     ],
     "aliases": [

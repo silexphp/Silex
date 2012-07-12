@@ -340,11 +340,13 @@ class SecurityServiceProvider implements ServiceProviderInterface
 
         $app['security.authentication.success_handler._proto'] = $app->protect(function ($name, $options) use ($app) {
             return $app->share(function () use ($name, $options, $app) {
-                return new DefaultAuthenticationSuccessHandler(
+                $handler = new DefaultAuthenticationSuccessHandler(
                     $app['security.http_utils'],
-                    $name,
                     $options
                 );
+                $handler->setProviderKey($name);
+
+                return $handler;
             });
         });
 
