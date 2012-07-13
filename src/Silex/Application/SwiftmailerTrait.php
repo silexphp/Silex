@@ -21,7 +21,7 @@ trait SwiftmailerTrait
     /**
      * Sends an email.
      *
-     * @param \Swift_Message $message A \Swift_Message intance
+     * @param \Swift_Message $message A \Swift_Message instance
      */
     public function mail(\Swift_Message $message)
     {
