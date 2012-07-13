@@ -46,7 +46,7 @@ class FormServiceProvider implements ServiceProviderInterface
 
         $app['form.secret'] = md5(__DIR__);
 
-        $app['form.extensions'] = $app->share(function () use ($app) {
+        $app['form.extensions'] = $app->share(function ($app) {
             $extensions = array(
                 new CoreExtension(),
                 new CsrfExtension($app['form.csrf_provider']),
@@ -64,11 +64,11 @@ class FormServiceProvider implements ServiceProviderInterface
             return $extensions;
         });
 
-        $app['form.factory'] = $app->share(function () use ($app) {
+        $app['form.factory'] = $app->share(function ($app) {
             return new FormFactory($app['form.extensions']);
         });
 
-        $app['form.csrf_provider'] = $app->share(function () use ($app) {
+        $app['form.csrf_provider'] = $app->share(function ($app) {
             if (isset($app['session'])) {
                 return new SessionCsrfProvider($app['session'], $app['form.secret']);
             }
