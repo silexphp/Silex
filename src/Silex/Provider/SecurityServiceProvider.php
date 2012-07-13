@@ -69,11 +69,11 @@ class SecurityServiceProvider implements ServiceProviderInterface
         $app['security.role_hierarchy'] = array();
         $app['security.access_rules'] = array();
 
-        $app['security'] = $app->share(function () use ($app) {
+        $app['security'] = $app->share(function ($app) {
             return new SecurityContext($app['security.authentication_manager'], $app['security.access_manager']);
         });
 
-        $app['security.authentication_manager'] = $app->share(function () use ($app) {
+        $app['security.authentication_manager'] = $app->share(function ($app) {
             $manager = new AuthenticationProviderManager($app['security.authentication_providers']);
             $manager->setEventDispatcher($app['dispatcher']);
 
@@ -81,36 +81,36 @@ class SecurityServiceProvider implements ServiceProviderInterface
         });
 
         // by default, all users use the digest encoder
-        $app['security.encoder_factory'] = $app->share(function () use ($app) {
+        $app['security.encoder_factory'] = $app->share(function ($app) {
             return new EncoderFactory(array(
                 'Symfony\Component\Security\Core\User\UserInterface' => $app['security.encoder.digest'],
             ));
         });
 
-        $app['security.encoder.digest'] = $app->share(function () use ($app) {
+        $app['security.encoder.digest'] = $app->share(function ($app) {
             return new MessageDigestPasswordEncoder();
         });
 
-        $app['security.user_checker'] = $app->share(function () use ($app) {
+        $app['security.user_checker'] = $app->share(function ($app) {
             return new UserChecker();
         });
 
-        $app['security.access_manager'] = $app->share(function () use ($app) {
+        $app['security.access_manager'] = $app->share(function ($app) {
             return new AccessDecisionManager($app['security.voters']);
         });
 
-        $app['security.voters'] = $app->share(function () use ($app) {
+        $app['security.voters'] = $app->share(function ($app) {
             return array(
                 new RoleHierarchyVoter(new RoleHierarchy($app['security.role_hierarchy'])),
                 new AuthenticatedVoter($app['security.trust_resolver']),
             );
         });
 
-        $app['security.firewall'] = $app->share(function () use ($app) {
+        $app['security.firewall'] = $app->share(function ($app) {
             return new Firewall($app['security.firewall_map'], $app['dispatcher']);
         });
 
-        $app['security.channel_listener'] = $app->share(function () use ($app) {
+        $app['security.channel_listener'] = $app->share(function ($app) {
             return new ChannelListener(
                 $app['security.access_map'],
                 new RetryAuthenticationEntryPoint($app['request.http_port'], $app['request.https_port']),
@@ -149,7 +149,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
             });
         }
 
-        $app['security.firewall_map'] = $app->share(function () use ($app) {
+        $app['security.firewall_map'] = $app->share(function ($app) {
             $positions = array('logout', 'pre_auth', 'form', 'http', 'remember_me', 'anonymous');
             $providers = array();
             $configs = array();
@@ -248,7 +248,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
             return $map;
         });
 
-        $app['security.access_listener'] = $app->share(function () use ($app) {
+        $app['security.access_listener'] = $app->share(function ($app) {
             return new AccessListener(
                 $app['security'],
                 $app['security.access_manager'],
@@ -258,7 +258,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
             );
         });
 
-        $app['security.access_map'] = $app->share(function () use ($app) {
+        $app['security.access_map'] = $app->share(function ($app) {
             $map = new AccessMap();
 
             foreach ($app['security.access_rules'] as $rule) {
@@ -272,15 +272,15 @@ class SecurityServiceProvider implements ServiceProviderInterface
             return $map;
         });
 
-        $app['security.trust_resolver'] = $app->share(function () use ($app) {
+        $app['security.trust_resolver'] = $app->share(function ($app) {
             return new AuthenticationTrustResolver('Symfony\Component\Security\Core\Authentication\Token\AnonymousToken', 'Symfony\Component\Security\Core\Authentication\Token\RememberMeToken');
         });
 
-        $app['security.session_strategy'] = $app->share(function () use ($app) {
+        $app['security.session_strategy'] = $app->share(function ($app) {
             return new SessionAuthenticationStrategy('migrate');
         });
 
-        $app['security.http_utils'] = $app->share(function () use ($app) {
+        $app['security.http_utils'] = $app->share(function ($app) {
             return new HttpUtils(isset($app['url_generator']) ? $app['url_generator'] : null, $app['url_matcher']);
         });
 
