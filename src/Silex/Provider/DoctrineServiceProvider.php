@@ -64,7 +64,7 @@ class DoctrineServiceProvider implements ServiceProviderInterface
             $dbs = new \Pimple();
             foreach ($app['dbs.options'] as $name => $options) {
                 if ($app['dbs.default'] === $name) {
-                    // we use shortcuts here in case the default has been overriden
+                    // we use shortcuts here in case the default has been overridden
                     $config = $app['db.config'];
                     $manager = $app['db.event_manager'];
                 } else {
