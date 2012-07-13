@@ -638,6 +638,10 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         $this['dispatcher']->dispatch(SilexEvents::ERROR, $errorEvent);
 
         if ($errorEvent->hasResponse()) {
+            if ($event->getException() instanceof HttpException) {
+                $errorEvent->getResponse()->setStatusCode($event->getException()->getStatusCode());
+                $errorEvent->getResponse()->headers->add($event->getException()->getHeaders());
+            }
             $event->setResponse($errorEvent->getResponse());
         }
     }
