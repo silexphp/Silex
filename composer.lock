@@ -34,8 +34,8 @@
         {
             "package": "symfony/http-foundation",
             "version": "dev-master",
-            "source-reference": "3399f6f068cd41f1b42140699db1f1e6d3bcb361",
-            "commit-date": "1342107786"
+            "source-reference": "fea04f56086f14d93e6b5188adfa92e9efc354e1",
+            "commit-date": "1342197254"
         },
         {
             "package": "symfony/http-kernel",
@@ -58,8 +58,8 @@
         {
             "package": "symfony/routing",
             "version": "dev-master",
-            "source-reference": "67c72b042d753e6ee3675eb4b0c2165243d34055",
-            "commit-date": "1341890620"
+            "source-reference": "e40a44a94c17f18229e2382232cc980602516ff9",
+            "commit-date": "1342188338"
         }
     ],
     "packages-dev": [
@@ -94,8 +94,8 @@
         {
             "package": "swiftmailer/swiftmailer",
             "version": "dev-master",
-            "source-reference": "420e227f2238d2c21e464c15f103540d83b0d23b",
-            "commit-date": "1341949155"
+            "source-reference": "8b2aa953f87da228ba413e8fb1372e49c1374050",
+            "commit-date": "1342198037"
         },
         {
             "package": "symfony/browser-kit",
@@ -106,8 +106,8 @@
         {
             "package": "symfony/browser-kit",
             "version": "dev-master",
-            "source-reference": "8ea03fae14e2938b0d177a8812c5201d5510f9b7",
-            "commit-date": "1341838460"
+            "source-reference": "7284574831a0be165974f32aacd47243d5b9e4d7",
+            "commit-date": "1342207366"
         },
         {
             "package": "symfony/config",
@@ -118,8 +118,8 @@
         {
             "package": "symfony/config",
             "version": "dev-master",
-            "source-reference": "c69e45e6744a607a8b2b9067008a47a0517c7cad",
-            "commit-date": "1341929657"
+            "source-reference": "e94d9f83fbf64fb7c9be9367beac316b1ca98f92",
+            "commit-date": "1342207366"
         },
         {
             "package": "symfony/css-selector",
@@ -130,8 +130,8 @@
         {
             "package": "symfony/css-selector",
             "version": "dev-master",
-            "source-reference": "389349c90d9ac4f967ed74634186ce922d68cf93",
-            "commit-date": "1341838460"
+            "source-reference": "e730ed6d7e76dedeeb8f797d9afc360b85e20cd0",
+            "commit-date": "1342207366"
         },
         {
             "package": "symfony/dom-crawler",
@@ -166,8 +166,8 @@
         {
             "package": "symfony/form",
             "version": "dev-master",
-            "source-reference": "56a3edb4ddf5fcbece6f403bfe9573b2f6b4b7ba",
-            "commit-date": "1342089356"
+            "source-reference": "f5905ab087ee8de72e98897c81d754d815e70556",
+            "commit-date": "1342207591"
         },
         {
             "package": "symfony/locale",
@@ -190,8 +190,8 @@
         {
             "package": "symfony/monolog-bridge",
             "version": "dev-master",
-            "source-reference": "v2.1.0-BETA2",
-            "commit-date": "1337360698"
+            "source-reference": "bb3915a78c2ebc32bd5e93a5b160adf36a2256e0",
+            "commit-date": "1342207366"
         },
         {
             "package": "symfony/options-resolver",
@@ -250,8 +250,8 @@
         {
             "package": "symfony/twig-bridge",
             "version": "dev-master",
-            "source-reference": "5d3e234a5d366f510185a9de3a545b730f327632",
-            "commit-date": "1341913448"
+            "source-reference": "b86963b52d5d305ab2a64973a10aca6642659ecb",
+            "commit-date": "1342207366"
         },
         {
             "package": "symfony/validator",
@@ -262,8 +262,8 @@
         {
             "package": "symfony/validator",
             "version": "dev-master",
-            "source-reference": "a9c3cff2694e159f531e04a4c8b7399f3bf13043",
-            "commit-date": "1342108491"
+            "source-reference": "6cd8997a1df02353584883057c840296fa28644e",
+            "commit-date": "1342176696"
         },
         {
             "package": "twig/twig",
@@ -274,8 +274,8 @@
         {
             "package": "twig/twig",
             "version": "dev-master",
-            "source-reference": "0d5a63993726057d28d68884112cc48508ab835e",
-            "commit-date": "1342161606"
+            "source-reference": "3f9f587ba72f9da84266b93ee1d0fc025b6b010f",
+            "commit-date": "1342197076"
         }
     ],
     "aliases": [
