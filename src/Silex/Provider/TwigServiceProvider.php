@@ -33,7 +33,7 @@ class TwigServiceProvider implements ServiceProviderInterface
         $app['twig.path'] = array();
         $app['twig.templates'] = array();
 
-        $app['twig'] = $app->share(function () use ($app) {
+        $app['twig'] = $app->share(function ($app) {
             $app['twig.options'] = array_replace(
                 array(
                     'charset'          => $app['charset'],
@@ -81,15 +81,15 @@ class TwigServiceProvider implements ServiceProviderInterface
             return $twig;
         });
 
-        $app['twig.loader.filesystem'] = $app->share(function () use ($app) {
+        $app['twig.loader.filesystem'] = $app->share(function ($app) {
             return new \Twig_Loader_Filesystem($app['twig.path']);
         });
 
-        $app['twig.loader.array'] = $app->share(function () use ($app) {
+        $app['twig.loader.array'] = $app->share(function ($app) {
             return new \Twig_Loader_Array($app['twig.templates']);
         });
 
-        $app['twig.loader'] = $app->share(function () use ($app) {
+        $app['twig.loader'] = $app->share(function ($app) {
             return new \Twig_Loader_Chain(array(
                 $app['twig.loader.filesystem'],
                 $app['twig.loader.array'],

@@ -35,7 +35,7 @@ class MonologServiceProvider implements ServiceProviderInterface
 
         $app['monolog.logger.class'] = $bridge ? 'Symfony\Bridge\Monolog\Logger' : 'Monolog\Logger';
 
-        $app['monolog'] = $app->share(function () use ($app) {
+        $app['monolog'] = $app->share(function ($app) {
 
             $log = new $app['monolog.logger.class']($app['monolog.name']);
 
