@@ -38,6 +38,7 @@ use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RequestContext;
 use Silex\RedirectableUrlMatcher;
 use Silex\ControllerResolver;
+use Silex\PimpleAwareEventDispatcher;
 
 /**
  * The Silex framework class.
@@ -87,7 +88,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         });
 
         $this['dispatcher'] = $this->share(function () use ($app) {
-            $dispatcher = new EventDispatcher();
+            $dispatcher = new PimpleAwareEventDispatcher($app);
             $dispatcher->addSubscriber($app);
 
             $urlMatcher = new LazyUrlMatcher(function () use ($app) {
