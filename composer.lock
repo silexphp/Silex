@@ -46,8 +46,8 @@
         {
             "package": "symfony/http-kernel",
             "version": "dev-master",
-            "source-reference": "5032709c51ac154be997d99690f80c08b0943057",
-            "commit-date": "1341987182"
+            "source-reference": "538a38c4919a982c1f68ad129178a0e3bb78a4c5",
+            "commit-date": "1342173351"
         },
         {
             "package": "symfony/routing",
@@ -202,8 +202,8 @@
         {
             "package": "symfony/options-resolver",
             "version": "dev-master",
-            "source-reference": "0ad85af9ec3e1696056901fcf38bffedc683d0c4",
-            "commit-date": "1341838460"
+            "source-reference": "36a848adcfadb5af553ed61744ebe1038365cedd",
+            "commit-date": "1342113225"
         },
         {
             "package": "symfony/process",
@@ -226,8 +226,8 @@
         {
             "package": "symfony/security",
             "version": "dev-master",
-            "source-reference": "77e63cb1bad01c2632557391373b04a8da82e099",
-            "commit-date": "1342092727"
+            "source-reference": "13553948b9f2401aacaee5af09a555963412afde",
+            "commit-date": "1342173351"
         },
         {
             "package": "symfony/translation",
@@ -274,8 +274,8 @@
         {
             "package": "twig/twig",
             "version": "dev-master",
-            "source-reference": "a36aa04decb2e77219e198a7050e5c663020a38e",
-            "commit-date": "1342104720"
+            "source-reference": "0d5a63993726057d28d68884112cc48508ab835e",
+            "commit-date": "1342161606"
         }
     ],
     "aliases": [
