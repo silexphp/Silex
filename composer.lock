@@ -46,8 +46,8 @@
         {
             "package": "symfony/http-kernel",
             "version": "dev-master",
-            "source-reference": "538a38c4919a982c1f68ad129178a0e3bb78a4c5",
-            "commit-date": "1342173351"
+            "source-reference": "dc93ba8c91cb4d6de78bb32e9836cf32088f0626",
+            "commit-date": "1342174453"
         },
         {
             "package": "symfony/routing",
