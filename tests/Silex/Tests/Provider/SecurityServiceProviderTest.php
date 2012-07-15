@@ -68,7 +68,7 @@ class SecurityServiceProviderTest extends WebTestCase
         $this->assertEquals('', $app['security.last_error']($client->getRequest()));
         $client->getRequest()->getSession()->save();
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $this->assertEquals('http://localhost/', $client->getResponse()->headers->get('Location'));
+        $this->assertEquals('http://localhost/', $client->getResponse()->getTargetUrl());
 
         $client->request('get', '/');
         $this->assertEquals('fabienAUTHENTICATED', $client->getResponse()->getContent());
@@ -77,20 +77,20 @@ class SecurityServiceProviderTest extends WebTestCase
 
         $client->request('get', '/logout');
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $this->assertEquals('http://localhost/', $client->getResponse()->headers->get('Location'));
+        $this->assertEquals('http://localhost/', $client->getResponse()->getTargetUrl());
 
         $client->request('get', '/');
         $this->assertEquals('ANONYMOUS', $client->getResponse()->getContent());
 
         $client->request('get', '/admin');
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $this->assertEquals('http://localhost/login', $client->getResponse()->headers->get('Location'));
+        $this->assertEquals('http://localhost/login', $client->getResponse()->getTargetUrl());
 
         $client->request('post', '/login_check', array('_username' => 'admin', '_password' => 'foo'));
         $this->assertEquals('', $app['security.last_error']($client->getRequest()));
         $client->getRequest()->getSession()->save();
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $this->assertEquals('http://localhost/admin', $client->getResponse()->headers->get('Location'));
+        $this->assertEquals('http://localhost/admin', $client->getResponse()->getTargetUrl());
 
         $client->request('get', '/');
         $this->assertEquals('adminAUTHENTICATEDADMIN', $client->getResponse()->getContent());
