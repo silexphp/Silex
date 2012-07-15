@@ -34,8 +34,8 @@
         {
             "package": "symfony/http-foundation",
             "version": "dev-master",
-            "source-reference": "d72724a62696037b52601086b629d84c1a1cb91b",
-            "commit-date": "1342337507"
+            "source-reference": "bb15edc5a79a53c9029f81e4cf6063f91fa8b329",
+            "commit-date": "1342342534"
         },
         {
             "package": "symfony/http-kernel",
