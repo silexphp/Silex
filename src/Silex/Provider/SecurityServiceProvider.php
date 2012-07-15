@@ -47,6 +47,7 @@ use Symfony\Component\Security\Http\EntryPoint\BasicAuthenticationEntryPoint;
 use Symfony\Component\Security\Http\EntryPoint\RetryAuthenticationEntryPoint;
 use Symfony\Component\Security\Http\Session\SessionAuthenticationStrategy;
 use Symfony\Component\Security\Http\Logout\SessionLogoutHandler;
+use Symfony\Component\Security\Http\Logout\DefaultLogoutSuccessHandler;
 use Symfony\Component\Security\Http\AccessMap;
 use Symfony\Component\Security\Http\HttpUtils;
 
@@ -415,15 +416,28 @@ class SecurityServiceProvider implements ServiceProviderInterface
             });
         });
 
-        $app['security.authentication_listener.logout._proto'] = $app->protect(function ($providerKey, $options) use ($app, $that) {
-            return $app->share(function () use ($app, $providerKey, $options, $that) {
+        $app['security.authentication.logout_handler._proto'] = $app->protect(function ($name, $options) use ($app) {
+            return $app->share(function () use ($name, $options, $app) {
+                return new DefaultLogoutSuccessHandler(
+                    $app['security.http_utils'],
+                    isset($options['target_url']) ? $options['target_url'] : '/'
+                );
+            });
+        });
+
+        $app['security.authentication_listener.logout._proto'] = $app->protect(function ($name, $options) use ($app, $that) {
+            return $app->share(function () use ($app, $name, $options, $that) {
                 $that->addFakeRoute(array('get', $tmp = isset($options['logout_path']) ? $options['logout_path'] : '/logout', str_replace('/', '_', ltrim($tmp, '/'))));
+
+                if (!isset($app['security.authentication.logout_handler.'.$name])) {
+                    $app['security.authentication.logout_handler.'.$name] = $app['security.authentication.logout_handler._proto']($name, $options);
+                }
 
                 $listener = new LogoutListener(
                     $app['security'],
                     $app['security.http_utils'],
+                    $app['security.authentication.logout_handler.'.$name],
                     $options,
-                    null, // LogoutSuccessHandlerInterface
                     isset($options['with_csrf']) && $options['with_csrf'] && isset($app['form.csrf_provider']) ? $app['form.csrf_provider'] : null
                 );
 
