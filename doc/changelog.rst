@@ -1,6 +1,24 @@
 Changelog
 =========
 
+* **2012-07-15**: removed the ``monolog.configure`` service. Use the
+  ``extend`` method instead:
+
+    Before::
+
+        $app['monolog.configure'] = $app->protect(function ($monolog) use ($app) {
+            // do something
+        });
+
+    After::
+
+        $app['monolog'] = $app->share($app->extend('monolog', function($monolog, $app) {
+            // do something
+
+            return $monolog;
+        }));
+
+
 * **2012-06-17**: ``ControllerCollection`` now takes a required route instance
   as a constructor argument.
 

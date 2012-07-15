@@ -43,17 +43,13 @@ class MonologServiceProvider implements ServiceProviderInterface
         $app['monolog'] = $app->share(function ($app) {
             $log = new $app['monolog.logger.class']($app['monolog.name']);
 
-            $app['monolog.configure']($log);
-
-            return $log;
-        });
-
-        $app['monolog.configure'] = $app->protect(function ($log) use ($app) {
             $log->pushHandler($app['monolog.handler']);
 
             if ($app['debug'] && isset($app['monolog.handler.debug'])) {
                 $log->pushHandler($app['monolog.handler.debug']);
             }
+
+            return $log;
         });
 
         $app['monolog.handler'] = function () use ($app) {
