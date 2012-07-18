@@ -271,6 +271,19 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     }
 
     /**
+     * Adds an event listener that listens on the specified events.
+     *
+     * @param string   $eventName The event to listen on
+     * @param callable $listener  The listener
+     * @param integer  $priority  The higher this value, the earlier an event
+     *                            listener will be triggered in the chain (defaults to 0)
+     */
+    public function on($eventName, $callback, $priority = 0)
+    {
+        return $this['dispatcher']->addListener($eventName, $callback, $priority);
+    }
+
+    /**
      * Registers a before filter.
      *
      * Before filters are run before any route has been matched.
