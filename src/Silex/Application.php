@@ -88,13 +88,6 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
 
         $this['dispatcher'] = $this->share(function () use ($app) {
             $dispatcher = new EventDispatcher();
-
-            $app['dispatcher.configure']($dispatcher);
-
-            return $dispatcher;
-        });
-
-        $this['dispatcher.configure'] = $app->protect(function ($dispatcher) use ($app) {
             $dispatcher->addSubscriber($app);
 
             $urlMatcher = new LazyUrlMatcher(function () use ($app) {
@@ -102,6 +95,8 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             });
             $dispatcher->addSubscriber(new RouterListener($urlMatcher, $app['request_context'], $app['logger']));
             $dispatcher->addSubscriber(new LocaleListener($app['locale'], $urlMatcher));
+
+            return $dispatcher;
         });
 
         $this['resolver'] = $this->share(function () use ($app) {
