@@ -18,6 +18,8 @@ use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Bridge\Twig\Extension\SecurityExtension;
+use Symfony\Bridge\Twig\Form\TwigRendererEngine;
+use Symfony\Bridge\Twig\Form\TwigRenderer;
 
 /**
  * Twig integration for Silex.
@@ -64,7 +66,15 @@ class TwigServiceProvider implements ServiceProviderInterface
                 }
 
                 if (isset($app['form.factory'])) {
-                    $twig->addExtension(new FormExtension($app['form.csrf_provider'], $app['twig.form.templates']));
+                    $app['twig.form.engine'] = $app->share(function ($app) {
+                        return new TwigRendererEngine($app['twig.form.templates']);
+                    });
+
+                    $app['twig.form.renderer'] = $app->share(function ($app) {
+                        return new TwigRenderer($app['twig.form.engine'], $app['form.csrf_provider']);
+                    });
+
+                    $twig->addExtension(new FormExtension($app['twig.form.renderer']));
 
                     // add loader for Symfony built-in form templates
                     $reflected = new \ReflectionClass('Symfony\Bridge\Twig\Extension\FormExtension');

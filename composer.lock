@@ -46,8 +46,8 @@
         {
             "package": "symfony/http-kernel",
             "version": "dev-master",
-            "source-reference": "6df39b97d0815fa493c84ed448eb6cc961652303",
-            "commit-date": "1342376835"
+            "source-reference": "55962b569b4304ce2fd9d80159ce9216d48b5a0d",
+            "commit-date": "1342599875"
         },
         {
             "package": "symfony/routing",
@@ -66,14 +66,14 @@
         {
             "package": "doctrine/common",
             "version": "dev-master",
-            "alias-pretty-version": "2.3.x-dev",
-            "alias-version": "2.3.9999999.9999999-dev"
+            "alias-pretty-version": "2.4.x-dev",
+            "alias-version": "2.4.9999999.9999999-dev"
         },
         {
             "package": "doctrine/common",
             "version": "dev-master",
-            "source-reference": "ee3aeae972386d761d8358bab3d67e246f4261ba",
-            "commit-date": "1342078708"
+            "source-reference": "91a2875447a38a638cebbd679fa2081a84d5f7af",
+            "commit-date": "1342444390"
         },
         {
             "package": "doctrine/dbal",
@@ -166,8 +166,8 @@
         {
             "package": "symfony/form",
             "version": "dev-master",
-            "source-reference": "v2.1.0-BETA3",
-            "commit-date": "1342359251"
+            "source-reference": "7c41bfd80ccded49e6e174b5d61ac59e42037c83",
+            "commit-date": "1342508524"
         },
         {
             "package": "symfony/locale",
@@ -178,8 +178,8 @@
         {
             "package": "symfony/locale",
             "version": "dev-master",
-            "source-reference": "v2.1.0-BETA3",
-            "commit-date": "1342347231"
+            "source-reference": "c59e3933919e1b87d11c8dd1ff22ff075a4568cb",
+            "commit-date": "1342468486"
         },
         {
             "package": "symfony/monolog-bridge",
@@ -202,8 +202,8 @@
         {
             "package": "symfony/options-resolver",
             "version": "dev-master",
-            "source-reference": "c31eeb50b88804b465dd3b9854965924de156509",
-            "commit-date": "1342347231"
+            "source-reference": "e1ecc8a75524864c31cc0f0bef997894b70bf1a4",
+            "commit-date": "1342470931"
         },
         {
             "package": "symfony/process",
@@ -250,8 +250,8 @@
         {
             "package": "symfony/twig-bridge",
             "version": "dev-master",
-            "source-reference": "v2.1.0-BETA3",
-            "commit-date": "1342347231"
+            "source-reference": "da5cc8681e50087b5d4495e3b5f16bc87ac0a72b",
+            "commit-date": "1342598932"
         },
         {
             "package": "symfony/validator",
@@ -274,8 +274,8 @@
         {
             "package": "twig/twig",
             "version": "dev-master",
-            "source-reference": "17e2c36a58c4b17a58a3befa783d16ac19776df5",
-            "commit-date": "1342275003"
+            "source-reference": "d70860f5f5263ec8aa7d8f81729ff79793985a6b",
+            "commit-date": "1342598009"
         }
     ],
     "aliases": [
