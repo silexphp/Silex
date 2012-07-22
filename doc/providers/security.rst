@@ -176,6 +176,8 @@ Always keep in mind the following two golden rules:
 
 For the login form to work, create a controller like the following::
 
+    use Symfony\Component\HttpFoundation\Request;
+
     $app->get('/login', function(Request $request) use ($app) {
         return $app['twig']->render('login.html', array(
             'error'         => $app['security.last_error']($request),
@@ -390,7 +392,7 @@ Using an array of users is simple and useful when securing an admin section of
 a personal website, but you can override this default mechanism with you own.
 
 The ``users`` setting can be defined as a service that returns an instance of
-`UserProvider
+`UserProviderInterface
 <http://api.symfony.com/master/Symfony/Component/Security/Core/User/UserProviderInterface.html>`_::
 
     'users' => $app->share(function () use ($app) {
@@ -405,7 +407,6 @@ store the users::
     use Symfony\Component\Security\Core\User\User;
     use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
     use Doctrine\DBAL\Connection;
-    use Doctrine\DBAL\Schema\Table;
 
     class UserProvider implements UserProviderInterface
     {
@@ -449,6 +450,8 @@ class must implement `UserInterface
 
 And here is the code that you can use to create the database schema and some
 sample users::
+
+    use Doctrine\DBAL\Schema\Table;
 
     $schema = $conn->getSchemaManager();
     if (!$schema->tablesExist('users')) {
@@ -507,7 +510,7 @@ use in your configuration::
 You can now use it in your configuration like any other built-in
 authentication provider::
 
-    $app->register(new SecurityServiceProvider(), array(
+    $app->register(new Silex\Provider\SecurityServiceProvider(), array(
         'security.firewalls' => array(
             'default' => array(
                 'wsse' => true,
