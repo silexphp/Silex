@@ -101,7 +101,7 @@ under ``/admin/``::
 
     $app['security.firewalls'] = array(
         'admin' => array(
-            'pattern' => '^/admin/',
+            'pattern' => '^/admin',
             'http' => true,
             'users' => array(
                 // raw password is foo
