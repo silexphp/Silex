@@ -30,6 +30,7 @@
         "monolog/monolog": ">=1.0.0,<1.2-dev",
         "symfony/browser-kit": "2.1.*",
         "symfony/css-selector": "2.1.*",
+        "symfony/filesystem": "2.1.*",
         "symfony/finder": "2.1.*",
         "symfony/monolog-bridge": "2.1.*",
         "symfony/process": "2.1.*",
