@@ -59,6 +59,7 @@ the ``Silex\Provider`` namespace:
 * :doc:`ValidatorServiceProvider <providers/validator>`
 * :doc:`HttpCacheServiceProvider <providers/http_cache>`
 * :doc:`FormServiceProvider <providers/form>`
+* :doc:`SecurityServiceProvider <providers/security>`
 
 Third party providers
 ~~~~~~~~~~~~~~~~~~~~~
