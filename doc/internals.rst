@@ -19,7 +19,7 @@ to the ``handle`` method and it will return a `Response
 <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Response.html>`_.
 
 It extends the ``Pimple`` service container, allowing for flexibility on the
-outside as well as the inside. you could replace any service, and you are also
+outside as well as the inside. You could replace any service, and you are also
 able to read them.
 
 The application makes strong use of the `EventDispatcher
