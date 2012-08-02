@@ -6,6 +6,7 @@ In Silex, the most common way to define the controller of a route is with a clos
 In order to avoid these repetitive injections, you need to your own ``ControllerResolver`` which extends the ``\Silex\ControllerResolver`` (inspired by the one in the Symfony2 framework bundle) :
 
 .. code-block:: php
+
 	namespace MyProject\Controller;
 
 	use \Silex\ControllerResolver as SilexControllerResolver;
@@ -45,6 +46,7 @@ The code is pretty straightforward : you create a ``new $class()`` and if it is 
 Now the ``ControllerAbstract`` is easy to create :
 
 .. code-block:: php
+
 	namespace MyProject\Controller;
 
 	use \Silex\Application;
@@ -68,6 +70,7 @@ Now the ``ControllerAbstract`` is easy to create :
 Finally, you replace the ``\Silex\ControllerResolver`` by your own in your bootstrap file :
 
 .. code-block:: php
+
 	$app['resolver'] = $app->share(function () use ($app) {
 	    return new \MyProject\ControllerResolver($app);
 	});
