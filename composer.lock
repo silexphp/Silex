@@ -58,8 +58,8 @@
         {
             "package": "symfony/routing",
             "version": "dev-master",
-            "source-reference": "909194d1d24900d99a32df154513cd8cf9936534",
-            "commit-date": "1343512949"
+            "source-reference": "30f54eb917f64d7735ba0b6a230e9620da95be9b",
+            "commit-date": "1343744077"
         }
     ],
     "packages-dev": [
@@ -72,8 +72,8 @@
         {
             "package": "doctrine/common",
             "version": "dev-master",
-            "source-reference": "8cb70d80c5c95add69e5055044bb1bd4bf5de987",
-            "commit-date": "1343050234"
+            "source-reference": "39b56dfd6982b1fb291f5838803b9feaf0115b17",
+            "commit-date": "1343902400"
         },
         {
             "package": "doctrine/dbal",
@@ -166,8 +166,8 @@
         {
             "package": "symfony/form",
             "version": "dev-master",
-            "source-reference": "73f3ce31123de6f0760618ee0331d56cbfbd382f",
-            "commit-date": "1343582025"
+            "source-reference": "2167467ed4642ef36e2bd42e69f27f475275f7b8",
+            "commit-date": "1343745346"
         },
         {
             "package": "symfony/locale",
@@ -262,8 +262,8 @@
         {
             "package": "symfony/validator",
             "version": "dev-master",
-            "source-reference": "fd56fd6b61f26dbef8e452b76a93445374d0592e",
-            "commit-date": "1343512949"
+            "source-reference": "9b3f340f99aa920607ef2a7e56a8cbcc2df05aaf",
+            "commit-date": "1343658122"
         },
         {
             "package": "twig/twig",
