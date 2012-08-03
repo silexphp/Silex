@@ -93,7 +93,7 @@ example::
             ->getForm();
 
         if ('POST' == $request->getMethod()) {
-            $form->bindRequest($request);
+            $form->bind($request);
 
             if ($form->isValid()) {
                 $data = $form->getData();
