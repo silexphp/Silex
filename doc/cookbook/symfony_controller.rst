@@ -1,9 +1,16 @@
 How to use controllers like in Symfony2 framework
 =================================================
 
-In Silex, the most common way to define the controller of a route is with a closure. But when your project gets bigger, you want to organize your code in classes. You can use the syntax ``ClassName::methodName`` in your route definition instead of a ``function () { ... }`` but you have to inject the ``Silex\Application $app`` as a parameter on each method of your controller class, which can become quite boring.
+In Silex, the most common way to define the controller of a route is with a
+closure. But when your project gets bigger, you want to organize your code in
+classes. You can use the syntax ``ClassName::methodName`` in your route
+definition instead of a ``function () { ... }`` but you have to inject the
+``Silex\Application $app`` as a parameter on each method of your controller
+class, which can become quite boring.
 
-In order to avoid these repetitive injections, you need to your own ``ControllerResolver`` which extends the ``\Silex\ControllerResolver`` (inspired by the one in the Symfony2 framework bundle) :
+In order to avoid these repetitive injections, you need to your own
+``ControllerResolver`` which extends the ``\Silex\ControllerResolver``
+(inspired by the one in the Symfony2 framework bundle) :
 
 .. code-block:: php
 
@@ -33,7 +40,7 @@ In order to avoid these repetitive injections, you need to your own ``Controller
 	        }
 
 	        $controller = new $class();
-	        if ($controller instanceof ControllerAbstract) {
+	        if ($controller instanceof AbstractController) {
 	            $controller->setContainer($this->app);
 	        }
 
@@ -41,9 +48,10 @@ In order to avoid these repetitive injections, you need to your own ``Controller
 	    }
 	}
 
-The code is pretty straightforward : you create a ``new $class()`` and if it is an instance of ``ControllerAbstract`` you inject the Silex ``Application``.
+The code is pretty straightforward : you create a ``new $class()`` and if it is
+an instance of ``AbstractController`` you inject the Silex ``Application``.
 
-Now the ``ControllerAbstract`` is easy to create :
+Now the ``AbstractController`` is easy to create :
 
 .. code-block:: php
 
@@ -51,7 +59,7 @@ Now the ``ControllerAbstract`` is easy to create :
 
 	use \Silex\Application;
 
-	abstract class ControllerAbstract
+	abstract class AbstractController
 	{
 	    /**
 	     * @var Application;
@@ -67,7 +75,8 @@ Now the ``ControllerAbstract`` is easy to create :
 	    }
 	}
 
-Finally, you replace the ``\Silex\ControllerResolver`` by your own in your bootstrap file :
+Finally, you replace the ``\Silex\ControllerResolver`` by your own in your
+bootstrap file :
 
 .. code-block:: php
 
@@ -75,4 +84,5 @@ Finally, you replace the ``\Silex\ControllerResolver`` by your own in your boots
 	    return new \MyProject\ControllerResolver($app);
 	});
 
-And that's all. You only have to make all your controller's class extend ``ControllerAbstract``.
+And that's all. You only have to make all your controller's class extend
+``AbstractController``.
