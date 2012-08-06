@@ -9,14 +9,14 @@ definition instead of a ``function () { ... }`` but you have to inject the
 class, which can become quite boring.
 
 In order to avoid these repetitive injections, you need to your own
-``ControllerResolver`` which extends the ``\Silex\ControllerResolver``
+``ControllerResolver`` which extends the ``Silex\ControllerResolver``
 (inspired by the one in the Symfony2 framework bundle) :
 
 .. code-block:: php
 
 	namespace MyProject\Controller;
 
-	use \Silex\ControllerResolver as SilexControllerResolver;
+	use Silex\ControllerResolver as SilexControllerResolver;
 
 	class ControllerResolver extends SilexControllerResolver
 	{
@@ -57,7 +57,7 @@ Now the ``AbstractController`` is easy to create :
 
 	namespace MyProject\Controller;
 
-	use \Silex\Application;
+	use Silex\Application;
 
 	abstract class AbstractController
 	{
@@ -75,7 +75,7 @@ Now the ``AbstractController`` is easy to create :
 	    }
 	}
 
-Finally, you replace the ``\Silex\ControllerResolver`` by your own in your
+Finally, you replace the ``Silex\ControllerResolver`` by your own in your
 bootstrap file :
 
 .. code-block:: php
