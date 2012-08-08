@@ -616,6 +616,7 @@ Forwards
 When you want to delegate the rendering to another controller, without a
 round-trip to the browser (as for a redirect), use an internal sub-request::
 
+    use Symfony\Component\HttpFoundation\Request;
     use Symfony\Component\HttpKernel\HttpKernelInterface;
 
     $app->get('/', function () use ($app) {
