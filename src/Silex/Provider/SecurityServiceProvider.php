@@ -363,7 +363,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
         });
 
         $app['security.authentication_listener.form._proto'] = $app->protect(function ($name, $options) use ($app, $that) {
-            return $app->share(function () use ($app, $name, $options, $that, $class) {
+            return $app->share(function () use ($app, $name, $options, $that) {
                 $that->addFakeRoute(array('match', $tmp = isset($options['check_path']) ? $options['check_path'] : '/login_check', str_replace('/', '_', ltrim($tmp, '/'))));
 
                 $class = isset($options['listener_class']) ? $options['listener_class'] : 'Symfony\\Component\\Security\\Http\\Firewall\\UsernamePasswordFormAuthenticationListener';
