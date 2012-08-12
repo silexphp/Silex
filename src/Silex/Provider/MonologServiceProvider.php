@@ -17,6 +17,7 @@ use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Bridge\Monolog\Handler\DebugHandler;
 
 /**
  * Monolog Provider.
@@ -31,21 +32,24 @@ class MonologServiceProvider implements ServiceProviderInterface
             $app['logger'] = function () use ($app) {
                 return $app['monolog'];
             };
+
+            $app['monolog.handler.debug'] = function () use ($app) {
+                return new DebugHandler($app['monolog.level']);
+            };
         }
 
         $app['monolog.logger.class'] = $bridge ? 'Symfony\Bridge\Monolog\Logger' : 'Monolog\Logger';
 
-        $app['monolog'] = $app->share(function () use ($app) {
-
+        $app['monolog'] = $app->share(function ($app) {
             $log = new $app['monolog.logger.class']($app['monolog.name']);
 
-            $app['monolog.configure']($log);
+            $log->pushHandler($app['monolog.handler']);
+
+            if ($app['debug'] && isset($app['monolog.handler.debug'])) {
+                $log->pushHandler($app['monolog.handler.debug']);
+            }
 
             return $log;
-        });
-
-        $app['monolog.configure'] = $app->protect(function ($log) use ($app) {
-            $log->pushHandler($app['monolog.handler']);
         });
 
         $app['monolog.handler'] = function () use ($app) {

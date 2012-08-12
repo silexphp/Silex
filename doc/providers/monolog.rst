@@ -31,9 +31,6 @@ Services
 
     $app['monolog']->addDebug('Testing the Monolog logging.');
 
-* **monolog.configure**: Protected closure that takes the logger as an
-  argument. You can override it if you do not want the default behavior.
-
 Registering
 -----------
 
@@ -71,6 +68,18 @@ add log entries for any logging level through ``addDebug()``, ``addInfo()``,
 
         return new Response('', 201);
     });
+
+Customization
+-------------
+
+You can configure Monolog (like adding or changing the handlers) before using
+it by extending the ``monolog`` service::
+
+    $app['monolog'] = $app->share($app->extend('monolog', function($monolog, $app) {
+        $monolog->pushHandler(...);
+
+        return $monolog;
+    }));
 
 Traits
 ------

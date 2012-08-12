@@ -522,7 +522,7 @@ takes an ``Exception`` argument and returns a response::
     use Symfony\Component\HttpFoundation\Response;
 
     $app->error(function (\Exception $e, $code) {
-        return new Response('We are sorry, but something went terribly wrong.', $code);
+        return new Response('We are sorry, but something went terribly wrong.');
     });
 
 You can also check for specific errors by using the ``$code`` argument, and
@@ -539,8 +539,17 @@ handle them differently::
                 $message = 'We are sorry, but something went terribly wrong.';
         }
 
-        return new Response($message, $code);
+        return new Response($message);
     });
+
+.. note::
+
+    As Silex ensures that the Response status code is set to the most
+    appropriate one depending on the exception, setting the status on the
+    response won't work. If you want to overwrite the status code (which you
+    should not without a good reason), set the ``X-Status-Code`` header::
+
+        return new Response('Error', 404 /* ignored */, array('X-Status-Code' => 200));
 
 You can restrict an error handler to only handle some Exception classes by
 setting a more specific type hint for the Closure argument::
@@ -607,6 +616,7 @@ Forwards
 When you want to delegate the rendering to another controller, without a
 round-trip to the browser (as for a redirect), use an internal sub-request::
 
+    use Symfony\Component\HttpFoundation\Request;
     use Symfony\Component\HttpKernel\HttpKernelInterface;
 
     $app->get('/', function () use ($app) {

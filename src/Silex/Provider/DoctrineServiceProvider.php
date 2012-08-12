@@ -58,13 +58,13 @@ class DoctrineServiceProvider implements ServiceProviderInterface
             $app['dbs.options'] = $tmp;
         });
 
-        $app['dbs'] = $app->share(function () use ($app) {
+        $app['dbs'] = $app->share(function ($app) {
             $app['dbs.options.initializer']();
 
             $dbs = new \Pimple();
             foreach ($app['dbs.options'] as $name => $options) {
                 if ($app['dbs.default'] === $name) {
-                    // we use shortcuts here in case the default has been overriden
+                    // we use shortcuts here in case the default has been overridden
                     $config = $app['db.config'];
                     $manager = $app['db.event_manager'];
                 } else {
@@ -78,7 +78,7 @@ class DoctrineServiceProvider implements ServiceProviderInterface
             return $dbs;
         });
 
-        $app['dbs.config'] = $app->share(function () use ($app) {
+        $app['dbs.config'] = $app->share(function ($app) {
             $app['dbs.options.initializer']();
 
             $configs = new \Pimple();
@@ -89,7 +89,7 @@ class DoctrineServiceProvider implements ServiceProviderInterface
             return $configs;
         });
 
-        $app['dbs.event_manager'] = $app->share(function () use ($app) {
+        $app['dbs.event_manager'] = $app->share(function ($app) {
             $app['dbs.options.initializer']();
 
             $managers = new \Pimple();
@@ -101,19 +101,19 @@ class DoctrineServiceProvider implements ServiceProviderInterface
         });
 
         // shortcuts for the "first" DB
-        $app['db'] = $app->share(function() use ($app) {
+        $app['db'] = $app->share(function ($app) {
             $dbs = $app['dbs'];
 
             return $dbs[$app['dbs.default']];
         });
 
-        $app['db.config'] = $app->share(function() use ($app) {
+        $app['db.config'] = $app->share(function ($app) {
             $dbs = $app['dbs.config'];
 
             return $dbs[$app['dbs.default']];
         });
 
-        $app['db.event_manager'] = $app->share(function() use ($app) {
+        $app['db.event_manager'] = $app->share(function ($app) {
             $dbs = $app['dbs.event_manager'];
 
             return $dbs[$app['dbs.default']];
