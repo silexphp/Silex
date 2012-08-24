@@ -8,7 +8,7 @@ definition instead of a ``function () { ... }`` but you have to inject the
 ``Silex\Application $app`` as a parameter on each method of your controller
 class, which can become quite boring.
 
-In order to avoid these repetitive injections, you need to your own
+In order to avoid these repetitive injections, you need to create your own
 ``ControllerResolver`` which extends the ``Silex\ControllerResolver``
 (inspired by the one in the Symfony2 framework bundle) :
 
