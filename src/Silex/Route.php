@@ -35,9 +35,7 @@ class Route extends BaseRoute
      */
     public function assert($variable, $regexp)
     {
-        $this->setRequirement($variable, $regexp);
-
-        return $this;
+        return $this->setRequirement($variable, $regexp);
     }
 
     /**
@@ -50,9 +48,7 @@ class Route extends BaseRoute
      */
     public function value($variable, $default)
     {
-        $this->setDefault($variable, $default);
-
-        return $this;
+        return $this->setDefault($variable, $default);
     }
 
     /**
@@ -67,9 +63,8 @@ class Route extends BaseRoute
     {
         $converters = $this->getOption('_converters');
         $converters[$variable] = $callback;
-        $this->setOption('_converters', $converters);
 
-        return $this;
+        return $this->setOption('_converters', $converters);
     }
 
     /**
@@ -81,9 +76,7 @@ class Route extends BaseRoute
      */
     public function method($method)
     {
-        $this->setRequirement('_method', $method);
-
-        return $this;
+        return $this->setRequirement('_method', $method);
     }
 
     /**
@@ -93,9 +86,7 @@ class Route extends BaseRoute
      */
     public function requireHttp()
     {
-        $this->setRequirement('_scheme', 'http');
-
-        return $this;
+        return $this->setRequirement('_scheme', 'http');
     }
 
     /**
@@ -105,9 +96,7 @@ class Route extends BaseRoute
      */
     public function requireHttps()
     {
-        $this->setRequirement('_scheme', 'https');
-
-        return $this;
+        return $this->setRequirement('_scheme', 'https');
     }
 
     /**
@@ -121,9 +110,8 @@ class Route extends BaseRoute
     {
         $callbacks = $this->getOption('_before_middlewares');
         $callbacks[] = $callback;
-        $this->setOption('_before_middlewares', $callbacks);
 
-        return $this;
+        return $this->setOption('_before_middlewares', $callbacks);
     }
 
     /**
@@ -137,8 +125,7 @@ class Route extends BaseRoute
     {
         $callbacks = $this->getOption('_after_middlewares');
         $callbacks[] = $callback;
-        $this->setOption('_after_middlewares', $callbacks);
 
-        return $this;
+        return $this->setOption('_after_middlewares', $callbacks);
     }
 }
