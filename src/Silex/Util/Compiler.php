@@ -12,7 +12,6 @@
 namespace Silex\Util;
 
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Process\Process;
 
 /**
