@@ -453,10 +453,10 @@ sample users::
 
     use Doctrine\DBAL\Schema\Table;
 
-    $schema = $conn->getSchemaManager();
+    $schema = $app['db']->getSchemaManager();
     if (!$schema->tablesExist('users')) {
         $users = new Table('users');
-        $users->addColumn('id', 'integer', array('unsigned' => true));
+        $users->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
         $users->setPrimaryKey(array('id'));
         $users->addColumn('username', 'string', array('length' => 32));
         $users->addUniqueIndex(array('username'));
@@ -465,8 +465,8 @@ sample users::
 
         $schema->createTable($users);
 
-        $this->conn->executeQuery('INSERT INTO users (username, password, roles) VALUES ("fabien", "5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==", "ROLE_USER")');
-        $this->conn->executeQuery('INSERT INTO users (username, password, roles) VALUES ("admin", "5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==", "ROLE_ADMIN")');
+        $app['db']->executeQuery('INSERT INTO users (username, password, roles) VALUES ("fabien", "5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==", "ROLE_USER")');
+        $app['db']->executeQuery('INSERT INTO users (username, password, roles) VALUES ("admin", "5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==", "ROLE_ADMIN")');
     }
 
 .. tip::
