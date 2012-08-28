@@ -28,7 +28,12 @@ Alternatively, if you use Apache 2.2.16 or higher, you can use the
 
 .. code-block:: apache
 
-    FallbackResource index.php
+    FallbackResource /index.php
+
+.. note::
+
+    If your site is not at the webroot level you will have to adjust the path to
+    point to your directory, relative from the webroot.
 
 nginx
 -----
