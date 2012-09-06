@@ -48,8 +48,8 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
 {
     const VERSION = '1.0-DEV';
 
-    private $providers = array();
-    private $booted = false;
+    protected $providers = array();
+    protected $booted = false;
     private $beforeDispatched = false;
 
     /**
