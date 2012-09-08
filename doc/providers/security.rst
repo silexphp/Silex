@@ -477,7 +477,7 @@ sample users::
     entities.
 
 Defining a custom Authentication Provider
------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The Symfony Security component provides a lot of ready-to-use authentication
 providers (form, HTTP, X509, remember me, ...), but you can add new ones
