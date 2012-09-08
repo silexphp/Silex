@@ -1,5 +1,5 @@
 {
-    "hash": "bd90711641b078681e124d35baf3291c",
+    "hash": "e9bbfe0e73bf6da4acfe01fbada86650",
     "packages": [
         {
             "package": "pimple/pimple",
@@ -29,7 +29,7 @@
         },
         {
             "package": "doctrine/dbal",
-            "version": "2.1.7"
+            "version": "2.2.2"
         },
         {
             "package": "monolog/monolog",
