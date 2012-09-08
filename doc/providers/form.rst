@@ -65,6 +65,7 @@ Registering
     .. code-block:: json
 
         "require": {
+            "symfony/validator": "2.1.*",
             "symfony/config": "2.1.*",
             "symfony/translation": "2.1.*"
         }
