@@ -37,7 +37,7 @@
         "symfony/twig-bridge": "2.1.*",
         "symfony/validator": "2.1.*",
         "twig/twig": ">=1.8.0,<2.0-dev",
-        "doctrine/dbal": "2.1.*",
+        "doctrine/dbal": "2.2.*",
         "swiftmailer/swiftmailer": "4.2.*"
     },
     "suggest": {
@@ -48,7 +48,6 @@
     "autoload": {
         "psr-0": { "Silex": "src/" }
     },
-    "minimum-stability": "dev",
     "extra": {
         "branch-alias": {
             "dev-master": "1.0-dev"
