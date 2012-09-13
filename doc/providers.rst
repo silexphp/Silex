@@ -20,7 +20,7 @@ application::
     $app->register(new Acme\DatabaseServiceProvider());
 
 You can also provide some parameters as a second argument. These
-will be set **before** the provider is registered::
+will be set **after** the provider is registered, but **before** is booted:
 
     $app->register(new Acme\DatabaseServiceProvider(), array(
         'database.dsn'      => 'mysql:host=localhost;dbname=myapp',
