@@ -177,8 +177,9 @@ class BeforeAfterFilterTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->before(function () use ($app) {
+        $app->before(function (Request $req) use ($app) {
             $app['locale'] = $app['request']->get('locale');
+
         });
 
         $app->match('/foo/{locale}', function () use ($app) {
@@ -218,5 +219,20 @@ class BeforeAfterFilterTest extends \PHPUnit_Framework_TestCase
 
         $request = Request::create('/');
         $this->assertEquals('foo---', $app->handle($request)->getContent());
+    }
+
+    public function testBeforeFilterPriorToRouteMatching()
+    {
+        $app = new Application();
+
+        $app->before(function () {
+            return new Response('before');
+        });
+
+        $app->match('/', function() { return new Response('bad'); });
+
+        $request = Request::create('/bad_url');
+        $this->assertEquals('before', $app->handle($request)->getContent());
+
     }
 }
