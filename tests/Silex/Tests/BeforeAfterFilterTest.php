@@ -229,7 +229,12 @@ class BeforeAfterFilterTest extends \PHPUnit_Framework_TestCase
             return new Response('before');
         });
 
-        $app->match('/', function() { return new Response('bad'); });
+        // Issue 452 case 1
+        $app->match('/', function() { return new Response('bad'); })
+            ->before(function () {
+                // Issue 452 case 2
+                return new Response('Should never happen!');
+            });
 
         $request = Request::create('/bad_url');
         $this->assertEquals('before', $app->handle($request)->getContent());
