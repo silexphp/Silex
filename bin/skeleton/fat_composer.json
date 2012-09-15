@@ -1,5 +1,4 @@
 {
-    "minimum-stability": "dev",
     "require": {
         "silex/silex": "1.0.*",
         "symfony/browser-kit": "2.1.*",
@@ -19,7 +18,7 @@
         "symfony/twig-bridge": "2.1.*",
         "monolog/monolog": ">=1.0.0,<1.2-dev",
         "twig/twig": ">=1.2.0,<2.0-dev",
-        "doctrine/dbal": "2.1.*",
+        "doctrine/dbal": "2.2.*",
         "swiftmailer/swiftmailer": "4.1.*"
     }
 }
