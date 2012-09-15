@@ -163,6 +163,21 @@ class BeforeAfterFilterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(2, $i);
     }
 
+    public function testBeforeFilterPreventsBeforeMiddlewaresToBeExecuted()
+    {
+        $app = new Application();
+
+        $app->before(function () { return new Response('app before'); });
+
+        $app->get('/', function() {
+            return new Response('test');
+        })->before(function() {
+            return new Response('middleware before');
+        });
+
+        $this->assertEquals('app before', $app->handle(Request::create('/'))->getContent());
+    }
+
     public function testBeforeFilterExceptionsWhenHandlingAnException()
     {
         $app = new Application();
