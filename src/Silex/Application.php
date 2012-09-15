@@ -550,6 +550,10 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
             $this->beforeDispatched = true;
             $this['dispatcher']->dispatch(SilexEvents::BEFORE, $event);
+
+            if ($event->hasResponse()) {
+                return;
+            }
         }
 
         $this['route_before_middlewares_trigger']($event);
