@@ -555,7 +555,17 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
                 return;
             }
         }
+    }
 
+    /**
+     * Runs route before filters
+     *
+     * @param GetResponseEvent $event The event to handle
+     *
+     * @see before()
+     */
+    public function onKernelRequestRouteBefore(GetResponseEvent $event)
+    {
         $this['route_before_middlewares_trigger']($event);
     }
 
@@ -654,7 +664,8 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         return array(
             KernelEvents::REQUEST    => array(
                 array('onEarlyKernelRequest', 256),
-                array('onKernelRequest')
+                array('onKernelRequest', 64),
+                array('onKernelRequestRouteBefore')
             ),
             KernelEvents::CONTROLLER => 'onKernelController',
             KernelEvents::RESPONSE   => 'onKernelResponse',
