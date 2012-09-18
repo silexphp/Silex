@@ -32,7 +32,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\EventDispatcher\Event;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RequestContext;
@@ -86,8 +85,9 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             return new ExceptionHandler();
         });
 
+        $this['dispatcher_class'] = 'Symfony\\Component\\EventDispatcher\\EventDispatcher';
         $this['dispatcher'] = $this->share(function () use ($app) {
-            $dispatcher = new EventDispatcher();
+            $dispatcher = new $this['dispatcher_class']();
             $dispatcher->addSubscriber($app);
 
             $urlMatcher = new LazyUrlMatcher(function () use ($app) {
