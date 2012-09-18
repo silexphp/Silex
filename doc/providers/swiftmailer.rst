@@ -14,6 +14,7 @@ Parameters
   configuration.
 
   The following options can be set:
+
   * **host**: SMTP hostname, defaults to 'localhost'.
   * **port**: SMTP port, defaults to 25.
   * **username**: SMTP username, defaults to an empty string.
