@@ -14,13 +14,23 @@ Parameters
   configuration.
 
   The following options can be set:
-
   * **host**: SMTP hostname, defaults to 'localhost'.
   * **port**: SMTP port, defaults to 25.
   * **username**: SMTP username, defaults to an empty string.
   * **password**: SMTP password, defaults to an empty string.
   * **encryption**: SMTP encryption, defaults to null.
   * **auth_mode**: SMTP authentication mode, defaults to null.
+
+  Example usage::
+
+    $app['swiftmailer.options'] = array(
+        'host' => 'host',
+        'port' => '25',
+        'username' => 'username',
+        'password' => 'password',
+        'encryption' => 'null',
+        'auth_mode' => 'null'
+    );
 
 Services
 --------
