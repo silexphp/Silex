@@ -28,8 +28,8 @@ Parameters
         'port' => '25',
         'username' => 'username',
         'password' => 'password',
-        'encryption' => 'null',
-        'auth_mode' => 'null'
+        'encryption' => null,
+        'auth_mode' => null
     );
 
 Services
