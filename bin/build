@@ -44,8 +44,9 @@ do
     find . -name .git | xargs rm -rf -
     find . -name phpunit.xml.* | xargs rm -rf -
     find . -type d -name Tests | xargs rm -rf -
-    find . -type d -name tests | xargs rm -rf -
+    find . -type d -name test* | xargs rm -rf -
     find . -type d -name doc | xargs rm -rf -
+    find . -type d -name ext | xargs rm -rf -
 
     export COPY_EXTENDED_ATTRIBUTES_DISABLE=true
     export COPYFILE_DISABLE=true
