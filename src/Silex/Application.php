@@ -87,7 +87,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
 
         $this['dispatcher_class'] = 'Symfony\\Component\\EventDispatcher\\EventDispatcher';
         $this['dispatcher'] = $this->share(function () use ($app) {
-            $dispatcher = new $this['dispatcher_class']();
+            $dispatcher = new $app['dispatcher_class']();
             $dispatcher->addSubscriber($app);
 
             $urlMatcher = new LazyUrlMatcher(function () use ($app) {
