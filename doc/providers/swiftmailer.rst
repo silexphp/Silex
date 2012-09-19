@@ -22,6 +22,17 @@ Parameters
   * **encryption**: SMTP encryption, defaults to null.
   * **auth_mode**: SMTP authentication mode, defaults to null.
 
+  Example usage::
+
+    $app['swiftmailer.options'] = array(
+        'host' => 'host',
+        'port' => '25',
+        'username' => 'username',
+        'password' => 'password',
+        'encryption' => null,
+        'auth_mode' => null
+    );
+
 Services
 --------
 
