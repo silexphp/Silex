@@ -59,7 +59,7 @@ Silex applications by using the ``http_cache`` service::
 The provider also provides ESI support::
 
     $app->get('/', function() {
-        return new Response(<<<EOF
+        $response = new Response(<<<EOF
     <html>
         <body>
             Hello
@@ -69,15 +69,15 @@ The provider also provides ESI support::
 
     EOF
         , 200, array(
-            'Cache-Control' => 's-maxage=20',
             'Surrogate-Control' => 'content="ESI/1.0"',
         ));
+
+        return $response->setTtl(20);
     });
 
     $app->get('/included', function() {
-        return new Response('Foo', 200, array(
-            'Cache-Control' => 's-maxage=5',
-        ));
+        $response = new Response('Foo');
+        return $response->setTtl(5);
     });
 
     $app['http_cache']->run();
