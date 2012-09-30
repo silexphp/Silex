@@ -72,12 +72,16 @@ The provider also provides ESI support::
             'Surrogate-Control' => 'content="ESI/1.0"',
         ));
 
-        return $response->setTtl(20);
+        $response->setTtl(20);
+
+        return $response;
     });
 
     $app->get('/included', function() {
         $response = new Response('Foo');
-        return $response->setTtl(5);
+        $response->setTtl(5);
+
+        return $response;
     });
 
     $app['http_cache']->run();
