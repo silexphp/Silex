@@ -24,7 +24,6 @@ If you want more flexibility, use Composer instead. Create a
 .. code-block:: json
 
     {
-        "minimum-stability": "dev",
         "require": {
             "silex/silex": "1.0.*"
         }
@@ -36,6 +35,12 @@ And run Composer to install Silex and all its dependencies:
 
     $ curl -s http://getcomposer.org/installer | php
     $ php composer.phar install
+
+.. tip::
+
+    By default, Silex relies on the stable Symfony components. If you want to
+    use their master version instead, add ``"minimum-stability": "dev"`` in
+    your ``composer.json`` file.
 
 Upgrading
 ---------
