@@ -61,6 +61,8 @@ Moreover, if you use Twig, you will have access to the ``path()`` and
 
     {{ path('homepage') }}
     {{ url('homepage') }} {# generates the absolute url http://example.org/ #}
+    {{ path('hello', {name: 'Fabien'}) }}
+    {{ url('hello', {name: 'Fabien'}) }} {# generates the absolute url http://example.org/hello/Fabien #}
 
 Traits
 ------
