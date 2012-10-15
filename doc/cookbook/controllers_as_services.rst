@@ -1,7 +1,7 @@
 How to define Controllers as Services
 =====================================
 
-As your Silex application grows, you may wish to begin organising your
+As your Silex application grows, you may wish to begin organizing your
 controllers in a more formal fashion. Silex can use controller classes out of
 the box, but with a bit of work, your controllers can be created as services,
 giving you the full power of dependency injection and lazy loading.
