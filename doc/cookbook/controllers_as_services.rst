@@ -35,7 +35,7 @@ whatever was defined as the controller for the current route in to something it
 can invoke. We want to override the default implementation, to allow for a format
 taken from the full stack framework, whereby two strings separated by a single
 colon, represent a service ID and the method to call on that service. For
-example, ``posts.controller:indexJson`` should resolve to the ``indexJson``
+example, ``posts.controller:indexJsonAction`` should resolve to the ``indexJsonAction``
 method on the ``posts.controller`` service. Add the following class under your
 app's namespace::
 
@@ -76,7 +76,7 @@ Controller Implementation
 -------------------------
 
 Writing your controller is pretty simple, create a Plain Ol' PHP Object (POPO)
-with your ``PostRepository`` as a dependency, along with a ``indexJson`` method
+with your ``PostRepository`` as a dependency, along with a ``indexJsonAction`` method
 to handle the request. Although not shown in the example below, you can use type
 hinting and parameter naming to get the parameters you need, just like with
 standard Silex routes.
@@ -98,7 +98,7 @@ controller has a well defined responsibility and is easily tested/specced::
             $this->repo = $repo;
         }
 
-        public function indexJson()
+        public function indexJsonAction()
         {
             return new JsonResponse($this->repo->findAll());
         }
@@ -110,4 +110,4 @@ And lastly, define your controller as a service in the application::
         return new PostController($app['posts.repository']);
     });
 
-    $app->get('/posts.json', "posts.controller:indexJson");
+    $app->get('/posts.json', "posts.controller:indexJsonAction");
