@@ -250,12 +250,12 @@ When using a form for authentication, you can let users log out if you add the
         ),
     );
 
-A route is automatically generated, based on the configured path (all ``/``
-are replaced with ``_`` and the leading ``/`` is stripped):
-
-.. code-block:: jinja
-
-    <a href="{{ path('logout') }}">Logout</a>
+.. caution::
+    A route is automatically generated, based on the configured path (all ``/``
+    are replaced with ``_`` and the leading ``/`` is stripped):
+    
+    .. code-block:: jinja
+        <a href="{{ path('logout') }}">Logout</a>
 
 Allowing Anonymous Users
 ~~~~~~~~~~~~~~~~~~~~~~~~
