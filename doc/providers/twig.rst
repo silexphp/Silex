@@ -103,7 +103,7 @@ The Twig provider provides a ``twig`` service::
 This will render a file named ``views/hello.twig``.
 
 In any Twig template, the ``app`` variable refers to the Application object.
-So you can access any services from within your view. For example to access
+So you can access any service from within your view. For example to access
 ``$app['request']->getHost()``, just put this in your template:
 
 .. code-block:: jinja
