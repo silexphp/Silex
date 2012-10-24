@@ -239,7 +239,8 @@ Adding a Logout
 ~~~~~~~~~~~~~~~
 
 When using a form for authentication, you can let users log out if you add the
-``logout`` setting, where ``logout_path`` matches the existing regex pattern``::
+``logout`` setting, where ``logout_path`` must match the main firewall
+pattern::
 
     $app['security.firewalls'] = array(
         'secured' => array(
