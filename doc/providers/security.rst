@@ -476,6 +476,26 @@ sample users::
     provides a user provider class that is able to load users from your
     entities.
 
+
+Defining a custom Encoder Factory
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Simple example of use sha1 for an existing application
+
+.. code-block:: php
+
+  use Symfony\Component\Security\Core\Encoder\EncoderFactory;
+  use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
+  
+  $defaultEncoder = new MessageDigestPasswordEncoder('sha1', false, 0);
+  $encoders = array(
+      'Symfony\\Component\\Security\\Core\\User\\User' => $defaultEncoder,    
+  );
+  $encoderFactory = new EncoderFactory($encoders);
+  $app['security.encoder_factory'] = $encoderFactory;
+
+
+
 Defining a custom Authentication Provider
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -554,3 +574,5 @@ Traits
     })->secure('ROLE_ADMIN');
 
 .. _cookbook: http://symfony.com/doc/current/cookbook/security/custom_authentication_provider.html
+    
+$app['security.encoder_factory'] = $encoderFactory;
