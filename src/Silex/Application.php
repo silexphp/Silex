@@ -179,11 +179,11 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     {
         $this->providers[] = $provider;
 
-        $provider->register($this);
-
         foreach ($values as $key => $value) {
             $this[$key] = $value;
         }
+
+        $provider->register($this);
     }
 
     /**
