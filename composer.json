@@ -33,6 +33,7 @@
         "symfony/finder": ">=2.1,<2.3-dev",
         "symfony/monolog-bridge": ">=2.1,<2.3-dev",
         "symfony/process": ">=2.1,<2.3-dev",
+        "symfony/serializer": ">=2.1,<2.3-dev",
         "symfony/translation": ">=2.1,<2.3-dev",
         "symfony/twig-bridge": ">=2.1,<2.3-dev",
         "symfony/validator": ">=2.1,<2.3-dev",
