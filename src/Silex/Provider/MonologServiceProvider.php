@@ -18,6 +18,7 @@ use Silex\ServiceProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bridge\Monolog\Handler\DebugHandler;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 /**
  * Monolog Provider.
@@ -75,7 +76,12 @@ class MonologServiceProvider implements ServiceProviderInterface
         });
 
         $app->error(function (\Exception $e) use ($app) {
-            $app['monolog']->addError($e->getMessage());
+            $message = sprintf('%s: %s (uncaught exception) at %s line %s', get_class($e), $e->getMessage(), $e->getFile(), $e->getLine());
+            if ($e instanceof HttpExceptionInterface && $e->getStatusCode() < 500) {
+                $app['monolog']->addError($message);
+            } else {
+                $app['monolog']->addCritical($message);
+            }
         }, 255);
 
         $app->after(function (Request $request, Response $response) use ($app) {
