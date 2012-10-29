@@ -169,7 +169,7 @@ Traits
 
 .. code-block:: php
 
-    $app->form('form', $data);
+    $app->form($data);
 
 For more information, consult the `Symfony2 Forms documentation
 <http://symfony.com/doc/2.1/book/forms.html>`_.
