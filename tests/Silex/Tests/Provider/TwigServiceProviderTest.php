@@ -49,6 +49,56 @@ class TwigServiceProviderTest extends \PHPUnit_Framework_TestCase
 
     public function testRenderFunction()
     {
+        $app = $this->createRenderApp();
+
+        $request = Request::create('/hello');
+        $response = $app->handle($request);
+        $this->assertEquals('foo', $response->getContent());
+    }
+
+    /** @test */
+    public function renderShouldPrependBaseUrlToSubRequest()
+    {
+        $app = $this->createRenderApp();
+
+        $server = array(
+            'SCRIPT_FILENAME'   => '/Users/igor/Sites/localhost/foo/app.php',
+            'REQUEST_URI'       => '/foo/app.php/hello',
+            'SCRIPT_NAME'       => '/foo/app.php',
+            'PATH_INFO'         => '/hello',
+            'PHP_SELF'          => '/foo/app.php/hello',
+        );
+        $request = Request::create('/foo/app.php/hello', 'get', array(), array(), array(), $server);
+        $response = $app->handle($request);
+        $this->assertEquals('foo', $response->getContent());
+    }
+
+    public function testRenderRouteFunction()
+    {
+        $app = new Application();
+
+        $app->register(new TwigServiceProvider(), array(
+            'twig.templates'    => array(
+                'hello' => '{{ render_route("foo", { bar: "a", baz: "b" }) }}',
+            ),
+        ));
+
+        $app->get('/hello', function () use ($app) {
+            return $app['twig']->render('hello');
+        });
+
+        $app->get('/le-foo/{bar}/{baz}', function ($bar, $baz) {
+            return "le-foo/$bar/$baz";
+        })
+        ->bind('foo');
+
+        $request = Request::create('/hello');
+        $response = $app->handle($request);
+        $this->assertEquals('le-foo/a/b', $response->getContent());
+    }
+
+    private function createRenderApp()
+    {
         $app = new Application();
 
         $app->register(new TwigServiceProvider(), array(
@@ -66,8 +116,10 @@ class TwigServiceProviderTest extends \PHPUnit_Framework_TestCase
             return $app['twig']->render('foo');
         });
 
-        $request = Request::create('/hello');
-        $response = $app->handle($request);
-        $this->assertEquals('foo', $response->getContent());
+        $app->error(function ($e) {
+            throw $e;
+        });
+
+        return $app;
     }
 }

@@ -1,6 +1,20 @@
 Changelog
 =========
 
+* **2012-11-04**: Made the TwigServiceProvider ``render`` function prepend the
+  base URL to the path. This makes it behave consistently when a base URL is
+  present. If you were using ``render`` in combination with ``path``, you
+  should use the newly introduced ``render_route`` function instead:
+
+    Before::
+
+        {{ render(path('foo', { id: foo.id })) }}
+
+    After::
+
+        {{ render_route('foo', { id: foo.id }) }}
+
+
 * **2012-07-15**: removed the ``monolog.configure`` service. Use the
   ``extend`` method instead:
 

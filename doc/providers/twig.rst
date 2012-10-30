@@ -117,8 +117,14 @@ from a template:
 
     {{ render('/sidebar') }}
 
-    {# or if you are also using UrlGeneratorServiceProvider with the SymfonyBridgesServiceProvider #}
-    {{ render(path('sidebar')) }}
+If you are using named routes you can use the ``render_route`` function. Note
+that you will need to have the ``symfony/routing`` package installed for this
+to work.
+
+.. code-block:: jinja
+
+    {{ render_route('sidebar') }}
+    {{ render_route('hello', { name: 'igor' }) }}
 
 Traits
 ------
