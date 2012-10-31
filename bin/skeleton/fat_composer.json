@@ -3,6 +3,7 @@
         "silex/silex": "1.0.*@dev",
         "symfony/browser-kit": "2.1.*",
         "symfony/console": "2.1.*",
+        "symfony/config": "2.1.*",
         "symfony/css-selector": "2.1.*",
         "symfony/dom-crawler": "2.1.*",
         "symfony/filesystem": "2.1.*",
