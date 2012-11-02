@@ -81,8 +81,8 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             return new $app['route_class']();
         };
 
-        $this['exception_handler'] = $this->share(function () {
-            return new ExceptionHandler();
+        $this['exception_handler'] = $this->share(function () use ($app) {
+            return new ExceptionHandler($app['debug']);
         });
 
         $this['dispatcher_class'] = 'Symfony\\Component\\EventDispatcher\\EventDispatcher';
@@ -638,12 +638,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             }
         }
 
-        $errorEvent = new GetResponseForExceptionEvent($this, $event->getRequest(), $event->getRequestType(), $event->getException());
-        $this['dispatcher']->dispatch(SilexEvents::ERROR, $errorEvent);
-
-        if ($errorEvent->hasResponse()) {
-            $event->setResponse($errorEvent->getResponse());
-        }
+        $this['dispatcher']->dispatch(SilexEvents::ERROR, $event);
     }
 
     /**
