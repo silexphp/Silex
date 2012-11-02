@@ -22,10 +22,16 @@ use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
  */
 class ExceptionHandler implements EventSubscriberInterface
 {
+    protected $debug;
+
+    public function __construct($debug)
+    {
+        $this->debug = $debug;
+    }
+
     public function onSilexError(GetResponseForExceptionEvent $event)
     {
-        $app = $event->getKernel();
-        $handler = new DebugExceptionHandler($app['debug']);
+        $handler = new DebugExceptionHandler($this->debug);
 
         $event->setResponse($handler->createResponse($event->getException()));
     }
