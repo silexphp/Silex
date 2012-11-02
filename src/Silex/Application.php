@@ -47,9 +47,11 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
 {
     const VERSION = '1.0-DEV';
 
+    const EARLY_EVENT = 512;
+    const LATE_EVENT  = -512;
+
     private $providers = array();
     private $booted = false;
-    private $beforeDispatched = false;
 
     /**
      * Constructor.
@@ -281,7 +283,11 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function before($callback, $priority = 0)
     {
-        $this['dispatcher']->addListener(SilexEvents::BEFORE, function (GetResponseEvent $event) use ($callback) {
+        $this['dispatcher']->addListener(KernelEvents::REQUEST, function (GetResponseEvent $event) use ($callback) {
+            if (HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
+                return;
+            }
+
             $ret = call_user_func($callback, $event->getRequest());
 
             if ($ret instanceof Response) {
@@ -301,8 +307,10 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function after($callback, $priority = 0)
     {
-        $this['dispatcher']->addListener(SilexEvents::AFTER, function (FilterResponseEvent $event) use ($callback) {
-            call_user_func($callback, $event->getRequest(), $event->getResponse());
+        $this['dispatcher']->addListener(KernelEvents::RESPONSE, function (FilterResponseEvent $event) use ($callback) {
+            if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
+                call_user_func($callback, $event->getRequest(), $event->getResponse());
+            }
         }, $priority);
     }
 
@@ -317,7 +325,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function finish($callback, $priority = 0)
     {
-        $this['dispatcher']->addListener(SilexEvents::FINISH, function (PostResponseEvent $event) use ($callback) {
+        $this['dispatcher']->addListener(KernelEvents::TERMINATE, function (PostResponseEvent $event) use ($callback) {
             call_user_func($callback, $event->getRequest(), $event->getResponse());
         }, $priority);
     }
@@ -349,11 +357,12 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      *
      * @param mixed   $callback Error handler callback, takes an Exception argument
      * @param integer $priority The higher this value, the earlier an event
-     *                          listener will be triggered in the chain (defaults to 0)
+     *                          listener will be triggered in the chain (defaults to -8)
      */
-    public function error($callback, $priority = 0)
+    public function error($callback, $priority = -8)
     {
-        $this['dispatcher']->addListener(SilexEvents::ERROR, function (GetResponseForExceptionEvent $event) use ($callback) {
+        $app = $this;
+        $this['dispatcher']->addListener(KernelEvents::EXCEPTION, function (GetResponseForExceptionEvent $event) use ($callback, $app) {
             $exception = $event->getException();
 
             if (is_array($callback)) {
@@ -498,8 +507,6 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             $this->boot();
         }
 
-        $this->beforeDispatched = false;
-
         $current = HttpKernelInterface::SUB_REQUEST === $type ? $this['request'] : $this['request_error'];
 
         $this['request'] = $request;
@@ -540,21 +547,10 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      * Runs before filters.
      *
      * @param GetResponseEvent $event The event to handle
-     *
-     * @see before()
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
         $this['locale'] = $event->getRequest()->getLocale();
-
-        if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
-            $this->beforeDispatched = true;
-            $this['dispatcher']->dispatch(SilexEvents::BEFORE, $event);
-
-            if ($event->hasResponse()) {
-                return;
-            }
-        }
 
         $this['route_before_middlewares_trigger']($event);
     }
@@ -592,53 +588,10 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      * Runs after filters.
      *
      * @param FilterResponseEvent $event The event to handle
-     *
-     * @see after()
      */
     public function onKernelResponse(FilterResponseEvent $event)
     {
         $this['route_after_middlewares_trigger']($event);
-
-        if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
-            $this['dispatcher']->dispatch(SilexEvents::AFTER, $event);
-        }
-    }
-
-    /**
-     * Runs finish filters.
-     *
-     * @param PostResponseEvent $event The event to handle
-     *
-     * @see finish()
-     */
-    public function onKernelTerminate(PostResponseEvent $event)
-    {
-        $this['dispatcher']->dispatch(SilexEvents::FINISH, $event);
-    }
-
-    /**
-     * Runs error filters.
-     *
-     * Executes registered error handlers until a response is returned,
-     * in which case it returns it to the client.
-     *
-     * @param GetResponseForExceptionEvent $event The event to handle
-     *
-     * @see error()
-     */
-    public function onKernelException(GetResponseForExceptionEvent $event)
-    {
-        if (!$this->beforeDispatched) {
-            $this->beforeDispatched = true;
-            try {
-                $this['dispatcher']->dispatch(SilexEvents::BEFORE, $event);
-            } catch (\Exception $e) {
-                // as we are already handling an exception, ignore this one
-                // even if it might have been thrown on purpose by the developer
-            }
-        }
-
-        $this['dispatcher']->dispatch(SilexEvents::ERROR, $event);
     }
 
     /**
@@ -649,12 +602,10 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         return array(
             KernelEvents::REQUEST    => array(
                 array('onEarlyKernelRequest', 256),
-                array('onKernelRequest')
+                array('onKernelRequest', -128)
             ),
             KernelEvents::CONTROLLER => 'onKernelController',
-            KernelEvents::RESPONSE   => 'onKernelResponse',
-            KernelEvents::EXCEPTION  => array('onKernelException', -10),
-            KernelEvents::TERMINATE  => 'onKernelTerminate',
+            KernelEvents::RESPONSE   => array('onKernelResponse', 128),
             KernelEvents::VIEW       => array('onKernelView', -10),
         );
     }
