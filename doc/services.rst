@@ -213,7 +213,7 @@ don't want to mess with most of them.
 * **exception_handler**: The Exception handler is the default handler that is
   used when you don't register one via the ``error()`` method or if your handler
   does not return a Response. Disable it with
-  ``unset($app['exception_handler'])``.
+  ``$app['exception_handler']->disable()``.
 
 * **logger**: A
   `LoggerInterface

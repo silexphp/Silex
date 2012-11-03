@@ -1,6 +1,17 @@
 Changelog
 =========
 
+* **2012-11-04**: Removing the default exception handler should now be done
+  via its ``disable()`` method:
+
+    Before:
+
+        unset($app['exception_handler']);
+
+    After:
+
+        $app['exception_handler']->disable();
+
 * **2012-07-15**: removed the ``monolog.configure`` service. Use the
   ``extend`` method instead:
 
