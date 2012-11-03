@@ -97,6 +97,10 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             });
             $dispatcher->addSubscriber(new RouterListener($urlMatcher, $app['request_context'], $app['logger']));
             $dispatcher->addSubscriber(new LocaleListener($app['locale'], $urlMatcher));
+            if (isset($app['exception_handler'])) {
+                $dispatcher->addSubscriber($app['exception_handler']);
+            }
+            $dispatcher->addSubscriber(new ResponseListener($app['charset']));
 
             return $dispatcher;
         });
@@ -529,21 +533,6 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     }
 
     /**
-     * Handles KernelEvents::REQUEST events registered early.
-     *
-     * @param GetResponseEvent $event The event to handle
-     */
-    public function onEarlyKernelRequest(GetResponseEvent $event)
-    {
-        if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
-            if (isset($this['exception_handler'])) {
-                $this['dispatcher']->addSubscriber($this['exception_handler']);
-            }
-            $this['dispatcher']->addSubscriber(new ResponseListener($this['charset']));
-        }
-    }
-
-    /**
      * Runs before filters.
      *
      * @param GetResponseEvent $event The event to handle
@@ -600,13 +589,10 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     public static function getSubscribedEvents()
     {
         return array(
-            KernelEvents::REQUEST    => array(
-                array('onEarlyKernelRequest', 256),
-                array('onKernelRequest', -128)
-            ),
-            KernelEvents::CONTROLLER => 'onKernelController',
-            KernelEvents::RESPONSE   => array('onKernelResponse', 128),
-            KernelEvents::VIEW       => array('onKernelView', -10),
+            KernelEvents::REQUEST    => array('onKernelRequest',    -128),
+            KernelEvents::CONTROLLER => array('onKernelController', 0),
+            KernelEvents::RESPONSE   => array('onKernelResponse',   128),
+            KernelEvents::VIEW       => array('onKernelView',       -10),
         );
     }
 }

@@ -24,14 +24,25 @@ use Symfony\Component\HttpKernel\KernelEvents;
 class ExceptionHandler implements EventSubscriberInterface
 {
     protected $debug;
+    protected $enabled;
 
     public function __construct($debug)
     {
         $this->debug = $debug;
+        $this->enabled = true;
+    }
+
+    public function disable()
+    {
+        $this->enabled = false;
     }
 
     public function onSilexError(GetResponseForExceptionEvent $event)
     {
+        if (!$this->enabled) {
+            return;
+        }
+
         $handler = new DebugExceptionHandler($this->debug);
 
         $event->setResponse($handler->createResponse($event->getException()));
