@@ -1,7 +1,14 @@
 Changelog
 =========
 
-* **2012-11-04**: Removing the default exception handler should now be done
+* **2012-11-05**: Filters have been renamed to application middlewares in the
+  documentation.
+
+* **2012-11-05**: The ``before()``, ``after()``, ``error()``, and ``finish()``
+  listener priorities now set the priority of the underlying Symfony event
+  instead of a custom one before.
+
+* **2012-11-05**: Removing the default exception handler should now be done
   via its ``disable()`` method:
 
     Before:

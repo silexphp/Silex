@@ -183,7 +183,8 @@ don't want to mess with most of them.
     $id = $app['request']->get('id');
 
   This is only available when a request is being served, you can only access
-  it from within a controller, before filter, after filter or error handler.
+  it from within a controller, an application before/after middlewares, or an
+  error handler.
 
 * **routes**: The `RouteCollection
   <http://api.symfony.com/master/Symfony/Component/Routing/RouteCollection.html>`_
