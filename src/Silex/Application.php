@@ -20,7 +20,6 @@ use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
-use Symfony\Component\HttpKernel\EventListener\LocaleListener;
 use Symfony\Component\HttpKernel\EventListener\ResponseListener;
 use Symfony\Component\HttpKernel\EventListener\RouterListener;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
@@ -37,6 +36,7 @@ use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RequestContext;
 use Silex\RedirectableUrlMatcher;
 use Silex\ControllerResolver;
+use Silex\EventListener\LocaleListener;
 
 /**
  * The Silex framework class.
@@ -96,7 +96,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
                 return $app['url_matcher'];
             });
             $dispatcher->addSubscriber(new RouterListener($urlMatcher, $app['request_context'], $app['logger']));
-            $dispatcher->addSubscriber(new LocaleListener($app['locale'], $urlMatcher));
+            $dispatcher->addSubscriber(new LocaleListener($app, $urlMatcher));
             if (isset($app['exception_handler'])) {
                 $dispatcher->addSubscriber($app['exception_handler']);
             }
@@ -539,8 +539,6 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
-        $this['locale'] = $event->getRequest()->getLocale();
-
         $this['route_before_middlewares_trigger']($event);
     }
 
