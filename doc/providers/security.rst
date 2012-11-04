@@ -307,6 +307,8 @@ instance) with the special ``IS_AUTHENTICATED_FULLY`` role:
         <a href="{{ path('login') }}">Login</a>
     {% endif %}
 
+Of course you will need to define a ``login`` route for this to work.
+
 .. tip::
 
     Don't use the ``getRoles()`` method to check user roles.
