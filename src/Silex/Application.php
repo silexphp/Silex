@@ -277,9 +277,11 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
     public function after($callback, $priority = 0)
     {
         $this['dispatcher']->addListener(KernelEvents::RESPONSE, function (FilterResponseEvent $event) use ($callback) {
-            if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
-                call_user_func($callback, $event->getRequest(), $event->getResponse());
+            if (HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
+                return;
             }
+
+            call_user_func($callback, $event->getRequest(), $event->getResponse());
         }, $priority);
     }
 
