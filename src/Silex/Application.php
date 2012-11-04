@@ -37,6 +37,7 @@ use Symfony\Component\Routing\RequestContext;
 use Silex\RedirectableUrlMatcher;
 use Silex\ControllerResolver;
 use Silex\EventListener\LocaleListener;
+use Silex\EventListener\MiddlewareListener;
 
 /**
  * The Silex framework class.
@@ -101,6 +102,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
                 $dispatcher->addSubscriber($app['exception_handler']);
             }
             $dispatcher->addSubscriber(new ResponseListener($app['charset']));
+            $dispatcher->addSubscriber(new MiddlewareListener($app));
 
             return $dispatcher;
         });
@@ -124,42 +126,6 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
 
         $this['url_matcher'] = $this->share(function () use ($app) {
             return new RedirectableUrlMatcher($app['routes'], $app['request_context']);
-        });
-
-        $this['route_before_middlewares_trigger'] = $this->protect(function (GetResponseEvent $event) use ($app) {
-            $request = $event->getRequest();
-            $routeName = $request->attributes->get('_route');
-            if (!$route = $app['routes']->get($routeName)) {
-                return;
-            }
-
-            foreach ((array) $route->getOption('_before_middlewares') as $callback) {
-                $ret = call_user_func($callback, $request, $app);
-                if ($ret instanceof Response) {
-                    $event->setResponse($ret);
-
-                    return;
-                } elseif (null !== $ret) {
-                    throw new \RuntimeException(sprintf('A before middleware for route "%s" returned an invalid response value. Must return null or an instance of Response.', $routeName));
-                }
-            }
-        });
-
-        $this['route_after_middlewares_trigger'] = $this->protect(function (FilterResponseEvent $event) use ($app) {
-            $request = $event->getRequest();
-            $routeName = $request->attributes->get('_route');
-            if (!$route = $app['routes']->get($routeName)) {
-                return;
-            }
-
-            foreach ((array) $route->getOption('_after_middlewares') as $callback) {
-                $response = call_user_func($callback, $request, $event->getResponse());
-                if ($response instanceof Response) {
-                    $event->setResponse($response);
-                } elseif (null !== $response) {
-                    throw new \RuntimeException(sprintf('An after middleware for route "%s" returned an invalid response value. Must return null or an instance of Response.', $routeName));
-                }
-            }
         });
 
         $this['request_error'] = $this->protect(function () {
@@ -533,16 +499,6 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     }
 
     /**
-     * Runs before filters.
-     *
-     * @param GetResponseEvent $event The event to handle
-     */
-    public function onKernelRequest(GetResponseEvent $event)
-    {
-        $this['route_before_middlewares_trigger']($event);
-    }
-
-    /**
      * Handles converters.
      *
      * @param FilterControllerEvent $event The event to handle
@@ -572,24 +528,12 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     }
 
     /**
-     * Runs after filters.
-     *
-     * @param FilterResponseEvent $event The event to handle
-     */
-    public function onKernelResponse(FilterResponseEvent $event)
-    {
-        $this['route_after_middlewares_trigger']($event);
-    }
-
-    /**
      * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
         return array(
-            KernelEvents::REQUEST    => array('onKernelRequest',    -128),
             KernelEvents::CONTROLLER => array('onKernelController', 0),
-            KernelEvents::RESPONSE   => array('onKernelResponse',   128),
             KernelEvents::VIEW       => array('onKernelView',       -10),
         );
     }
