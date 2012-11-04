@@ -88,7 +88,8 @@ class MiddlewareListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            KernelEvents::REQUEST  => array('onKernelRequest', -128),
+            // this must be executed after the late events defined with before() (and their priority is 512)
+            KernelEvents::REQUEST  => array('onKernelRequest', -1024),
             KernelEvents::RESPONSE => array('onKernelResponse', 128),
         );
     }
