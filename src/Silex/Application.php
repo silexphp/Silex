@@ -14,9 +14,7 @@ namespace Silex;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\TerminableInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
@@ -31,20 +29,21 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\EventDispatcher\Event;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RequestContext;
 use Silex\RedirectableUrlMatcher;
 use Silex\ControllerResolver;
 use Silex\EventListener\LocaleListener;
 use Silex\EventListener\MiddlewareListener;
+use Silex\EventListener\ConverterListener;
+use Silex\EventListener\StringToResponseListener;
 
 /**
  * The Silex framework class.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Application extends \Pimple implements HttpKernelInterface, EventSubscriberInterface, TerminableInterface
+class Application extends \Pimple implements HttpKernelInterface, TerminableInterface
 {
     const VERSION = '1.0-DEV';
 
@@ -91,7 +90,6 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         $this['dispatcher_class'] = 'Symfony\\Component\\EventDispatcher\\EventDispatcher';
         $this['dispatcher'] = $this->share(function () use ($app) {
             $dispatcher = new $app['dispatcher_class']();
-            $dispatcher->addSubscriber($app);
 
             $urlMatcher = new LazyUrlMatcher(function () use ($app) {
                 return $app['url_matcher'];
@@ -103,6 +101,8 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             }
             $dispatcher->addSubscriber(new ResponseListener($app['charset']));
             $dispatcher->addSubscriber(new MiddlewareListener($app));
+            $dispatcher->addSubscriber(new ConverterListener($app['routes']));
+            $dispatcher->addSubscriber(new StringToResponseListener());
 
             return $dispatcher;
         });
@@ -496,45 +496,5 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     public function terminate(Request $request, Response $response)
     {
         $this['kernel']->terminate($request, $response);
-    }
-
-    /**
-     * Handles converters.
-     *
-     * @param FilterControllerEvent $event The event to handle
-     */
-    public function onKernelController(FilterControllerEvent $event)
-    {
-        $request = $event->getRequest();
-        $route = $this['routes']->get($request->attributes->get('_route'));
-        if ($route && $converters = $route->getOption('_converters')) {
-            foreach ($converters as $name => $callback) {
-                $request->attributes->set($name, call_user_func($callback, $request->attributes->get($name, null), $request));
-            }
-        }
-    }
-
-    /**
-     * Handles string responses.
-     *
-     * @param GetResponseForControllerResultEvent $event The event to handle
-     */
-    public function onKernelView(GetResponseForControllerResultEvent $event)
-    {
-        $response = $event->getControllerResult();
-        $response = $response instanceof Response ? $response : new Response((string) $response);
-
-        $event->setResponse($response);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getSubscribedEvents()
-    {
-        return array(
-            KernelEvents::CONTROLLER => array('onKernelController', 0),
-            KernelEvents::VIEW       => array('onKernelView',       -10),
-        );
     }
 }
