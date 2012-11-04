@@ -48,7 +48,7 @@ Parsing the request body
 
 The request body should only be parsed as JSON if the ``Content-Type`` header
 begins with ``application/json``. Since we want to do this for every request,
-the easiest solution is to use a before filter.
+the easiest solution is to use an application before middleware.
 
 We simply use ``json_decode`` to parse the content of the request and then
 replace the request data on the ``$request`` object::

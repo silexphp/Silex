@@ -6,6 +6,7 @@ Silex
 
     intro
     usage
+    middlewares
     services
     providers
     testing
