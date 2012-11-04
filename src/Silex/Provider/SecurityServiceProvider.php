@@ -364,7 +364,11 @@ class SecurityServiceProvider implements ServiceProviderInterface
 
         $app['security.authentication_listener.form._proto'] = $app->protect(function ($name, $options) use ($app, $that) {
             return $app->share(function () use ($app, $name, $options, $that) {
-                $that->addFakeRoute(array('match', $tmp = isset($options['check_path']) ? $options['check_path'] : '/login_check', str_replace('/', '_', ltrim($tmp, '/'))));
+                $that->addFakeRoute(
+                    'match',
+                    $tmp = isset($options['check_path']) ? $options['check_path'] : '/login_check',
+                    str_replace('/', '_', ltrim($tmp, '/'))
+                );
 
                 $class = isset($options['listener_class']) ? $options['listener_class'] : 'Symfony\\Component\\Security\\Http\\Firewall\\UsernamePasswordFormAuthenticationListener';
 
@@ -425,7 +429,11 @@ class SecurityServiceProvider implements ServiceProviderInterface
 
         $app['security.authentication_listener.logout._proto'] = $app->protect(function ($name, $options) use ($app, $that) {
             return $app->share(function () use ($app, $name, $options, $that) {
-                $that->addFakeRoute(array('get', $tmp = isset($options['logout_path']) ? $options['logout_path'] : '/logout', str_replace('/', '_', ltrim($tmp, '/'))));
+                $that->addFakeRoute(
+                    'get',
+                    $tmp = isset($options['logout_path']) ? $options['logout_path'] : '/logout',
+                    str_replace('/', '_', ltrim($tmp, '/'))
+                );
 
                 if (!isset($app['security.authentication.logout_handler.'.$name])) {
                     $app['security.authentication.logout_handler.'.$name] = $app['security.authentication.logout_handler._proto']($name, $options);
@@ -499,14 +507,14 @@ class SecurityServiceProvider implements ServiceProviderInterface
         $app['dispatcher']->addListener('kernel.request', array($app['security.firewall'], 'onKernelRequest'), 8);
 
         foreach ($this->fakeRoutes as $route) {
-            $method = $route[0];
+            list($method, $pattern, $name) = $route;
 
-            $app->$method($route[1], function() {})->bind($route[2]);
+            $app->$method($pattern, function() {})->bind($name);
         }
     }
 
-    public function addFakeRoute($route)
+    public function addFakeRoute($method, $pattern, $name)
     {
-        $this->fakeRoutes[] = $route;
+        $this->fakeRoutes[] = array($method, $pattern, $name);
     }
 }
