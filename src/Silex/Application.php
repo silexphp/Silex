@@ -15,6 +15,7 @@ use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\TerminableInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
@@ -354,12 +355,17 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
 
             $code = $exception instanceof HttpExceptionInterface ? $exception->getStatusCode() : 500;
 
-            $result = call_user_func($callback, $exception, $code);
+            $response = call_user_func($callback, $exception, $code);
 
-            if (null !== $result) {
-                $response = $result instanceof Response ? $result : new Response((string) $result);
-
+            if ($response instanceof Response) {
                 $event->setResponse($response);
+            } else {
+                $viewEvent = new GetResponseForControllerResultEvent($app['kernel'], $event->getRequest(), $event->getRequestType(), $response);
+                $app['dispatcher']->dispatch(KernelEvents::VIEW, $viewEvent);
+
+                if ($viewEvent->hasResponse()) {
+                    $event->setResponse($viewEvent->getResponse());
+                }
             }
         }, $priority);
     }

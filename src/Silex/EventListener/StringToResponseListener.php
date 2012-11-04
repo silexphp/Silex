@@ -17,7 +17,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Handles converters.
+ * Converts string responses to proper Response instances.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -31,9 +31,15 @@ class StringToResponseListener implements EventSubscriberInterface
     public function onKernelView(GetResponseForControllerResultEvent $event)
     {
         $response = $event->getControllerResult();
-        $response = $response instanceof Response ? $response : new Response((string) $response);
 
-        $event->setResponse($response);
+        if (!(
+            null === $response
+            || is_array($response)
+            || $response instanceof Response
+            || (is_object($response) && !method_exists($response, '__toString'))
+        )) {
+            $event->setResponse(new Response((string) $response));
+        }
     }
 
     public static function getSubscribedEvents()
