@@ -42,6 +42,19 @@ class ExceptionListenerWrapper
     {
         $exception = $event->getException();
 
+        if (!$this->shouldRun($exception)) {
+            return;
+        }
+
+        $code = $exception instanceof HttpExceptionInterface ? $exception->getStatusCode() : 500;
+
+        $response = call_user_func($this->callback, $exception, $code);
+
+        $this->ensureResponse($response, $event);
+    }
+
+    protected function shouldRun(\Exception $exception)
+    {
         if (is_array($this->callback)) {
             $callbackReflection = new \ReflectionMethod($this->callback[0], $this->callback[1]);
         } elseif (is_object($this->callback) && !$this->callback instanceof \Closure) {
@@ -55,14 +68,15 @@ class ExceptionListenerWrapper
             $parameters = $callbackReflection->getParameters();
             $expectedException = $parameters[0];
             if ($expectedException->getClass() && !$expectedException->getClass()->isInstance($exception)) {
-                return;
+                return false;
             }
         }
 
-        $code = $exception instanceof HttpExceptionInterface ? $exception->getStatusCode() : 500;
+        return true;
+    }
 
-        $response = call_user_func($this->callback, $exception, $code);
-
+    protected function ensureResponse($response, GetResponseForExceptionEvent $event)
+    {
         if ($response instanceof Response) {
             $event->setResponse($response);
         } else {
