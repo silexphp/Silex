@@ -14,8 +14,6 @@ namespace Silex;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\TerminableInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
-use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
@@ -332,42 +330,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      */
     public function error($callback, $priority = -8)
     {
-        $app = $this;
-        $this['dispatcher']->addListener(KernelEvents::EXCEPTION, function (GetResponseForExceptionEvent $event) use ($callback, $app) {
-            $exception = $event->getException();
-
-            if (is_array($callback)) {
-                $callbackReflection = new \ReflectionMethod($callback[0], $callback[1]);
-            } elseif (is_object($callback) && !$callback instanceof \Closure) {
-                $callbackReflection = new \ReflectionObject($callback);
-                $callbackReflection = $callbackReflection->getMethod('__invoke');
-            } else {
-                $callbackReflection = new \ReflectionFunction($callback);
-            }
-
-            if ($callbackReflection->getNumberOfParameters() > 0) {
-                $parameters = $callbackReflection->getParameters();
-                $expectedException = $parameters[0];
-                if ($expectedException->getClass() && !$expectedException->getClass()->isInstance($exception)) {
-                    return;
-                }
-            }
-
-            $code = $exception instanceof HttpExceptionInterface ? $exception->getStatusCode() : 500;
-
-            $response = call_user_func($callback, $exception, $code);
-
-            if ($response instanceof Response) {
-                $event->setResponse($response);
-            } else {
-                $viewEvent = new GetResponseForControllerResultEvent($app['kernel'], $event->getRequest(), $event->getRequestType(), $response);
-                $app['dispatcher']->dispatch(KernelEvents::VIEW, $viewEvent);
-
-                if ($viewEvent->hasResponse()) {
-                    $event->setResponse($viewEvent->getResponse());
-                }
-            }
-        }, $priority);
+        $this['dispatcher']->addListener(KernelEvents::EXCEPTION, new ExceptionListenerWrapper($this, $callback), $priority);
     }
 
     /**
