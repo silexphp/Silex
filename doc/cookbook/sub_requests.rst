@@ -185,4 +185,6 @@ managing this issue:
 * Do not inject the request, ever. Use listeners instead, as they can access
   the request without storing it.
 
+* Inject the Silex Application and fetch the request from it.
+
 * Use the Symfony2 container.
