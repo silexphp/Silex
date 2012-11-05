@@ -142,6 +142,36 @@ Any services depending on the ``request`` service will store the first request
 that they get (could be master or sub-request), and keep using it, even if
 that request is already over.
 
+For example::
+
+    use Symfony\Component\HttpFoundation\Request;
+
+    class ContentFormatNegotiator
+    {
+        private $request;
+
+        public function __construct(Request $request)
+        {
+            $this->request = $request;
+        }
+
+        public function negotiateFormat(array $serverTypes)
+        {
+            $clientAcceptType = $this->request->headers->get('Accept');
+
+            ...
+
+            return $format;
+        }
+    }
+
+This example looks harmless, but it might blow up. You have no way of knowing
+what ``$request->headers->get()`` will return, because ``$request`` could be
+either the master request or a sub-request. The answer in this case is to pass
+the request as an argument to ``negotiateFormat``. Then you can pass it in
+from a location where you have safe access to the current request: a listener
+or a controller.
+
 It's worth taking a look at how Symfony2 solves this problem. The Symfony2
 container has support for explicit scoping. This allows you to mark services
 as to the request. At the beginning of each ``handle``, the request scope is
