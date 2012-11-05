@@ -7,6 +7,7 @@ Silex
     intro
     usage
     middlewares
+    modularity
     services
     providers
     testing
