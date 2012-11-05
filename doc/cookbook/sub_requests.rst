@@ -167,18 +167,7 @@ the request as an argument to ``negotiateFormat``. Then you can pass it in
 from a location where you have safe access to the current request: a listener
 or a controller.
 
-It's worth taking a look at how Symfony2 solves this problem. The Symfony2
-container has support for explicit scoping. This allows you to mark services
-as to the request. At the beginning of each ``handle``, the request scope is
-entered. This tears down all existing objects that are request-scoped, so that
-all newly request-dependent objects will have the correct request instance.
-Since ``handle``s can be nested, it will stash away the previous set of
-services and start fresh. Once the ``handle`` is done, the container leaves
-the request scope, resulting in the previously stashed request-scoped services
-being restored.
-
-But Silex does not have that, so what can you do? Here are some approaches to
-managing this issue:
+Here are a few general approaches to working around this issue:
 
 * Use ESI with Varnish.
 
