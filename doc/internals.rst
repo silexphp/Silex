@@ -28,7 +28,7 @@ to hook into the Symfony2 `HttpKernel
 <http://api.symfony.com/master/Symfony/Component/HttpKernel/HttpKernel.html>`_
 events. This allows fetching the ``Request``, converting string responses into
 ``Response`` objects and handling Exceptions. We also use it to dispatch some
-custom events like before/after filters and errors.
+custom events like before/after middlewares and errors.
 
 Controller
 ~~~~~~~~~~
