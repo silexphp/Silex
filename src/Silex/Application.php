@@ -14,16 +14,11 @@ namespace Silex;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\TerminableInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
-use Symfony\Component\HttpKernel\EventListener\LocaleListener;
 use Symfony\Component\HttpKernel\EventListener\ResponseListener;
 use Symfony\Component\HttpKernel\EventListener\RouterListener;
-use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,24 +27,29 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\EventDispatcher\Event;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RequestContext;
 use Silex\RedirectableUrlMatcher;
 use Silex\ControllerResolver;
+use Silex\EventListener\LocaleListener;
+use Silex\EventListener\MiddlewareListener;
+use Silex\EventListener\ConverterListener;
+use Silex\EventListener\StringToResponseListener;
 
 /**
  * The Silex framework class.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Application extends \Pimple implements HttpKernelInterface, EventSubscriberInterface, TerminableInterface
+class Application extends \Pimple implements HttpKernelInterface, TerminableInterface
 {
     const VERSION = '1.0-DEV';
 
+    const EARLY_EVENT = 512;
+    const LATE_EVENT  = -512;
+
     private $providers = array();
     private $booted = false;
-    private $beforeDispatched = false;
 
     /**
      * Constructor.
@@ -81,20 +81,26 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             return new $app['route_class']();
         };
 
-        $this['exception_handler'] = $this->share(function () {
-            return new ExceptionHandler();
+        $this['exception_handler'] = $this->share(function () use ($app) {
+            return new ExceptionHandler($app['debug']);
         });
 
         $this['dispatcher_class'] = 'Symfony\\Component\\EventDispatcher\\EventDispatcher';
         $this['dispatcher'] = $this->share(function () use ($app) {
             $dispatcher = new $app['dispatcher_class']();
-            $dispatcher->addSubscriber($app);
 
             $urlMatcher = new LazyUrlMatcher(function () use ($app) {
                 return $app['url_matcher'];
             });
             $dispatcher->addSubscriber(new RouterListener($urlMatcher, $app['request_context'], $app['logger']));
-            $dispatcher->addSubscriber(new LocaleListener($app['locale'], $urlMatcher));
+            $dispatcher->addSubscriber(new LocaleListener($app, $urlMatcher));
+            if (isset($app['exception_handler'])) {
+                $dispatcher->addSubscriber($app['exception_handler']);
+            }
+            $dispatcher->addSubscriber(new ResponseListener($app['charset']));
+            $dispatcher->addSubscriber(new MiddlewareListener($app));
+            $dispatcher->addSubscriber(new ConverterListener($app['routes']));
+            $dispatcher->addSubscriber(new StringToResponseListener());
 
             return $dispatcher;
         });
@@ -118,42 +124,6 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
 
         $this['url_matcher'] = $this->share(function () use ($app) {
             return new RedirectableUrlMatcher($app['routes'], $app['request_context']);
-        });
-
-        $this['route_before_middlewares_trigger'] = $this->protect(function (GetResponseEvent $event) use ($app) {
-            $request = $event->getRequest();
-            $routeName = $request->attributes->get('_route');
-            if (!$route = $app['routes']->get($routeName)) {
-                return;
-            }
-
-            foreach ((array) $route->getOption('_before_middlewares') as $callback) {
-                $ret = call_user_func($callback, $request, $app);
-                if ($ret instanceof Response) {
-                    $event->setResponse($ret);
-
-                    return;
-                } elseif (null !== $ret) {
-                    throw new \RuntimeException(sprintf('A before middleware for route "%s" returned an invalid response value. Must return null or an instance of Response.', $routeName));
-                }
-            }
-        });
-
-        $this['route_after_middlewares_trigger'] = $this->protect(function (FilterResponseEvent $event) use ($app) {
-            $request = $event->getRequest();
-            $routeName = $request->attributes->get('_route');
-            if (!$route = $app['routes']->get($routeName)) {
-                return;
-            }
-
-            foreach ((array) $route->getOption('_after_middlewares') as $callback) {
-                $response = call_user_func($callback, $request, $event->getResponse());
-                if ($response instanceof Response) {
-                    $event->setResponse($response);
-                } elseif (null !== $response) {
-                    throw new \RuntimeException(sprintf('An after middleware for route "%s" returned an invalid response value. Must return null or an instance of Response.', $routeName));
-                }
-            }
         });
 
         $this['request_error'] = $this->protect(function () {
@@ -281,7 +251,11 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function before($callback, $priority = 0)
     {
-        $this['dispatcher']->addListener(SilexEvents::BEFORE, function (GetResponseEvent $event) use ($callback) {
+        $this['dispatcher']->addListener(KernelEvents::REQUEST, function (GetResponseEvent $event) use ($callback) {
+            if (HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
+                return;
+            }
+
             $ret = call_user_func($callback, $event->getRequest());
 
             if ($ret instanceof Response) {
@@ -301,7 +275,11 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function after($callback, $priority = 0)
     {
-        $this['dispatcher']->addListener(SilexEvents::AFTER, function (FilterResponseEvent $event) use ($callback) {
+        $this['dispatcher']->addListener(KernelEvents::RESPONSE, function (FilterResponseEvent $event) use ($callback) {
+            if (HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
+                return;
+            }
+
             call_user_func($callback, $event->getRequest(), $event->getResponse());
         }, $priority);
     }
@@ -317,7 +295,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function finish($callback, $priority = 0)
     {
-        $this['dispatcher']->addListener(SilexEvents::FINISH, function (PostResponseEvent $event) use ($callback) {
+        $this['dispatcher']->addListener(KernelEvents::TERMINATE, function (PostResponseEvent $event) use ($callback) {
             call_user_func($callback, $event->getRequest(), $event->getResponse());
         }, $priority);
     }
@@ -349,40 +327,11 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      *
      * @param mixed   $callback Error handler callback, takes an Exception argument
      * @param integer $priority The higher this value, the earlier an event
-     *                          listener will be triggered in the chain (defaults to 0)
+     *                          listener will be triggered in the chain (defaults to -8)
      */
-    public function error($callback, $priority = 0)
+    public function error($callback, $priority = -8)
     {
-        $this['dispatcher']->addListener(SilexEvents::ERROR, function (GetResponseForExceptionEvent $event) use ($callback) {
-            $exception = $event->getException();
-
-            if (is_array($callback)) {
-                $callbackReflection = new \ReflectionMethod($callback[0], $callback[1]);
-            } elseif (is_object($callback) && !$callback instanceof \Closure) {
-                $callbackReflection = new \ReflectionObject($callback);
-                $callbackReflection = $callbackReflection->getMethod('__invoke');
-            } else {
-                $callbackReflection = new \ReflectionFunction($callback);
-            }
-
-            if ($callbackReflection->getNumberOfParameters() > 0) {
-                $parameters = $callbackReflection->getParameters();
-                $expectedException = $parameters[0];
-                if ($expectedException->getClass() && !$expectedException->getClass()->isInstance($exception)) {
-                    return;
-                }
-            }
-
-            $code = $exception instanceof HttpExceptionInterface ? $exception->getStatusCode() : 500;
-
-            $result = call_user_func($callback, $exception, $code);
-
-            if (null !== $result) {
-                $response = $result instanceof Response ? $result : new Response((string) $result);
-
-                $event->setResponse($response);
-            }
-        }, $priority);
+        $this['dispatcher']->addListener(KernelEvents::EXCEPTION, new ExceptionListenerWrapper($this, $callback), $priority);
     }
 
     /**
@@ -498,8 +447,6 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             $this->boot();
         }
 
-        $this->beforeDispatched = false;
-
         $current = HttpKernelInterface::SUB_REQUEST === $type ? $this['request'] : $this['request_error'];
 
         $this['request'] = $request;
@@ -519,148 +466,5 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     public function terminate(Request $request, Response $response)
     {
         $this['kernel']->terminate($request, $response);
-    }
-
-    /**
-     * Handles KernelEvents::REQUEST events registered early.
-     *
-     * @param GetResponseEvent $event The event to handle
-     */
-    public function onEarlyKernelRequest(GetResponseEvent $event)
-    {
-        if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
-            if (isset($this['exception_handler'])) {
-                $this['dispatcher']->addSubscriber($this['exception_handler']);
-            }
-            $this['dispatcher']->addSubscriber(new ResponseListener($this['charset']));
-        }
-    }
-
-    /**
-     * Runs before filters.
-     *
-     * @param GetResponseEvent $event The event to handle
-     *
-     * @see before()
-     */
-    public function onKernelRequest(GetResponseEvent $event)
-    {
-        $this['locale'] = $event->getRequest()->getLocale();
-
-        if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
-            $this->beforeDispatched = true;
-            $this['dispatcher']->dispatch(SilexEvents::BEFORE, $event);
-
-            if ($event->hasResponse()) {
-                return;
-            }
-        }
-
-        $this['route_before_middlewares_trigger']($event);
-    }
-
-    /**
-     * Handles converters.
-     *
-     * @param FilterControllerEvent $event The event to handle
-     */
-    public function onKernelController(FilterControllerEvent $event)
-    {
-        $request = $event->getRequest();
-        $route = $this['routes']->get($request->attributes->get('_route'));
-        if ($route && $converters = $route->getOption('_converters')) {
-            foreach ($converters as $name => $callback) {
-                $request->attributes->set($name, call_user_func($callback, $request->attributes->get($name, null), $request));
-            }
-        }
-    }
-
-    /**
-     * Handles string responses.
-     *
-     * @param GetResponseForControllerResultEvent $event The event to handle
-     */
-    public function onKernelView(GetResponseForControllerResultEvent $event)
-    {
-        $response = $event->getControllerResult();
-        $response = $response instanceof Response ? $response : new Response((string) $response);
-
-        $event->setResponse($response);
-    }
-
-    /**
-     * Runs after filters.
-     *
-     * @param FilterResponseEvent $event The event to handle
-     *
-     * @see after()
-     */
-    public function onKernelResponse(FilterResponseEvent $event)
-    {
-        $this['route_after_middlewares_trigger']($event);
-
-        if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
-            $this['dispatcher']->dispatch(SilexEvents::AFTER, $event);
-        }
-    }
-
-    /**
-     * Runs finish filters.
-     *
-     * @param PostResponseEvent $event The event to handle
-     *
-     * @see finish()
-     */
-    public function onKernelTerminate(PostResponseEvent $event)
-    {
-        $this['dispatcher']->dispatch(SilexEvents::FINISH, $event);
-    }
-
-    /**
-     * Runs error filters.
-     *
-     * Executes registered error handlers until a response is returned,
-     * in which case it returns it to the client.
-     *
-     * @param GetResponseForExceptionEvent $event The event to handle
-     *
-     * @see error()
-     */
-    public function onKernelException(GetResponseForExceptionEvent $event)
-    {
-        if (!$this->beforeDispatched) {
-            $this->beforeDispatched = true;
-            try {
-                $this['dispatcher']->dispatch(SilexEvents::BEFORE, $event);
-            } catch (\Exception $e) {
-                // as we are already handling an exception, ignore this one
-                // even if it might have been thrown on purpose by the developer
-            }
-        }
-
-        $errorEvent = new GetResponseForExceptionEvent($this, $event->getRequest(), $event->getRequestType(), $event->getException());
-        $this['dispatcher']->dispatch(SilexEvents::ERROR, $errorEvent);
-
-        if ($errorEvent->hasResponse()) {
-            $event->setResponse($errorEvent->getResponse());
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getSubscribedEvents()
-    {
-        return array(
-            KernelEvents::REQUEST    => array(
-                array('onEarlyKernelRequest', 256),
-                array('onKernelRequest')
-            ),
-            KernelEvents::CONTROLLER => 'onKernelController',
-            KernelEvents::RESPONSE   => 'onKernelResponse',
-            KernelEvents::EXCEPTION  => array('onKernelException', -10),
-            KernelEvents::TERMINATE  => 'onKernelTerminate',
-            KernelEvents::VIEW       => array('onKernelView', -10),
-        );
     }
 }

@@ -183,7 +183,8 @@ don't want to mess with most of them.
     $id = $app['request']->get('id');
 
   This is only available when a request is being served, you can only access
-  it from within a controller, before filter, after filter or error handler.
+  it from within a controller, an application before/after middlewares, or an
+  error handler.
 
 * **routes**: The `RouteCollection
   <http://api.symfony.com/master/Symfony/Component/Routing/RouteCollection.html>`_
@@ -213,7 +214,7 @@ don't want to mess with most of them.
 * **exception_handler**: The Exception handler is the default handler that is
   used when you don't register one via the ``error()`` method or if your handler
   does not return a Response. Disable it with
-  ``unset($app['exception_handler'])``.
+  ``$app['exception_handler']->disable()``.
 
 * **logger**: A
   `LoggerInterface
