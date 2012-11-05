@@ -20,7 +20,8 @@ You can make a sub-request by calling the ``handle`` method on the
   the master request, so it's important that this is set to ``SUB_REQUEST``.
 
 * ``$catch``: Catches exceptions and turns them into a response with status code
-  ``500``. This argument defaults to ``true``.
+  ``500``. This argument defaults to ``true``. For sub-requests you will most
+  likely want to set it to ``false``.
 
 By calling ``handle``, you can make a sub-request manually. Here's an example::
 
