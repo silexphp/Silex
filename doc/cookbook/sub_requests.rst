@@ -100,30 +100,24 @@ Here is an example of how you would embed a page via ESI:
 For details, refer to the :doc:`HttpCacheServiceProvider
 </providers/http_cache>` docs.
 
-Dealing with request path prefixes
-----------------------------------
+Dealing with the request base URL
+---------------------------------
 
-One thing to watch out for is the path prefix. If your application is not
+One thing to watch out for is the base URL. If your application is not
 hosted at the webroot of your web server, then you may have an URL like
 ``http://example.org/foo/index.php/articles/42``.
 
-In this case, ``/foo/index.php`` is your request path prefix. Silex accounts
-for this prefix in the routing process, it reads it from ``$request->server``.
-This can lead to issues, as it may trim the prefix in cases where you do not
-want it to.
+In this case, ``/foo/index.php`` is your request base path. Silex accounts for
+this path prefix in the routing process, it reads it from
+``$request->server``. In the context of sub-requests, this can lead to issues,
+because if you construct your request object the wrong way, it might trim the
+base path from a path that does not have one.
 
-You can prevent that from happening by resetting some of the server variables
-that are passed to the sub-request::
+You can prevent that from happening by always prepending the base path in that
+case::
 
-    $server = $request->server->all();
-    $server = array_replace($server, array(
-        'SCRIPT_FILENAME'   => '',
-        'REQUEST_URI'       => '',
-        'SCRIPT_NAME'       => '',
-        'PATH_INFO'         => '',
-        'PHP_SELF'          => '',
-    ));
-    $subRequest = Request::create('/', 'GET', array(), $request->cookies->all(), array(), $server);
+    $url = $request->getBaseUrl().'/';
+    $subRequest = Request::create($url, 'GET', array(), $request->cookies->all(), array(), $request->server->all());
 
 This is something to be aware of when making sub-requests by hand.
 
