@@ -35,6 +35,8 @@ Services
 * **security.encoder_factory**: Defines the encoding strategies for user
   passwords (default to use a digest algorithm for all users).
 
+* **security.encoder.digest**: The encoder to use by default for all users.
+
 .. note::
 
     The service provider defines many other services that are used internally
@@ -481,6 +483,23 @@ sample users::
     If you are using the Doctrine ORM, the Symfony bridge for Doctrine
     provides a user provider class that is able to load users from your
     entities.
+
+Defining a custom Encoder
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+By default, Silex uses the ``sha512`` algorithm to encode passwords.
+Additionally, the password is encoded multiple times and converted to base64.
+You can change these defaults by overriding the ``security.encoder.digest``
+service::
+
+    use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
+
+    $app['security.encoder.digest'] = $app->share(function ($app) {
+        // use the sha1 algorithm
+        // don't base64 encode the password
+        // use only 1 iteration
+        return new MessageDigestPasswordEncoder('sha1', false, 1);
+    });
 
 Defining a custom Authentication Provider
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
