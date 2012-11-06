@@ -506,6 +506,8 @@ class SecurityServiceProvider implements ServiceProviderInterface
 
     public function boot(Application $app)
     {
+        // FIXME: in Symfony 2.2, this is a proper subscriber
+        //$app['dispatcher']->addSubscriber($app['security.firewall']);
         $app['dispatcher']->addListener('kernel.request', array($app['security.firewall'], 'onKernelRequest'), 8);
 
         foreach ($this->fakeRoutes as $route) {
