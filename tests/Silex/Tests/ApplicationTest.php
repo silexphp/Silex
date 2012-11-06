@@ -106,6 +106,20 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('foobar', $response->getContent());
     }
 
+    public function testOn()
+    {
+        $app = new Application();
+        $app['pass'] = false;
+
+        $app->on('test', function(Event $e) use ($app) {
+            $app['pass'] = true;
+        });
+
+        $app['dispatcher']->dispatch('test');
+
+        $this->assertTrue($app['pass']);
+    }
+
     public function testAbort()
     {
         $app = new Application();
