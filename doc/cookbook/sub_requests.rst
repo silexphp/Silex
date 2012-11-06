@@ -110,14 +110,14 @@ hosted at the webroot of your web server, then you may have an URL like
 
 In this case, ``/foo/index.php`` is your request base path. Silex accounts for
 this path prefix in the routing process, it reads it from
-``$request->server``. In the context of sub-requests, this can lead to issues,
-because if you construct your request object the wrong way, it might trim the
-base path from a path that does not have one.
+``$request->server``. In the context of sub-requests this can lead to issues,
+because if you do not prepend the base path the request could mistake a part
+of the path you want to match as the base path and cut it off.
 
-You can prevent that from happening by always prepending the base path in that
-case::
+You can prevent that from happening by always prepending the base path when
+constructing a request::
 
-    $url = $request->getBaseUrl().'/';
+    $url = $request->getUriForPath('/');
     $subRequest = Request::create($url, 'GET', array(), $request->cookies->all(), array(), $request->server->all());
 
 This is something to be aware of when making sub-requests by hand.
@@ -175,5 +175,3 @@ Here are a few general approaches to working around this issue:
   the request without storing it.
 
 * Inject the Silex Application and fetch the request from it.
-
-* Use the Symfony2 container.
