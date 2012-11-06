@@ -31,9 +31,7 @@ class TranslationServiceProvider implements ServiceProviderInterface
         $app['translator'] = $app->share(function ($app) {
             $translator = new Translator($app['locale'], $app['translator.message_selector']);
 
-            if (isset($app['locale_fallback'])) {
-                $translator->setFallbackLocale($app['locale_fallback']);
-            }
+            $translator->setFallbackLocale($app['locale_fallback']);
 
             $translator->addLoader('array', new ArrayLoader());
             $translator->addLoader('xliff', new XliffFileLoader());
@@ -52,6 +50,8 @@ class TranslationServiceProvider implements ServiceProviderInterface
         });
 
         $app['translator.domains'] = array();
+
+        $app['locale_fallback'] = 'en';
     }
 
     public function boot(Application $app)
