@@ -29,3 +29,5 @@ Recipes
   <form_no_csrf>`.
 
 * :doc:`How to use YAML to configure validation <validator_yaml>`.
+
+* :doc:`How to use controllers like in Symfony2 framework <symfony_controller>`.
