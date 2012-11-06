@@ -119,6 +119,8 @@ class SecurityServiceProvider implements ServiceProviderInterface
             );
         });
 
+        $app['security.firewalls'] = array();
+
         // generate the build-in authentication factories
         foreach (array('logout', 'pre_auth', 'form', 'http', 'remember_me', 'anonymous') as $type) {
             $entryPoint = null;
