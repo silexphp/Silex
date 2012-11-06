@@ -71,6 +71,11 @@ class SecurityServiceProvider implements ServiceProviderInterface
         $app['security.access_rules'] = array();
 
         $app['security'] = $app->share(function ($app) {
+            // First, force everything to be setup correctly.
+            // This is needed when using the Security provider outside
+            // of the handling of a request
+            $app['security.listener'];
+
             return new SecurityContext($app['security.authentication_manager'], $app['security.access_manager']);
         });
 

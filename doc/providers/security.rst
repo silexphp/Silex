@@ -45,7 +45,9 @@ Registering
 
 .. code-block:: php
 
-    $app->register(new Silex\Provider\SecurityServiceProvider());
+    $app->register(new Silex\Provider\SecurityServiceProvider(array(
+        'security.firewalls' => // see below
+    )));
 
 .. note::
 
