@@ -61,10 +61,10 @@ resources to ``index.php``:
 
         location @site {
             fastcgi_pass   unix:/var/run/php-fpm/www.sock;
+            include fastcgi_params;
             fastcgi_param  SCRIPT_FILENAME $document_root/index.php;
             #uncomment when running via https
             #fastcgi_param HTTPS on;
-            include fastcgi_params;
         }
     }
 
