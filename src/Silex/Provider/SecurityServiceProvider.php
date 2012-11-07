@@ -136,7 +136,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
                 $entryPoint = 'form';
             }
 
-            $app['security.authentication_listener.factory.'.$type] = $app->protect(function($name, $options) use ($type, $app, $entryPoint) {
+            $app['security.authentication_listener.factory.'.$type] = $app->protect(function($name, $options) use ($type, $app, $entryPoint, $that) {
                 if ($entryPoint && !isset($app['security.entry_point.'.$name.'.'.$entryPoint])) {
                     $app['security.entry_point.'.$name.'.'.$entryPoint] = $app['security.entry_point.'.$entryPoint.'._proto']($name, $options);
                 }
@@ -148,6 +148,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
                 if ('remember_me' == $type) {
                     $provider = 'security.authentication_provider.'.$name.'.'.$type;
                     $app[$provider] = $app['security.authentication_provider.remember_me._proto']($name, $options);
+                    $that->setHasRememberMe(true);
                 } else {
                     $provider = 'security.authentication_provider.'.$name;
                     if (!isset($app['security.authentication_provider.'.$name])) {
@@ -164,8 +165,8 @@ class SecurityServiceProvider implements ServiceProviderInterface
             });
         }
 
-        $app['security.remember_me.response_listener'] = $app->protect(function() {
-            return array(new ResponseListener(), 'onKernelResponse');
+        $app['security.remember_me.response_listener'] = $app->share(function() {
+            return new ResponseListener();
         });
 
         $app['security.remember_me.services._proto'] = $app->protect(function($userProviders, $providerKey, $options) use ($app) {
@@ -175,13 +176,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
         $app['security.remember_me.services.factory'] = $app->protect(function($providerKey, $options) use ($app, $that) {
             $options = $app['security.authentication_listener.remember_me.options']($options);
 
-            $userProviders = array();
-            if (isset($app['security.firewalls'][$providerKey])) {
-                $firewall = $app['security.firewalls'][$providerKey];
-                $userProviders = isset($firewall['users']) ? array($firewall['users']($app)) : array();
-            }
-
-            return $app['security.remember_me.services._proto']($userProviders, $providerKey, $options);
+            return $app['security.remember_me.services._proto'](array($app['security.user_provider.'.$providerKey]), $providerKey, $options);
         });
 
         $app['security.firewall_map'] = $app->share(function ($app) use ($that) {
@@ -221,10 +216,6 @@ class SecurityServiceProvider implements ServiceProviderInterface
                     foreach ($firewall as $type => $options) {
                         if ('switch_user' === $type) {
                             continue;
-                        }
-
-                        if ('remember_me' == $type) {
-                            $that->setHasRememberMe(true);
                         }
 
                         // normalize options
@@ -524,8 +515,8 @@ class SecurityServiceProvider implements ServiceProviderInterface
             });
         });
 
-        $app['security.authentication_listener.remember_me.default_options'] = $app->protect(function () use ($app) {
-            return array(
+        $app['security.authentication_listener.remember_me.options'] = $app->protect(function ($options) use ($app) {
+            return array_merge(array(
                 'name' => 'REMEMBERME',
                 'lifetime' => 31536000,
                 'path' => '/',
@@ -534,11 +525,9 @@ class SecurityServiceProvider implements ServiceProviderInterface
                 'httponly' => true,
                 'always_remember_me' => false,
                 'remember_me_parameter' => '_remember_me',
+              ),
+                $options
             );
-        });
-
-        $app['security.authentication_listener.remember_me.options'] = $app->protect(function ($options) use ($app) {
-            return array_merge($app['security.authentication_listener.remember_me.default_options'](), $options);
         });
 
         $app['security.authentication_listener.remember_me._proto'] = $app->protect(function ($providerKey, $options) use ($app) {
@@ -606,7 +595,9 @@ class SecurityServiceProvider implements ServiceProviderInterface
         }
 
         if ($this->hasRememberMe) {
-            $app['dispatcher']->addListener(KernelEvents::RESPONSE, $app['security.remember_me.response_listener']());
+            // FIXME: in Symfony 2.2, this is a proper subscriber
+            //$app['dispatcher']->addSubscriber($app['security.remember_me.response_listener']);
+            $app['dispatcher']->addListener(KernelEvents::RESPONSE, array($app['security.remember_me.response_listener'], 'onKernelResponse'));
         }
     }
 
