@@ -8,7 +8,7 @@ Parameters
 ----------
 
 * **session.storage.save_path** (optional): The path for the
-  ``FileSessionHandler``, defaults to the value of
+  ``NativeFileSessionHandler``, defaults to the value of
   ``sys_get_temp_dir()``.
 
 * **session.storage.options**: An array of options that is passed to the
@@ -42,8 +42,8 @@ Services
   data.
 
 * **session.storage.handler**: A service that is used by the
-  ``session.storage`` for data access. Defaults to a `FileSessionHandler
-  <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/FileSessionHandler.html>`_
+  ``session.storage`` for data access. Defaults to a `NativeFileSessionHandler
+  <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/NativeFileSessionHandler.html>`_
   storage handler.
 
 Registering
