@@ -86,7 +86,7 @@ authenticates a user and creates a session for him::
 
 
 Custom Session Configurations
------------
+-----------------------------
 
 If your system is using a custom session configuration (such as a redis handler
 from a PHP extension) then you need to disable the NativeFileSessionHandler by
