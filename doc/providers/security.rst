@@ -308,7 +308,7 @@ You can check roles in Twig templates too:
         <a href="/secured?_switch_user=fabien">Switch to Fabien</a>
     {% endif %}
 
-You can check is a user is "fully authenticated" (not an anonymous user for
+You can check if a user is "fully authenticated" (not an anonymous user for
 instance) with the special ``IS_AUTHENTICATED_FULLY`` role:
 
 .. code-block:: jinja
