@@ -88,7 +88,10 @@ authenticates a user and creates a session for him::
 Custom Session Configurations
 -----------
 
-If your system is using a custom session configuration (such as a redis handler from a PHP extension) then you need to disable the NativeFileSessionHandler by setting ``session.storage.handler`` to null. You will have to configure the `session.save_path` ini setting yourself in that case.
+If your system is using a custom session configuration (such as a redis handler
+from a PHP extension) then you need to disable the NativeFileSessionHandler by
+setting ``session.storage.handler`` to null. You will have to configure the
+``session.save_path`` ini setting yourself in that case.
 
 .. code-block:: php
 
