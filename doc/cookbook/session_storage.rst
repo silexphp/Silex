@@ -51,8 +51,8 @@ With a dedicated PDO service
         );
     });
 
-Using the DoctrineDBALServiceProvider
--------------------------------------
+Using the DoctrineServiceProvider
+---------------------------------
 
 When using the :doc:`DoctrineServiceProvider </providers/doctrine>` You don't
 have to make another database connection, simply pass the getWrappedConnection method.
@@ -89,4 +89,4 @@ PdoSessionStorage needs a database table with 3 columns:
 
 You can find examples of SQL statements to create the session table in the
 `Symfony2 cookbook
-<http://symfony.com/doc/current/cookbook/configuration/pdo_session_storage.html>`_
+<http://symfony.com/doc/current/cookbook/configuration/pdo_session_storage.html#example-sql-statements>`_
