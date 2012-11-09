@@ -67,8 +67,8 @@ definitions, call the ``run`` method on your application::
 
     $app->run();
 
-Then, you have to configure your web server (read the dedicated chapter for
-more information).
+Then, you have to configure your web server (read the :doc:`dedicated chapter
+<web_servers>` for more information).
 
 .. tip::
 
