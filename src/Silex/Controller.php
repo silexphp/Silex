@@ -16,6 +16,17 @@ use Silex\Exception\ControllerFrozenException;
 /**
  * A wrapper for a controller, mapped to a route.
  *
+ * __call() forwards method-calls to Route, but returns instance of Controller
+ * listing Route's methods below, so that IDEs know they are valid
+ *
+ * @method \Silex\Controller assert(string $variable, string $regexp)
+ * @method \Silex\Controller value(string $variable, mixed $default)
+ * @method \Silex\Controller convert(string $variable, mixed $callback)
+ * @method \Silex\Controller method(string $method)
+ * @method \Silex\Controller requireHttp()
+ * @method \Silex\Controller requireHttps()
+ * @method \Silex\Controller before(mixed $callback)
+ * @method \Silex\Controller after(mixed $callback)
  * @author Igor Wiedler <igor@wiedler.ch>
  */
 class Controller
