@@ -51,8 +51,8 @@ Example
         );
     });
 
-When using the :doc:`DoctrineServiceProvider </providers/doctrine>` You do not
-have to make anther connection to the database, simply parse the getWrappedConnection method.
+When using the :doc:`DoctrineServiceProvider </providers/doctrine>` You don't
+have to make another database connection, simply pass the getWrappedConnection method.
 
 Example
 -------------------------------
