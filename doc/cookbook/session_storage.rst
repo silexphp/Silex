@@ -51,6 +51,33 @@ Example
         );
     });
 
+When using the :doc:`DoctrineServiceProvider </providers/doctrine>` You do not
+have to make anther connection to the database, simply parse the getWrappedConnection method.
+
+Example
+-------------------------------
+
+.. code-block:: php
+
+    use Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler;
+
+    $app->register(new Silex\Provider\SessionServiceProvider());
+
+    $app['pdo.db_options'] = array(
+        'db_table'      => 'session',
+        'db_id_col'     => 'session_id',
+        'db_data_col'   => 'session_value',
+        'db_time_col'   => 'session_time',
+    );
+
+    $app['session.storage.handler'] = $app->share(function () use ($app) {
+        return new PdoSessionHandler(
+            $app['db']->getWrappedConnection(),
+            $app['pdo.db_options'],
+            $app['session.storage.options']
+        );
+    });
+
 Database structure
 ------------------
 
