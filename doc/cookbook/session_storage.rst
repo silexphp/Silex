@@ -15,8 +15,8 @@ has multiple storage handlers and one of them uses PDO to store sessions,
 To use it, replace the ``session.storage.handler`` service in your application
 like explained below.
 
-Example
--------
+With a dedicated PDO service
+----------------------------
 
 .. code-block:: php
 
@@ -51,11 +51,11 @@ Example
         );
     });
 
+Using the DoctrineDBALServiceProvider
+-------------------------------------
+
 When using the :doc:`DoctrineServiceProvider </providers/doctrine>` You don't
 have to make another database connection, simply pass the getWrappedConnection method.
-
-Example
--------------------------------
 
 .. code-block:: php
 
