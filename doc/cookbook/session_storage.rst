@@ -28,7 +28,7 @@ Example
     $app['pdo.user'] = 'myuser';
     $app['pdo.password'] = 'mypassword';
 
-    $app['pdo.db_options'] = array(
+    $app['session.db_options'] = array(
         'db_table'      => 'session',
         'db_id_col'     => 'session_id',
         'db_data_col'   => 'session_value',
@@ -46,7 +46,7 @@ Example
     $app['session.storage.handler'] = $app->share(function () use ($app) {
         return new PdoSessionHandler(
             $app['pdo'],
-            $app['pdo.db_options'],
+            $app['session.db_options'],
             $app['session.storage.options']
         );
     });
@@ -63,7 +63,7 @@ Example
 
     $app->register(new Silex\Provider\SessionServiceProvider());
 
-    $app['pdo.db_options'] = array(
+    $app['session.db_options'] = array(
         'db_table'      => 'session',
         'db_id_col'     => 'session_id',
         'db_data_col'   => 'session_value',
@@ -73,7 +73,7 @@ Example
     $app['session.storage.handler'] = $app->share(function () use ($app) {
         return new PdoSessionHandler(
             $app['db']->getWrappedConnection(),
-            $app['pdo.db_options'],
+            $app['session.db_options'],
             $app['session.storage.options']
         );
     });
