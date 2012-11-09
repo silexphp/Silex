@@ -360,6 +360,35 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(array('1_routeTriggered', '2_filterAfter', '3_responseSent', '4_filterFinish'), $containerTarget);
     }
 
+    public function testMiddlewaresWithUndefinedRoute()
+    {
+        $containerTarget = array();
+
+        $app = new Application();
+
+        $app->before(function () use (&$containerTarget) {
+            $containerTarget[] = '1_before';
+        });
+        $app->error(function () use (&$containerTarget) {
+
+            return new StreamedResponse(function() use (&$containerTarget) {
+                $containerTarget[] = '3_error';
+            });
+        });
+
+        $app->finish(function () use (&$containerTarget) {
+            $containerTarget[] = '4_finish';
+        });
+
+        $app->after(function () use (&$containerTarget) {
+            $containerTarget[] = '2_after';
+        });
+
+        $app->run(Request::create('/foo'));
+
+        $this->assertSame(array('1_before', '2_after', '3_error', '4_finish'), $containerTarget);
+    }
+
     /**
      * @expectedException RuntimeException
      */
