@@ -15,8 +15,8 @@ has multiple storage handlers and one of them uses PDO to store sessions,
 To use it, replace the ``session.storage.handler`` service in your application
 like explained below.
 
-Example
--------
+With a dedicated PDO service
+----------------------------
 
 .. code-block:: php
 
@@ -28,7 +28,7 @@ Example
     $app['pdo.user'] = 'myuser';
     $app['pdo.password'] = 'mypassword';
 
-    $app['pdo.db_options'] = array(
+    $app['session.db_options'] = array(
         'db_table'      => 'session',
         'db_id_col'     => 'session_id',
         'db_data_col'   => 'session_value',
@@ -46,7 +46,34 @@ Example
     $app['session.storage.handler'] = $app->share(function () use ($app) {
         return new PdoSessionHandler(
             $app['pdo'],
-            $app['pdo.db_options'],
+            $app['session.db_options'],
+            $app['session.storage.options']
+        );
+    });
+
+Using the DoctrineServiceProvider
+---------------------------------
+
+When using the :doc:`DoctrineServiceProvider </providers/doctrine>` You don't
+have to make another database connection, simply pass the getWrappedConnection method.
+
+.. code-block:: php
+
+    use Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler;
+
+    $app->register(new Silex\Provider\SessionServiceProvider());
+
+    $app['session.db_options'] = array(
+        'db_table'      => 'session',
+        'db_id_col'     => 'session_id',
+        'db_data_col'   => 'session_value',
+        'db_time_col'   => 'session_time',
+    );
+
+    $app['session.storage.handler'] = $app->share(function () use ($app) {
+        return new PdoSessionHandler(
+            $app['db']->getWrappedConnection(),
+            $app['session.db_options'],
             $app['session.storage.options']
         );
     });
@@ -62,4 +89,4 @@ PdoSessionStorage needs a database table with 3 columns:
 
 You can find examples of SQL statements to create the session table in the
 `Symfony2 cookbook
-<http://symfony.com/doc/current/cookbook/configuration/pdo_session_storage.html>`_
+<http://symfony.com/doc/current/cookbook/configuration/pdo_session_storage.html#example-sql-statements>`_
