@@ -12,4 +12,6 @@ Silex
     twig
     url_generator
     validator
+    form
     http_cache
+    security

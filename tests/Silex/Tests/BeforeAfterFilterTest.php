@@ -147,7 +147,7 @@ class BeforeAfterFilterTest extends \PHPUnit_Framework_TestCase
 
         $app->before(function () use (&$i) {
             $i++;
-        });
+        }, Application::EARLY_EVENT);
 
         $app->after(function () use (&$i) {
             $i++;
@@ -161,6 +161,21 @@ class BeforeAfterFilterTest extends \PHPUnit_Framework_TestCase
         $app->handle($request);
 
         $this->assertEquals(2, $i);
+    }
+
+    public function testBeforeFilterPreventsBeforeMiddlewaresToBeExecuted()
+    {
+        $app = new Application();
+
+        $app->before(function () { return new Response('app before'); });
+
+        $app->get('/', function() {
+            return new Response('test');
+        })->before(function() {
+            return new Response('middleware before');
+        });
+
+        $this->assertEquals('app before', $app->handle(Request::create('/'))->getContent());
     }
 
     public function testBeforeFilterExceptionsWhenHandlingAnException()
@@ -178,18 +193,18 @@ class BeforeAfterFilterTest extends \PHPUnit_Framework_TestCase
         $app = new Application();
 
         $app->before(function () use ($app) {
-            $app['locale'] = $app['request']->get('locale');
+            $app['project'] = $app['request']->get('project');
         });
 
-        $app->match('/foo/{locale}', function () use ($app) {
-            return $app['locale'];
+        $app->match('/foo/{project}', function () use ($app) {
+            return $app['project'];
         });
 
-        $request = Request::create('/foo/en');
-        $this->assertEquals('en', $app->handle($request)->getContent());
+        $request = Request::create('/foo/bar');
+        $this->assertEquals('bar', $app->handle($request)->getContent());
 
-        $request = Request::create('/foo/de');
-        $this->assertEquals('de', $app->handle($request)->getContent());
+        $request = Request::create('/foo/baz');
+        $this->assertEquals('baz', $app->handle($request)->getContent());
     }
 
     public function testBeforeFilterAccessesRequestAndCanReturnResponse()

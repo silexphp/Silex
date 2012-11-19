@@ -22,7 +22,7 @@ class SwiftmailerServiceProviderTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         if (!is_dir(__DIR__.'/../../../../vendor/swiftmailer/swiftmailer/lib')) {
-            $this->markTestSkipped('Swiftmailer submodule was not installed.');
+            $this->markTestSkipped('Swiftmailer dependency was not installed.');
         }
     }
 
@@ -30,9 +30,8 @@ class SwiftmailerServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->register(new SwiftmailerServiceProvider(), array(
-            'swiftmailer.class_path'  => __DIR__.'/../../../../vendor/swiftmailer/swiftmailer/lib/classes',
-        ));
+        $app->register(new SwiftmailerServiceProvider());
+        $app->boot();
 
         $this->assertInstanceOf('Swift_Mailer', $app['mailer']);
     }
@@ -41,24 +40,46 @@ class SwiftmailerServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->register(new SwiftmailerServiceProvider(), array(
-            'swiftmailer.class_path'  => __DIR__.'/../../../../vendor/swiftmailer/swiftmailer/lib/classes',
-        ));
+        $app->register(new SwiftmailerServiceProvider());
+        $app->boot();
 
-        $spool = new SpoolStub();
-        $app['swiftmailer.spooltransport'] = new \Swift_SpoolTransport($spool);
+        $app['swiftmailer.spool'] = $app->share(function () {
+            return new SpoolStub();
+        });
 
         $app->get('/', function() use ($app) {
             $app['mailer']->send(\Swift_Message::newInstance());
         });
 
-        $this->assertCount(0, $spool->getMessages());
+        $this->assertCount(0, $app['swiftmailer.spool']->getMessages());
 
         $request = Request::create('/');
         $response = $app->handle($request);
-        $this->assertCount(1, $spool->getMessages());
+        $this->assertCount(1, $app['swiftmailer.spool']->getMessages());
 
         $app->terminate($request, $response);
-        $this->assertCount(0, $spool->getMessages());
+        $this->assertTrue($app['swiftmailer.spool']->hasFlushed);
+        $this->assertCount(0, $app['swiftmailer.spool']->getMessages());
+    }
+
+    public function testSwiftMailerAvoidsFlushesIfMailerIsUnused()
+    {
+        $app = new Application();
+
+        $app->register(new SwiftmailerServiceProvider());
+        $app->boot();
+
+        $app['swiftmailer.spool'] = $app->share(function () {
+            return new SpoolStub();
+        });
+
+        $app->get('/', function() use ($app) { });
+
+        $request = Request::create('/');
+        $response = $app->handle($request);
+        $this->assertCount(0, $app['swiftmailer.spool']->getMessages());
+
+        $app->terminate($request, $response);
+        $this->assertFalse($app['swiftmailer.spool']->hasFlushed);
     }
 }

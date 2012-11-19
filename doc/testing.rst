@@ -99,26 +99,22 @@ executed before every test.
         {
             $app = require __DIR__.'/path/to/app.php';
             $app['debug'] = true;
-            unset($app['exception_handler']);
+            $app['exception_handler']->disable();
 
             return $app;
         }
 
 .. tip::
 
-    If your application use sessions, you have to use ``FilesystemSessionStorage``
-    to store sessions::
-
-        // ...
-        use Symfony\Component\HttpFoundation\SessionStorage\FilesystemSessionStorage;
-        // ...
+    If your application use sessions, set ``session.test`` to ``true`` to
+    simulate sessions::
 
         public function createApplication()
         {
             // ...
-            $this->app['session.storage'] = $this->app->share(function() {
-                return new FilesystemSessionStorage(sys_get_temp_dir());
-            });
+
+            $this->app['session.test'] = true;
+
             // ...
         }
 

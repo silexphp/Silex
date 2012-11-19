@@ -89,13 +89,14 @@ class Compiler
 
     protected function addFile($phar, $file, $strip = true)
     {
-        $path = str_replace(dirname(dirname(__DIR__)).DIRECTORY_SEPARATOR, '', $file->getRealPath());
+        $path = str_replace(dirname(dirname(dirname(__DIR__))).DIRECTORY_SEPARATOR, '', $file->getRealPath());
+
         $content = file_get_contents($file);
         if ($strip) {
             $content = self::stripWhitespace($content);
         }
 
-        $content = str_replace('@package_version@', $this->version, $content);
+        $content = preg_replace("/const VERSION = '.*?';/", "const VERSION = '".$this->version."';", $content);
 
         $phar->addFromString($path, $content);
     }

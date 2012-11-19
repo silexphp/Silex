@@ -17,6 +17,7 @@ use Silex\Application;
 use Symfony\Component\Translation\Translator;
 use Symfony\Component\Translation\MessageSelector;
 use Symfony\Component\Translation\Loader\ArrayLoader;
+use Symfony\Component\Translation\Loader\XliffFileLoader;
 
 /**
  * Symfony Translation component Provider.
@@ -27,14 +28,13 @@ class TranslationServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $app)
     {
-        $app['translator'] = $app->share(function () use ($app) {
-            $translator = new Translator(isset($app['locale']) ? $app['locale'] : 'en', $app['translator.message_selector']);
+        $app['translator'] = $app->share(function ($app) {
+            $translator = new Translator($app['locale'], $app['translator.message_selector']);
 
-            if (isset($app['locale_fallback'])) {
-                $translator->setFallbackLocale($app['locale_fallback']);
-            }
+            $translator->setFallbackLocale($app['locale_fallback']);
 
-            $translator->addLoader('array', $app['translator.loader']);
+            $translator->addLoader('array', new ArrayLoader());
+            $translator->addLoader('xliff', new XliffFileLoader());
 
             foreach ($app['translator.domains'] as $domain => $data) {
                 foreach ($data as $locale => $messages) {
@@ -45,14 +45,18 @@ class TranslationServiceProvider implements ServiceProviderInterface
             return $translator;
         });
 
-        $app['translator.loader'] = $app->share(function () {
-            return new ArrayLoader();
-        });
-
         $app['translator.message_selector'] = $app->share(function () {
             return new MessageSelector();
         });
 
+        $app['translator.domains'] = array();
+
+        $app['locale_fallback'] = 'en';
+    }
+
+    public function boot(Application $app)
+    {
+        // BC: to be removed before 1.0
         if (isset($app['translation.class_path'])) {
             throw new \RuntimeException('You have provided the translation.class_path parameter. The autoloader has been removed from Silex. It is recommended that you use Composer to manage your dependencies and handle your autoloading. If you are already using Composer, you can remove the parameter. See http://getcomposer.org for more information.');
         }

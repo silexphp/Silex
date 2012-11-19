@@ -48,7 +48,7 @@ Parsing the request body
 
 The request body should only be parsed as JSON if the ``Content-Type`` header
 begins with ``application/json``. Since we want to do this for every request,
-the easiest solution is to use a before filter.
+the easiest solution is to use an application before middleware.
 
 We simply use ``json_decode`` to parse the content of the request and then
 replace the request data on the ``$request`` object::
@@ -72,7 +72,7 @@ return the post object, including its ``id``, as JSON::
     use Symfony\Component\HttpFoundation\Request;
     use Symfony\Component\HttpFoundation\Response;
 
-    $app->post('/blog/posts', function (Request $request) {
+    $app->post('/blog/posts', function (Request $request) use ($app) {
         $post = array(
             'title' => $request->request->get('title'),
             'body'  => $request->request->get('body'),

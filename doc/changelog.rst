@@ -1,7 +1,85 @@
 Changelog
 =========
 
-This changelog references all backward incompatibilities as we introduce them:
+* **2012-11-05**: Filters have been renamed to application middlewares in the
+  documentation.
+
+* **2012-11-05**: The ``before()``, ``after()``, ``error()``, and ``finish()``
+  listener priorities now set the priority of the underlying Symfony event
+  instead of a custom one before.
+
+* **2012-11-05**: Removing the default exception handler should now be done
+  via its ``disable()`` method:
+
+    Before:
+
+        unset($app['exception_handler']);
+
+    After:
+
+        $app['exception_handler']->disable();
+
+* **2012-07-15**: removed the ``monolog.configure`` service. Use the
+  ``extend`` method instead:
+
+    Before::
+
+        $app['monolog.configure'] = $app->protect(function ($monolog) use ($app) {
+            // do something
+        });
+
+    After::
+
+        $app['monolog'] = $app->share($app->extend('monolog', function($monolog, $app) {
+            // do something
+
+            return $monolog;
+        }));
+
+
+* **2012-06-17**: ``ControllerCollection`` now takes a required route instance
+  as a constructor argument.
+
+    Before::
+
+        $controllers = new ControllerCollection();
+
+    After::
+
+        $controllers = new ControllerCollection(new Route());
+
+        // or even better
+        $controllers = $app['controllers_factory'];
+
+* **2012-06-17**: added application traits for PHP 5.4
+
+* **2012-06-16**: renamed ``request.default_locale`` to ``locale``
+
+* **2012-06-16**: Removed the ``translator.loader`` service. See documentation
+  for how to use XLIFF or YAML-based translation files.
+
+* **2012-06-15**: removed the ``twig.configure`` service. Use the ``extend``
+  method instead:
+
+    Before::
+
+        $app['twig.configure'] = $app->protect(function ($twig) use ($app) {
+            // do something
+        });
+
+    After::
+
+        $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
+            // do something
+
+            return $twig;
+        }));
+
+* **2012-06-13**: Added a route ``before`` middleware
+
+* **2012-06-13**: Renamed the route ``middleware`` to ``before``
+
+* **2012-06-13**: Added an extension for the Symfony Security component
 
 * **2012-06-10**: Updated to ``Pimple`` 2.0, use its ``ServiceProviderInterface``.
   In all existing service providers, the interfaces and type hints need to be updated.

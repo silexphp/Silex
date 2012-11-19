@@ -8,13 +8,15 @@ Parameters
 ----------
 
 * **session.storage.save_path** (optional): The path for the
-  ``FileSessionHandler``, defaults to the value of
+  ``NativeFileSessionHandler``, defaults to the value of
   ``sys_get_temp_dir()``.
 
 * **session.storage.options**: An array of options that is passed to the
   constructor of the ``session.storage`` service.
 
-  In case of the default ``NativeSessionStorage``, the possible options are:
+  In case of the default `NativeSessionStorage
+  <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/NativeSessionStorage.html>`_,
+  the possible options are:
 
   * **name**: The cookie name (_SESS by default)
   * **id**: The session id (null by default)
@@ -27,6 +29,9 @@ Parameters
   However, all of these are optional. Sessions last as long as the browser is
   open. To override this, set the ``lifetime`` option.
 
+* **session.test**: Whether to simulate sessions or not (useful when writing
+  functional tests).
+
 Services
 --------
 
@@ -34,11 +39,12 @@ Services
   <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Session.html>`_.
 
 * **session.storage**: A service that is used for persistence of the session
-  data. Defaults to a ``NativeSessionStorage``.
+  data.
 
 * **session.storage.handler**: A service that is used by the
-  ``session.storage`` for data access. Defaults to a
-  ``FileSessionHandler`` storage handler.
+  ``session.storage`` for data access. Defaults to a `NativeFileSessionHandler
+  <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/NativeFileSessionHandler.html>`_
+  storage handler.
 
 Registering
 -----------
@@ -60,7 +66,6 @@ authenticates a user and creates a session for him::
         $password = $app['request']->server->get('PHP_AUTH_PW');
 
         if ('igor' === $username && 'password' === $password) {
-            $app['session']->start();
             $app['session']->set('user', array('username' => $username));
             return $app->redirect('/account');
         }
@@ -72,10 +77,23 @@ authenticates a user and creates a session for him::
     });
 
     $app->get('/account', function () use ($app) {
-        $app['session']->start();
         if (null === $user = $app['session']->get('user')) {
             return $app->redirect('/login');
         }
 
         return "Welcome {$user['username']}!";
     });
+
+
+Custom Session Configurations
+-----------------------------
+
+If your system is using a custom session configuration (such as a redis handler
+from a PHP extension) then you need to disable the NativeFileSessionHandler by
+setting ``session.storage.handler`` to null. You will have to configure the
+``session.save_path`` ini setting yourself in that case.
+
+.. code-block:: php
+
+    $app['session.storage.handler'] = null;
+

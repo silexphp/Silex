@@ -20,13 +20,18 @@ use Symfony\Component\Routing\Route as BaseRoute;
  */
 class Route extends BaseRoute
 {
+    public function __construct($pattern = '', array $defaults = array(), array $requirements = array(), array $options = array())
+    {
+        parent::__construct($pattern, $defaults, $requirements, $options);
+    }
+
     /**
      * Sets the requirement for a route variable.
      *
      * @param string $variable The variable name
      * @param string $regexp   The regexp to apply
      *
-     * @return Controller $this The current Controller instance
+     * @return Route $this The current route instance
      */
     public function assert($variable, $regexp)
     {
@@ -41,7 +46,7 @@ class Route extends BaseRoute
      * @param string $variable The variable name
      * @param mixed  $default  The default value
      *
-     * @return Controller $this The current Controller instance
+     * @return Route $this The current Route instance
      */
     public function value($variable, $default)
     {
@@ -56,7 +61,7 @@ class Route extends BaseRoute
      * @param string $variable The variable name
      * @param mixed  $callback A PHP callback that converts the original value
      *
-     * @return Controller $this The current Controller instance
+     * @return Route $this The current Route instance
      */
     public function convert($variable, $callback)
     {
@@ -72,7 +77,7 @@ class Route extends BaseRoute
      *
      * @param string $method The HTTP method name. Multiple methods can be supplied, delimited by a pipe character '|', eg. 'GET|POST'
      *
-     * @return Controller $this The current Controller instance
+     * @return Route $this The current Route instance
      */
     public function method($method)
     {
@@ -82,9 +87,9 @@ class Route extends BaseRoute
     }
 
     /**
-     * Sets the requirement of HTTP (no HTTPS) on this controller.
+     * Sets the requirement of HTTP (no HTTPS) on this Route.
      *
-     * @return Controller $this The current Controller instance
+     * @return Route $this The current Route instance
      */
     public function requireHttp()
     {
@@ -94,9 +99,9 @@ class Route extends BaseRoute
     }
 
     /**
-     * Sets the requirement of HTTPS on this controller.
+     * Sets the requirement of HTTPS on this Route.
      *
-     * @return Controller $this The current Controller instance
+     * @return Route $this The current Route instance
      */
     public function requireHttps()
     {
@@ -107,17 +112,32 @@ class Route extends BaseRoute
 
     /**
      * Sets a callback to handle before triggering the route callback.
-     * (a.k.a. "Route Middleware")
      *
      * @param mixed $callback A PHP callback to be triggered when the Route is matched, just before the route callback
      *
-     * @return Controller $this The current Controller instance
+     * @return Route $this The current Route instance
      */
-    public function middleware($callback)
+    public function before($callback)
     {
-        $middlewareCallbacks = $this->getOption('_middlewares');
-        $middlewareCallbacks[] = $callback;
-        $this->setOption('_middlewares', $middlewareCallbacks);
+        $callbacks = $this->getOption('_before_middlewares');
+        $callbacks[] = $callback;
+        $this->setOption('_before_middlewares', $callbacks);
+
+        return $this;
+    }
+
+    /**
+     * Sets a callback to handle after the route callback.
+     *
+     * @param mixed $callback A PHP callback to be triggered after the route callback
+     *
+     * @return Route $this The current Route instance
+     */
+    public function after($callback)
+    {
+        $callbacks = $this->getOption('_after_middlewares');
+        $callbacks[] = $callback;
+        $this->setOption('_after_middlewares', $callbacks);
 
         return $this;
     }

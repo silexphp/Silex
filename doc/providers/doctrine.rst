@@ -2,7 +2,7 @@ DoctrineServiceProvider
 =======================
 
 The *DoctrineServiceProvider* provides integration with the `Doctrine DBAL
-<http://www.doctrine-project.org/projects/dbal>`_ for easy database acccess.
+<http://www.doctrine-project.org/projects/dbal>`_ for easy database access.
 
 .. note::
 
@@ -52,16 +52,17 @@ Registering
 .. code-block:: php
 
     $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
-        'db.options'            => array(
-            'driver'    => 'pdo_sqlite',
-            'path'      => __DIR__.'/app.db',
+        'db.options' => array(
+            'driver'   => 'pdo_sqlite',
+            'path'     => __DIR__.'/app.db',
         ),
     ));
 
 .. note::
 
-    Doctrine does not come with the ``silex`` archives, so you need to add
-    Doctrine DBAL as a dependency to your ``composer.json`` file:
+    Doctrine DBAL comes with the "fat" Silex archive but not with the regular
+    one. If you are using Composer, add it as a dependency to your
+    ``composer.json`` file:
 
     .. code-block:: json
 
@@ -125,7 +126,7 @@ Using multiple connections::
         $post = $app['dbs']['mysql_read']->fetchAssoc($sql, array((int) $id));
 
         $sql = "UPDATE posts SET value = ? WHERE id = ?";
-        $app['dbs']['mysql_write']->execute($sql, array('newValue', (int) $id));
+        $app['dbs']['mysql_write']->executeUpdate($sql, array('newValue', (int) $id));
 
         return  "<h1>{$post['title']}</h1>".
                 "<p>{$post['body']}</p>";

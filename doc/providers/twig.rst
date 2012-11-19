@@ -25,10 +25,6 @@ Services
 * **twig**: The ``Twig_Environment`` instance. The main way of
   interacting with Twig.
 
-* **twig.configure**: :doc:`Protected closure </services#protected-closures>`
-  that takes the Twig environment as an argument. You can use it to add more
-  custom globals.
-
 * **twig.loader**: The loader for Twig templates which uses the ``twig.path``
   and the ``twig.templates`` options. You can also replace the loader
   completely.
@@ -44,8 +40,9 @@ Registering
 
 .. note::
 
-    Twig does not come with the ``silex`` archives, so you need to add it as a
-    dependency to your ``composer.json`` file:
+    Twig comes with the "fat" Silex archive but not with the regular one. If
+    you are using Composer, add it as a dependency to your ``composer.json``
+    file:
 
     .. code-block:: json
 
@@ -86,6 +83,12 @@ additional capabilities:
   more information in the `Symfony2 Forms reference
   <http://symfony.com/doc/current/reference/forms/twig_reference.html>`_.
 
+* **SecurityServiceProvider**: If you are using the
+  ``SecurityServiceProvider``, you will have access to the ``is_granted()``
+  function in templates. You can find more information in the `Symfony2
+  Security documentation
+  <http://symfony.com/doc/current/book/security.html#access-control-in-templates>`_.
+
 Usage
 -----
 
@@ -100,7 +103,7 @@ The Twig provider provides a ``twig`` service::
 This will render a file named ``views/hello.twig``.
 
 In any Twig template, the ``app`` variable refers to the Application object.
-So you can access any services from within your view. For example to access
+So you can access any service from within your view. For example to access
 ``$app['request']->getHost()``, just put this in your template:
 
 .. code-block:: jinja
@@ -112,10 +115,52 @@ from a template:
 
 .. code-block:: jinja
 
-    {{ render('/sidebar') }}
+    {{ render(app.request.baseUrl ~ '/sidebar') }}
 
     {# or if you are also using UrlGeneratorServiceProvider with the SymfonyBridgesServiceProvider #}
-    {{ render(path('sidebar')) }}
+    {{ render(url('sidebar')) }}
+
+.. note::
+
+    You must prepend the ``app.request.baseUrl`` to render calls to ensure
+    that the render works when deployed into a sub-directory of the docroot.
+
+Traits
+------
+
+``Silex\Application\TwigTrait`` adds the following shortcuts:
+
+* **render**: Renders a view with the given parameters and returns a Response
+  object.
+
+.. code-block:: php
+
+    return $app->render('index.html', ['name': 'Fabien']);
+
+    $response = new Response();
+    $response->setTtl(10);
+
+    return $app->render('index.html', ['name': 'Fabien'], $response);
+
+.. code-block:: php
+
+    // stream a view
+    use Symfony\Component\HttpFoundation\StreamedResponse;
+
+    return $app->render('index.html', ['name': 'Fabien'], new StreamedResponse());
+
+Customization
+-------------
+
+You can configure the Twig environment before using it by extending the
+``twig`` service::
+
+    $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
+        $twig->addGlobal('pi', 3.14);
+        $twig->addFilter('levenshtein', new \Twig_Filter_Function('levenshtein'));
+
+        return $twig;
+    }));
 
 For more information, check out the `Twig documentation
 <http://twig.sensiolabs.org>`_.

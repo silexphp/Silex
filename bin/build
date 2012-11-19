@@ -16,58 +16,52 @@ else
     $PHP composer.phar self-update >/dev/null 2>/dev/null
 fi
 
-if [ ! -d "$DIR/build/skeleton" ]; then
+for TYPE in slim fat
+do
+    if [ -d "$DIR/build/skeleton" ]; then
+        rm -rf $DIR/build/skeleton
+    fi
     mkdir -p $DIR/build/skeleton
-fi
 
-cd "$DIR/build/skeleton"
+    cd "$DIR/build/skeleton"
 
-cat - << EOF >composer.json
-{
-    "require": {
-        "silex/silex": "dev-master"
-    }
-}
-EOF
+    mkdir -p web/
+    COMPOSER=$TYPE"_composer.json"
+    cp $DIR/bin/skeleton/$COMPOSER composer.json
+    cp $DIR/bin/skeleton/index.php web/index.php
 
-mkdir -p web/
-cat - << EOF >web/index.php
-<?php
+    $PHP ../composer.phar install -q
 
-require_once __DIR__.'/../vendor/autoload.php';
+    if [ -d "$DIR/build/tmp/silex" ]; then
+        rm -rf $DIR/build/tmp/silex
+    fi
+    mkdir -p $DIR/build/tmp/silex
 
-\$app = new Silex\\Application();
+    cd "$DIR/build/tmp/silex"
+    cp -r ../../skeleton/* .
 
-\$app->get('/hello', function() { 
-    return 'Hello!';
-}); 
+    find . -name .DS_Store | xargs rm -rf -
+    find . -name .git | xargs rm -rf -
+    find . -name phpunit.xml.* | xargs rm -rf -
+    find . -type d -name Tests | xargs rm -rf -
+    find . -type d -name test* | xargs rm -rf -
+    find . -type d -name doc | xargs rm -rf -
+    find . -type d -name ext | xargs rm -rf -
 
-\$app->run();
-EOF
+    export COPY_EXTENDED_ATTRIBUTES_DISABLE=true
+    export COPYFILE_DISABLE=true
 
-$PHP ../composer.phar install -q
+    cd "$DIR/build/tmp"
 
-if [ -d "$DIR/build/tmp/silex" ]; then
-    rm -rf $DIR/build/tmp/silex
-fi
-mkdir -p $DIR/build/tmp/silex
+    if [ "slim" = "$TYPE" ]; then
+        NAME="silex"
+    else
+        NAME="silex_fat"
+    fi
 
-cd "$DIR/build/tmp/silex"
-cp -r ../../skeleton/* .
-
-find . -name .DS_Store | xargs rm -rf -
-find . -name .git | xargs rm -rf -
-find . -name phpunit.xml.* | xargs rm -rf -
-find . -type d -name Tests | xargs rm -rf -
-find . -type d -name tests | xargs rm -rf -
-find . -type d -name doc | xargs rm -rf -
-
-export COPY_EXTENDED_ATTRIBUTES_DISABLE=true
-export COPYFILE_DISABLE=true
-
-cd "$DIR/build/tmp"
-
-tar zcpf "$DIR/build/silex.tgz" silex
-rm -f "$DIR/build/silex.zip"
-zip -rq "$DIR/build/silex.zip" silex
-rm -rf "$DIR/build/tmp"
+    rm -f "$DIR/build/$NAME.*"
+    tar zcpf "$DIR/build/$NAME.tgz" silex
+    zip -rq "$DIR/build/$NAME.zip" silex
+    rm -rf "$DIR/build/tmp"
+    rm -rf "$DIR/build/skeleton"
+done

@@ -24,39 +24,46 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $app)
     {
-        $app['swiftmailer.options'] = array_replace(array(
-            'host'       => 'localhost',
-            'port'       => 25,
-            'username'   => '',
-            'password'   => '',
-            'encryption' => null,
-            'auth_mode'  => null,
-        ), isset($app['swiftmailer.options']) ? $app['swiftmailer.options'] : array());
+        $app['swiftmailer.options'] = array();
 
-        $app['mailer'] = $app->share(function () use ($app) {
-            $r = new \ReflectionClass('Swift_Mailer');
-            require_once dirname($r->getFilename()).'/../../swift_init.php';
+        $app['mailer.initialized'] = false;
+
+        $app['mailer'] = $app->share(function ($app) {
+            $app['mailer.initialized'] = true;
 
             return new \Swift_Mailer($app['swiftmailer.spooltransport']);
         });
 
-        $app['swiftmailer.spooltransport'] = $app->share(function () use ($app) {
-            return new \Swift_SpoolTransport(new \Swift_MemorySpool());
+        $app['swiftmailer.spooltransport'] = $app->share(function ($app) {
+            return new \Swift_SpoolTransport($app['swiftmailer.spool']);
         });
 
-        $app['swiftmailer.transport'] = $app->share(function () use ($app) {
+        $app['swiftmailer.spool'] = $app->share(function ($app) {
+            return new \Swift_MemorySpool();
+        });
+
+        $app['swiftmailer.transport'] = $app->share(function ($app) {
             $transport = new \Swift_Transport_EsmtpTransport(
                 $app['swiftmailer.transport.buffer'],
                 array($app['swiftmailer.transport.authhandler']),
                 $app['swiftmailer.transport.eventdispatcher']
             );
 
-            $transport->setHost($app['swiftmailer.options']['host']);
-            $transport->setPort($app['swiftmailer.options']['port']);
-            $transport->setEncryption($app['swiftmailer.options']['encryption']);
-            $transport->setUsername($app['swiftmailer.options']['username']);
-            $transport->setPassword($app['swiftmailer.options']['password']);
-            $transport->setAuthMode($app['swiftmailer.options']['auth_mode']);
+            $options = $app['swiftmailer.options'] = array_replace(array(
+                'host'       => 'localhost',
+                'port'       => 25,
+                'username'   => '',
+                'password'   => '',
+                'encryption' => null,
+                'auth_mode'  => null,
+            ), $app['swiftmailer.options']);
+
+            $transport->setHost($options['host']);
+            $transport->setPort($options['port']);
+            $transport->setEncryption($options['encryption']);
+            $transport->setUsername($options['username']);
+            $transport->setPassword($options['password']);
+            $transport->setAuthMode($options['auth_mode']);
 
             return $transport;
         });
@@ -76,18 +83,21 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface
         $app['swiftmailer.transport.eventdispatcher'] = $app->share(function () {
             return new \Swift_Events_SimpleEventDispatcher();
         });
-
-        if (isset($app['swiftmailer.class_path'])) {
-            require_once $app['swiftmailer.class_path'].'/Swift.php';
-
-            \Swift::registerAutoload($app['swiftmailer.class_path'].'/../swift_init.php');
-        }
     }
 
     public function boot(Application $app)
     {
+        // BC: to be removed before 1.0
+        if (isset($app['swiftmailer.class_path'])) {
+            throw new \RuntimeException('You have provided the swiftmailer.class_path parameter. The autoloader has been removed from Silex. It is recommended that you use Composer to manage your dependencies and handle your autoloading. If you are already using Composer, you can remove the parameter. See http://getcomposer.org for more information.');
+        }
+
         $app->finish(function () use ($app) {
-            $app['swiftmailer.spooltransport']->getSpool()->flushQueue($app['swiftmailer.transport']);
+            // To speed things up (by avoiding Swift Mailer initialization), flush
+            // messages only if our mailer has been created (potentially used)
+            if ($app['mailer.initialized']) {
+                $app['swiftmailer.spooltransport']->getSpool()->flushQueue($app['swiftmailer.transport']);
+            }
         });
     }
 }

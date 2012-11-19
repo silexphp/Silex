@@ -16,6 +16,17 @@ use Silex\Exception\ControllerFrozenException;
 /**
  * A wrapper for a controller, mapped to a route.
  *
+ * __call() forwards method-calls to Route, but returns instance of Controller
+ * listing Route's methods below, so that IDEs know they are valid
+ *
+ * @method \Silex\Controller assert(string $variable, string $regexp)
+ * @method \Silex\Controller value(string $variable, mixed $default)
+ * @method \Silex\Controller convert(string $variable, mixed $callback)
+ * @method \Silex\Controller method(string $method)
+ * @method \Silex\Controller requireHttp()
+ * @method \Silex\Controller requireHttps()
+ * @method \Silex\Controller before(mixed $callback)
+ * @method \Silex\Controller after(mixed $callback)
  * @author Igor Wiedler <igor@wiedler.ch>
  */
 class Controller
@@ -72,100 +83,13 @@ class Controller
         return $this;
     }
 
-    /**
-     * Sets the requirement for a route variable.
-     *
-     * @param string $variable The variable name
-     * @param string $regexp   The regexp to apply
-     *
-     * @return Controller $this The current Controller instance
-     */
-    public function assert($variable, $regexp)
+    public function __call($method, $arguments)
     {
-        $this->route->assert($variable, $regexp);
+        if (!method_exists($this->route, $method)) {
+            throw new \BadMethodCallException(sprintf('Method "%s::%s" does not exist.', get_class($this->route), $method));
+        }
 
-        return $this;
-    }
-
-    /**
-     * Sets the default value for a route variable.
-     *
-     * @param string $variable The variable name
-     * @param mixed  $default  The default value
-     *
-     * @return Controller $this The current Controller instance
-     */
-    public function value($variable, $default)
-    {
-        $this->route->value($variable, $default);
-
-        return $this;
-    }
-
-    /**
-     * Sets a converter for a route variable.
-     *
-     * @param string $variable The variable name
-     * @param mixed  $callback A PHP callback that converts the original value
-     *
-     * @return Controller $this The current Controller instance
-     */
-    public function convert($variable, $callback)
-    {
-        $this->route->convert($variable, $callback);
-
-        return $this;
-    }
-
-    /**
-     * Sets the requirement for the HTTP method.
-     *
-     * @param string $method The HTTP method name. Multiple methods can be supplied, delimited by a pipe character '|', eg. 'GET|POST'
-     *
-     * @return Controller $this The current Controller instance
-     */
-    public function method($method)
-    {
-        $this->route->method($method);
-
-        return $this;
-    }
-
-    /**
-     * Sets the requirement of HTTP (no HTTPS) on this controller.
-     *
-     * @return Controller $this The current Controller instance
-     */
-    public function requireHttp()
-    {
-        $this->route->requireHttp();
-
-        return $this;
-    }
-
-    /**
-     * Sets the requirement of HTTPS on this controller.
-     *
-     * @return Controller $this The current Controller instance
-     */
-    public function requireHttps()
-    {
-        $this->route->requireHttps();
-
-        return $this;
-    }
-
-    /**
-     * Sets a callback to handle before triggering the route callback.
-     * (a.k.a. "Route Middleware")
-     *
-     * @param mixed $callback A PHP callback to be triggered when the Route is matched, just before the route callback
-     *
-     * @return Controller $this The current Controller instance
-     */
-    public function middleware($callback)
-    {
-        $this->route->middleware($callback);
+        call_user_func_array(array($this->route, $method), $arguments);
 
         return $this;
     }

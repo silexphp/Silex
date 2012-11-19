@@ -183,7 +183,8 @@ don't want to mess with most of them.
     $id = $app['request']->get('id');
 
   This is only available when a request is being served, you can only access
-  it from within a controller, before filter, after filter or error handler.
+  it from within a controller, an application before/after middlewares, or an
+  error handler.
 
 * **routes**: The `RouteCollection
   <http://api.symfony.com/master/Symfony/Component/Routing/RouteCollection.html>`_
@@ -211,13 +212,14 @@ don't want to mess with most of them.
   the request that is used by the Router and the UrlGenerator.
 
 * **exception_handler**: The Exception handler is the default handler that is
-  used when you don't register one via the `error()` method or if your handler
+  used when you don't register one via the ``error()`` method or if your handler
   does not return a Response. Disable it with
-  `unset($app['exception_handler'])`.
+  ``$app['exception_handler']->disable()``.
 
 * **logger**: A
-  `http://api.symfony.com/master/Symfony/Component/HttpKernel/Log/LoggerInterface.html`_
-  instance. By default, logging is disabled as the value is set to `null`.
+  `LoggerInterface
+  <http://api.symfony.com/master/Symfony/Component/HttpKernel/Log/LoggerInterface.html>`_
+  instance. By default, logging is disabled as the value is set to ``null``.
   When the Symfony2 Monolog bridge is installed, Monolog is automatically used
   as the default logger.
 
@@ -244,9 +246,10 @@ Core parameters
 
   This parameter can be used by the ``UrlGeneratorProvider``.
 
-* **request.default_locale** (optional): The locale used by default.
-
-  Defaults to ``en``.
+* **locale** (optional): The locale of the user. When set before any request
+  handling, it defines the default locale (``en`` by default). When a request
+  is being handled, it is automatically set according to the ``_locale``
+  request attribute of the current route.
 
 * **debug** (optional): Returns whether or not the application is running in
   debug mode.

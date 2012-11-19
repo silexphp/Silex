@@ -54,13 +54,26 @@ When using Twig, the service can be used like this:
 
     {{ app.url_generator.generate('homepage') }}
 
-Moreover, if you register the ``SymfonyBridgesServiceProvider``, then you will
-have access to the ``path()`` and ``url()`` functions:
+Moreover, if you use Twig, you will have access to the ``path()`` and
+``url()`` functions:
 
 .. code-block:: jinja
 
     {{ path('homepage') }}
     {{ url('homepage') }} {# generates the absolute url http://example.org/ #}
+    {{ path('hello', {name: 'Fabien'}) }}
+    {{ url('hello', {name: 'Fabien'}) }} {# generates the absolute url http://example.org/hello/Fabien #}
 
-You can find more information about this subject in the :doc:`Symfony bridges
-documentation <symfony_bridges>`.
+Traits
+------
+
+``Silex\Application\UrlGeneratorTrait`` adds the following shortcuts:
+
+* **path**: Generates a path.
+
+* **url**: Generates an absolute URL.
+
+.. code-block:: php
+
+    $app->path('homepage');
+    $app->url('homepage');

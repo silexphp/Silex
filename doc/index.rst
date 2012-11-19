@@ -6,6 +6,8 @@ Silex
 
     intro
     usage
+    middlewares
+    modularity
     services
     providers
     testing
@@ -13,5 +15,6 @@ Silex
     internals
     contributing
     providers/index
+    web_servers
     changelog
     phar

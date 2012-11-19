@@ -7,14 +7,14 @@ application into different languages.
 Parameters
 ----------
 
-* **translator.domains**: A mapping of domains/locales/messages. This
-  parameter contains the translation data for all languages and domains.
+* **translator.domains** (optional): A mapping of domains/locales/messages.
+  This parameter contains the translation data for all languages and domains.
 
 * **locale** (optional): The locale for the translator. You will most likely
   want to set this based on some request parameter. Defaults to ``en``.
 
 * **locale_fallback** (optional): Fallback locale for the translator. It will
-  be used when the current locale has no messages set.
+  be used when the current locale has no messages set. Defaults to ``en``.
 
 Services
 --------
@@ -43,9 +43,9 @@ Registering
 
 .. note::
 
-    The Symfony Translation component does not come with the ``silex``
-    archives, so you need to add it as a dependency to your ``composer.json``
-    file:
+    The Symfony Translation Component comes with the "fat" Silex archive but
+    not with the regular one. If you are using Composer, add it as a
+    dependency to your ``composer.json`` file:
 
     .. code-block:: json
 
@@ -81,13 +81,7 @@ the ``translator.domains`` parameter::
         ),
     );
 
-    $app->before(function () use ($app) {
-        if ($locale = $app['request']->get('locale')) {
-            $app['locale'] = $locale;
-        }
-    });
-
-    $app->get('/{locale}/{message}/{name}', function ($message, $name) use ($app) {
+    $app->get('/{_locale}/{message}/{name}', function ($message, $name) use ($app) {
         return $app['translator']->trans($message, array('%name%' => $name));
     });
 
@@ -100,6 +94,22 @@ The above example will result in following routes:
 * ``/fr/hello/igor`` will return ``Bonjour igor``.
 
 * ``/it/hello/igor`` will return ``Hello igor`` (because of the fallback).
+
+Traits
+------
+
+``Silex\Application\TranslationTrait`` adds the following shortcuts:
+
+* **trans**: Translates the given message.
+
+* **transChoice**: Translates the given choice message by choosing a
+  translation according to a number.
+
+.. code-block:: php
+
+    $app->trans('Hello World');
+
+    $app->transChoice('Hello World');
 
 Recipes
 -------
@@ -117,7 +127,7 @@ file:
 
     "require": {
         "symfony/config": "2.1.*",
-        "symfony/yaml": "2.1.*",
+        "symfony/yaml": "2.1.*"
     }
 
 Next, you have to create the language mappings in YAML files. A naming you can
@@ -128,27 +138,20 @@ use is ``locales/en.yml``. Just do the mapping in this file as follows:
     hello: Hello %name%
     goodbye: Goodbye %name%
 
-Repeat this for all of your languages. Then set up the ``translator.domains``
-to map languages to files::
-
-    $app['translator.domains'] = array(
-        'messages' => array(
-            'en' => __DIR__.'/locales/en.yml',
-            'de' => __DIR__.'/locales/de.yml',
-            'fr' => __DIR__.'/locales/fr.yml',
-        ),
-    );
-
-Finally override the ``translator.loader`` to use a ``YamlFileLoader`` instead
-of the default ``ArrayLoader``::
+Then, register the ``YamlFileLoader`` on the ``translator`` and add all your
+translation files::
 
     use Symfony\Component\Translation\Loader\YamlFileLoader;
 
-    $app['translator.loader'] = $app->share(function () {
-        return new YamlFileLoader();
-    });
+    $app['translator'] = $app->share($app->extend('translator', function($translator, $app) {
+        $translator->addLoader('yaml', new YamlFileLoader());
 
-That's all you need to load translations from YAML files.
+        $translator->addResource('yaml', __DIR__.'/locales/en.yml', 'en');
+        $translator->addResource('yaml', __DIR__.'/locales/de.yml', 'de');
+        $translator->addResource('yaml', __DIR__.'/locales/fr.yml', 'fr');
+
+        return $translator;
+    }));
 
 XLIFF-based language files
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -156,18 +159,16 @@ XLIFF-based language files
 Just as you would do with YAML translation files, you first need to add the
 Symfony2 ``Config`` component as a dependency (see above for details).
 
-Then, similarly, create XLIFF files in your locales directory and setup the
-``translator.domains`` to map to them.
+Then, similarly, create XLIFF files in your locales directory and add them to
+the translator::
 
-Finally override the ``translator.loader`` to use a ``XliffFileLoader``::
+    $translator->addResource('xliff', __DIR__.'/locales/en.xlf', 'en');
+    $translator->addResource('xliff', __DIR__.'/locales/de.xlf', 'de');
+    $translator->addResource('xliff', __DIR__.'/locales/fr.xlf', 'fr');
 
-    use Symfony\Component\Translation\Loader\XliffFileLoader;
+.. note::
 
-    $app['translator.loader'] = $app->share(function () {
-        return new XliffFileLoader();
-    });
-
-That's it.
+    The XLIFF loader is already pre-configured by the extension.
 
 Accessing translations in Twig templates
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
