@@ -480,4 +480,14 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
     {
         $this['kernel']->terminate($request, $response);
     }
+
+    /**
+     * Enables or disables the debug state of the application
+	 * 
+	 * @param boolean $debug
+	 */
+	public function setDebug($enabled){
+		$this['debug'] = $enabled;
+		$this['exception_handler']->setDebug($enabled);
+	}
 }
