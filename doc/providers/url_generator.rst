@@ -64,6 +64,13 @@ Moreover, if you use Twig, you will have access to the ``path()`` and
     {{ path('hello', {name: 'Fabien'}) }}
     {{ url('hello', {name: 'Fabien'}) }} {# generates the absolute url http://example.org/hello/Fabien #}
 
+To generate a url using a variable defined within a Twig view, you can pass it like so:
+
+.. code-block:: jinja
+
+    {% set user.name = "Igor" %}
+    {{ path('hello', {name: user.name}) }}
+
 Traits
 ------
 
