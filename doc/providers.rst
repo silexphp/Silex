@@ -166,7 +166,6 @@ Here is an example of such a provider::
 
     use Silex\Application;
     use Silex\ControllerProviderInterface;
-    use Silex\ControllerCollection;
 
     class HelloControllerProvider implements ControllerProviderInterface
     {
