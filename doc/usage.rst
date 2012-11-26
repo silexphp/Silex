@@ -531,6 +531,11 @@ round-trip to the browser (as for a redirect), use an internal sub-request::
 
         $request = Request::create($app['url_generator']->generate('hello'), 'GET');
 
+There's some more things that you need to keep in mind though. In most cases you
+will want to forward some parts of the current master request to the sub-request.
+That includes: Cookies, server information, session. 
+Read more on :doc:`how to make sub-requests <cookbook/sub_requests>`.
+
 JSON
 ----
 
