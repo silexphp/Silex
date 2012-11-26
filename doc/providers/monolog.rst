@@ -5,8 +5,9 @@ The *MonologServiceProvider* provides a default logging mechanism through
 Jordi Boggiano's `Monolog <https://github.com/Seldaek/monolog>`_ library.
 
 It will log requests and errors and allow you to add debug logging to your
-application, so you don't have to use ``var_dump`` so much anymore. You can
-use the grown-up version called ``tail -f``.
+application, so you don't have to use ``var_dump`` so much anymore. You will
+now be able to use ``tail -f`` to output the contents of your log file in 
+real-time. 
 
 Parameters
 ----------
