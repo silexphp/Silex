@@ -414,22 +414,22 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
     }
 
     /**
-     * Mounts an application under the given route prefix.
+     * Mounts controllers under the given route prefix.
      *
-     * @param string                                           $prefix The route prefix
-     * @param ControllerCollection|ControllerProviderInterface $app    A ControllerCollection or a ControllerProviderInterface instance
+     * @param string                                           $prefix      The route prefix
+     * @param ControllerCollection|ControllerProviderInterface $controllers A ControllerCollection or a ControllerProviderInterface instance
      */
-    public function mount($prefix, $app)
+    public function mount($prefix, $controllers)
     {
-        if ($app instanceof ControllerProviderInterface) {
-            $app = $app->connect($this);
+        if ($controllers instanceof ControllerProviderInterface) {
+            $controllers = $controllers->connect($this);
         }
 
-        if (!$app instanceof ControllerCollection) {
+        if (!$controllers instanceof ControllerCollection) {
             throw new \LogicException('The "mount" method takes either a ControllerCollection or a ControllerProviderInterface instance.');
         }
 
-        $this['routes']->addCollection($app->flush($prefix), $prefix);
+        $this['routes']->addCollection($controllers->flush($prefix), $prefix);
     }
 
     /**
