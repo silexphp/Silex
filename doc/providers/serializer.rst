@@ -34,12 +34,10 @@ Registering
 Usage
 -----
 
-The ``SerializerServiceProvider`` provider provides a ``serializer`` service::
+The ``SerializerServiceProvider`` provider provides a ``serializer`` service:
 
 .. code-block:: php
 
-    <?php
-    
     use Silex\Application;
     use Silex\Provider\SerializerServiceProvider;
     use Symfony\Component\HttpFoundation\Response;
