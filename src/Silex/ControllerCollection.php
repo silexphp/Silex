@@ -32,8 +32,11 @@ class ControllerCollection
     /**
      * Constructor.
      */
-    public function __construct(Route $defaultRoute)
+    public function __construct(Route $defaultRoute = null)
     {
+        if (null === $defaultRoute) {
+            $defaultRoute = new Route();
+        }
         $this->defaultRoute = $defaultRoute;
     }
 
