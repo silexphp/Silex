@@ -51,7 +51,7 @@ The ``SerializerServiceProvider`` provider provides a ``serializer`` service:
         // assume a page_repository service exists that returns Page objects. The
         // object returned has getters and setters exposing the state.
         $page = $app['page_repository']->find($id);
-        $format = $app['request']->getFormat();
+        $format = $app['request']->getRequestFormat();
     
         if (!$page instanceof Page) {
             $app->abort("No page found for id: $id");
