@@ -64,6 +64,11 @@ have to call flush yourself.
 The ``Application`` provides a shortcut ``flush`` method for flushing the
 ``ControllerCollection``.
 
+.. tip::
+
+    Instead of creating an instance of ``RouteCollection`` yourself, use the
+    ``$app['controllers_factory']`` factory instead.
+
 Symfony2
 --------
 
