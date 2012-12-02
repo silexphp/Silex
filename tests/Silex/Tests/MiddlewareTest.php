@@ -17,11 +17,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Error handler test cases.
+ * Middleware test cases.
  *
  * @author Igor Wiedler <igor@wiedler.ch>
  */
-class BeforeAfterFilterTest extends \PHPUnit_Framework_TestCase
+class MiddlewareTest extends \PHPUnit_Framework_TestCase
 {
     public function testBeforeAndAfterFilter()
     {
