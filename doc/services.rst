@@ -259,3 +259,6 @@ Core parameters
 * **charset** (optional): The charset to use for Responses.
 
   Defaults to UTF-8.
+
+* **closure_rebinder** (optional): A function that will re-bind the closure
+  scope on PHP >= 5.4. On PHP 5.3 it is the identity function.

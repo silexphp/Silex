@@ -50,8 +50,7 @@ class ControllerCollection
     public function match($pattern, $to)
     {
         $route = clone $this->defaultRoute;
-        $route->setPattern($pattern);
-        $route->setDefault('_controller', $to);
+        $route->match($pattern, $to);
 
         $this->controllers[] = $controller = new Controller($route);
 
@@ -116,10 +115,14 @@ class ControllerCollection
             throw new \BadMethodCallException(sprintf('Method "%s::%s" does not exist.', get_class($this->defaultRoute), $method));
         }
 
-        call_user_func_array(array($this->defaultRoute, $method), $arguments);
+        $value = call_user_func_array(array($this->defaultRoute, $method), $arguments);
 
         foreach ($this->controllers as $controller) {
             call_user_func_array(array($controller, $method), $arguments);
+        }
+
+        if ($value && !$value instanceof Route) {
+            return $value;
         }
 
         return $this;

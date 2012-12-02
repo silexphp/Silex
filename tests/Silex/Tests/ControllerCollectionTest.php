@@ -160,8 +160,8 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
     {
         $route = new MyRoute1();
 
-        $controller = new ControllerCollection($route);
-        $controller->foo('foo');
+        $controllers = new ControllerCollection($route);
+        $controllers->foo('foo');
 
         $this->assertEquals('foo', $route->foo);
     }
@@ -173,8 +173,23 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
     {
         $route = new MyRoute1();
 
-        $controller = new ControllerCollection($route);
-        $controller->bar();
+        $controllers = new ControllerCollection($route);
+        $controllers->bar();
+    }
+
+    public function testDisableClosureRebinding()
+    {
+        $route = new Route();
+        $route->setOption('_closure_rebinder', function ($closure) {
+            return $closure;
+        });
+
+        $this->assertNotNull($route->getOption('_closure_rebinder'));
+
+        $controllers = new ControllerCollection($route);
+        $controllers->disableClosureRebinding();
+
+        $this->assertNull($route->getOption('_closure_rebinder'));
     }
 }
 
