@@ -467,6 +467,10 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $app['called'] = array();
 
         $app->before(function () {
+            $this['called'] = array_merge($this['called'], array('before_early'));
+        }, Application::EARLY_EVENT);
+
+        $app->before(function () {
             $this['called'] = array_merge($this['called'], array('before'));
         });
 
@@ -490,14 +494,14 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $request = Request::create('/');
         $response = $app->handle($request);
         $app->terminate($request, $response);
-        $this->assertEquals(array('before', 'controller', 'after', 'finish'), $app['called']);
+        $this->assertEquals(array('before_early', 'before', 'controller', 'after', 'finish'), $app['called']);
 
         $app['called'] = array();
 
         $request = Request::create('/non_existent');
         $response = $app->handle($request);
         $app->terminate($request, $response);
-        $this->assertEquals(array('before', 'error', 'after', 'finish'), $app['called']);
+        $this->assertEquals(array('before_early', 'error', 'after', 'finish'), $app['called']);
     }
 
     public function testClosureRebindingWithControllerCollection()
