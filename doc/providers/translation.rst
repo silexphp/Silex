@@ -14,7 +14,7 @@ Parameters
   want to set this based on some request parameter. Defaults to ``en``.
 
 * **locale_fallback** (optional): Fallback locale for the translator. It will
-  be used when the current locale has no messages set.
+  be used when the current locale has no messages set. Defaults to ``en``.
 
 Services
 --------
@@ -81,7 +81,7 @@ the ``translator.domains`` parameter::
         ),
     );
 
-    $app->get('/{locale}/{message}/{name}', function ($message, $name) use ($app) {
+    $app->get('/{_locale}/{message}/{name}', function ($message, $name) use ($app) {
         return $app['translator']->trans($message, array('%name%' => $name));
     });
 

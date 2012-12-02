@@ -103,7 +103,7 @@ The Twig provider provides a ``twig`` service::
 This will render a file named ``views/hello.twig``.
 
 In any Twig template, the ``app`` variable refers to the Application object.
-So you can access any services from within your view. For example to access
+So you can access any service from within your view. For example to access
 ``$app['request']->getHost()``, just put this in your template:
 
 .. code-block:: jinja
@@ -115,10 +115,15 @@ from a template:
 
 .. code-block:: jinja
 
-    {{ render('/sidebar') }}
+    {{ render(app.request.baseUrl ~ '/sidebar') }}
 
     {# or if you are also using UrlGeneratorServiceProvider with the SymfonyBridgesServiceProvider #}
-    {{ render(path('sidebar')) }}
+    {{ render(url('sidebar')) }}
+
+.. note::
+
+    You must prepend the ``app.request.baseUrl`` to render calls to ensure
+    that the render works when deployed into a sub-directory of the docroot.
 
 Traits
 ------

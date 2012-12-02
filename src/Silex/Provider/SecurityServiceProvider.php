@@ -26,6 +26,8 @@ use Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationPro
 use Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider;
 use Symfony\Component\Security\Core\Authentication\AuthenticationProviderManager;
 use Symfony\Component\Security\Core\Authentication\AuthenticationTrustResolver;
+use Symfony\Component\Security\Http\Authentication\DefaultAuthenticationSuccessHandler;
+use Symfony\Component\Security\Http\Authentication\DefaultAuthenticationFailureHandler;
 use Symfony\Component\Security\Core\Authorization\Voter\RoleHierarchyVoter;
 use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManager;
@@ -45,6 +47,7 @@ use Symfony\Component\Security\Http\EntryPoint\BasicAuthenticationEntryPoint;
 use Symfony\Component\Security\Http\EntryPoint\RetryAuthenticationEntryPoint;
 use Symfony\Component\Security\Http\Session\SessionAuthenticationStrategy;
 use Symfony\Component\Security\Http\Logout\SessionLogoutHandler;
+use Symfony\Component\Security\Http\Logout\DefaultLogoutSuccessHandler;
 use Symfony\Component\Security\Http\AccessMap;
 use Symfony\Component\Security\Http\HttpUtils;
 
@@ -67,11 +70,11 @@ class SecurityServiceProvider implements ServiceProviderInterface
         $app['security.role_hierarchy'] = array();
         $app['security.access_rules'] = array();
 
-        $app['security'] = $app->share(function () use ($app) {
+        $app['security'] = $app->share(function ($app) {
             return new SecurityContext($app['security.authentication_manager'], $app['security.access_manager']);
         });
 
-        $app['security.authentication_manager'] = $app->share(function () use ($app) {
+        $app['security.authentication_manager'] = $app->share(function ($app) {
             $manager = new AuthenticationProviderManager($app['security.authentication_providers']);
             $manager->setEventDispatcher($app['dispatcher']);
 
@@ -79,36 +82,36 @@ class SecurityServiceProvider implements ServiceProviderInterface
         });
 
         // by default, all users use the digest encoder
-        $app['security.encoder_factory'] = $app->share(function () use ($app) {
+        $app['security.encoder_factory'] = $app->share(function ($app) {
             return new EncoderFactory(array(
                 'Symfony\Component\Security\Core\User\UserInterface' => $app['security.encoder.digest'],
             ));
         });
 
-        $app['security.encoder.digest'] = $app->share(function () use ($app) {
+        $app['security.encoder.digest'] = $app->share(function ($app) {
             return new MessageDigestPasswordEncoder();
         });
 
-        $app['security.user_checker'] = $app->share(function () use ($app) {
+        $app['security.user_checker'] = $app->share(function ($app) {
             return new UserChecker();
         });
 
-        $app['security.access_manager'] = $app->share(function () use ($app) {
+        $app['security.access_manager'] = $app->share(function ($app) {
             return new AccessDecisionManager($app['security.voters']);
         });
 
-        $app['security.voters'] = $app->share(function () use ($app) {
+        $app['security.voters'] = $app->share(function ($app) {
             return array(
                 new RoleHierarchyVoter(new RoleHierarchy($app['security.role_hierarchy'])),
                 new AuthenticatedVoter($app['security.trust_resolver']),
             );
         });
 
-        $app['security.firewall'] = $app->share(function () use ($app) {
+        $app['security.firewall'] = $app->share(function ($app) {
             return new Firewall($app['security.firewall_map'], $app['dispatcher']);
         });
 
-        $app['security.channel_listener'] = $app->share(function () use ($app) {
+        $app['security.channel_listener'] = $app->share(function ($app) {
             return new ChannelListener(
                 $app['security.access_map'],
                 new RetryAuthenticationEntryPoint($app['request.http_port'], $app['request.https_port']),
@@ -127,7 +130,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
 
             $app['security.authentication_listener.factory.'.$type] = $app->protect(function($name, $options) use ($type, $app, $entryPoint) {
                 if ($entryPoint && !isset($app['security.entry_point.'.$name.'.'.$entryPoint])) {
-                    $app['security.entry_point.'.$name.'.'.$entryPoint] = $app['security.entry_point.'.$entryPoint.'._proto']($name);
+                    $app['security.entry_point.'.$name.'.'.$entryPoint] = $app['security.entry_point.'.$entryPoint.'._proto']($name, $options);
                 }
 
                 if (!isset($app['security.authentication_listener.'.$name.'.'.$type])) {
@@ -147,7 +150,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
             });
         }
 
-        $app['security.firewall_map'] = $app->share(function () use ($app) {
+        $app['security.firewall_map'] = $app->share(function ($app) {
             $positions = array('logout', 'pre_auth', 'form', 'http', 'remember_me', 'anonymous');
             $providers = array();
             $configs = array();
@@ -221,7 +224,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
 
                     if (!isset($app['security.exception_listener.'.$name])) {
                         if (null == $entryPoint) {
-                            $app[$entryPoint = 'security.entry_point.'.$name.'.form'] = $app['security.entry_point.form._proto']($name);
+                            $app[$entryPoint = 'security.entry_point.'.$name.'.form'] = $app['security.entry_point.form._proto']($name, array());
                         }
                         $app['security.exception_listener.'.$name] = $app['security.exception_listener._proto']($entryPoint, $name);
                     }
@@ -246,7 +249,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
             return $map;
         });
 
-        $app['security.access_listener'] = $app->share(function () use ($app) {
+        $app['security.access_listener'] = $app->share(function ($app) {
             return new AccessListener(
                 $app['security'],
                 $app['security.access_manager'],
@@ -256,7 +259,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
             );
         });
 
-        $app['security.access_map'] = $app->share(function () use ($app) {
+        $app['security.access_map'] = $app->share(function ($app) {
             $map = new AccessMap();
 
             foreach ($app['security.access_rules'] as $rule) {
@@ -270,15 +273,15 @@ class SecurityServiceProvider implements ServiceProviderInterface
             return $map;
         });
 
-        $app['security.trust_resolver'] = $app->share(function () use ($app) {
+        $app['security.trust_resolver'] = $app->share(function ($app) {
             return new AuthenticationTrustResolver('Symfony\Component\Security\Core\Authentication\Token\AnonymousToken', 'Symfony\Component\Security\Core\Authentication\Token\RememberMeToken');
         });
 
-        $app['security.session_strategy'] = $app->share(function () use ($app) {
+        $app['security.session_strategy'] = $app->share(function ($app) {
             return new SessionAuthenticationStrategy('migrate');
         });
 
-        $app['security.http_utils'] = $app->share(function () use ($app) {
+        $app['security.http_utils'] = $app->share(function ($app) {
             return new HttpUtils(isset($app['url_generator']) ? $app['url_generator'] : null, $app['url_matcher']);
         });
 
@@ -327,6 +330,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
                     $app['security'],
                     $app['security.trust_resolver'],
                     $app['security.http_utils'],
+                    $name,
                     $app[$entryPoint],
                     null, // errorPage
                     null, // AccessDeniedHandlerInterface
@@ -335,12 +339,45 @@ class SecurityServiceProvider implements ServiceProviderInterface
             });
         });
 
-        $app['security.authentication_listener.form._proto'] = $app->protect(function ($name, $options, $class = null) use ($app, $that) {
-            return $app->share(function () use ($app, $name, $options, $that, $class) {
-                $that->addFakeRoute(array('match', $tmp = isset($options['check_path']) ? $options['check_path'] : '/login_check', str_replace('/', '_', ltrim($tmp, '/'))));
+        $app['security.authentication.success_handler._proto'] = $app->protect(function ($name, $options) use ($app) {
+            return $app->share(function () use ($name, $options, $app) {
+                $handler = new DefaultAuthenticationSuccessHandler(
+                    $app['security.http_utils'],
+                    $options
+                );
+                $handler->setProviderKey($name);
 
-                if (null === $class) {
-                    $class = 'Symfony\\Component\\Security\\Http\\Firewall\\UsernamePasswordFormAuthenticationListener';
+                return $handler;
+            });
+        });
+
+        $app['security.authentication.failure_handler._proto'] = $app->protect(function ($name, $options) use ($app) {
+            return $app->share(function () use ($name, $options, $app) {
+                return new DefaultAuthenticationFailureHandler(
+                    $app,
+                    $app['security.http_utils'],
+                    $options,
+                    $app['logger']
+                );
+            });
+        });
+
+        $app['security.authentication_listener.form._proto'] = $app->protect(function ($name, $options) use ($app, $that) {
+            return $app->share(function () use ($app, $name, $options, $that) {
+                $that->addFakeRoute(
+                    'match',
+                    $tmp = isset($options['check_path']) ? $options['check_path'] : '/login_check',
+                    str_replace('/', '_', ltrim($tmp, '/'))
+                );
+
+                $class = isset($options['listener_class']) ? $options['listener_class'] : 'Symfony\\Component\\Security\\Http\\Firewall\\UsernamePasswordFormAuthenticationListener';
+
+                if (!isset($app['security.authentication.success_handler.'.$name])) {
+                    $app['security.authentication.success_handler.'.$name] = $app['security.authentication.success_handler._proto']($name, $options);
+                }
+
+                if (!isset($app['security.authentication.failure_handler.'.$name])) {
+                    $app['security.authentication.failure_handler.'.$name] = $app['security.authentication.failure_handler._proto']($name, $options);
                 }
 
                 return new $class(
@@ -349,9 +386,9 @@ class SecurityServiceProvider implements ServiceProviderInterface
                     isset($app['security.session_strategy.'.$name]) ? $app['security.session_strategy.'.$name] : $app['security.session_strategy'],
                     $app['security.http_utils'],
                     $name,
+                    $app['security.authentication.success_handler.'.$name],
+                    $app['security.authentication.failure_handler.'.$name],
                     $options,
-                    isset($app['security.authentication.success_handler.'.$name]) ? $app['security.authentication.success_handler.'.$name] : null,
-                    isset($app['security.authentication.failure_handler.'.$name]) ? $app['security.authentication.failure_handler.'.$name] : null,
                     $app['logger'],
                     $app['dispatcher'],
                     isset($options['with_csrf']) && $options['with_csrf'] && isset($app['form.csrf_provider']) ? $app['form.csrf_provider'] : null
@@ -381,15 +418,32 @@ class SecurityServiceProvider implements ServiceProviderInterface
             });
         });
 
-        $app['security.authentication_listener.logout._proto'] = $app->protect(function ($providerKey, $options) use ($app, $that) {
-            return $app->share(function () use ($app, $providerKey, $options, $that) {
-                $that->addFakeRoute(array('get', $tmp = isset($options['logout_path']) ? $options['logout_path'] : '/logout', str_replace('/', '_', ltrim($tmp, '/'))));
+        $app['security.authentication.logout_handler._proto'] = $app->protect(function ($name, $options) use ($app) {
+            return $app->share(function () use ($name, $options, $app) {
+                return new DefaultLogoutSuccessHandler(
+                    $app['security.http_utils'],
+                    isset($options['target_url']) ? $options['target_url'] : '/'
+                );
+            });
+        });
+
+        $app['security.authentication_listener.logout._proto'] = $app->protect(function ($name, $options) use ($app, $that) {
+            return $app->share(function () use ($app, $name, $options, $that) {
+                $that->addFakeRoute(
+                    'get',
+                    $tmp = isset($options['logout_path']) ? $options['logout_path'] : '/logout',
+                    str_replace('/', '_', ltrim($tmp, '/'))
+                );
+
+                if (!isset($app['security.authentication.logout_handler.'.$name])) {
+                    $app['security.authentication.logout_handler.'.$name] = $app['security.authentication.logout_handler._proto']($name, $options);
+                }
 
                 $listener = new LogoutListener(
                     $app['security'],
                     $app['security.http_utils'],
+                    $app['security.authentication.logout_handler.'.$name],
                     $options,
-                    null, // LogoutSuccessHandlerInterface
                     isset($options['with_csrf']) && $options['with_csrf'] && isset($app['form.csrf_provider']) ? $app['form.csrf_provider'] : null
                 );
 
@@ -415,15 +469,18 @@ class SecurityServiceProvider implements ServiceProviderInterface
             });
         });
 
-        $app['security.entry_point.form._proto'] = $app->protect(function ($name, $loginPath = '/login', $useForward = false) use ($app) {
-            return $app->share(function () use ($app, $loginPath, $useForward) {
+        $app['security.entry_point.form._proto'] = $app->protect(function ($name, array $options) use ($app) {
+            return $app->share(function () use ($app, $options) {
+                $loginPath = isset($options['login_path']) ? $options['login_path'] : '/login';
+                $useForward = isset($options['use_forward']) ? $options['use_forward'] : false;
+
                 return new FormAuthenticationEntryPoint($app, $app['security.http_utils'], $loginPath, $useForward);
             });
         });
 
-        $app['security.entry_point.http._proto'] = $app->protect(function ($name, $realName = 'Secured') use ($app) {
-            return $app->share(function () use ($app, $name, $realName) {
-                return new BasicAuthenticationEntryPoint($realName);
+        $app['security.entry_point.http._proto'] = $app->protect(function ($name, array $options) use ($app) {
+            return $app->share(function () use ($app, $name, $options) {
+                return new BasicAuthenticationEntryPoint(isset($options['real_name']) ? $options['real_name'] : 'Secured');
             });
         });
 
@@ -447,17 +504,19 @@ class SecurityServiceProvider implements ServiceProviderInterface
 
     public function boot(Application $app)
     {
+        // FIXME: in Symfony 2.2, this is a proper subscriber
+        //$app['dispatcher']->addSubscriber($app['security.firewall']);
         $app['dispatcher']->addListener('kernel.request', array($app['security.firewall'], 'onKernelRequest'), 8);
 
         foreach ($this->fakeRoutes as $route) {
-            $method = $route[0];
+            list($method, $pattern, $name) = $route;
 
-            $app->$method($route[1], function() {})->bind($route[2]);
+            $app->$method($pattern, function() {})->bind($name);
         }
     }
 
-    public function addFakeRoute($route)
+    public function addFakeRoute($method, $pattern, $name)
     {
-        $this->fakeRoutes[] = $route;
+        $this->fakeRoutes[] = array($method, $pattern, $name);
     }
 }

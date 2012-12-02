@@ -44,11 +44,11 @@ class HttpCacheServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
         $finished = false;
 
-        $app->get('/', function () use ($app, &$finished) {
-            $app->finish(function () use (&$finished) {
-                $finished = true;
-            });
+        $app->finish(function () use (&$finished) {
+            $finished = true;
+        });
 
+        $app->get('/', function () use ($app) {
             return new UnsendableResponse('will do something after finish');
         });
 

@@ -13,12 +13,12 @@ namespace Silex\Provider;
 
 use Silex\Application;
 use Silex\ServiceProviderInterface;
+use Symfony\Component\Form\Extension\Csrf\CsrfExtension;
 use Symfony\Component\Form\Extension\Csrf\CsrfProvider\DefaultCsrfProvider;
 use Symfony\Component\Form\Extension\Csrf\CsrfProvider\SessionCsrfProvider;
-use Symfony\Component\Form\FormFactory;
-use Symfony\Component\Form\Extension\Core\CoreExtension;
+use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationExtension;
 use Symfony\Component\Form\Extension\Validator\ValidatorExtension as FormValidatorExtension;
-use Symfony\Component\Form\Extension\Csrf\CsrfExtension;
+use Symfony\Component\Form\Forms;
 
 /**
  * Symfony Form component Provider.
@@ -46,10 +46,10 @@ class FormServiceProvider implements ServiceProviderInterface
 
         $app['form.secret'] = md5(__DIR__);
 
-        $app['form.extensions'] = $app->share(function () use ($app) {
+        $app['form.extensions'] = $app->share(function ($app) {
             $extensions = array(
-                new CoreExtension(),
                 new CsrfExtension($app['form.csrf_provider']),
+                new HttpFoundationExtension(),
             );
 
             if (isset($app['validator'])) {
@@ -64,11 +64,14 @@ class FormServiceProvider implements ServiceProviderInterface
             return $extensions;
         });
 
-        $app['form.factory'] = $app->share(function () use ($app) {
-            return new FormFactory($app['form.extensions']);
+        $app['form.factory'] = $app->share(function ($app) {
+            return Forms::createFormFactoryBuilder()
+                ->addExtensions($app['form.extensions'])
+                ->getFormFactory()
+            ;
         });
 
-        $app['form.csrf_provider'] = $app->share(function () use ($app) {
+        $app['form.csrf_provider'] = $app->share(function ($app) {
             if (isset($app['session'])) {
                 return new SessionCsrfProvider($app['session'], $app['form.secret']);
             }

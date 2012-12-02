@@ -4,9 +4,9 @@ MonologServiceProvider
 The *MonologServiceProvider* provides a default logging mechanism through
 Jordi Boggiano's `Monolog <https://github.com/Seldaek/monolog>`_ library.
 
-It will log requests and errors and allow you to add debug logging to your
-application, so you don't have to use ``var_dump`` so much anymore. You can
-use the grown-up version called ``tail -f``.
+It will log requests and errors and allow you to add logging to your
+application. This allows you to debug and monitor the behaviour,
+even in production.
 
 Parameters
 ----------
@@ -30,9 +30,6 @@ Services
   Example usage::
 
     $app['monolog']->addDebug('Testing the Monolog logging.');
-
-* **monolog.configure**: Protected closure that takes the logger as an
-  argument. You can override it if you do not want the default behavior.
 
 Registering
 -----------
@@ -71,6 +68,18 @@ add log entries for any logging level through ``addDebug()``, ``addInfo()``,
 
         return new Response('', 201);
     });
+
+Customization
+-------------
+
+You can configure Monolog (like adding or changing the handlers) before using
+it by extending the ``monolog`` service::
+
+    $app['monolog'] = $app->share($app->extend('monolog', function($monolog, $app) {
+        $monolog->pushHandler(...);
+
+        return $monolog;
+    }));
 
 Traits
 ------

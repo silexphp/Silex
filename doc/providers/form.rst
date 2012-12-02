@@ -36,8 +36,20 @@ Registering
 
 .. note::
 
-    The Symfony Form Component comes with the "fat" Silex archive but not with
-    the regular one. If you are using Composer, add it as a dependency to your
+    If you don't want to create your own form layout, it's fine: a default one
+    will be used. But you will have to register the 
+    :doc:`translation provider <providers/translation>` as the default form
+    layout requires it.
+
+    If you want to use validation with forms, do not forget to register the
+    :doc:`Validator provider <providers/validator>`.
+
+.. note::
+
+    The Symfony Form Component and all its dependencies (optional or not) comes
+    with the "fat" Silex archive but not with the regular one.
+
+    If you are using Composer, add it as a dependency to your
     ``composer.json`` file:
 
     .. code-block:: json
@@ -46,29 +58,26 @@ Registering
             "symfony/form": "2.1.*"
         }
 
-If you are going to use the validation extension with forms, you must also
-register the ``symfony/config`` and ```symfony/translation`` components:
+    If you are going to use the validation extension with forms, you must also
+    add a dependency to the ``symfony/config`` and ```symfony/translation``
+    components:
 
-.. code-block:: json
+    .. code-block:: json
 
-    "require": {
-        "symfony/config": "2.1.*",
-        "symfony/translation": "2.1.*"
-    }
+        "require": {
+            "symfony/validator": "2.1.*",
+            "symfony/config": "2.1.*",
+            "symfony/translation": "2.1.*"
+        }
 
-The Symfony Form Component relies on the PHP intl extension. If you don't have
-it, you can install the Symfony Locale Component as a replacement:
+    The Symfony Form Component relies on the PHP intl extension. If you don't have
+    it, you can install the Symfony Locale Component as a replacement:
 
-.. code-block:: json
+    .. code-block:: json
 
-    "require": {
-        "symfony/locale": "2.1.*"
-    }
-
-.. note::
-
-    If you want to benefit from the internationalization of your form, you
-    must install the PHP intl extension.
+        "require": {
+            "symfony/locale": "2.1.*"
+        }
 
 Usage
 -----
@@ -93,7 +102,7 @@ example::
             ->getForm();
 
         if ('POST' == $request->getMethod()) {
-            $form->bindRequest($request);
+            $form->bind($request);
 
             if ($form->isValid()) {
                 $data = $form->getData();
@@ -160,7 +169,7 @@ Traits
 
 .. code-block:: php
 
-    $app->form('form', $data);
+    $app->form($data);
 
 For more information, consult the `Symfony2 Forms documentation
 <http://symfony.com/doc/2.1/book/forms.html>`_.

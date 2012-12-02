@@ -35,6 +35,8 @@ Services
 * **security.encoder_factory**: Defines the encoding strategies for user
   passwords (default to use a digest algorithm for all users).
 
+* **security.encoder.digest**: The encoder to use by default for all users.
+
 .. note::
 
     The service provider defines many other services that are used internally
@@ -45,7 +47,9 @@ Registering
 
 .. code-block:: php
 
-    $app->register(new Silex\Provider\SecurityServiceProvider());
+    $app->register(new Silex\Provider\SecurityServiceProvider(array(
+        'security.firewalls' => // see below
+    )));
 
 .. note::
 
@@ -58,6 +62,14 @@ Registering
         "require": {
             "symfony/security": "2.1.*"
         }
+
+.. caution::
+
+    The security features are only available after the Application has been
+    booted. So, if you want to use it outside of the handling of a request,
+    don't forget to call ``boot()`` first::
+
+        $application->boot();
 
 Usage
 -----
@@ -101,7 +113,7 @@ under ``/admin/``::
 
     $app['security.firewalls'] = array(
         'admin' => array(
-            'pattern' => '^/admin/',
+            'pattern' => '^/admin',
             'http' => true,
             'users' => array(
                 // raw password is foo
@@ -110,9 +122,10 @@ under ``/admin/``::
         ),
     );
 
-The ``pattern`` is a regular expression; the ``http`` setting tells the
-security layer to use HTTP basic authentication and the ``users`` entry
-defines valid users.
+The ``pattern`` is a regular expression (it can also be a `RequestMatcher
+<http://api.symfony.com/master/Symfony/Component/HttpFoundation/RequestMatcher.html>`_
+instance); the ``http`` setting tells the security layer to use HTTP basic
+authentication and the ``users`` entry defines valid users.
 
 Each user is defined with the following information:
 
@@ -175,6 +188,8 @@ Always keep in mind the following two golden rules:
 
 For the login form to work, create a controller like the following::
 
+    use Symfony\Component\HttpFoundation\Request;
+
     $app->get('/login', function(Request $request) use ($app) {
         return $app['twig']->render('login.html', array(
             'error'         => $app['security.last_error']($request),
@@ -236,12 +251,14 @@ Adding a Logout
 ~~~~~~~~~~~~~~~
 
 When using a form for authentication, you can let users log out if you add the
-``logout`` setting::
+``logout`` setting, where ``logout_path`` must match the main firewall
+pattern::
 
     $app['security.firewalls'] = array(
         'secured' => array(
+            'pattern' => '^/admin/',
             'form' => array('login_path' => '/login', 'check_path' => '/admin/login_check'),
-            'logout' => array('logout_path' => '/logout'),
+            'logout' => array('logout_path' => '/admin/logout'),
 
             // ...
         ),
@@ -291,7 +308,7 @@ You can check roles in Twig templates too:
         <a href="/secured?_switch_user=fabien">Switch to Fabien</a>
     {% endif %}
 
-You can check is a user is "fully authenticated" (not an anonymous user for
+You can check if a user is "fully authenticated" (not an anonymous user for
 instance) with the special ``IS_AUTHENTICATED_FULLY`` role:
 
 .. code-block:: jinja
@@ -301,6 +318,8 @@ instance) with the special ``IS_AUTHENTICATED_FULLY`` role:
     {% else %}
         <a href="{{ path('login') }}">Login</a>
     {% endif %}
+
+Of course you will need to define a ``login`` route for this to work.
 
 .. tip::
 
@@ -376,6 +395,12 @@ With the above configuration, users must have the ``ROLE_ADMIN`` to access the
 Furthermore, the admin section can only be accessible via HTTPS (if that's not
 the case, the user will be automatically redirected).
 
+.. note::
+
+    The first argument can also be a `RequestMatcher
+    <http://api.symfony.com/master/Symfony/Component/HttpFoundation/RequestMatcher.html>`_
+    instance.
+
 Defining a custom User Provider
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -383,7 +408,7 @@ Using an array of users is simple and useful when securing an admin section of
 a personal website, but you can override this default mechanism with you own.
 
 The ``users`` setting can be defined as a service that returns an instance of
-`UserProvider
+`UserProviderInterface
 <http://api.symfony.com/master/Symfony/Component/Security/Core/User/UserProviderInterface.html>`_::
 
     'users' => $app->share(function () use ($app) {
@@ -396,9 +421,9 @@ store the users::
     use Symfony\Component\Security\Core\User\UserProviderInterface;
     use Symfony\Component\Security\Core\User\UserInterface;
     use Symfony\Component\Security\Core\User\User;
+    use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
     use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
     use Doctrine\DBAL\Connection;
-    use Doctrine\DBAL\Schema\Table;
 
     class UserProvider implements UserProviderInterface
     {
@@ -443,10 +468,12 @@ class must implement `UserInterface
 And here is the code that you can use to create the database schema and some
 sample users::
 
-    $schema = $conn->getSchemaManager();
+    use Doctrine\DBAL\Schema\Table;
+
+    $schema = $app['db']->getSchemaManager();
     if (!$schema->tablesExist('users')) {
         $users = new Table('users');
-        $users->addColumn('id', 'integer', array('unsigned' => true));
+        $users->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
         $users->setPrimaryKey(array('id'));
         $users->addColumn('username', 'string', array('length' => 32));
         $users->addUniqueIndex(array('username'));
@@ -455,8 +482,8 @@ sample users::
 
         $schema->createTable($users);
 
-        $this->conn->executeQuery('INSERT INTO users (username, password, roles) VALUES ("fabien", "5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==", "ROLE_USER")');
-        $this->conn->executeQuery('INSERT INTO users (username, password, roles) VALUES ("admin", "5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==", "ROLE_ADMIN")');
+        $app['db']->executeQuery('INSERT INTO users (username, password, roles) VALUES ("fabien", "5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==", "ROLE_USER")');
+        $app['db']->executeQuery('INSERT INTO users (username, password, roles) VALUES ("admin", "5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==", "ROLE_ADMIN")');
     }
 
 .. tip::
@@ -465,13 +492,30 @@ sample users::
     provides a user provider class that is able to load users from your
     entities.
 
+Defining a custom Encoder
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+By default, Silex uses the ``sha512`` algorithm to encode passwords.
+Additionally, the password is encoded multiple times and converted to base64.
+You can change these defaults by overriding the ``security.encoder.digest``
+service::
+
+    use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
+
+    $app['security.encoder.digest'] = $app->share(function ($app) {
+        // use the sha1 algorithm
+        // don't base64 encode the password
+        // use only 1 iteration
+        return new MessageDigestPasswordEncoder('sha1', false, 1);
+    });
+
 Defining a custom Authentication Provider
------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The Symfony Security component provides a lot of ready-to-use authentication
 providers (form, HTTP, X509, remember me, ...), but you can add new ones
 easily. To register a new authentication provider, create a service named
-``security.authentication.factory.XXX`` where ``XXX`` is the name you want to
+``security.authentication_listener.factory.XXX`` where ``XXX`` is the name you want to
 use in your configuration::
 
     $app['security.authentication_listener.factory.wsse'] = $app->protect(function ($name, $options) use ($app) {
@@ -500,7 +544,7 @@ use in your configuration::
 You can now use it in your configuration like any other built-in
 authentication provider::
 
-    $app->register(new SecurityServiceProvider(), array(
+    $app->register(new Silex\Provider\SecurityServiceProvider(), array(
         'security.firewalls' => array(
             'default' => array(
                 'wsse' => true,

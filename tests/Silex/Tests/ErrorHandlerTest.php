@@ -77,10 +77,38 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(404, $response->getStatusCode());
     }
 
+    public function testErrorHandlerMethodNotAllowedNoDebug()
+    {
+        $app = new Application();
+        $app['debug'] = false;
+
+        $app->get('/foo', function () { return 'foo'; });
+
+        $request = Request::create('/foo', 'POST');
+        $response = $app->handle($request);
+        $this->assertContains('<title>Whoops, looks like something went wrong.</title>', $response->getContent());
+        $this->assertEquals(405, $response->getStatusCode());
+        $this->assertEquals('GET', $response->headers->get('Allow'));
+    }
+
+    public function testErrorHandlerMethodNotAllowedDebug()
+    {
+        $app = new Application();
+        $app['debug'] = true;
+
+        $app->get('/foo', function () { return 'foo'; });
+
+        $request = Request::create('/foo', 'POST');
+        $response = $app->handle($request);
+        $this->assertContains('No route found for "POST /foo": Method Not Allowed (Allow: GET)', $response->getContent());
+        $this->assertEquals(405, $response->getStatusCode());
+        $this->assertEquals('GET', $response->headers->get('Allow'));
+    }
+
     public function testNoErrorHandler()
     {
         $app = new Application();
-        unset($app['exception_handler']);
+        $app['exception_handler']->disable();
 
         $app->match('/foo', function () {
             throw new \RuntimeException('foo exception');
@@ -107,16 +135,21 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
             throw new NotFoundHttpException('foo exception');
         });
 
+        $app->get('/405', function () { return 'foo'; });
+
         $app->error(function ($e, $code) {
-            return new Response('foo exception handler', $code);
+            return new Response('foo exception handler');
         });
 
         $response = $this->checkRouteResponse($app, '/500', 'foo exception handler');
         $this->assertEquals(500, $response->getStatusCode());
 
-        $request = Request::create('/404');
-        $response = $app->handle($request);
+        $response = $app->handle(Request::create('/404'));
         $this->assertEquals(404, $response->getStatusCode());
+
+        $response = $app->handle(Request::create('/405', 'POST'));
+        $this->assertEquals(405, $response->getStatusCode());
+        $this->assertEquals('GET', $response->headers->get('Allow'));
     }
 
     public function testMultipleErrorHandlers()
@@ -157,7 +190,7 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
     public function testNoResponseErrorHandler()
     {
         $app = new Application();
-        unset($app['exception_handler']);
+        $app['exception_handler']->disable();
 
         $app->match('/foo', function () {
             throw new \RuntimeException('foo exception');
@@ -229,7 +262,7 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
             // just making sure the dispatcher gets created
         });
 
-        unset($app['exception_handler']);
+        $app['exception_handler']->disable();
 
         try {
             $request = Request::create('/foo');

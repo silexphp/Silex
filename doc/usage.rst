@@ -25,7 +25,7 @@ If you want more flexibility, use Composer instead. Create a
 
     {
         "require": {
-            "silex/silex": "1.0.*"
+            "silex/silex": "1.0.*@dev"
         }
     }
 
@@ -35,6 +35,12 @@ And run Composer to install Silex and all its dependencies:
 
     $ curl -s http://getcomposer.org/installer | php
     $ php composer.phar install
+
+.. tip::
+
+    By default, Silex relies on the stable Symfony components. If you want to
+    use their master version instead, add ``"minimum-stability": "dev"`` in
+    your ``composer.json`` file.
 
 Upgrading
 ---------
@@ -61,8 +67,8 @@ definitions, call the ``run`` method on your application::
 
     $app->run();
 
-Then, you have to configure your web server (read the dedicated chapter for
-more information).
+Then, you have to configure your web server (read the :doc:`dedicated chapter
+<web_servers>` for more information).
 
 .. tip::
 
@@ -377,112 +383,6 @@ really be used. You can give a route a name by calling ``bind`` on the
     It only makes sense to name routes if you use providers that make use of
     the ``RouteCollection``.
 
-Before, after and finish filters
---------------------------------
-
-Silex allows you to run code before, after every request and even after the
-response has been sent. This happens through ``before``, ``after`` and
-``finish`` filters. All you need to do is pass a closure::
-
-    $app->before(function () {
-        // set up
-    });
-
-    $app->after(function () {
-        // tear down
-    });
-
-    $app->finish(function () {
-        // after response has been sent
-    });
-
-The before filter has access to the current Request, and can short-circuit the
-whole rendering by returning a Response::
-
-    $app->before(function (Request $request) {
-        // redirect the user to the login screen if access to the Resource is protected
-        if (...) {
-            return new RedirectResponse('/login');
-        }
-    });
-
-The after filter has access to the Request and the Response::
-
-    $app->after(function (Request $request, Response $response) {
-        // tweak the Response
-    });
-
-The finish filter has access to the Request and the Response::
-
-    $app->finish(function (Request $request, Response $response) {
-        // send e-mails ...
-    });
-
-.. note::
-
-    The filters are only run for the "master" Request.
-
-Route middlewares
------------------
-
-Route middlewares are PHP callables which are triggered when their associated
-route is matched:
-
-* ``before`` middlewares are fired just before the route callback, but after
-  the application ``before`` filters;
-
-* ``after`` middlewares are fired just after the route callback, but before
-  the application ``after`` filters.
-
-This can be used for a lot of use cases; for instance, here is a simple
-"anonymous/logged user" check::
-
-    $mustBeAnonymous = function (Request $request) use ($app) {
-        if ($app['session']->has('userId')) {
-            return $app->redirect('/user/logout');
-        }
-    };
-
-    $mustBeLogged = function (Request $request) use ($app) {
-        if (!$app['session']->has('userId')) {
-            return $app->redirect('/user/login');
-        }
-    };
-
-    $app->get('/user/subscribe', function () {
-        ...
-    })
-    ->before($mustBeAnonymous);
-
-    $app->get('/user/login', function () {
-        ...
-    })
-    ->before($mustBeAnonymous);
-
-    $app->get('/user/my-profile', function () {
-        ...
-    })
-    ->before($mustBeLogged);
-
-The ``before`` and ``after`` methods can be called several times for a given
-route, in which case they are triggered in the same order as you added them to
-the route.
-
-For convenience, the ``before`` middlewares are called with the current
-``Request`` instance as an argument and the ``after`` middlewares are called
-with the current ``Request`` and ``Response`` instance as arguments.
-
-If any of the before middlewares returns a Symfony HTTP Response, it will
-short-circuit the whole rendering: the next middlewares won't be run, neither
-the route callback. You can also redirect to another page by returning a
-redirect response, which you can create by calling the Application
-``redirect`` method.
-
-.. note::
-
-    If a before middleware does not return a Symfony HTTP Response or
-    ``null``, a ``RuntimeException`` is thrown.
-
 Global Configuration
 --------------------
 
@@ -521,7 +421,7 @@ takes an ``Exception`` argument and returns a response::
     use Symfony\Component\HttpFoundation\Response;
 
     $app->error(function (\Exception $e, $code) {
-        return new Response('We are sorry, but something went terribly wrong.', $code);
+        return new Response('We are sorry, but something went terribly wrong.');
     });
 
 You can also check for specific errors by using the ``$code`` argument, and
@@ -538,8 +438,17 @@ handle them differently::
                 $message = 'We are sorry, but something went terribly wrong.';
         }
 
-        return new Response($message, $code);
+        return new Response($message);
     });
+
+.. note::
+
+    As Silex ensures that the Response status code is set to the most
+    appropriate one depending on the exception, setting the status on the
+    response won't work. If you want to overwrite the status code (which you
+    should not without a good reason), set the ``X-Status-Code`` header::
+
+        return new Response('Error', 404 /* ignored */, array('X-Status-Code' => 200));
 
 You can restrict an error handler to only handle some Exception classes by
 setting a more specific type hint for the Closure argument::
@@ -606,6 +515,7 @@ Forwards
 When you want to delegate the rendering to another controller, without a
 round-trip to the browser (as for a redirect), use an internal sub-request::
 
+    use Symfony\Component\HttpFoundation\Request;
     use Symfony\Component\HttpKernel\HttpKernelInterface;
 
     $app->get('/', function () use ($app) {
@@ -621,73 +531,10 @@ round-trip to the browser (as for a redirect), use an internal sub-request::
 
         $request = Request::create($app['url_generator']->generate('hello'), 'GET');
 
-Modularity
-----------
-
-When your application starts to define too many controllers, you might want to
-group them logically::
-
-    // define controllers for a blog
-    $blog = $app['controllers_factory'];
-    $blog->get('/', function () {
-        return 'Blog home page';
-    });
-    // ...
-
-    // define controllers for a forum
-    $forum = $app['controllers_factory'];
-    $forum->get('/', function () {
-        return 'Forum home page';
-    });
-
-    // define "global" controllers
-    $app->get('/', function () {
-        return 'Main home page';
-    });
-
-    $app->mount('/blog', $blog);
-    $app->mount('/forum', $forum);
-
-.. note::
-
-    ``$app['controllers_factory']`` is a factory that returns a new instance
-    of ``ControllerCollection`` when used.
-
-``mount()`` prefixes all routes with the given prefix and merges them into the
-main Application. So, ``/`` will map to the main home page, ``/blog/`` to the
-blog home page, and ``/forum/`` to the forum home page.
-
-.. note::
-
-    When calling ``get()``, ``match()``, or any other HTTP methods on the
-    Application, you are in fact calling them on a default instance of
-    ``ControllerCollection`` (stored in ``$app['controllers']``).
-
-Another benefit is the ability to apply settings on a set of controllers very
-easily. Building on the example from the middleware section, here is how you
-would secure all controllers for the backend collection::
-
-    $backend = $app['controllers_factory'];
-
-    // ensure that all controllers require logged-in users
-    $backend->before($mustBeLogged);
-
-.. tip::
-
-    For a better readability, you can split each controller collection into a
-    separate file::
-
-        // blog.php
-        $blog = $app['controllers_factory'];
-        $blog->get('/', function () { return 'Blog home page'; });
-
-        return $blog;
-
-        // app.php
-        $app->mount('/blog', include 'blog.php');
-
-    Instead of requiring a file, you can also create a :doc:`Controller
-    provider </providers#controllers-providers>`.
+There's some more things that you need to keep in mind though. In most cases you
+will want to forward some parts of the current master request to the sub-request.
+That includes: Cookies, server information, session. 
+Read more on :doc:`how to make sub-requests <cookbook/sub_requests>`.
 
 JSON
 ----

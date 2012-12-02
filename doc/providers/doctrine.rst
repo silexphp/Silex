@@ -2,7 +2,7 @@ DoctrineServiceProvider
 =======================
 
 The *DoctrineServiceProvider* provides integration with the `Doctrine DBAL
-<http://www.doctrine-project.org/projects/dbal>`_ for easy database acccess.
+<http://www.doctrine-project.org/projects/dbal>`_ for easy database access.
 
 .. note::
 
@@ -126,7 +126,7 @@ Using multiple connections::
         $post = $app['dbs']['mysql_read']->fetchAssoc($sql, array((int) $id));
 
         $sql = "UPDATE posts SET value = ? WHERE id = ?";
-        $app['dbs']['mysql_write']->execute($sql, array('newValue', (int) $id));
+        $app['dbs']['mysql_write']->executeUpdate($sql, array('newValue', (int) $id));
 
         return  "<h1>{$post['title']}</h1>".
                 "<p>{$post['body']}</p>";
