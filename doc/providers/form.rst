@@ -37,7 +37,7 @@ Registering
 .. note::
 
     If you don't want to create your own form layout, it's fine: a default one
-    will be used. But you will have to register the 
+    will be used. But you will have to register the
     :doc:`translation provider <providers/translation>` as the default form
     layout requires it.
 
@@ -79,6 +79,15 @@ Registering
             "symfony/locale": "2.1.*"
         }
 
+    If you want to use forms in your Twig templates, make sure to install the
+    Symfony Twig Bridge:
+
+    .. code-block:: json
+
+        "require": {
+            "symfony/twig-bridge": "2.1.*"
+        }
+
 Usage
 -----
 
@@ -118,7 +127,8 @@ example::
         return $app['twig']->render('index.twig', array('form' => $form->createView()));
     });
 
-And here is the ``index.twig`` form template:
+And here is the ``index.twig`` form template (requires ``symfony/twig-
+bridge``):
 
 .. code-block:: jinja
 
