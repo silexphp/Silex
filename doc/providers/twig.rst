@@ -135,19 +135,19 @@ Traits
 
 .. code-block:: php
 
-    return $app->render('index.html', ['name': 'Fabien']);
+    return $app->render('index.html', ['name' => 'Fabien']);
 
     $response = new Response();
     $response->setTtl(10);
 
-    return $app->render('index.html', ['name': 'Fabien'], $response);
+    return $app->render('index.html', ['name' => 'Fabien'], $response);
 
 .. code-block:: php
 
     // stream a view
     use Symfony\Component\HttpFoundation\StreamedResponse;
 
-    return $app->render('index.html', ['name': 'Fabien'], new StreamedResponse());
+    return $app->render('index.html', ['name' => 'Fabien'], new StreamedResponse());
 
 Customization
 -------------
