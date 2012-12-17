@@ -14,8 +14,7 @@ namespace Silex\Tests\Provider;
 use Silex\Application;
 use Silex\WebTestCase;
 use Silex\Provider\SessionServiceProvider;
-
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Client;
 
 /**
  * SessionProvider test cases.
@@ -76,5 +75,33 @@ class SessionServiceProviderTest extends WebTestCase
         });
 
         return $app;
+    }
+
+    public function testWithRoutesThatDoesNotUseSession()
+    {
+        $app = new Application();
+
+        $app->register(new SessionServiceProvider(), array(
+            'session.test' => true,
+        ));
+
+        $app->get('/', function () {
+            return 'A welcome page.';
+        });
+
+        $app->get('/robots.txt', function () {
+            return 'Informations for robots.';
+        });
+
+        $app['debug'] = true;
+        $app['exception_handler']->disable();
+
+        $client = new Client($app);
+
+        $client->request('get', '/');
+        $this->assertEquals('A welcome page.', $client->getResponse()->getContent());
+
+        $client->request('get', '/robots.txt');
+        $this->assertEquals('Informations for robots.', $client->getResponse()->getContent());
     }
 }
