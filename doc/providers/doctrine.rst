@@ -29,11 +29,14 @@ Parameters
 
   * **password**: The password of the database to connect to.
 
+  * **charset**: Only relevant for ``pdo_mysql``, ``pdo_oci`` and ``oci8``,
+    specifies the charset used when connecting to the database.
+
   * **path**: Only relevant for ``pdo_sqlite``, specifies the path to
     the SQLite database.
 
   These and additional options are described in detail in the `Doctrine DBAL
-  configuration documentation <http://www.doctrine-project.org/docs/dbal/2.0/en/reference/configuration.html>`_.
+  configuration documentation <http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html>`_.
 
 Services
 --------
@@ -100,6 +103,7 @@ and values are options::
                 'dbname'    => 'my_database',
                 'user'      => 'my_username',
                 'password'  => 'my_password',
+                'charset'   => 'utf8',
             ),
             'mysql_write' => array(
                 'driver'    => 'pdo_mysql',
@@ -107,6 +111,7 @@ and values are options::
                 'dbname'    => 'my_database',
                 'user'      => 'my_username',
                 'password'  => 'my_password',
+                'charset'   => 'utf8',
             ),
         ),
     ));
@@ -133,4 +138,4 @@ Using multiple connections::
     });
 
 For more information, consult the `Doctrine DBAL documentation
-<http://www.doctrine-project.org/docs/dbal/2.0/en/>`_.
+<http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/>`_.
