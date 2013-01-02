@@ -1,5 +1,5 @@
-Modularity
-==========
+Organizing Controllers
+======================
 
 When your application starts to define too many controllers, you might want to
 group them logically::

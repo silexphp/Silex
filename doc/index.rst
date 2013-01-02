@@ -7,7 +7,7 @@ Silex
     intro
     usage
     middlewares
-    modularity
+    organizing_controllers
     services
     providers
     testing
