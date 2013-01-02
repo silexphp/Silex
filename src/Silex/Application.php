@@ -250,7 +250,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      */
     public function on($eventName, $callback, $priority = 0)
     {
-        return $this['dispatcher']->addListener($eventName, $callback, $priority);
+        $this['dispatcher']->addListener($eventName, $callback, $priority);
     }
 
     /**
