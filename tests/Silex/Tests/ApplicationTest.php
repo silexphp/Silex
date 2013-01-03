@@ -48,12 +48,17 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Silex\Controller', $returnValue);
     }
 
-    public function testConstructorInjection ()
+    public function testConstructorInjection()
     {
-        $params = array("param" => "value");
+        // inject a custom parameter
+        $params = array('param' => 'value');
         $app = new Application($params);
-
         $this->assertSame($params['param'], $app['param']);
+
+        // inject an existing parameter
+        $params = array('locale' => 'value');
+        $app = new Application($params);
+        $this->assertSame($params['locale'], $app['locale']);
     }
 
     public function testGetRequest()

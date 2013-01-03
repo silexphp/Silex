@@ -60,8 +60,6 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      */
     public function __construct(array $values = array())
     {
-        parent::__construct($values);
-
         $app = $this;
 
         $this['logger'] = null;
@@ -143,6 +141,10 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
         $this['debug'] = false;
         $this['charset'] = 'UTF-8';
         $this['locale'] = 'en';
+
+        foreach ($values as $key => $value) {
+            $this[$key] = $value;
+        }
     }
 
     /**
