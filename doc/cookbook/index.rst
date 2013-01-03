@@ -13,6 +13,7 @@ The cookbook section contains recipes for solving specific problems.
     form_no_csrf
     validator_yaml
     sub_requests
+    error_handler
 
 Recipes
 -------
@@ -32,3 +33,5 @@ Recipes
 * :doc:`How to use YAML to configure validation <validator_yaml>`.
 
 * :doc:`How to make sub-requests <sub_requests>`.
+
+* :doc:`How to convert errors to exceptions <error_handler>`.
