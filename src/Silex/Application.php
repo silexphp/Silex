@@ -60,6 +60,8 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      */
     public function __construct(array $values = array())
     {
+        parent::__construct();
+
         $app = $this;
 
         $this['logger'] = null;
