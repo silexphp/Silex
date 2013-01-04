@@ -41,36 +41,51 @@ app's namespace::
 
     namespace Demo\Controller;
 
-    use Silex\ControllerResolver as BaseControllerResolver;
+    use Silex\Application;
+    use Symfony\Component\HttpFoundation\Request;
+    use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
 
-    class ControllerResolver extends BaseControllerResolver
+    class ServiceControllerResolver implements ControllerResolverInterface
     {
-        protected function createController($controller)
-        {
-            if (false !== strpos($controller, '::')) {
-                return parent::createController($controller);
-            }
+        const SERVICE_PATTERN = "/[A-Za-z0-9\._\-]+:[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/";
 
-            if (false === strpos($controller, ':')) {
-                throw new \LogicException(sprintf('Unable to parse the controller name "%s".', $controller));
+        protected $resolver;
+        protected $app;
+
+        public function __construct(ControllerResolverInterface $resolver, Application $app)
+        {
+            $this->resolver = $resolver;
+            $this->app = $app;
+        }
+
+        public function getController(Request $request)
+        {
+            $controller = $request->attributes->get('_controller', null);
+
+            if (!is_string($controller) || !preg_match(static::SERVICE_PATTERN, $controller)) {
+                return $this->resolver->getController($request);
             }
 
             list($service, $method) = explode(':', $controller, 2);
 
             if (!isset($this->app[$service])) {
-                throw new \InvalidArgumentException(sprintf('Service "%s" does not exist.', $controller));
+                throw new \InvalidArgumentException(sprintf('Service "%s" does not exist.', $service));
             }
 
             return array($this->app[$service], $method);
         }
+
+        public function getArguments(Request $request, $controller)
+        {
+            return $this->resolver->getArguments($request, $controller);
+        }
     }
 
-We then simply override Silex' built in ``resolver`` service with an instance of
-our own ``ControllerResolver``::
+We then simply extend Silex's built in ``resolver`` service with the decorator::
 
-    $app['resolver'] = $app->share(function () use ($app) {
-        return new Demo\Controller\ControllerResolver($app, $app['logger']);
-    });
+    $app['resolver'] = $app->share($app->extend('resolver', function ($resolver, $app) {
+        return new Demo\Controller\ServiceControllerResolver($resolver, $app);
+    }));
 
 Controller Implementation
 -------------------------
