@@ -247,6 +247,21 @@ The order of the firewall configurations is significant as the first one to
 match wins. The above configuration first ensures that the ``/login`` URL is
 not secured (no authentication settings), and then it secures all other URLs.
 
+.. tip::
+
+    You can toggle all registered authentication mechanisms for a particular
+    area on and off with the ``security`` flag::
+
+        $app['security.firewalls'] = array(
+            'api' => array(
+                'pattern' => '^/api',
+                'security' => $app['debug'] ? false : true,
+                'wsse' => true,
+
+                // ...
+            ),
+        );
+
 Adding a Logout
 ~~~~~~~~~~~~~~~
 
@@ -560,6 +575,23 @@ argument of your authentication factory (see above).
 
 This example uses the authentication provider classes as described in the
 Symfony `cookbook`_.
+
+Stateless Authentication
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+By default, a session cookie is created to persist the security context of
+the user. However, if you use certificates, HTTP authentication, WSSE and so
+on, the credentials are sent for each request. In that case, you can turn off
+persistence by activating the ``stateless`` authentication flag::
+
+    $app['security.firewalls'] = array(
+        'default' => array(
+            'stateless' => true,
+            'wsse' => true,
+
+            // ...
+        ),
+    );
 
 Traits
 ------
