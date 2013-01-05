@@ -96,8 +96,8 @@ class MonologServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $request = Request::create('/error');
         $app->handle($request);
-
-        $pattern = "#RuntimeException: very bad error \(uncaught exception\) at .*Silex/Tests/Provider/MonologServiceProviderTest\.php line \d+#";
+        $ds = preg_quote(DIRECTORY_SEPARATOR,'#');
+        $pattern = "#RuntimeException: very bad error \(uncaught exception\) at .*Silex{$ds}Tests{$ds}Provider{$ds}MonologServiceProviderTest\.php line \d+#";
         $this->assertMatchingRecord($pattern, Logger::CRITICAL, $app['monolog.handler']);
     }
 
