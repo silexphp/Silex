@@ -23,7 +23,7 @@ class ServiceControllerResolverTest extends \PHPUnit_Framework_Testcase
 {
     public function setup()
     {
-        $this->mockResolver = $this->getMockBuilder("Silex\ControllerResolver")
+        $this->mockResolver = $this->getMockBuilder("Symfony\Component\HttpKernel\Controller\ControllerResolverInterface")
             ->disableOriginalConstructor()
             ->getMock();
 
