@@ -12,7 +12,7 @@
 namespace Silex\Tests;
 
 use Silex\Application;
-use Silex\ServiceControllerResolver;
+use Silex\Provider\ServiceControllerServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -35,9 +35,7 @@ class ServiceControllerResolverRouterTest extends RouterTest
 
     protected function checkRouteResponse($app, $path, $expectedContent, $method = 'get', $message = null)
     {
-        $app['resolver'] = $app->share($app->extend('resolver', function($resolver, $app) {
-            return new ServiceControllerResolver($resolver, $app);
-        }));
+        $app->register(new ServiceControllerServiceProvider);
 
         $request = Request::create($path, $method);
         $response = $app->handle($request);
