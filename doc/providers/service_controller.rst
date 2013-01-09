@@ -56,7 +56,7 @@ In this slightly contrived example of a blog API, we're going to change the
     use Silex\Application;
     use Demo\Repository\PostRepository;
 
-    $app = new Application;
+    $app = new Application();
 
     $app['posts.repository'] = $app->share(function() {
         return new PostRepository;
