@@ -67,7 +67,7 @@ In this slightly contrived example of a blog API, we're going to change the
     });
 
 Rewriting your controller as a service is pretty simple, create a Plain Ol' PHP
-Object (POPO) with your ``PostRepository`` as a dependency, along with an 
+Object with your ``PostRepository`` as a dependency, along with an 
 ``indexJsonAction`` method to handle the request. Although not shown in the
 example below, you can use type hinting and parameter naming to get the
 parameters you need, just like with standard Silex routes.
