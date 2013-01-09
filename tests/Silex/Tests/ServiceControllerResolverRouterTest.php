@@ -24,7 +24,7 @@ class ServiceControllerResolverRouterTest extends RouterTest
     {
         $app = new Application();
 
-        $app['service_name'] = function() {
+        $app['service_name'] = function () {
             return new MyController;
         };
 
