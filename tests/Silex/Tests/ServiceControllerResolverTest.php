@@ -23,7 +23,7 @@ class ServiceControllerResolverTest extends \PHPUnit_Framework_Testcase
 {
     public function setup()
     {
-        $this->mockResolver = $this->getMockBuilder("Symfony\Component\HttpKernel\Controller\ControllerResolverInterface")
+        $this->mockResolver = $this->getMockBuilder('Symfony\Component\HttpKernel\Controller\ControllerResolverInterface')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -35,7 +35,7 @@ class ServiceControllerResolverTest extends \PHPUnit_Framework_Testcase
     {
         $this->app['some_service'] = function() { return new \stdClass(); };
 
-        $req = Request::create("/");
+        $req = Request::create('/');
         $req->attributes->set('_controller', 'some_service:methodName');
 
         $this->assertEquals(
@@ -46,11 +46,11 @@ class ServiceControllerResolverTest extends \PHPUnit_Framework_Testcase
 
     public function testShouldDelegateNonStrings()
     {
-        $req = Request::create("/");
+        $req = Request::create('/');
         $req->attributes->set('_controller', function() {});
 
         $this->mockResolver->expects($this->once())
-                           ->method("getController")
+                           ->method('getController')
                            ->with($req)
                            ->will($this->returnValue(123));
 
@@ -62,11 +62,11 @@ class ServiceControllerResolverTest extends \PHPUnit_Framework_Testcase
      */
     public function testShouldDelegateNonMatchingSyntax()
     {
-        $req = Request::create("/");
-        $req->attributes->set('_controller', "some_class::methodName");
+        $req = Request::create('/');
+        $req->attributes->set('_controller', 'some_class::methodName');
 
         $this->mockResolver->expects($this->once())
-                           ->method("getController")
+                           ->method('getController')
                            ->with($req)
                            ->will($this->returnValue(123));
 
@@ -79,16 +79,16 @@ class ServiceControllerResolverTest extends \PHPUnit_Framework_Testcase
      */
     public function testShouldThrowIfServiceIsMissing()
     {
-        $req = Request::create("/");
+        $req = Request::create('/');
         $req->attributes->set('_controller', 'some_service:methodName');
         $this->resolver->getController($req);
     }
 
     public function testShouldDelegateGetArguments()
     {
-        $req = Request::create("/");
+        $req = Request::create('/');
         $this->mockResolver->expects($this->once())
-                           ->method("getArguments")
+                           ->method('getArguments')
                            ->with($req)
                            ->will($this->returnValue(123));
 
