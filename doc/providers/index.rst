@@ -15,3 +15,4 @@ Silex
     form
     http_cache
     security
+    service_controller

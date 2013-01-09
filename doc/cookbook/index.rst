@@ -12,7 +12,6 @@ The cookbook section contains recipes for solving specific problems.
     session_storage
     form_no_csrf
     validator_yaml
-    controllers_as_services
 
 Recipes
 -------
@@ -30,5 +29,3 @@ Recipes
   <form_no_csrf>`.
 
 * :doc:`How to use YAML to configure validation <validator_yaml>`.
-
-* :doc:`How to define Controllers as Services <controllers_as_services>`.
