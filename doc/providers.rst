@@ -61,6 +61,7 @@ the ``Silex\Provider`` namespace:
 * :doc:`HttpCacheServiceProvider <providers/http_cache>`
 * :doc:`FormServiceProvider <providers/form>`
 * :doc:`SecurityServiceProvider <providers/security>`
+* :doc:`ServiceControllerServiceProvider <providers/service_controller>`
 
 Third party providers
 ~~~~~~~~~~~~~~~~~~~~~
