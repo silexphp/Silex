@@ -16,3 +16,4 @@ Silex
     http_cache
     security
     serializer
+    service_controller
