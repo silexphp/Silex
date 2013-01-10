@@ -395,8 +395,8 @@ middleware, a requirement, or a default value), you can configure it on
         ->assert('id', '\d+')
         ->requireHttps()
         ->method('get')
-        ->convert('id', function () { // ... })
-        ->before(function () { // ... })
+        ->convert('id', function () { /* ... */ })
+        ->before(function () { /* ... */ })
     ;
 
 These settings are applied to already registered controllers and they become
