@@ -388,13 +388,14 @@ you can tell Silex to lazily create that controller class for you::
 
     $app->get('/', 'Igorw\Foo::bar');
 
+    use Silex\Application;
     use Symfony\Component\HttpFoundation\Request;
 
     namespace Igorw
     {
         class Foo
         {
-            public function bar(Request $request)
+            public function bar(Request $request, Application $app)
             {
                 ...
             }
