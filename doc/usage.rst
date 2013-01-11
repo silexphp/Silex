@@ -123,10 +123,6 @@ import local variables of that function.
 
 The return value of the closure becomes the content of the page.
 
-There is also an alternate way for defining controllers using a class method.
-The syntax for that is ``ClassName::methodName``. Static methods are also
-possible.
-
 Example GET route
 ~~~~~~~~~~~~~~~~~
 
@@ -383,6 +379,36 @@ really be used. You can give a route a name by calling ``bind`` on the
     It only makes sense to name routes if you use providers that make use of
     the ``RouteCollection``.
 
+Controllers in classes
+~~~~~~~~~~~~~~~~~~~~~~
+
+If you don't want to use anonymous functions, you can also define your
+controllers as methods. By using the ``ControllerClass::methodName`` syntax,
+you can tell Silex to lazily create that controller class for you::
+
+    $app->get('/', 'Igorw\Foo::bar');
+
+    use Silex\Application;
+    use Symfony\Component\HttpFoundation\Request;
+
+    namespace Igorw
+    {
+        class Foo
+        {
+            public function bar(Request $request, Application $app)
+            {
+                ...
+            }
+        }
+    }
+
+This will load the ``Igorw\Foo`` class on demand, create an instance and call
+the ``bar`` method to get the response. You can use ``Request`` and
+``Silex\Application`` type hints to get ``$request`` and ``$app`` injected.
+
+For an even stronger separation between Silex and your controllers, you can
+:doc:`define your controllers as services <providers/service_controller>`.
+
 Global Configuration
 --------------------
 
@@ -533,7 +559,7 @@ round-trip to the browser (as for a redirect), use an internal sub-request::
 
 There's some more things that you need to keep in mind though. In most cases you
 will want to forward some parts of the current master request to the sub-request.
-That includes: Cookies, server information, session. 
+That includes: Cookies, server information, session.
 Read more on :doc:`how to make sub-requests <cookbook/sub_requests>`.
 
 JSON
