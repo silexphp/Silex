@@ -1,6 +1,27 @@
 Organizing Controllers
 ======================
 
+A more OOP way to organizing, in this way, it will not create global variable
+(P.S. Sorry for my bad english)::
+
+    // Controller/User.php
+    namespace Controller;
+    
+    use Silex\Application;
+    
+    class User extends \Silex\ControllerCollection {
+        public function __construct(Application $app) {
+            parent::__construct($app['route_factory']);
+            $this->get('/', function () {
+                return 'User home page';
+            }
+        }
+    }
+
+    // index.php
+    include 'Controller\User.php'; // Don't need if you have set autoload
+    $app->mount('/user', new Controller\User($app));
+
 When your application starts to define too many controllers, you might want to
 group them logically::
 
