@@ -384,7 +384,7 @@ Controllers in classes
 
 If you don't want to use anonymous functions, you can also define your
 controllers as methods. By using the ``ControllerClass::methodName`` syntax,
-you can tell Silex to lazily create that controller class for you::
+you can tell Silex to lazily create the controller object for you::
 
     $app->get('/', 'Igorw\Foo::bar');
 
