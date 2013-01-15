@@ -101,7 +101,7 @@ is known, you can get it with a call to ``getUser()``::
         $user = $token->getUser();
     }
 
-The user can be a string, and object with a ``__toString()`` method, or an
+The user can be a string, an object with a ``__toString()`` method, or an
 instance of `UserInterface
 <http://api.symfony.com/master/Symfony/Component/Security/Core/User/UserInterface.html>`_.
 
