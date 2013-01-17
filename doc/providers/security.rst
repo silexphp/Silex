@@ -269,7 +269,7 @@ are replaced with ``_`` and the leading ``/`` is stripped):
 
 .. code-block:: jinja
 
-    <a href="{{ path('logout') }}">Logout</a>
+    <a href="{{ path('admin_logout') }}">Logout</a>
 
 Allowing Anonymous Users
 ~~~~~~~~~~~~~~~~~~~~~~~~
