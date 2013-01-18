@@ -15,6 +15,7 @@ use Silex\Application;
 use Silex\ServiceProviderInterface;
 
 use Symfony\Component\Validator\Validator;
+use Symfony\Component\Validator\DefaultTranslator;
 use Symfony\Component\Validator\Mapping\ClassMetadataFactory;
 use Symfony\Component\Validator\Mapping\Loader\StaticMethodLoader;
 use Symfony\Component\Validator\ConstraintValidatorFactory;
@@ -36,7 +37,8 @@ class ValidatorServiceProvider implements ServiceProviderInterface
 
             return new Validator(
                 $app['validator.mapping.class_metadata_factory'],
-                $app['validator.validator_factory']
+                $app['validator.validator_factory'],
+                isset($app['translator']) ? $app['translator'] : new DefaultTranslator()
             );
         });
 
