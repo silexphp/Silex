@@ -296,7 +296,7 @@ Checking User Roles
 To check if a user is granted some role, use the ``isGranted()`` method on the
 security context::
 
-    if ($app['security']->isGranted('ROLE_ADMIN') {
+    if ($app['security']->isGranted('ROLE_ADMIN')) {
         // ...
     }
 
