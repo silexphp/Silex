@@ -157,13 +157,15 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      */
     public function register(ServiceProviderInterface $provider, array $values = array())
     {
-        $this->providers[] = $provider;
 
-        $provider->register($this);
+        $this->providers[] = $provider;
 
         foreach ($values as $key => $value) {
             $this[$key] = $value;
         }
+
+        $provider->register($this);
+        
     }
 
     /**
