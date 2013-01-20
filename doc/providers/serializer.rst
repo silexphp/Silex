@@ -17,12 +17,12 @@ Services
 * **serializer.encoders**: `Symfony\Component\Serializer\Encoder\JsonEncoder
   <http://api.symfony.com/master/Symfony/Component/Serializer/Encoder/JsonEncoder.html>`_
   and `Symfony\Component\Serializer\Encoder\XmlEncoder
-  <http://api.symfony.com/master/Symfony/Component/Serializer/Encoder/XmlEncoder>`_.
+  <http://api.symfony.com/master/Symfony/Component/Serializer/Encoder/XmlEncoder.html>`_.
 
 * **serializer.normalizers**: `Symfony\Component\Serializer\Normalizer\CustomNormalizer
-  <http://api.symfony.com/master/Symfony/Component/Serializer/Normalizer/CustomNormalizer>`_
+  <http://api.symfony.com/master/Symfony/Component/Serializer/Normalizer/CustomNormalizer.html>`_
   and `Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer
-  <http://api.symfony.com/master/Symfony/Component/Serializer/Normalizer/GetSetMethodNormalizer>`_.
+  <http://api.symfony.com/master/Symfony/Component/Serializer/Normalizer/GetSetMethodNormalizer.html>`_.
 
 Registering
 -----------
