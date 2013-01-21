@@ -70,11 +70,11 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
             throw new \RuntimeException('You tried to access the autoloader service. The autoloader has been removed from Silex. It is recommended that you use Composer to manage your dependencies and handle your autoloading. See http://getcomposer.org for more information.');
         };
 
-        $this['routes'] = $this->share(function () {
+        $this['routes'] = $this->share(function ($app) {
             return new RouteCollection();
         });
 
-        $this['controllers'] = $this->share(function () use ($app) {
+        $this['controllers'] = $this->share(function ($app) {
             return $app['controllers_factory'];
         });
 
@@ -87,39 +87,66 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
             return new $app['route_class']();
         };
 
-        $this['exception_handler'] = $this->share(function () use ($app) {
+        $this['exception_handler'] = $this->share(function ($app) {
             return new ExceptionHandler($app['debug']);
         });
 
-        $this['dispatcher_class'] = 'Symfony\\Component\\EventDispatcher\\EventDispatcher';
-        $this['dispatcher'] = $this->share(function () use ($app) {
-            $dispatcher = new $app['dispatcher_class']();
-
-            $urlMatcher = new LazyUrlMatcher(function () use ($app) {
+        $this['lazy_url_matcher'] = $this->share(function ($app) {
+            return new LazyUrlMatcher(function () use ($app) {
                 return $app['url_matcher'];
             });
-            $dispatcher->addSubscriber(new RouterListener($urlMatcher, $app['request_context'], $app['logger']));
-            $dispatcher->addSubscriber(new LocaleListener($app, $urlMatcher));
+        });
+
+        $this['router_listener'] = $this->share(function ($app) {
+            return new RouterListener($app['lazy_url_matcher'], $app['request_context'], $app['logger']);
+        });
+
+        $this['locale_listener'] = $this->share(function ($app) {
+            return new LocaleListener($app, $app['lazy_url_matcher']);
+        });
+
+        $this['response_listener'] = $this->share(function ($app) {
+            return new ResponseListener($app['charset']);
+        });
+
+        $this['middleware_listener'] = $this->share(function ($app) {
+            return new MiddlewareListener($app);
+        });
+
+        $this['converter_listener'] = $this->share(function ($app) {
+            return new ConverterListener($app['routes']);
+        });
+
+        $this['string_to_response_listener'] = $this->share(function ($app) {
+            return new StringToResponseListener();
+        });
+
+        $this['dispatcher_class'] = 'Symfony\\Component\\EventDispatcher\\EventDispatcher';
+        $this['dispatcher'] = $this->share(function ($app) {
+            $dispatcher = new $app['dispatcher_class']();
+
+            $dispatcher->addSubscriber($app['router_listener']);
+            $dispatcher->addSubscriber($app['locale_listener']);
             if (isset($app['exception_handler'])) {
                 $dispatcher->addSubscriber($app['exception_handler']);
             }
-            $dispatcher->addSubscriber(new ResponseListener($app['charset']));
-            $dispatcher->addSubscriber(new MiddlewareListener($app));
-            $dispatcher->addSubscriber(new ConverterListener($app['routes']));
-            $dispatcher->addSubscriber(new StringToResponseListener());
+            $dispatcher->addSubscriber($app['response_listener']);
+            $dispatcher->addSubscriber($app['middleware_listener']);
+            $dispatcher->addSubscriber($app['converter_listener']);
+            $dispatcher->addSubscriber($app['string_to_response_listener']);
 
             return $dispatcher;
         });
 
-        $this['resolver'] = $this->share(function () use ($app) {
+        $this['resolver'] = $this->share(function ($app) {
             return new ControllerResolver($app, $app['logger']);
         });
 
-        $this['kernel'] = $this->share(function () use ($app) {
+        $this['kernel'] = $this->share(function ($app) {
             return new HttpKernel($app['dispatcher'], $app['resolver']);
         });
 
-        $this['request_context'] = $this->share(function () use ($app) {
+        $this['request_context'] = $this->share(function ($app) {
             $context = new RequestContext();
 
             $context->setHttpPort($app['request.http_port']);
@@ -128,7 +155,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
             return $context;
         });
 
-        $this['url_matcher'] = $this->share(function () use ($app) {
+        $this['url_matcher'] = $this->share(function ($app) {
             return new RedirectableUrlMatcher($app['routes'], $app['request_context']);
         });
 
