@@ -70,11 +70,11 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
             throw new \RuntimeException('You tried to access the autoloader service. The autoloader has been removed from Silex. It is recommended that you use Composer to manage your dependencies and handle your autoloading. See http://getcomposer.org for more information.');
         };
 
-        $this['routes'] = $this->share(function () {
+        $this['routes'] = $this->share(function ($app) {
             return new RouteCollection();
         });
 
-        $this['controllers'] = $this->share(function () use ($app) {
+        $this['controllers'] = $this->share(function ($app) {
             return $app['controllers_factory'];
         });
 
@@ -87,12 +87,12 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
             return new $app['route_class']();
         };
 
-        $this['exception_handler'] = $this->share(function () use ($app) {
+        $this['exception_handler'] = $this->share(function ($app) {
             return new ExceptionHandler($app['debug']);
         });
 
         $this['dispatcher_class'] = 'Symfony\\Component\\EventDispatcher\\EventDispatcher';
-        $this['dispatcher'] = $this->share(function () use ($app) {
+        $this['dispatcher'] = $this->share(function ($app) {
             $dispatcher = new $app['dispatcher_class']();
 
             $urlMatcher = new LazyUrlMatcher(function () use ($app) {
@@ -111,15 +111,15 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
             return $dispatcher;
         });
 
-        $this['resolver'] = $this->share(function () use ($app) {
+        $this['resolver'] = $this->share(function ($app) {
             return new ControllerResolver($app, $app['logger']);
         });
 
-        $this['kernel'] = $this->share(function () use ($app) {
+        $this['kernel'] = $this->share(function ($app) {
             return new HttpKernel($app['dispatcher'], $app['resolver']);
         });
 
-        $this['request_context'] = $this->share(function () use ($app) {
+        $this['request_context'] = $this->share(function ($app) {
             $context = new RequestContext();
 
             $context->setHttpPort($app['request.http_port']);
@@ -128,7 +128,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
             return $context;
         });
 
-        $this['url_matcher'] = $this->share(function () use ($app) {
+        $this['url_matcher'] = $this->share(function ($app) {
             return new RedirectableUrlMatcher($app['routes'], $app['request_context']);
         });
 
