@@ -54,5 +54,6 @@ class FunctionalTest extends \PHPUnit_Framework_TestCase
 
         $response = $app->handle(Request::create('/hello/Silex'));
         $this->assertEquals('Silex', $response->getContent());
+        $this->assertSame($app, $app->mount('/hello', $mounted));
     }
 }

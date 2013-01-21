@@ -424,6 +424,8 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      *
      * @param string                                           $prefix      The route prefix
      * @param ControllerCollection|ControllerProviderInterface $controllers A ControllerCollection or a ControllerProviderInterface instance
+     *
+     * @return Application
      */
     public function mount($prefix, $controllers)
     {
@@ -436,6 +438,8 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
         }
 
         $this['routes']->addCollection($controllers->flush($prefix), $prefix);
+
+        return $this;
     }
 
     /**
