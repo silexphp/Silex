@@ -91,22 +91,49 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
             return new ExceptionHandler($app['debug']);
         });
 
+        $this['lazy_url_matcher'] = $this->share(function ($app) {
+            return new LazyUrlMatcher(function () use ($app) {
+                return $app['url_matcher'];
+            });
+        });
+
+        $this['router_listener'] = $this->share(function ($app) {
+            return new RouterListener($app['lazy_url_matcher'], $app['request_context'], $app['logger']);
+        });
+
+        $this['locale_listener'] = $this->share(function ($app) {
+            return new LocaleListener($app, $app['lazy_url_matcher']);
+        });
+
+        $this['response_listener'] = $this->share(function ($app) {
+            return new ResponseListener($app['charset']);
+        });
+
+        $this['middleware_listener'] = $this->share(function ($app) {
+            return new MiddlewareListener($app);
+        });
+
+        $this['converter_listener'] = $this->share(function ($app) {
+            return new ConverterListener($app['routes']);
+        });
+
+        $this['string_to_response_listener'] = $this->share(function ($app) {
+            return new StringToResponseListener();
+        });
+
         $this['dispatcher_class'] = 'Symfony\\Component\\EventDispatcher\\EventDispatcher';
         $this['dispatcher'] = $this->share(function ($app) {
             $dispatcher = new $app['dispatcher_class']();
 
-            $urlMatcher = new LazyUrlMatcher(function () use ($app) {
-                return $app['url_matcher'];
-            });
-            $dispatcher->addSubscriber(new RouterListener($urlMatcher, $app['request_context'], $app['logger']));
-            $dispatcher->addSubscriber(new LocaleListener($app, $urlMatcher));
+            $dispatcher->addSubscriber($app['router_listener']);
+            $dispatcher->addSubscriber($app['locale_listener']);
             if (isset($app['exception_handler'])) {
                 $dispatcher->addSubscriber($app['exception_handler']);
             }
-            $dispatcher->addSubscriber(new ResponseListener($app['charset']));
-            $dispatcher->addSubscriber(new MiddlewareListener($app));
-            $dispatcher->addSubscriber(new ConverterListener($app['routes']));
-            $dispatcher->addSubscriber(new StringToResponseListener());
+            $dispatcher->addSubscriber($app['response_listener']);
+            $dispatcher->addSubscriber($app['middleware_listener']);
+            $dispatcher->addSubscriber($app['converter_listener']);
+            $dispatcher->addSubscriber($app['string_to_response_listener']);
 
             return $dispatcher;
         });
