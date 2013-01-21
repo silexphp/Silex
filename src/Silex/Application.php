@@ -66,10 +66,6 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
 
         $this['logger'] = null;
 
-        $this['autoloader'] = function () {
-            throw new \RuntimeException('You tried to access the autoloader service. The autoloader has been removed from Silex. It is recommended that you use Composer to manage your dependencies and handle your autoloading. See http://getcomposer.org for more information.');
-        };
-
         $this['routes'] = $this->share(function () {
             return new RouteCollection();
         });

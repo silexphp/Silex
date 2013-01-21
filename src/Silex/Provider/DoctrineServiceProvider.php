@@ -122,14 +122,5 @@ class DoctrineServiceProvider implements ServiceProviderInterface
 
     public function boot(Application $app)
     {
-        // BC: to be removed before 1.0
-        if (isset($app['db.dbal.class_path'])) {
-            throw new \RuntimeException('You have provided the db.dbal.class_path parameter. The autoloader has been removed from Silex. It is recommended that you use Composer to manage your dependencies and handle your autoloading. If you are already using Composer, you can remove the parameter. See http://getcomposer.org for more information.');
-        }
-
-        // BC: to be removed before 1.0
-        if (isset($app['db.common.class_path'])) {
-            throw new \RuntimeException('You have provided the db.common.class_path parameter. The autoloader has been removed from Silex. It is recommended that you use Composer to manage your dependencies and handle your autoloading. If you are already using Composer, you can remove the parameter. See http://getcomposer.org for more information.');
-        }
     }
 }
