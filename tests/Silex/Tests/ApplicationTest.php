@@ -12,6 +12,8 @@
 namespace Silex\Tests;
 
 use Silex\Application;
+use Silex\ControllerCollection;
+use Silex\Route;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -467,6 +469,23 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         });
 
         $this->assertEquals('foo /', $app->handle($mainRequest)->getContent());
+    }
+
+    public function testRegisterShouldReturnSelf()
+    {
+        $app = new Application();
+        $provider = $this->getMock('Silex\ServiceProviderInterface');
+
+        $this->assertSame($app, $app->register($provider));
+    }
+
+    public function testMountShouldReturnSelf()
+    {
+        $app = new Application();
+        $mounted = new ControllerCollection(new Route());
+        $mounted->get('/{name}', function ($name) { return new Response($name); });
+
+        $this->assertSame($app, $app->mount('/hello', $mounted));
     }
 }
 
