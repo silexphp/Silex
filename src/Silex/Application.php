@@ -150,6 +150,8 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      *
      * @param ServiceProviderInterface $provider A ServiceProviderInterface instance
      * @param array                    $values   An array of values that customizes the provider
+     *
+     * @return Application
      */
     public function register(ServiceProviderInterface $provider, array $values = array())
     {
@@ -160,6 +162,8 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
         foreach ($values as $key => $value) {
             $this[$key] = $value;
         }
+
+        return $this;
     }
 
     /**
@@ -424,6 +428,8 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      *
      * @param string                                           $prefix      The route prefix
      * @param ControllerCollection|ControllerProviderInterface $controllers A ControllerCollection or a ControllerProviderInterface instance
+     *
+     * @return Application
      */
     public function mount($prefix, $controllers)
     {
@@ -436,6 +442,8 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
         }
 
         $this['routes']->addCollection($controllers->flush($prefix), $prefix);
+
+        return $this;
     }
 
     /**
