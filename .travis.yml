@@ -1,6 +1,13 @@
 language: php
 
-before_script: composer install --dev --prefer-source
+env:
+    - SYMFONY_DEPS_VERSION=2.1
+    - SYMFONY_DEPS_VERSION=2.2
+
+before_script:
+    # symfony/*
+    - sh -c "if [ '$SYMFONY_DEPS_VERSION' = '2.2' ]; then sed -i 's/>=2.1,<2.3-dev/2.2.*@dev/g' composer.json; fi"
+    - composer install --dev --prefer-source
 
 php:
   - 5.3
