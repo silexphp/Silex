@@ -27,7 +27,6 @@
         "symfony/config": ">=2.1,<2.3-dev",
         "symfony/locale": ">=2.1,<2.3-dev",
         "symfony/form": ">=2.1,<2.3-dev",
-        "monolog/monolog": ">=1.0.0,<1.2-dev",
         "symfony/browser-kit": ">=2.1,<2.3-dev",
         "symfony/css-selector": ">=2.1,<2.3-dev",
         "symfony/dom-crawler": ">=2.1,<2.3-dev",
