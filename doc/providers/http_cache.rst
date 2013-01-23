@@ -40,9 +40,7 @@ Usage
 -----
 
 Silex already supports any reverse proxy like Varnish out of the box by
-setting Response HTTP cache headers:
-
-.. code-block:: php
+setting Response HTTP cache headers::
 
     use Symfony\Component\HttpFoundation\Response;
 
@@ -55,9 +53,7 @@ setting Response HTTP cache headers:
 .. tip::
 
     If you want Silex to trust the ``X-Forwarded-For*`` headers from your
-    reverse proxy, you will need to run your application like this:
-
-    .. code-block:: php
+    reverse proxy, you will need to run your application like this::
 
         use Symfony\Component\HttpFoundation\Request;
 
@@ -65,15 +61,11 @@ setting Response HTTP cache headers:
         $app->run();
 
 This provider allows you to use the Symfony2 reverse proxy natively with
-Silex applications by using the ``http_cache`` service:
-
-.. code-block:: php
+Silex applications by using the ``http_cache`` service::
 
     $app['http_cache']->run();
 
-The provider also provides ESI support:
-
-.. code-block:: php
+The provider also provides ESI support::
 
     $app->get('/', function() {
         $response = new Response(<<<EOF
@@ -104,9 +96,7 @@ The provider also provides ESI support:
     $app['http_cache']->run();
 
 If your application doesn't use ESI, you can disable it to slightly improve the
-overall performance:
-
-.. code-block:: php
+overall performance::
 
     $app->register(new Silex\Provider\HttpCacheServiceProvider(), array(
        'http_cache.cache_dir' => __DIR__.'/cache/',
