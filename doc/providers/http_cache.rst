@@ -18,6 +18,15 @@ Services
 * **http_cache**: An instance of `HttpCache
   <http://api.symfony.com/master/Symfony/Component/HttpKernel/HttpCache/HttpCache.html>`_.
 
+* **http_cache.esi**: An instance of `Esi
+  <http://api.symfony.com/master/Symfony/Component/HttpKernel/HttpCache/Esi.html>`_,
+  that implements the ESI capabilities to Request and Response instances.
+
+* **http_cache.store**: An instance of `Store
+  <http://api.symfony.com/master/Symfony/Component/HttpKernel/HttpCache/Store.html>`_,
+  that implements all the logic for storing cache metadata (Request and Response
+  headers).
+
 Registering
 -----------
 
@@ -31,7 +40,9 @@ Usage
 -----
 
 Silex already supports any reverse proxy like Varnish out of the box by
-setting Response HTTP cache headers::
+setting Response HTTP cache headers:
+
+.. code-block:: php
 
     use Symfony\Component\HttpFoundation\Response;
 
@@ -44,7 +55,9 @@ setting Response HTTP cache headers::
 .. tip::
 
     If you want Silex to trust the ``X-Forwarded-For*`` headers from your
-    reverse proxy, you will need to run your application like this::
+    reverse proxy, you will need to run your application like this:
+
+    .. code-block:: php
 
         use Symfony\Component\HttpFoundation\Request;
 
@@ -52,11 +65,15 @@ setting Response HTTP cache headers::
         $app->run();
 
 This provider allows you to use the Symfony2 reverse proxy natively with
-Silex applications by using the ``http_cache`` service::
+Silex applications by using the ``http_cache`` service:
+
+.. code-block:: php
 
     $app['http_cache']->run();
 
-The provider also provides ESI support::
+The provider also provides ESI support:
+
+.. code-block:: php
 
     $app->get('/', function() {
         $response = new Response(<<<EOF
@@ -85,6 +102,16 @@ The provider also provides ESI support::
     });
 
     $app['http_cache']->run();
+
+If your application doesn't use ESI, you can disable it to slightly improve the
+overall performance:
+
+.. code-block:: php
+
+    $app->register(new Silex\Provider\HttpCacheServiceProvider(), array(
+       'http_cache.cache_dir' => __DIR__.'/cache/',
+       'http_cache.esi'       => null
+    ));
 
 .. tip::
 
