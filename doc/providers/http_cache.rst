@@ -100,7 +100,7 @@ overall performance::
 
     $app->register(new Silex\Provider\HttpCacheServiceProvider(), array(
        'http_cache.cache_dir' => __DIR__.'/cache/',
-       'http_cache.esi'       => null
+       'http_cache.esi'       => null,
     ));
 
 .. tip::
