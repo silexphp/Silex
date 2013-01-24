@@ -82,7 +82,8 @@ class Compiler
 
         $phar->stopBuffering();
 
-        // $phar->compressFiles(\Phar::GZ);
+        // FIXME: phar compression feature is not yet implemented
+        //$phar->compressFiles(\Phar::GZ);
 
         unset($phar);
     }
