@@ -35,7 +35,7 @@ class ExceptionHandlerTest extends \PHPUnit_Framework_TestCase
 
         $request = Request::create('/foo');
         $response = $app->handle($request);
-        $this->assertContains('<title>Whoops, looks like something went wrong.</title>', $response->getContent());
+        $this->assertContains('<h1>Whoops, looks like something went wrong.</h1>', $response->getContent());
         $this->assertEquals(500, $response->getStatusCode());
     }
 
@@ -62,7 +62,7 @@ class ExceptionHandlerTest extends \PHPUnit_Framework_TestCase
 
         $request = Request::create('/foo');
         $response = $app->handle($request);
-        $this->assertContains('<title>Sorry, the page you are looking for could not be found.</title>', $response->getContent());
+        $this->assertContains('<h1>Sorry, the page you are looking for could not be found.</h1>', $response->getContent());
         $this->assertEquals(404, $response->getStatusCode());
     }
 
@@ -86,7 +86,7 @@ class ExceptionHandlerTest extends \PHPUnit_Framework_TestCase
 
         $request = Request::create('/foo', 'POST');
         $response = $app->handle($request);
-        $this->assertContains('<title>Whoops, looks like something went wrong.</title>', $response->getContent());
+        $this->assertContains('<h1>Whoops, looks like something went wrong.</h1>', $response->getContent());
         $this->assertEquals(405, $response->getStatusCode());
         $this->assertEquals('GET', $response->headers->get('Allow'));
     }
