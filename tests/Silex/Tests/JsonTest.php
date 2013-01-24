@@ -26,7 +26,8 @@ class JsonTest extends \PHPUnit_Framework_TestCase
 
         $response = $app->json();
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $response);
-        $this->assertSame('{}', $response->getContent());
+        $response = json_decode($response->getContent(), true);
+        $this->assertSame(array(), $response);
     }
 
     public function testJsonUsesData()
