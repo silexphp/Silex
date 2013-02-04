@@ -27,8 +27,15 @@ use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
  */
 class MonologServiceProvider implements ServiceProviderInterface
 {
+    const SEVERITY_ERROR = 0;
+    const SEVERITY_CRITICAL = 1;
+    
+    private $app;
+    
     public function register(Application $app)
     {
+        $this->app = $app;
+        
         if ($bridge = class_exists('Symfony\Bridge\Monolog\Logger')) {
             $app['logger'] = function () use ($app) {
                 return $app['monolog'];
@@ -68,41 +75,53 @@ class MonologServiceProvider implements ServiceProviderInterface
 
     public function boot(Application $app)
     {
+        $that = $this;
+        
         $app->before(function (Request $request) use ($app) {
             $app['monolog']->addInfo('> '.$request->getMethod().' '.$request->getRequestUri());
         });
 
-        $app->error(function (\Exception $e) use ($app) {
-            $exceptions = array($e);
-            $current = $e;
-            while (null !== $current = $current->getPrevious()) {
-                $exceptions[] = $current;
-            }
-            $count = count($exceptions);
-            
-            $message = '';
-            $severity = 0; //0=error, 1=critical
-            foreach ($exceptions as $index => $instance) {
-                $message .= ($count > 1 && 0 === $index) ? 'Multiple Uncaught Exceptions:' : '';
-                $prefix = ($count > 1) ? sprintf("\n[%d/%d] ", $index + 1, $count) : '';
-                $message .= sprintf('%s%s: %s (uncaught exception) at %s line %s', $prefix, get_class($instance), $instance->getMessage(), $instance->getFile(), $instance->getLine());
-                if ($app['debug'] && $app['monolog.output.debug.verbose']) {
-                    $message .= sprintf("\nStacktrace:\n%s", $instance->getTraceAsString());
-                }
-                $thisSeverity = ($instance instanceof HttpExceptionInterface && $instance->getStatusCode() < 500) ? 0 : 1;
-                if ($thisSeverity > $severity) {
-                    $severity = $thisSeverity;
-                }
-            }
-            if (0 === $severity) {
-                $app['monolog']->addError($message);
-            } else {
-                $app['monolog']->addCritical($message);
-            }
+        $app->error(function (\Exception $e) use ($app, $that) {
+            $that->errorHandler($e);
         }, 255);
 
         $app->after(function (Request $request, Response $response) use ($app) {
             $app['monolog']->addInfo('< '.$response->getStatusCode());
         });
+    }
+
+    private function errorHandler(\Exception $e)
+    {
+        $exceptions = array($e);
+        $current = $e;
+        while (null !== $current = $current->getPrevious()) {
+            $exceptions[] = $current;
+        }
+        $count = count($exceptions);
+        
+        $message = '';
+        $severity = self::SEVERITY_ERROR;
+        foreach ($exceptions as $index => $instance) {
+            $message .= ($count > 1 && 0 === $index) ? 'Multiple Uncaught Exceptions:' : '';
+            $message .= ($count > 1) ? sprintf("\n[%d/%d] ", $index + 1, $count) : '';
+            $message .= sprintf('%s: %s (uncaught exception) at %s line %s', get_class($instance), $instance->getMessage(), $instance->getFile(), $instance->getLine());
+            if ($this->app['debug'] && $this->app['monolog.output.debug.verbose']) {
+                $message .= sprintf("\nStacktrace:\n%s", $instance->getTraceAsString());
+            }
+            
+            $thisSeverity = ($instance instanceof HttpExceptionInterface && $instance->getStatusCode() < 500) ? self::SEVERITY_ERROR : self::SEVERITY_CRITICAL;
+            if ($thisSeverity > $severity) {
+                $severity = $thisSeverity;
+            }
+        }
+        
+        switch($severity) {
+            case self::SEVERITY_ERROR:
+                $this->app['monolog']->addError($message);
+                break;
+            case self::SEVERITY_CRITICAL:
+            default:
+                $this->app['monolog']->addCritical($message);
+        }
     }
 }
