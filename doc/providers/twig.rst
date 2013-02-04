@@ -60,7 +60,7 @@ some Symfony2 components and Twig. Add it as a dependency to your
 .. code-block:: json
 
     "require": {
-        "symfony/twig-bridge": "2.1.*",
+        "symfony/twig-bridge": "~2.1",
     }
 
 When present, the ``TwigServiceProvider`` will provide you with the following

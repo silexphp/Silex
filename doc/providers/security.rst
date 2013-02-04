@@ -60,7 +60,7 @@ Registering
     .. code-block:: json
 
         "require": {
-            "symfony/security": "2.1.*"
+            "symfony/security": "~2.1"
         }
 
 .. caution::
