@@ -61,6 +61,8 @@ class MonologServiceProvider implements ServiceProviderInterface
             return Logger::DEBUG;
         };
 
+        $app['monolog.output.debug.verbose'] = true;
+
         $app['monolog.name'] = 'myapp';
     }
 
@@ -71,8 +73,28 @@ class MonologServiceProvider implements ServiceProviderInterface
         });
 
         $app->error(function (\Exception $e) use ($app) {
-            $message = sprintf('%s: %s (uncaught exception) at %s line %s', get_class($e), $e->getMessage(), $e->getFile(), $e->getLine());
-            if ($e instanceof HttpExceptionInterface && $e->getStatusCode() < 500) {
+            $exceptions = array($e);
+            $current = $e;
+            while (null !== $current = $current->getPrevious()) {
+                $exceptions[] = $current;
+            }
+            $count = count($exceptions);
+            
+            $message = '';
+            $severity = 0; //0=error, 1=critical
+            foreach ($exceptions as $index => $instance) {
+                $message .= ($count > 1 && 0 === $index) ? 'Multiple Uncaught Exceptions:' : '';
+                $prefix = ($count > 1) ? sprintf("\n[%d/%d] ", $index + 1, $count) : '';
+                $message .= sprintf('%s%s: %s (uncaught exception) at %s line %s', $prefix, get_class($instance), $instance->getMessage(), $instance->getFile(), $instance->getLine());
+                if ($app['debug'] && $app['monolog.output.debug.verbose']) {
+                    $message .= sprintf("\nStacktrace:\n%s", $instance->getTraceAsString());
+                }
+                $thisSeverity = ($instance instanceof HttpExceptionInterface && $instance->getStatusCode() < 500) ? 0 : 1;
+                if ($thisSeverity > $severity) {
+                    $severity = $thisSeverity;
+                }
+            }
+            if (0 === $severity) {
                 $app['monolog']->addError($message);
             } else {
                 $app['monolog']->addCritical($message);
