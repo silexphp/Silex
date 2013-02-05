@@ -22,6 +22,11 @@ Parameters
 * **monolog.name** (optional): Name of the monolog channel,
   defaults to ``myapp``.
 
+* **monolog.output.debug.verbose** (optional): Controls verbosity of
+  information written to the log file. If enabled, stacktraces will be
+  included in the output when the application instance has debug
+  enabled. Defaults to ``true`` (enabled).
+
 Services
 --------
 
