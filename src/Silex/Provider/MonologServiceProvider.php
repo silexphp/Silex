@@ -27,9 +27,6 @@ use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
  */
 class MonologServiceProvider implements ServiceProviderInterface
 {
-    const SEVERITY_ERROR = 0;
-    const SEVERITY_CRITICAL = 1;
-    
     private $app;
     
     public function register(Application $app)
@@ -100,7 +97,6 @@ class MonologServiceProvider implements ServiceProviderInterface
         $count = count($exceptions);
         
         $message = '';
-        $severity = self::SEVERITY_ERROR;
         foreach ($exceptions as $index => $instance) {
             $message .= ($count > 1 && 0 === $index) ? 'Multiple Uncaught Exceptions:' : '';
             $message .= ($count > 1) ? sprintf("\n[%d/%d] ", $index + 1, $count) : '';
@@ -108,20 +104,12 @@ class MonologServiceProvider implements ServiceProviderInterface
             if ($this->app['debug'] && $this->app['monolog.output.debug.verbose']) {
                 $message .= sprintf("\nStacktrace:\n%s", $instance->getTraceAsString());
             }
-            
-            $thisSeverity = ($instance instanceof HttpExceptionInterface && $instance->getStatusCode() < 500) ? self::SEVERITY_ERROR : self::SEVERITY_CRITICAL;
-            if ($thisSeverity > $severity) {
-                $severity = $thisSeverity;
-            }
         }
         
-        switch($severity) {
-            case self::SEVERITY_ERROR:
-                $this->app['monolog']->addError($message);
-                break;
-            case self::SEVERITY_CRITICAL:
-            default:
-                $this->app['monolog']->addCritical($message);
+        if ($e instanceof HttpExceptionInterface && $e->getStatusCode() < 500) {
+            $this->app['monolog']->addError($message);
+        } else {
+            $this->app['monolog']->addCritical($message);
         }
     }
 }
