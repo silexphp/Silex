@@ -102,7 +102,7 @@ collection of constraints::
         'title' => new Assert\Length(array('min' => 10)),
         'author' => new Assert\Collection(array(
             'first_name' => array(new Assert\NotBlank(), new Assert\Length(array('min' => 10))),
-            'last_name'  => new Assert\Length(array('min'=>10),
+            'last_name'  => new Assert\Length(array('min' => 10)),
         )),
     ));
     $errors = $app['validator']->validateValue($book, $constraint);
