@@ -55,7 +55,7 @@ Registering
     .. code-block:: json
 
         "require": {
-            "symfony/form": "2.1.*"
+            "symfony/form": "~2.1"
         }
 
     If you are going to use the validation extension with forms, you must also
@@ -65,9 +65,9 @@ Registering
     .. code-block:: json
 
         "require": {
-            "symfony/validator": "2.1.*",
-            "symfony/config": "2.1.*",
-            "symfony/translation": "2.1.*"
+            "symfony/validator": "~2.1",
+            "symfony/config": "~2.1",
+            "symfony/translation": "~2.1"
         }
 
     The Symfony Form Component relies on the PHP intl extension. If you don't have
@@ -76,7 +76,7 @@ Registering
     .. code-block:: json
 
         "require": {
-            "symfony/locale": "2.1.*"
+            "symfony/locale": "~2.1"
         }
 
     If you want to use forms in your Twig templates, make sure to install the
@@ -85,7 +85,7 @@ Registering
     .. code-block:: json
 
         "require": {
-            "symfony/twig-bridge": "2.1.*"
+            "symfony/twig-bridge": "~2.1"
         }
 
 Usage
