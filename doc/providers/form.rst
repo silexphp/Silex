@@ -150,7 +150,7 @@ form by adding constraints on the fields::
 
     $form = $app['form.factory']->createBuilder('form')
         ->add('name', 'text', array(
-            'constraints' => array(new Assert\NotBlank(), new Assert\MinLength(5))
+            'constraints' => array(new Assert\NotBlank(), new Assert\Length(array('min' => 5)))
         ))
         ->add('email', 'text', array(
             'constraints' => new Assert\Email()
