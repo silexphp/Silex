@@ -44,7 +44,7 @@ Registering
     .. code-block:: json
 
         "require": {
-            "symfony/validator": "2.1.*"
+            "symfony/validator": "~2.1"
         }
 
 Usage

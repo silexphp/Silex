@@ -50,7 +50,7 @@ Registering
     .. code-block:: json
 
         "require": {
-            "symfony/translation": "2.1.*"
+            "symfony/translation": "~2.1"
         }
 
 Usage
@@ -126,8 +126,8 @@ file:
 .. code-block:: json
 
     "require": {
-        "symfony/config": "2.1.*",
-        "symfony/yaml": "2.1.*"
+        "symfony/config": "~2.1",
+        "symfony/yaml": "~2.1"
     }
 
 Next, you have to create the language mappings in YAML files. A naming you can
