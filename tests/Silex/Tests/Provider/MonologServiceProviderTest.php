@@ -24,10 +24,10 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class MonologServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp()
+    public static function setUpBeforeClass()
     {
         if (!is_dir(__DIR__.'/../../../../vendor/monolog/monolog/src')) {
-            $this->markTestSkipped('Monolog dependency was not installed.');
+            self::markTestSkipped('Monolog dependency was not installed.');
         }
     }
 

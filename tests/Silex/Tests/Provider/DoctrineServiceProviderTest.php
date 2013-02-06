@@ -21,10 +21,10 @@ use Silex\Provider\DoctrineServiceProvider;
  */
 class DoctrineServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp()
+    public static function setUpBeforeClass()
     {
         if (!is_dir(__DIR__.'/../../../../vendor/doctrine/common/lib') || !is_dir(__DIR__.'/../../../../vendor/doctrine/dbal/lib')) {
-            $this->markTestSkipped('Doctrine Common/DBAL dependencies were not installed.');
+            self::markTestSkipped('Doctrine Common/DBAL dependencies were not installed.');
         }
     }
 

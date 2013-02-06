@@ -23,14 +23,14 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class SecurityTraitTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp()
+    public static function setUpBeforeClass()
     {
         if (version_compare(phpversion(), '5.4.0', '<')) {
-            $this->markTestSkipped('PHP 5.4 is required for this test');
+            self::markTestSkipped('PHP 5.4 is required for this test');
         }
 
         if (!is_dir(__DIR__.'/../../../../vendor/symfony/security')) {
-            $this->markTestSkipped('Security dependency was not installed.');
+            self::markTestSkipped('Security dependency was not installed.');
         }
     }
 
