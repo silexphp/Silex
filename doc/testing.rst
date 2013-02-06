@@ -113,7 +113,7 @@ executed before every test.
         {
             // ...
 
-            $this->app['session.test'] = true;
+            $app['session.test'] = true;
 
             // ...
         }
