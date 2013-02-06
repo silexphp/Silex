@@ -171,6 +171,9 @@ Now, you can create another controller for viewing individual blog posts::
 This route definition has a variable ``{id}`` part which is passed to the
 closure.
 
+The current ``application`` is automatically injected by Silex to the Closure
+thanks to the type hinting.
+
 When the post does not exist, we are using ``abort()`` to stop the request
 early. It actually throws an exception, which we will see how to handle later
 on.
