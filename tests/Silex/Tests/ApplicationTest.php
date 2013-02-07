@@ -487,6 +487,19 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame($app, $app->mount('/hello', $mounted));
     }
+
+    public function testSendFile()
+    {
+        $app = new Application();
+
+        try {
+            $response = $app->sendFile(__FILE__, 200, array('Content-Type: application/php'));
+            $this->assertInstanceOf('Symfony\Component\HttpFoundation\BinaryFileResponse', $response);
+            $this->assertEquals(__FILE__, (string) $response->getFile());
+        } catch (\RuntimeException $e) {
+            $this->assertFalse(class_exists('Symfony\Component\HttpFoundation\BinaryFileResponse'));
+        }
+    }
 }
 
 class FooController

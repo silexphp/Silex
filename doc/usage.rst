@@ -614,6 +614,35 @@ after every chunk::
         fclose($fh);
     };
 
+Sending a file
+--------------
+
+If you want to return a file, you can use the ``sendFile`` helper method.
+It eases returning files that would otherwise not be publicly available. Simply
+pass it your file path, status code, headers and the content disposition and it
+will create a ``BinaryFileResponse`` based response for you::
+
+    $app->get('/files/{path}', function ($path) use ($app) {
+        if (!file_exists('/base/path/' . $path)) {
+            $app->abort(404);
+        }
+
+        return $app->sendFile('/base/path/' . $path);
+    });
+
+To further customize the response before returning it, check the API doc for
+`Symfony\Component\HttpFoundation\BinaryFileResponse
+<http://api.symfony.com/master/Symfony/Component/HttpFoundation/BinaryFileResponse.html>`_::
+
+    return $app
+        ->sendFile('/base/path/' . $path)
+        ->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, 'pic.jpg')
+    ;
+
+.. note::
+
+    Http Foundation 2.2 or greater is required for this feature to be available.
+
 Traits
 ------
 
