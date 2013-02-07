@@ -125,6 +125,10 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
         });
 
         $this['url_matcher'] = $this->share(function () use ($app) {
+            if($app['request']->server->get('QUERY_STRING') !== '')             {
+                $app['request_context']->setParameter('QUERY_STRING', $app['request']->server->get('QUERY_STRING'));
+            }
+
             return new RedirectableUrlMatcher($app['routes'], $app['request_context']);
         });
 

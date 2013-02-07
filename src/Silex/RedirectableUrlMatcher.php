@@ -29,6 +29,10 @@ class RedirectableUrlMatcher extends BaseRedirectableUrlMatcher
     {
         $url = $this->context->getBaseUrl().$path;
 
+        if($this->context->hasParameter('QUERY_STRING')) {
+            $url .= '?'.$this->context->getParameter('QUERY_STRING');
+        }
+
         if ($this->context->getHost()) {
             if ($scheme) {
                 $port = '';
