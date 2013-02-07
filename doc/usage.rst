@@ -641,7 +641,7 @@ To further customize the response before returning it, check the API doc for
 
 .. note::
 
-    Http Foundation 2.2 or greater is required for this feature to be available.
+    HttpFoundation 2.2 or greater is required for this feature to be available.
 
 Traits
 ------

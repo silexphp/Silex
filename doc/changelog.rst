@@ -1,5 +1,6 @@
 Changelog
 =========
+
 * **2013-02-07**: added ``Application::sendFile()`` to ease sending
   ``BinaryFileResponse``.
 
