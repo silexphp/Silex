@@ -78,7 +78,7 @@ tested/specced. You may also notice that the only external dependency is on
 ``Symfony\Component\HttpFoundation\JsonResponse``, meaning this controller could
 easily be used in a Symfony (full stack) application, or potentially with other
 applications or frameworks that know how to handle a `Symfony/HttpFoundation
-<http://symfony.com/doc/2.0/components/http_foundation/introduction.html>`_
+<http://symfony.com/doc/master/components/http_foundation/introduction.html>`_
 ``Response`` object.
 
 .. code-block:: php
