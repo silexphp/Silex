@@ -11,6 +11,7 @@
 
 namespace Silex;
 
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\TerminableInterface;
@@ -420,6 +421,27 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
     public function json($data = array(), $status = 200, $headers = array())
     {
         return new JsonResponse($data, $status, $headers);
+    }
+
+    /**
+     * Sends a file.
+     *
+     * @param \SplFileInfo|string $file               The file to stream
+     * @param integer             $status             The response status code
+     * @param array               $headers            An array of response headers
+     * @param null|string         $contentDisposition The type of Content-Disposition to set automatically with the filename
+     *
+     * @return BinaryFileResponse
+     *
+     * @throws \RuntimeException When the feature is not supported, before http-foundation v2.2
+     */
+    public function sendFile($file, $status = 200, $headers = array(), $contentDisposition = null)
+    {
+        if (!class_exists('Symfony\Component\HttpFoundation\BinaryFileResponse')) {
+            throw new \RuntimeException('The "senfFile" method is only supported as of Http Foundation 2.2.');
+        }
+
+        return new BinaryFileResponse($file, $status, $headers, true, $contentDisposition);
     }
 
     /**
