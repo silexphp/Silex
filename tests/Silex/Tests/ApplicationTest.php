@@ -493,7 +493,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $app = new Application();
 
         try {
-            $response = $app->sendFile(__FILE__, 200, array('Content-Type: application/php'), null);
+            $response = $app->sendFile(__FILE__, 200, array('Content-Type: application/php'));
             $this->assertInstanceOf('Symfony\Component\HttpFoundation\BinaryFileResponse', $response);
             $this->assertEquals(__FILE__, (string) $response->getFile());
         } catch (\RuntimeException $e) {

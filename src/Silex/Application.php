@@ -439,7 +439,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
     public function sendFile($file, $status = 200, $headers = array(), $contentDisposition = null)
     {
         if (!class_exists('Symfony\Component\HttpFoundation\BinaryFileResponse')) {
-            throw new \RuntimeException('This feature is only supported as of Http Foundation 2.2.');
+            throw new \RuntimeException('The "senfFile" method is only supported as of Http Foundation 2.2.');
         }
 
         return new BinaryFileResponse($file, $status, $headers, true, $contentDisposition);
