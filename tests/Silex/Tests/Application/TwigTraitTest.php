@@ -20,15 +20,13 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
  * TwigTrait test cases.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ *
+ * @requires PHP 5.4
  */
 class TwigTraitTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        if (version_compare(phpversion(), '5.4.0', '<')) {
-            $this->markTestSkipped('PHP 5.4 is required for this test');
-        }
-
         if (!is_dir(__DIR__.'/../../../../vendor/twig/twig')) {
             $this->markTestSkipped('Twig dependency was not installed.');
         }
