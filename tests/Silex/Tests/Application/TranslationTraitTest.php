@@ -23,13 +23,6 @@ use Silex\Provider\TranslationServiceProvider;
  */
 class TranslationTraitTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp()
-    {
-        if (!is_dir(__DIR__.'/../../../../vendor/symfony/translation')) {
-            $this->markTestSkipped('Translation dependency was not installed.');
-        }
-    }
-
     public function testTrans()
     {
         $app = $this->createApplication();

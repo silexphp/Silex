@@ -24,13 +24,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class MonologServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp()
-    {
-        if (!is_dir(__DIR__.'/../../../../vendor/monolog/monolog/src')) {
-            $this->markTestSkipped('Monolog dependency was not installed.');
-        }
-    }
-
     public function testRequestLogging()
     {
         $app = $this->getApplication();

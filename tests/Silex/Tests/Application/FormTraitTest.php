@@ -23,13 +23,6 @@ use Silex\Provider\FormServiceProvider;
  */
 class FormTraitTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp()
-    {
-        if (!is_dir(__DIR__.'/../../../../vendor/symfony/form')) {
-            $this->markTestSkipped('Form dependency was not installed.');
-        }
-    }
-
     public function testForm()
     {
         $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->createApplication()->form());

@@ -23,13 +23,6 @@ use Silex\Provider\SwiftmailerServiceProvider;
  */
 class SwiftmailerTraitTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp()
-    {
-        if (!is_dir(__DIR__.'/../../../../vendor/swiftmailer/swiftmailer')) {
-            $this->markTestSkipped('Swiftmailer dependency was not installed.');
-        }
-    }
-
     public function testMail()
     {
         $app = $this->createApplication();

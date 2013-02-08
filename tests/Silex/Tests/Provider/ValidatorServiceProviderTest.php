@@ -23,13 +23,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp()
-    {
-        if (!is_dir(__DIR__.'/../../../../vendor/symfony/validator')) {
-            $this->markTestSkipped('Validator dependency was not installed.');
-        }
-    }
-
     public function testRegister()
     {
         $app = new Application();
@@ -53,10 +46,6 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testValidatorConstraint($email, $isValid, $nbGlobalError, $nbEmailError, $app)
     {
-        if (!is_dir(__DIR__ . '/../../../../vendor/symfony/form')) {
-            $this->markTestSkipped('Form component was not installed.');
-        }
-
         $app->register(new ValidatorServiceProvider());
         $app->register(new FormServiceProvider());
 
