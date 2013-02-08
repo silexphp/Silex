@@ -19,13 +19,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SwiftmailerServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp()
-    {
-        if (!is_dir(__DIR__.'/../../../../vendor/swiftmailer/swiftmailer/lib')) {
-            $this->markTestSkipped('Swiftmailer dependency was not installed.');
-        }
-    }
-
     public function testSwiftMailerServiceIsSwiftMailer()
     {
         $app = new Application();
