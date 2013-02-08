@@ -25,10 +25,10 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class SecurityServiceProviderTest extends WebTestCase
 {
-    public function setUp()
+    public static function setUpBeforeClass()
     {
         if (!is_dir(__DIR__.'/../../../../vendor/symfony/security')) {
-            $this->markTestSkipped('Security dependency was not installed.');
+            self::markTestSkipped('Security dependency was not installed.');
         }
     }
 
