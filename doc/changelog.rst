@@ -1,6 +1,9 @@
 Changelog
 =========
 
+* **2013-02-07**: added ``Application::sendFile()`` to ease sending
+  ``BinaryFileResponse``.
+
 * **2012-11-05**: Filters have been renamed to application middlewares in the
   documentation.
 

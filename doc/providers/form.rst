@@ -37,7 +37,7 @@ Registering
 .. note::
 
     If you don't want to create your own form layout, it's fine: a default one
-    will be used. But you will have to register the 
+    will be used. But you will have to register the
     :doc:`translation provider <providers/translation>` as the default form
     layout requires it.
 
@@ -55,7 +55,7 @@ Registering
     .. code-block:: json
 
         "require": {
-            "symfony/form": "2.1.*"
+            "symfony/form": "~2.1"
         }
 
     If you are going to use the validation extension with forms, you must also
@@ -65,9 +65,9 @@ Registering
     .. code-block:: json
 
         "require": {
-            "symfony/validator": "2.1.*",
-            "symfony/config": "2.1.*",
-            "symfony/translation": "2.1.*"
+            "symfony/validator": "~2.1",
+            "symfony/config": "~2.1",
+            "symfony/translation": "~2.1"
         }
 
     The Symfony Form Component relies on the PHP intl extension. If you don't have
@@ -76,7 +76,16 @@ Registering
     .. code-block:: json
 
         "require": {
-            "symfony/locale": "2.1.*"
+            "symfony/locale": "~2.1"
+        }
+
+    If you want to use forms in your Twig templates, make sure to install the
+    Symfony Twig Bridge:
+
+    .. code-block:: json
+
+        "require": {
+            "symfony/twig-bridge": "~2.1"
         }
 
 Usage
@@ -118,7 +127,8 @@ example::
         return $app['twig']->render('index.twig', array('form' => $form->createView()));
     });
 
-And here is the ``index.twig`` form template:
+And here is the ``index.twig`` form template (requires ``symfony/twig-
+bridge``):
 
 .. code-block:: jinja
 

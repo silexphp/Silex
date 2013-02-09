@@ -100,7 +100,7 @@ A route pattern consists of:
   pattern can include variable parts and you are able to set RegExp
   requirements for them.
 
-* *Method*: One of the following HTTP methods: ``GET``, ``POST``, ``PUT``
+* *Method*: One of the following HTTP methods: ``GET``, ``POST``, ``PUT`` or
   ``DELETE``. This describes the interaction with the resource. Commonly only
   ``GET`` and ``POST`` are used, but it is possible to use the others as well.
 
@@ -122,10 +122,6 @@ import local variables of that function.
     will not make a distinction here.
 
 The return value of the closure becomes the content of the page.
-
-There is also an alternate way for defining controllers using a class method.
-The syntax for that is ``ClassName::methodName``. Static methods are also
-possible.
 
 Example GET route
 ~~~~~~~~~~~~~~~~~
@@ -174,6 +170,9 @@ Now, you can create another controller for viewing individual blog posts::
 
 This route definition has a variable ``{id}`` part which is passed to the
 closure.
+
+The current ``Application`` is automatically injected by Silex to the Closure
+thanks to the type hinting.
 
 When the post does not exist, we are using ``abort()`` to stop the request
 early. It actually throws an exception, which we will see how to handle later
@@ -383,6 +382,36 @@ really be used. You can give a route a name by calling ``bind`` on the
     It only makes sense to name routes if you use providers that make use of
     the ``RouteCollection``.
 
+Controllers in classes
+~~~~~~~~~~~~~~~~~~~~~~
+
+If you don't want to use anonymous functions, you can also define your
+controllers as methods. By using the ``ControllerClass::methodName`` syntax,
+you can tell Silex to lazily create the controller object for you::
+
+    $app->get('/', 'Igorw\Foo::bar');
+
+    use Silex\Application;
+    use Symfony\Component\HttpFoundation\Request;
+
+    namespace Igorw
+    {
+        class Foo
+        {
+            public function bar(Request $request, Application $app)
+            {
+                ...
+            }
+        }
+    }
+
+This will load the ``Igorw\Foo`` class on demand, create an instance and call
+the ``bar`` method to get the response. You can use ``Request`` and
+``Silex\Application`` type hints to get ``$request`` and ``$app`` injected.
+
+For an even stronger separation between Silex and your controllers, you can
+:doc:`define your controllers as services <providers/service_controller>`.
+
 Global Configuration
 --------------------
 
@@ -395,8 +424,8 @@ middleware, a requirement, or a default value), you can configure it on
         ->assert('id', '\d+')
         ->requireHttps()
         ->method('get')
-        ->convert('id', function () { // ... })
-        ->before(function () { // ... })
+        ->convert('id', function () { /* ... */ })
+        ->before(function () { /* ... */ })
     ;
 
 These settings are applied to already registered controllers and they become
@@ -531,6 +560,11 @@ round-trip to the browser (as for a redirect), use an internal sub-request::
 
         $request = Request::create($app['url_generator']->generate('hello'), 'GET');
 
+There's some more things that you need to keep in mind though. In most cases you
+will want to forward some parts of the current master request to the sub-request.
+That includes: Cookies, server information, session.
+Read more on :doc:`how to make sub-requests <cookbook/sub_requests>`.
+
 JSON
 ----
 
@@ -579,6 +613,35 @@ after every chunk::
         }
         fclose($fh);
     };
+
+Sending a file
+--------------
+
+If you want to return a file, you can use the ``sendFile`` helper method.
+It eases returning files that would otherwise not be publicly available. Simply
+pass it your file path, status code, headers and the content disposition and it
+will create a ``BinaryFileResponse`` based response for you::
+
+    $app->get('/files/{path}', function ($path) use ($app) {
+        if (!file_exists('/base/path/' . $path)) {
+            $app->abort(404);
+        }
+
+        return $app->sendFile('/base/path/' . $path);
+    });
+
+To further customize the response before returning it, check the API doc for
+`Symfony\Component\HttpFoundation\BinaryFileResponse
+<http://api.symfony.com/master/Symfony/Component/HttpFoundation/BinaryFileResponse.html>`_::
+
+    return $app
+        ->sendFile('/base/path/' . $path)
+        ->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, 'pic.jpg')
+    ;
+
+.. note::
+
+    HttpFoundation 2.2 or greater is required for this feature to be available.
 
 Traits
 ------

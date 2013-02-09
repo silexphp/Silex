@@ -37,9 +37,13 @@ with providers. Just keep to these rules:
 * Overriding existing services must occur **after** the provider is
   registered.
 
-  *Reason: If the services already exist, the provider will overwrite it.*
+  *Reason: If the service already exists, the provider will overwrite it.*
 
-* You can set parameters any time before the service is accessed.
+* You can set parameters any time **after** the provider is registered, but
+  **before** the service is accessed.
+
+  *Reason: Providers can set default values for parameters. Just like with
+  services, the provider will overwrite existing values.*
 
 Make sure to stick to this behavior when creating your own providers.
 
@@ -61,6 +65,7 @@ the ``Silex\Provider`` namespace:
 * :doc:`HttpCacheServiceProvider <providers/http_cache>`
 * :doc:`FormServiceProvider <providers/form>`
 * :doc:`SecurityServiceProvider <providers/security>`
+* :doc:`ServiceControllerServiceProvider <providers/service_controller>`
 
 Third party providers
 ~~~~~~~~~~~~~~~~~~~~~
@@ -170,7 +175,6 @@ Here is an example of such a provider::
 
     use Silex\Application;
     use Silex\ControllerProviderInterface;
-    use Silex\ControllerCollection;
 
     class HelloControllerProvider implements ControllerProviderInterface
     {

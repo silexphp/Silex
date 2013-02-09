@@ -60,7 +60,7 @@ some Symfony2 components and Twig. Add it as a dependency to your
 .. code-block:: json
 
     "require": {
-        "symfony/twig-bridge": "2.1.*",
+        "symfony/twig-bridge": "~2.1",
     }
 
 When present, the ``TwigServiceProvider`` will provide you with the following
@@ -135,19 +135,19 @@ Traits
 
 .. code-block:: php
 
-    return $app->render('index.html', ['name': 'Fabien']);
+    return $app->render('index.html', ['name' => 'Fabien']);
 
     $response = new Response();
     $response->setTtl(10);
 
-    return $app->render('index.html', ['name': 'Fabien'], $response);
+    return $app->render('index.html', ['name' => 'Fabien'], $response);
 
 .. code-block:: php
 
     // stream a view
     use Symfony\Component\HttpFoundation\StreamedResponse;
 
-    return $app->render('index.html', ['name': 'Fabien'], new StreamedResponse());
+    return $app->render('index.html', ['name' => 'Fabien'], new StreamedResponse());
 
 Customization
 -------------

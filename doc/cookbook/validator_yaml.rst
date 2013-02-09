@@ -11,7 +11,7 @@ your ``composer.json`` file:
 .. code-block:: json
 
     "require": {
-        "symfony/yaml": "2.1.*"
+        "symfony/yaml": "~2.1"
     }
 
 Next, you need to tell the Validation Service that you are not using

@@ -47,9 +47,9 @@ Registering
 
 .. code-block:: php
 
-    $app->register(new Silex\Provider\SecurityServiceProvider(array(
+    $app->register(new Silex\Provider\SecurityServiceProvider(), array(
         'security.firewalls' => // see below
-    )));
+    ));
 
 .. note::
 
@@ -60,7 +60,7 @@ Registering
     .. code-block:: json
 
         "require": {
-            "symfony/security": "2.1.*"
+            "symfony/security": "~2.1"
         }
 
 .. caution::
@@ -101,7 +101,7 @@ is known, you can get it with a call to ``getUser()``::
         $user = $token->getUser();
     }
 
-The user can be a string, and object with a ``__toString()`` method, or an
+The user can be a string, an object with a ``__toString()`` method, or an
 instance of `UserInterface
 <http://api.symfony.com/master/Symfony/Component/Security/Core/User/UserInterface.html>`_.
 
@@ -247,6 +247,21 @@ The order of the firewall configurations is significant as the first one to
 match wins. The above configuration first ensures that the ``/login`` URL is
 not secured (no authentication settings), and then it secures all other URLs.
 
+.. tip::
+
+    You can toggle all registered authentication mechanisms for a particular
+    area on and off with the ``security`` flag::
+
+        $app['security.firewalls'] = array(
+            'api' => array(
+                'pattern' => '^/api',
+                'security' => $app['debug'] ? false : true,
+                'wsse' => true,
+
+                // ...
+            ),
+        );
+
 Adding a Logout
 ~~~~~~~~~~~~~~~
 
@@ -269,7 +284,7 @@ are replaced with ``_`` and the leading ``/`` is stripped):
 
 .. code-block:: jinja
 
-    <a href="{{ path('logout') }}">Logout</a>
+    <a href="{{ path('admin_logout') }}">Logout</a>
 
 Allowing Anonymous Users
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -296,7 +311,7 @@ Checking User Roles
 To check if a user is granted some role, use the ``isGranted()`` method on the
 security context::
 
-    if ($app['security']->isGranted('ROLE_ADMIN') {
+    if ($app['security']->isGranted('ROLE_ADMIN')) {
         // ...
     }
 
@@ -482,8 +497,17 @@ sample users::
 
         $schema->createTable($users);
 
-        $app['db']->executeQuery('INSERT INTO users (username, password, roles) VALUES ("fabien", "5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==", "ROLE_USER")');
-        $app['db']->executeQuery('INSERT INTO users (username, password, roles) VALUES ("admin", "5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==", "ROLE_ADMIN")');
+        $app['db']->insert('users', array(
+          'username' => 'fabien',
+          'password' => '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==',
+          'roles' => 'ROLE_USER'
+        ));
+
+        $app['db']->insert('users', array(
+          'username' => 'admin',
+          'password' => '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==',
+          'roles' => 'ROLE_ADMIN'
+        ));
     }
 
 .. tip::
@@ -560,6 +584,23 @@ argument of your authentication factory (see above).
 
 This example uses the authentication provider classes as described in the
 Symfony `cookbook`_.
+
+Stateless Authentication
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+By default, a session cookie is created to persist the security context of
+the user. However, if you use certificates, HTTP authentication, WSSE and so
+on, the credentials are sent for each request. In that case, you can turn off
+persistence by activating the ``stateless`` authentication flag::
+
+    $app['security.firewalls'] = array(
+        'default' => array(
+            'stateless' => true,
+            'wsse' => true,
+
+            // ...
+        ),
+    );
 
 Traits
 ------

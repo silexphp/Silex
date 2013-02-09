@@ -13,6 +13,7 @@ namespace Silex;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\TerminableInterface;
@@ -28,7 +29,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RequestContext;
 use Silex\RedirectableUrlMatcher;
@@ -54,17 +54,19 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     private $booted = false;
 
     /**
-     * Constructor.
+     * Instantiate a new Application.
+     *
+     * Objects and parameters can be passed as argument to the constructor.
+     *
+     * @param array $values The parameters or objects.
      */
-    public function __construct()
+    public function __construct(array $values = array())
     {
+        parent::__construct();
+
         $app = $this;
 
         $this['logger'] = null;
-
-        $this['autoloader'] = function () {
-            throw new \RuntimeException('You tried to access the autoloader service. The autoloader has been removed from Silex. It is recommended that you use Composer to manage your dependencies and handle your autoloading. See http://getcomposer.org for more information.');
-        };
 
         $this['routes'] = $this->share(function () {
             return new RouteCollection();
@@ -139,6 +141,10 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
         $this['debug'] = false;
         $this['charset'] = 'UTF-8';
         $this['locale'] = 'en';
+
+        foreach ($values as $key => $value) {
+            $this[$key] = $value;
+        }
     }
 
     /**
@@ -146,9 +152,19 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      *
      * @param ServiceProviderInterface $provider A ServiceProviderInterface instance
      * @param array                    $values   An array of values that customizes the provider
+     *
+     * @return Application
      */
     public function register(ServiceProviderInterface $provider, array $values = array())
     {
+        if (method_exists($provider, 'boot')) {
+            if ($this->booted) {
+                throw new \RuntimeException('You cannot register a bootable service provider after the application is booted.');
+            }
+
+            $this->bootableProviders[] = $provider;
+        }
+
         $this->providers[] = $provider;
 
         $provider->register($this);
@@ -157,13 +173,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
             $this[$key] = $value;
         }
 
-        if (method_exists($provider, 'boot')) {
-            if ($this->booted) {
-                throw new \RuntimeException('You cannot register a bootable service provider after the application is booted.');
-            }
-
-            $this->bootableProviders[] = $provider;
-        }
+        return $this;
     }
 
     /**
@@ -254,13 +264,13 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      * Adds an event listener that listens on the specified events.
      *
      * @param string   $eventName The event to listen on
-     * @param callable $listener  The listener
+     * @param callable $callback  The listener
      * @param integer  $priority  The higher this value, the earlier an event
      *                            listener will be triggered in the chain (defaults to 0)
      */
     public function on($eventName, $callback, $priority = 0)
     {
-        return $this['dispatcher']->addListener($eventName, $callback, $priority);
+        $this['dispatcher']->addListener($eventName, $callback, $priority);
     }
 
     /**
@@ -373,7 +383,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      * @param string  $url    The URL to redirect to
      * @param integer $status The status code (302 by default)
      *
-     * @see RedirectResponse
+     * @return RedirectResponse
      */
     public function redirect($url, $status = 302)
     {
@@ -387,7 +397,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      * @param integer $status   The response status code
      * @param array   $headers  An array of response headers
      *
-     * @see StreamedResponse
+     * @return StreamedResponse
      */
     public function stream($callback = null, $status = 200, $headers = array())
     {
@@ -416,7 +426,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      * @param integer $status  The response status code
      * @param array   $headers An array of response headers
      *
-     * @see JsonResponse
+     * @return JsonResponse
      */
     public function json($data = array(), $status = 200, $headers = array())
     {
@@ -424,22 +434,47 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     }
 
     /**
-     * Mounts an application under the given route prefix.
+     * Sends a file.
      *
-     * @param string                                           $prefix The route prefix
-     * @param ControllerCollection|ControllerProviderInterface $app    A ControllerCollection or a ControllerProviderInterface instance
+     * @param \SplFileInfo|string $file               The file to stream
+     * @param integer             $status             The response status code
+     * @param array               $headers            An array of response headers
+     * @param null|string         $contentDisposition The type of Content-Disposition to set automatically with the filename
+     *
+     * @return BinaryFileResponse
+     *
+     * @throws \RuntimeException When the feature is not supported, before http-foundation v2.2
      */
-    public function mount($prefix, $app)
+    public function sendFile($file, $status = 200, $headers = array(), $contentDisposition = null)
     {
-        if ($app instanceof ControllerProviderInterface) {
-            $app = $app->connect($this);
+        if (!class_exists('Symfony\Component\HttpFoundation\BinaryFileResponse')) {
+            throw new \RuntimeException('The "senfFile" method is only supported as of Http Foundation 2.2.');
         }
 
-        if (!$app instanceof ControllerCollection) {
+        return new BinaryFileResponse($file, $status, $headers, true, $contentDisposition);
+    }
+
+    /**
+     * Mounts controllers under the given route prefix.
+     *
+     * @param string                                           $prefix      The route prefix
+     * @param ControllerCollection|ControllerProviderInterface $controllers A ControllerCollection or a ControllerProviderInterface instance
+     *
+     * @return Application
+     */
+    public function mount($prefix, $controllers)
+    {
+        if ($controllers instanceof ControllerProviderInterface) {
+            $controllers = $controllers->connect($this);
+        }
+
+        if (!$controllers instanceof ControllerCollection) {
             throw new \LogicException('The "mount" method takes either a ControllerCollection or a ControllerProviderInterface instance.');
         }
 
-        $this['routes']->addCollection($app->flush($prefix), $prefix);
+        $this['routes']->addCollection($controllers->flush($prefix), $prefix);
+
+        return $this;
     }
 
     /**

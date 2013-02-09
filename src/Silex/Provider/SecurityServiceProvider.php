@@ -11,8 +11,9 @@
 
 namespace Silex\Provider;
 
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Silex\Application;
-use Silex\ServiceProviderInterface;
 
 use Symfony\Component\HttpFoundation\RequestMatcher;
 use Symfony\Component\HttpFoundation\Request;
@@ -60,7 +61,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
 {
     protected $fakeRoutes;
 
-    public function register(Application $app)
+    public function register(Container $app)
     {
         // used to register routes for login_check and logout
         $this->fakeRoutes = array();
@@ -158,9 +159,11 @@ class SecurityServiceProvider implements ServiceProviderInterface
                 $entryPoint = null;
                 $pattern = isset($firewall['pattern']) ? $firewall['pattern'] : null;
                 $users = isset($firewall['users']) ? $firewall['users'] : array();
-                unset($firewall['pattern'], $firewall['users']);
+                $security = isset($firewall['security']) ? (Boolean) $firewall['security'] : true;
+                $stateless = isset($firewall['stateless']) ? (Boolean) $firewall['stateless'] : false;
+                unset($firewall['pattern'], $firewall['users'], $firewall['security'], $firewall['stateless']);
 
-                $protected = count($firewall);
+                $protected = false === $security ? false : count($firewall);
 
                 $listeners = array('security.channel_listener');
 
@@ -173,7 +176,9 @@ class SecurityServiceProvider implements ServiceProviderInterface
                         $app['security.context_listener.'.$name] = $app['security.context_listener._proto']($name, array($app['security.user_provider.'.$name]));
                     }
 
-                    $listeners[] = 'security.context_listener.'.$name;
+                    if (false === $stateless) {
+                        $listeners[] = 'security.context_listener.'.$name;
+                    }
 
                     $factories = array();
                     foreach ($positions as $position) {

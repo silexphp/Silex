@@ -22,9 +22,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  *
  * @author Igor Wiedler <igor@wiedler.ch>
  */
-class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
+class ExceptionHandlerTest extends \PHPUnit_Framework_TestCase
 {
-    public function testErrorHandlerExceptionNoDebug()
+    public function testExceptionHandlerExceptionNoDebug()
     {
         $app = new Application();
         $app['debug'] = false;
@@ -35,11 +35,11 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
 
         $request = Request::create('/foo');
         $response = $app->handle($request);
-        $this->assertContains('<title>Whoops, looks like something went wrong.</title>', $response->getContent());
+        $this->assertContains('<h1>Whoops, looks like something went wrong.</h1>', $response->getContent());
         $this->assertEquals(500, $response->getStatusCode());
     }
 
-    public function testErrorHandlerExceptionDebug()
+    public function testExceptionHandlerExceptionDebug()
     {
         $app = new Application();
         $app['debug'] = true;
@@ -55,18 +55,18 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(500, $response->getStatusCode());
     }
 
-    public function testErrorHandlerNotFoundNoDebug()
+    public function testExceptionHandlerNotFoundNoDebug()
     {
         $app = new Application();
         $app['debug'] = false;
 
         $request = Request::create('/foo');
         $response = $app->handle($request);
-        $this->assertContains('<title>Sorry, the page you are looking for could not be found.</title>', $response->getContent());
+        $this->assertContains('<h1>Sorry, the page you are looking for could not be found.</h1>', $response->getContent());
         $this->assertEquals(404, $response->getStatusCode());
     }
 
-    public function testErrorHandlerNotFoundDebug()
+    public function testExceptionHandlerNotFoundDebug()
     {
         $app = new Application();
         $app['debug'] = true;
@@ -77,7 +77,7 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(404, $response->getStatusCode());
     }
 
-    public function testErrorHandlerMethodNotAllowedNoDebug()
+    public function testExceptionHandlerMethodNotAllowedNoDebug()
     {
         $app = new Application();
         $app['debug'] = false;
@@ -86,12 +86,12 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
 
         $request = Request::create('/foo', 'POST');
         $response = $app->handle($request);
-        $this->assertContains('<title>Whoops, looks like something went wrong.</title>', $response->getContent());
+        $this->assertContains('<h1>Whoops, looks like something went wrong.</h1>', $response->getContent());
         $this->assertEquals(405, $response->getStatusCode());
         $this->assertEquals('GET', $response->headers->get('Allow'));
     }
 
-    public function testErrorHandlerMethodNotAllowedDebug()
+    public function testExceptionHandlerMethodNotAllowedDebug()
     {
         $app = new Application();
         $app['debug'] = true;
@@ -105,7 +105,7 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('GET', $response->headers->get('Allow'));
     }
 
-    public function testNoErrorHandler()
+    public function testNoExceptionHandler()
     {
         $app = new Application();
         $app['exception_handler']->disable();
@@ -123,7 +123,7 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testOneErrorHandler()
+    public function testOneExceptionHandler()
     {
         $app = new Application();
 
@@ -152,7 +152,7 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('GET', $response->headers->get('Allow'));
     }
 
-    public function testMultipleErrorHandlers()
+    public function testMultipleExceptionHandlers()
     {
         $app = new Application();
 
@@ -187,7 +187,7 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(3, $errors, 'should execute error handlers until a response is returned');
     }
 
-    public function testNoResponseErrorHandler()
+    public function testNoResponseExceptionHandler()
     {
         $app = new Application();
         $app['exception_handler']->disable();
@@ -213,7 +213,7 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, $errors, 'should execute the error handler');
     }
 
-    public function testStringResponseErrorHandler()
+    public function testStringResponseExceptionHandler()
     {
         $app = new Application();
 
@@ -229,7 +229,7 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
         $this->checkRouteResponse($app, '/foo', 'foo exception handler', 'should accept a string response from the error handler');
     }
 
-    public function testErrorHandlerException()
+    public function testExceptionHandlerException()
     {
         $app = new Application();
 
@@ -273,7 +273,7 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testErrorHandlerWithDefaultException()
+    public function testExceptionHandlerWithDefaultException()
     {
         $app = new Application();
         $app['debug'] = false;
@@ -292,7 +292,7 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(500, $response->getStatusCode());
     }
 
-    public function testErrorHandlerWithStandardException()
+    public function testExceptionHandlerWithStandardException()
     {
         $app = new Application();
         $app['debug'] = false;
@@ -318,7 +318,7 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('Caught Exception', $response->getContent());
     }
 
-    public function testErrorHandlerWithSpecifiedException()
+    public function testExceptionHandlerWithSpecifiedException()
     {
         $app = new Application();
         $app['debug'] = false;
@@ -344,7 +344,7 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('Caught LogicException', $response->getContent());
     }
 
-    public function testErrorHandlerWithSpecifiedExceptionInReverseOrder()
+    public function testExceptionHandlerWithSpecifiedExceptionInReverseOrder()
     {
         $app = new Application();
         $app['debug'] = false;
@@ -372,7 +372,7 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('Caught Exception', $response->getContent());
     }
 
-    public function testErrorHandlerWithArrayStyleCallback()
+    public function testExceptionHandlerWithArrayStyleCallback()
     {
         $app = new Application();
         $app['debug'] = false;

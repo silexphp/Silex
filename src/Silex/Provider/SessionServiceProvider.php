@@ -104,7 +104,8 @@ class SessionServiceProvider implements ServiceProviderInterface
             return;
         }
 
-        if ($session = $event->getRequest()->getSession()) {
+        $session = $event->getRequest()->getSession();
+        if ($session && $session->isStarted()) {
             $session->save();
 
             $params = session_get_cookie_params();

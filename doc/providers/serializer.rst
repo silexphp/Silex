@@ -17,12 +17,12 @@ Services
 * **serializer.encoders**: `Symfony\Component\Serializer\Encoder\JsonEncoder
   <http://api.symfony.com/master/Symfony/Component/Serializer/Encoder/JsonEncoder.html>`_
   and `Symfony\Component\Serializer\Encoder\XmlEncoder
-  <http://api.symfony.com/master/Symfony/Component/Serializer/Encoder/XmlEncoder>`_.
+  <http://api.symfony.com/master/Symfony/Component/Serializer/Encoder/XmlEncoder.html>`_.
 
 * **serializer.normalizers**: `Symfony\Component\Serializer\Normalizer\CustomNormalizer
-  <http://api.symfony.com/master/Symfony/Component/Serializer/Normalizer/CustomNormalizer>`_
+  <http://api.symfony.com/master/Symfony/Component/Serializer/Normalizer/CustomNormalizer.html>`_
   and `Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer
-  <http://api.symfony.com/master/Symfony/Component/Serializer/Normalizer/GetSetMethodNormalizer>`_.
+  <http://api.symfony.com/master/Symfony/Component/Serializer/Normalizer/GetSetMethodNormalizer.html>`_.
 
 Registering
 -----------
@@ -34,12 +34,10 @@ Registering
 Usage
 -----
 
-The ``SerializerServiceProvider`` provider provides a ``serializer`` service::
+The ``SerializerServiceProvider`` provider provides a ``serializer`` service:
 
 .. code-block:: php
 
-    <?php
-    
     use Silex\Application;
     use Silex\Provider\SerializerServiceProvider;
     use Symfony\Component\HttpFoundation\Response;
@@ -53,7 +51,7 @@ The ``SerializerServiceProvider`` provider provides a ``serializer`` service::
         // assume a page_repository service exists that returns Page objects. The
         // object returned has getters and setters exposing the state.
         $page = $app['page_repository']->find($id);
-        $format = $app['request']->getFormat();
+        $format = $app['request']->getRequestFormat();
     
         if (!$page instanceof Page) {
             $app->abort("No page found for id: $id");

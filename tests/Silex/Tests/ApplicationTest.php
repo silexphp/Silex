@@ -11,9 +11,12 @@
 
 namespace Silex\Tests;
 
+use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
 use Silex\Application;
+use Silex\ControllerCollection;
+use Silex\Route;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -48,6 +51,19 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
         $returnValue = $app->delete('/foo', function () {});
         $this->assertInstanceOf('Silex\Controller', $returnValue);
+    }
+
+    public function testConstructorInjection()
+    {
+        // inject a custom parameter
+        $params = array('param' => 'value');
+        $app = new Application($params);
+        $this->assertSame($params['param'], $app['param']);
+
+        // inject an existing parameter
+        $params = array('locale' => 'value');
+        $app = new Application($params);
+        $this->assertSame($params['locale'], $app['locale']);
     }
 
     public function testGetRequest()
@@ -507,6 +523,36 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
         $app->boot();
         $app->register($provider);
+    }
+
+    public function testRegisterShouldReturnSelf()
+    {
+        $app = new Application();
+        $provider = $this->getMock('Pimple\ServiceProviderInterface');
+
+        $this->assertSame($app, $app->register($provider));
+    }
+
+    public function testMountShouldReturnSelf()
+    {
+        $app = new Application();
+        $mounted = new ControllerCollection(new Route());
+        $mounted->get('/{name}', function ($name) { return new Response($name); });
+
+        $this->assertSame($app, $app->mount('/hello', $mounted));
+    }
+
+    public function testSendFile()
+    {
+        $app = new Application();
+
+        try {
+            $response = $app->sendFile(__FILE__, 200, array('Content-Type: application/php'));
+            $this->assertInstanceOf('Symfony\Component\HttpFoundation\BinaryFileResponse', $response);
+            $this->assertEquals(__FILE__, (string) $response->getFile());
+        } catch (\RuntimeException $e) {
+            $this->assertFalse(class_exists('Symfony\Component\HttpFoundation\BinaryFileResponse'));
+        }
     }
 }
 

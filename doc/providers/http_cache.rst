@@ -18,6 +18,15 @@ Services
 * **http_cache**: An instance of `HttpCache
   <http://api.symfony.com/master/Symfony/Component/HttpKernel/HttpCache/HttpCache.html>`_.
 
+* **http_cache.esi**: An instance of `Esi
+  <http://api.symfony.com/master/Symfony/Component/HttpKernel/HttpCache/Esi.html>`_,
+  that implements the ESI capabilities to Request and Response instances.
+
+* **http_cache.store**: An instance of `Store
+  <http://api.symfony.com/master/Symfony/Component/HttpKernel/HttpCache/Store.html>`_,
+  that implements all the logic for storing cache metadata (Request and Response
+  headers).
+
 Registering
 -----------
 
@@ -85,6 +94,14 @@ The provider also provides ESI support::
     });
 
     $app['http_cache']->run();
+
+If your application doesn't use ESI, you can disable it to slightly improve the
+overall performance::
+
+    $app->register(new Silex\Provider\HttpCacheServiceProvider(), array(
+       'http_cache.cache_dir' => __DIR__.'/cache/',
+       'http_cache.esi'       => null,
+    ));
 
 .. tip::
 
