@@ -1,6 +1,9 @@
 Changelog
 =========
 
+* **2013-xx-xx**: Updated to ``Pimple`` 2.0, use its ``ServiceProviderInterface``.
+  In all existing service providers, the interfaces and type hints need to be updated.
+
 * **2013-02-07**: added ``Application::sendFile()`` to ease sending
   ``BinaryFileResponse``.
 
@@ -83,9 +86,6 @@ Changelog
 * **2012-06-13**: Renamed the route ``middleware`` to ``before``
 
 * **2012-06-13**: Added an extension for the Symfony Security component
-
-* **2012-06-10**: Updated to ``Pimple`` 2.0, use its ``ServiceProviderInterface``.
-  In all existing service providers, the interfaces and type hints need to be updated.
 
 * **2012-05-31**: Made the ``BrowserKit``, ``CssSelector``, ``DomCrawler``,
   ``Finder`` and ``Process`` components optional dependencies. Projects that
