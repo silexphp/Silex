@@ -25,13 +25,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class SecurityTraitTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp()
-    {
-        if (!is_dir(__DIR__.'/../../../../vendor/symfony/security')) {
-            $this->markTestSkipped('Security dependency was not installed.');
-        }
-    }
-
     public function testUser()
     {
         $request = Request::create('/');

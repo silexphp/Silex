@@ -25,13 +25,6 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
  */
 class TwigTraitTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp()
-    {
-        if (!is_dir(__DIR__.'/../../../../vendor/twig/twig')) {
-            $this->markTestSkipped('Twig dependency was not installed.');
-        }
-    }
-
     public function testRender()
     {
         $app = $this->createApplication();

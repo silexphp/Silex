@@ -25,13 +25,6 @@ use Monolog\Logger;
  */
 class MonologTraitTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp()
-    {
-        if (!is_dir(__DIR__.'/../../../../vendor/monolog/monolog/src')) {
-            $this->markTestSkipped('Monolog dependency was not installed.');
-        }
-    }
-
     public function testLog()
     {
         $app = $this->createApplication();

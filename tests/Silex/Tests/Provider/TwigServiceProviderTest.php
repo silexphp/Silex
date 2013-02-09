@@ -23,13 +23,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class TwigServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp()
-    {
-        if (!is_dir(__DIR__.'/../../../../vendor/twig/twig/lib')) {
-            $this->markTestSkipped('Twig dependency was not installed.');
-        }
-    }
-
     public function testRegisterAndRender()
     {
         $app = new Application();
