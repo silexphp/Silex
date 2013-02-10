@@ -1,6 +1,24 @@
 Changelog
 =========
 
+* **2013-02-10**: Injecting the request or application as an argument to a
+  controller function no longer needs a type hint, if the argument name is
+  ``$request`` or ``$app``:
+
+    Before:
+
+        use Symfony\Component\HttpFoundation\Request;
+
+        $app->get('/', function (Request $request) {
+            ...
+        });
+
+    After:
+
+        $app->get('/', function ($request) {
+            ...
+        });
+
 * **2013-02-07**: added ``Application::sendFile()`` to ease sending
   ``BinaryFileResponse``.
 
