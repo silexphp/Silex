@@ -39,11 +39,23 @@ class ControllerResolver extends BaseControllerResolver
 
     protected function doGetArguments(Request $request, $controller, array $parameters)
     {
+        $nameMapping = array(
+            'request'   => $request,
+            'app'       => $this->app,
+        );
+
         foreach ($parameters as $param) {
             if ($param->getClass() && $param->getClass()->isInstance($this->app)) {
                 $request->attributes->set($param->getName(), $this->app);
+                continue;
+            }
 
-                break;
+            if (!$param->getClass()
+                && !$request->attributes->has($param->getName())
+                && isset($nameMapping[$param->getName()])
+            ) {
+                $request->attributes->set($param->getName(), $nameMapping[$param->getName()]);
+                continue;
             }
         }
 

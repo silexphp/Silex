@@ -279,12 +279,14 @@ You can also ask for the current Request and Application objects::
 
 .. note::
 
-    Note for the Application and Request objects, Silex does the injection
-    based on the type hinting and not on the variable name::
+    If you follow the convention of naming the arguments ``$request`` and
+    ``$app``, you can omit the type hints::
 
-        $app->get('/blog/show/{id}', function (Application $foo, Request $bar, $id) {
+        $app->get('/blog/show/{id}', function ($request, $app, $id) {
             ...
         });
+
+    In that case it will inject the object based on the name.
 
 Route variables converters
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
