@@ -79,7 +79,7 @@ Usage
 The Doctrine provider provides a ``db`` service. Here is a usage
 example::
 
-    $app->get('/blog/show/{id}', function ($id) use ($app) {
+    $app->get('/blog/{id}', function ($id) use ($app) {
         $sql = "SELECT * FROM posts WHERE id = ?";
         $post = $app['db']->fetchAssoc($sql, array((int) $id));
 
@@ -126,7 +126,7 @@ these two lines are equivalent::
 
 Using multiple connections::
 
-    $app->get('/blog/show/{id}', function ($id) use ($app) {
+    $app->get('/blog/{id}', function ($id) use ($app) {
         $sql = "SELECT * FROM posts WHERE id = ?";
         $post = $app['dbs']['mysql_read']->fetchAssoc($sql, array((int) $id));
 
