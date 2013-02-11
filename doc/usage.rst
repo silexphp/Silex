@@ -157,7 +157,7 @@ Dynamic routing
 
 Now, you can create another controller for viewing individual blog posts::
 
-    $app->get('/blog/show/{id}', function (Silex\Application $app, $id) use ($blogPosts) {
+    $app->get('/blog/{id}', function (Silex\Application $app, $id) use ($blogPosts) {
         if (!isset($blogPosts[$id])) {
             $app->abort(404, "Post $id does not exist.");
         }
@@ -253,27 +253,27 @@ Route variables
 As it has been shown before you can define variable parts in a route like
 this::
 
-    $app->get('/blog/show/{id}', function ($id) {
+    $app->get('/blog/{id}', function ($id) {
         ...
     });
 
 It is also possible to have more than one variable part, just make sure the
 closure arguments match the names of the variable parts::
 
-    $app->get('/blog/show/{postId}/{commentId}', function ($postId, $commentId) {
+    $app->get('/blog/{postId}/{commentId}', function ($postId, $commentId) {
         ...
     });
 
 While it's not suggested, you could also do this (note the switched
 arguments)::
 
-    $app->get('/blog/show/{postId}/{commentId}', function ($commentId, $postId) {
+    $app->get('/blog/{postId}/{commentId}', function ($commentId, $postId) {
         ...
     });
 
 You can also ask for the current Request and Application objects::
 
-    $app->get('/blog/show/{id}', function (Application $app, Request $request, $id) {
+    $app->get('/blog/{id}', function (Application $app, Request $request, $id) {
         ...
     });
 
@@ -282,7 +282,7 @@ You can also ask for the current Request and Application objects::
     Note for the Application and Request objects, Silex does the injection
     based on the type hinting and not on the variable name::
 
-        $app->get('/blog/show/{id}', function (Application $foo, Request $bar, $id) {
+        $app->get('/blog/{id}', function (Application $foo, Request $bar, $id) {
             ...
         });
 
@@ -331,14 +331,14 @@ requirements using regular expressions by calling ``assert`` on the
 The following will make sure the ``id`` argument is numeric, since ``\d+``
 matches any amount of digits::
 
-    $app->get('/blog/show/{id}', function ($id) {
+    $app->get('/blog/{id}', function ($id) {
         ...
     })
     ->assert('id', '\d+');
 
 You can also chain these calls::
 
-    $app->get('/blog/show/{postId}/{commentId}', function ($postId, $commentId) {
+    $app->get('/blog/{postId}/{commentId}', function ($postId, $commentId) {
         ...
     })
     ->assert('postId', '\d+')
@@ -371,7 +371,7 @@ really be used. You can give a route a name by calling ``bind`` on the
     })
     ->bind('homepage');
 
-    $app->get('/blog/show/{id}', function ($id) {
+    $app->get('/blog/{id}', function ($id) {
         ...
     })
     ->bind('blog_post');
@@ -518,7 +518,7 @@ once a response is returned, the following handlers are ignored.
 The error handlers are also called when you use ``abort`` to abort a request
 early::
 
-    $app->get('/blog/show/{id}', function (Silex\Application $app, $id) use ($blogPosts) {
+    $app->get('/blog/{id}', function (Silex\Application $app, $id) use ($blogPosts) {
         if (!isset($blogPosts[$id])) {
             $app->abort(404, "Post $id does not exist.");
         }
