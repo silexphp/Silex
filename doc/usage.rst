@@ -220,21 +220,27 @@ Other methods
 ~~~~~~~~~~~~~
 
 You can create controllers for most HTTP methods. Just call one of these
-methods on your application: ``get``, ``post``, ``put``, ``delete``. You can
-also call ``match``, which will match all methods::
+methods on your application: ``get``, ``post``, ``put``, ``delete``::
+
+    $app->put('/blog/{id}', function ($id) {
+        ...
+    });
+
+    $app->delete('/blog/{id}', function ($id) {
+        ...
+    });
+
+You can also call ``match``, which will match all methods. This can be
+restricted via the ``method`` method::
 
     $app->match('/blog', function () {
         ...
     });
 
-You can then restrict the allowed methods via the ``method`` method::
-
     $app->match('/blog', function () {
         ...
     })
     ->method('PATCH');
-
-You can match multiple methods with one controller using regex syntax::
 
     $app->match('/blog', function () {
         ...
