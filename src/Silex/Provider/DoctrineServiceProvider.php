@@ -16,6 +16,7 @@ use Silex\ServiceProviderInterface;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Configuration;
 use Doctrine\Common\EventManager;
+use Symfony\Bridge\Doctrine\Logger\DbalLogger;
 
 /**
  * Doctrine DBAL Provider.
@@ -84,6 +85,10 @@ class DoctrineServiceProvider implements ServiceProviderInterface
             $configs = new \Pimple();
             foreach ($app['dbs.options'] as $name => $options) {
                 $configs[$name] = new Configuration();
+
+                if (isset($app['logger']) && class_exists('Symfony\Bridge\Doctrine\Logger\DbalLogger')) {
+                    $configs[$name]->setSQLLogger(new DbalLogger($app['logger'], isset($app['stopwatch']) ? $app['stopwatch'] : null));
+                }
             }
 
             return $configs;
