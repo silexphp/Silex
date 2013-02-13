@@ -118,26 +118,58 @@ class SecurityServiceProviderTest extends WebTestCase
         $this->assertEquals('admin', $client->getResponse()->getContent());
     }
 
-    public function createApplication($authenticationMethod = 'form')
+    public function testRememberMeAuthentication()
+    {
+        $app = $this->createApplication('form', array('remember_me' => array('key' => 'some secret')));
+
+        $client = new Client($app);
+
+        $client->request('get', '/');
+        $this->assertEquals('ANONYMOUS', $client->getResponse()->getContent());
+
+        // login with remember me checked
+        $client->request('post', '/login_check', array('_username' => 'fabien', '_password' => 'foo', '_remember_me' => 'true'));
+        $this->assertEquals('', $app['security.last_error']($client->getRequest()));
+        $client->getRequest()->getSession()->save();
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        $this->assertEquals('http://localhost/', $client->getResponse()->getTargetUrl());
+
+        $this->assertNotNull($cookie = $client->getCookiejar()->get('REMEMBERME'));
+        // session cookie
+        $this->assertTrue(0 < $cookie->getExpiresTime());
+
+        // check we are logged in
+        $client->request('get', '/');
+        $this->assertEquals('fabienAUTHENTICATED', $client->getResponse()->getContent());
+
+        // drop session cookie
+        $client->getCookiejar()->expire('MOCKSESSID');
+
+        // check we are *still* logged in via the REMEMBERME cookie
+        $client->request('get', '/');
+        $this->assertEquals('fabienREMEMBERED', $client->getResponse()->getContent());
+    }
+
+    public function createApplication($authenticationMethod = 'form', $options = array())
     {
         $app = new Application();
         $app->register(new SessionServiceProvider());
 
-        $app = call_user_func(array($this, 'add'.ucfirst($authenticationMethod).'Authentication'), $app);
+        $app = call_user_func(array($this, 'add'.ucfirst($authenticationMethod).'Authentication'), $app, $options);
 
         $app['session.test'] = true;
 
         return $app;
     }
 
-    private function addFormAuthentication($app)
+    private function addFormAuthentication($app, $options = array())
     {
-        $app->register(new SecurityServiceProvider(), array(
+        $firewallOptions = array(
             'security.firewalls' => array(
                 'login' => array(
                     'pattern' => '^/login$',
                 ),
-                'default' => array(
+                'default' => array_merge(array(
                     'pattern' => '^.*$',
                     'anonymous' => true,
                     'form' => true,
@@ -147,7 +179,7 @@ class SecurityServiceProviderTest extends WebTestCase
                         'fabien' => array('ROLE_USER', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg=='),
                         'admin'  => array('ROLE_ADMIN', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg=='),
                     ),
-                ),
+                ), $options),
             ),
             'security.access_rules' => array(
                 array('^/admin', 'ROLE_ADMIN'),
@@ -155,7 +187,8 @@ class SecurityServiceProviderTest extends WebTestCase
             'security.role_hierarchy' => array(
                 'ROLE_ADMIN' => array('ROLE_USER'),
             ),
-        ));
+        );
+        $app->register(new SecurityServiceProvider(), $firewallOptions);
 
         $app->get('/login', function(Request $request) use ($app) {
             $app['session']->start();
@@ -170,6 +203,8 @@ class SecurityServiceProviderTest extends WebTestCase
 
             if ($app['security']->isGranted('IS_AUTHENTICATED_FULLY')) {
                 $content .= 'AUTHENTICATED';
+            } elseif ($app['security']->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+                $content .= 'REMEMBERED';
             }
 
             if ($app['security']->isGranted('ROLE_ADMIN')) {
@@ -186,11 +221,11 @@ class SecurityServiceProviderTest extends WebTestCase
         return $app;
     }
 
-    private function addHttpAuthentication($app)
+    private function addHttpAuthentication($app, $options = array())
     {
         $app->register(new SecurityServiceProvider(), array(
             'security.firewalls' => array(
-                'http-auth' => array(
+                'http-auth' => array_merge(array(
                     'pattern' => '^.*$',
                     'http' => true,
                     'users' => array(
@@ -198,7 +233,7 @@ class SecurityServiceProviderTest extends WebTestCase
                         'dennis' => array('ROLE_USER', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg=='),
                         'admin'  => array('ROLE_ADMIN', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg=='),
                     ),
-                ),
+                ), $options),
             ),
             'security.access_rules' => array(
                 array('^/admin', 'ROLE_ADMIN'),

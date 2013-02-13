@@ -16,6 +16,7 @@ use Silex\ServiceProviderInterface;
 
 use Symfony\Component\HttpFoundation\RequestMatcher;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Core\User\UserChecker;
@@ -24,6 +25,7 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
 use Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationProvider;
 use Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider;
+use Symfony\Component\Security\Core\Authentication\Provider\RememberMeAuthenticationProvider;
 use Symfony\Component\Security\Core\Authentication\AuthenticationProviderManager;
 use Symfony\Component\Security\Core\Authentication\AuthenticationTrustResolver;
 use Symfony\Component\Security\Http\Authentication\DefaultAuthenticationSuccessHandler;
@@ -34,6 +36,7 @@ use Symfony\Component\Security\Core\Authorization\AccessDecisionManager;
 use Symfony\Component\Security\Core\Role\RoleHierarchy;
 use Symfony\Component\Security\Http\Firewall;
 use Symfony\Component\Security\Http\FirewallMap;
+use Symfony\Component\Security\Http\Firewall\AbstractAuthenticationListener;
 use Symfony\Component\Security\Http\Firewall\AccessListener;
 use Symfony\Component\Security\Http\Firewall\BasicAuthenticationListener;
 use Symfony\Component\Security\Http\Firewall\LogoutListener;
@@ -42,12 +45,15 @@ use Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener;
 use Symfony\Component\Security\Http\Firewall\ContextListener;
 use Symfony\Component\Security\Http\Firewall\ExceptionListener;
 use Symfony\Component\Security\Http\Firewall\ChannelListener;
+use Symfony\Component\Security\Http\Firewall\RememberMeListener;
 use Symfony\Component\Security\Http\EntryPoint\FormAuthenticationEntryPoint;
 use Symfony\Component\Security\Http\EntryPoint\BasicAuthenticationEntryPoint;
 use Symfony\Component\Security\Http\EntryPoint\RetryAuthenticationEntryPoint;
 use Symfony\Component\Security\Http\Session\SessionAuthenticationStrategy;
 use Symfony\Component\Security\Http\Logout\SessionLogoutHandler;
 use Symfony\Component\Security\Http\Logout\DefaultLogoutSuccessHandler;
+use Symfony\Component\Security\Http\RememberMe\TokenBasedRememberMeServices;
+use Symfony\Component\Security\Http\RememberMe\ResponseListener;
 use Symfony\Component\Security\Http\AccessMap;
 use Symfony\Component\Security\Http\HttpUtils;
 
@@ -59,11 +65,13 @@ use Symfony\Component\Security\Http\HttpUtils;
 class SecurityServiceProvider implements ServiceProviderInterface
 {
     protected $fakeRoutes;
+    protected $hasRememberMe;
 
     public function register(Application $app)
     {
         // used to register routes for login_check and logout
         $this->fakeRoutes = array();
+        $this->hasRememberMe = false;
 
         $that = $this;
 
@@ -128,7 +136,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
                 $entryPoint = 'form';
             }
 
-            $app['security.authentication_listener.factory.'.$type] = $app->protect(function($name, $options) use ($type, $app, $entryPoint) {
+            $app['security.authentication_listener.factory.'.$type] = $app->protect(function($name, $options) use ($type, $app, $entryPoint, $that) {
                 if ($entryPoint && !isset($app['security.entry_point.'.$name.'.'.$entryPoint])) {
                     $app['security.entry_point.'.$name.'.'.$entryPoint] = $app['security.entry_point.'.$entryPoint.'._proto']($name, $options);
                 }
@@ -137,12 +145,19 @@ class SecurityServiceProvider implements ServiceProviderInterface
                     $app['security.authentication_listener.'.$name.'.'.$type] = $app['security.authentication_listener.'.$type.'._proto']($name, $options);
                 }
 
-                if (!isset($app['security.authentication_provider.'.$name])) {
-                    $app['security.authentication_provider.'.$name] = $app['security.authentication_provider.'.('anonymous' == $name ? 'anonymous' : 'dao').'._proto']($name);
+                if ('remember_me' == $type) {
+                    $provider = 'security.authentication_provider.'.$name.'.'.$type;
+                    $app[$provider] = $app['security.authentication_provider.remember_me._proto']($name, $options);
+                    $that->setHasRememberMe(true);
+                } else {
+                    $provider = 'security.authentication_provider.'.$name;
+                    if (!isset($app['security.authentication_provider.'.$name])) {
+                        $app['security.authentication_provider.'.$name] = $app['security.authentication_provider.'.('anonymous' == $name ? 'anonymous' : 'dao').'._proto']($name);
+                    }
                 }
 
                 return array(
-                    'security.authentication_provider.'.$name,
+                    $provider,
                     'security.authentication_listener.'.$name.'.'.$type,
                     $entryPoint ? 'security.entry_point.'.$name.'.'.$entryPoint : null,
                     $type
@@ -150,7 +165,21 @@ class SecurityServiceProvider implements ServiceProviderInterface
             });
         }
 
-        $app['security.firewall_map'] = $app->share(function ($app) {
+        $app['security.remember_me.response_listener'] = $app->share(function() {
+            return new ResponseListener();
+        });
+
+        $app['security.remember_me.services._proto'] = $app->protect(function($userProviders, $providerKey, $options) use ($app) {
+            return new TokenBasedRememberMeServices($userProviders, $options['key'], $providerKey, $options, $app['logger']);
+        });
+
+        $app['security.remember_me.services.factory'] = $app->protect(function($providerKey, $options) use ($app, $that) {
+            $options = $app['security.authentication_listener.remember_me.options']($options);
+
+            return $app['security.remember_me.services._proto'](array($app['security.user_provider.'.$providerKey]), $providerKey, $options);
+        });
+
+        $app['security.firewall_map'] = $app->share(function ($app) use ($that) {
             $positions = array('logout', 'pre_auth', 'form', 'http', 'remember_me', 'anonymous');
             $providers = array();
             $configs = array();
@@ -234,9 +263,8 @@ class SecurityServiceProvider implements ServiceProviderInterface
                     }
                 }
 
-                $configs[$name] = array($pattern, $listeners, $protected);
+                $configs[$name] = array($pattern, $listeners, $protected, isset($firewall['remember_me']) ? $firewall['remember_me'] : null);
             }
-
             $app['security.authentication_providers'] = array_map(function ($provider) use ($app) {
                 return $app[$provider];
             }, $providers);
@@ -245,7 +273,21 @@ class SecurityServiceProvider implements ServiceProviderInterface
             foreach ($configs as $name => $config) {
                 $map->add(
                     is_string($config[0]) ? new RequestMatcher($config[0]) : $config[0],
-                    array_map(function ($listener) use ($app) { return $app[$listener]; }, $config[1]),
+                    array_map(function ($listener) use ($app, $name, $config) {
+                        $obj = $app[$listener];
+                        if ($config[3]) {
+                            $options = $app['security.authentication_listener.remember_me.options']($config[3]);
+                            $rememberMeServices = $app['security.remember_me.services.factory']($name, $options);
+                            if ($obj instanceof AbstractAuthenticationListener) {
+                                $obj->setRememberMeServices($rememberMeServices);
+                            }
+                            if ($obj instanceof LogoutListener) {
+                                $obj->addHandler($rememberMeServices);
+                            }
+                        }
+
+                        return $obj;
+                    }, $config[1]),
                     $config[2] ? $app['security.exception_listener.'.$name] : null
                 );
             }
@@ -473,6 +515,34 @@ class SecurityServiceProvider implements ServiceProviderInterface
             });
         });
 
+        $app['security.authentication_listener.remember_me.options'] = $app->protect(function ($options) use ($app) {
+            return array_merge(array(
+                'name' => 'REMEMBERME',
+                'lifetime' => 31536000,
+                'path' => '/',
+                'domain' => null,
+                'secure' => false,
+                'httponly' => true,
+                'always_remember_me' => false,
+                'remember_me_parameter' => '_remember_me',
+              ),
+                $options
+            );
+        });
+
+        $app['security.authentication_listener.remember_me._proto'] = $app->protect(function ($providerKey, $options) use ($app) {
+            return $app->share(function () use ($app, $providerKey, $options) {
+                $listener = new RememberMeListener(
+                    $app['security'],
+                    $app['security.remember_me.services.factory']($providerKey, $options),
+                    $app['security.authentication_manager'],
+                    $app['logger']
+                );
+
+                return $listener;
+            });
+        });
+
         $app['security.entry_point.form._proto'] = $app->protect(function ($name, array $options) use ($app) {
             return $app->share(function () use ($app, $options) {
                 $loginPath = isset($options['login_path']) ? $options['login_path'] : '/login';
@@ -504,19 +574,36 @@ class SecurityServiceProvider implements ServiceProviderInterface
                 return new AnonymousAuthenticationProvider($name);
             });
         });
+
+        $app['security.authentication_provider.remember_me._proto'] = $app->protect(function ($name, $options) use ($app) {
+            return $app->share(function () use ($app, $name, $options) {
+                return new RememberMeAuthenticationProvider($app['security.user_checker'], $options['key'], $name);
+            });
+        });
     }
 
     public function boot(Application $app)
     {
         // FIXME: in Symfony 2.2, this is a proper subscriber
         //$app['dispatcher']->addSubscriber($app['security.firewall']);
-        $app['dispatcher']->addListener('kernel.request', array($app['security.firewall'], 'onKernelRequest'), 8);
+        $app['dispatcher']->addListener(KernelEvents::REQUEST, array($app['security.firewall'], 'onKernelRequest'), 8);
 
         foreach ($this->fakeRoutes as $route) {
             list($method, $pattern, $name) = $route;
 
             $app->$method($pattern, function() {})->bind($name);
         }
+
+        if ($this->hasRememberMe) {
+            // FIXME: in Symfony 2.2, this is a proper subscriber
+            //$app['dispatcher']->addSubscriber($app['security.remember_me.response_listener']);
+            $app['dispatcher']->addListener(KernelEvents::RESPONSE, array($app['security.remember_me.response_listener'], 'onKernelResponse'));
+        }
+    }
+
+    public function setHasRememberMe($value)
+    {
+        $this->hasRememberMe = $value;
     }
 
     public function addFakeRoute($method, $pattern, $name)
