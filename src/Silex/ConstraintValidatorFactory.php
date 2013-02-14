@@ -11,27 +11,13 @@
 
 namespace Silex;
 
+use Silex\Application;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidatorFactoryInterface;
 use Symfony\Component\Validator\ConstraintValidator;
 
 /**
- * Uses a service container to create constraint validators.
- *
- * A constraint validator should be tagged as "validator.constraint_validator"
- * in the service container and include an "alias" attribute:
- *
- *     <service id="some_doctrine_validator">
- *         <argument type="service" id="doctrine.orm.some_entity_manager" />
- *         <tag name="validator.constraint_validator" alias="some_alias" />
- *     </service>
- *
- * A constraint may then return this alias in its validatedBy() method:
- *
- *     public function validatedBy()
- *     {
- *         return 'some_alias';
- *     }
+ * Uses a service container to create constraint validators with dependencies.
  *
  * @author Kris Wallsmith <kris@symfony.com>
  */
@@ -43,9 +29,10 @@ class ConstraintValidatorFactory implements ConstraintValidatorFactoryInterface
     /**
      * Constructor.
      *
-     * @param array $validators An array of validators
+     * @param Silex\Application $container  A DI container
+     * @param array             $validators An array of validators
      */
-    public function __construct($container, array $validators = array())
+    public function __construct(Application $container, array $validators = array())
     {
         $this->container = $container;
         $this->validators = $validators;

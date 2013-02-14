@@ -39,6 +39,40 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
         return $app;
     }
 
+    public function testRegisterWithCustomValidators()
+    {
+        $app = new Application();
+
+        // Dummy ConstraintValidators
+        $app['validator.x'] = 'x';
+        $app['validator.y'] = 'y';
+
+        $app->register(new ValidatorServiceProvider(), array(
+            'validator.validator_service_ids' => array(
+                'validator.x',
+                'validator.y'
+            )
+        ));
+
+        return $app;
+    }
+
+    /**
+     * @depends testRegisterWithCustomValidators
+     */
+    public function testSilexConstraintValidatorFactory($app)
+    {
+        $this->assertInstanceOf('Silex\ConstraintValidatorFactory', $app['validator.validator_factory']);
+    }
+
+    /**
+     * @depends testRegister
+     */
+    public function testSymfonyConstraintValidatorFactory($app)
+    {
+        $this->assertInstanceOf('Symfony\Component\Validator\ConstraintValidatorFactory', $app['validator.validator_factory']);
+    }
+
     /**
      * @depends testRegister
      */

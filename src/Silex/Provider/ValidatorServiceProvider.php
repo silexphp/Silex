@@ -13,12 +13,13 @@ namespace Silex\Provider;
 
 use Silex\Application;
 use Silex\ServiceProviderInterface;
+use Silex\ConstraintValidatorFactory;
 
 use Symfony\Component\Validator\Validator;
 use Symfony\Component\Validator\DefaultTranslator;
 use Symfony\Component\Validator\Mapping\ClassMetadataFactory;
 use Symfony\Component\Validator\Mapping\Loader\StaticMethodLoader;
-use Symfony\Component\Validator\ConstraintValidatorFactory;
+use Symfony\Component\Validator\ConstraintValidatorFactory as BaseConstraintValidatorFactory;
 
 /**
  * Symfony Validator component Provider.
@@ -29,7 +30,7 @@ class ValidatorServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
-        $app['validator'] = $app->share(function ($app) {
+        $app['validator'] = $app->share(function($app) {
             $r = new \ReflectionClass('Symfony\Component\Validator\Validator');
 
             if (isset($app['translator'])) {
@@ -58,8 +59,16 @@ class ValidatorServiceProvider implements ServiceProviderInterface
             return new ClassMetadataFactory(new StaticMethodLoader());
         });
 
-        $app['validator.validator_factory'] = $app->share(function () {
-            return new ConstraintValidatorFactory();
+        $app['validator.validator_factory'] = $app->share(function() use ($app) {
+            if (isset($app['validator.validator_service_ids'])) {
+                $validators = array();
+                foreach ($app['validator.validator_service_ids'] as $service) {
+                    $validators[] = $app[$service];
+                }
+                return new ConstraintValidatorFactory($app, $validators);
+            } else {
+                return new BaseConstraintValidatorFactory();
+            }
         });
     }
 
