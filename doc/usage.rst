@@ -232,7 +232,10 @@ methods on your application: ``get``, ``post``, ``put``, ``delete``::
 
 .. tip::
 
-    Forms in most web browsers do not directly support the use of other HTTP methods. To use methods other than GET and POST you can utilize a special form field with a name of ``_method``. The form's ``method`` attribute must be set to POST when using this field::
+    Forms in most web browsers do not directly support the use of other HTTP 
+    methods. To use methods other than GET and POST you can utilize a special 
+    form field with a name of ``_method``. The form's ``method`` attribute must 
+    be set to POST when using this field::
 
         <form action="/my/target/route/" method="post">
             ...
@@ -241,7 +244,8 @@ methods on your application: ``get``, ``post``, ``put``, ``delete``::
 
 .. note::
 
-    If using Symfony Components >= 2.2.0 you will need to explicitly enable this method override::
+    If using Symfony Components >= 2.2.0 you will need to explicitly enable this
+     method override::
 
         use Symfony\Component\HttpFoundation\Request;
 
