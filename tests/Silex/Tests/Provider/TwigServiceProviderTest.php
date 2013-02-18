@@ -63,4 +63,18 @@ class TwigServiceProviderTest extends \PHPUnit_Framework_TestCase
         $response = $app->handle($request);
         $this->assertEquals('foo', $response->getContent());
     }
+
+    public function testLoaderPriority()
+    {
+        $app = new Application();
+        $app->register(new TwigServiceProvider(), array(
+            'twig.templates'    => array('foo' => 'foo'),
+        ));
+        $loader = $this->getMock('\Twig_LoaderInterface');
+        $loader->expects($this->never())->method('getSource');
+        $app['twig.loader.filesystem'] = $app->share(function ($app) use ($loader) {
+            return $loader;
+        });
+        $this->assertEquals('foo', $app['twig.loader']->getSource('foo'));
+    }
 }
