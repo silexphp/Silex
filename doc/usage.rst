@@ -242,10 +242,8 @@ methods on your application: ``get``, ``post``, ``put``, ``delete``::
             <input type="hidden" id="_method" name="_method" value="PUT" />
         </form>
 
-.. note::
-
-    If using Symfony Components >= 2.2.0 you will need to explicitly enable this
-     method override::
+    If using Symfony Components 2.2+ you will need to explicitly enable this
+    method override::
 
         use Symfony\Component\HttpFoundation\Request;
 
