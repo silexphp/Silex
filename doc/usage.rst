@@ -230,6 +230,28 @@ methods on your application: ``get``, ``post``, ``put``, ``delete``::
         ...
     });
 
+.. tip::
+
+    Forms in most web browsers do not directly support the use of other HTTP 
+    methods. To use methods other than GET and POST you can utilize a special 
+    form field with a name of ``_method``. The form's ``method`` attribute must 
+    be set to POST when using this field::
+
+        <form action="/my/target/route/" method="post">
+            ...
+            <input type="hidden" id="_method" name="_method" value="PUT" />
+        </form>
+
+.. note::
+
+    If using Symfony Components >= 2.2.0 you will need to explicitly enable this
+     method override::
+
+        use Symfony\Component\HttpFoundation\Request;
+
+        Request::enableHttpMethodParameterOverride();
+        $app->run();
+
 You can also call ``match``, which will match all methods. This can be
 restricted via the ``method`` method::
 
