@@ -150,6 +150,11 @@ the class properties and getters, and then call the ``validate`` method::
         echo 'The author is valid';
     }
 
+.. note::
+
+    If you are using Symfony 2.2, replace the ``getClassMetadata`` calls with
+    calls to the new ``getMetadataFor`` method.
+
 You can also declare the class constraint by adding a static
 ``loadValidatorMetadata`` method to your classes::
 

@@ -6,7 +6,7 @@ env:
 
 before_script:
     # symfony/*
-    - sh -c "if [ '$SYMFONY_DEPS_VERSION' = '2.2' ]; then sed -i 's/>=2.1,<2.3-dev/2.2.*@dev/g' composer.json; fi"
+    - sh -c "if [ '$SYMFONY_DEPS_VERSION' = '2.2' ]; then sed -i 's/>=2.1,<2.3-dev/2.2.*@dev/g' composer.json; composer require --no-update 'symfony/property-access:2.2.*@dev'; composer update --dev --prefer-source; fi"
     - composer install --dev --prefer-source
 
 php:
