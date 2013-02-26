@@ -137,12 +137,13 @@ class SecurityServiceProvider implements ServiceProviderInterface
                     $app['security.authentication_listener.'.$name.'.'.$type] = $app['security.authentication_listener.'.$type.'._proto']($name, $options);
                 }
 
-                if (!isset($app['security.authentication_provider.'.$name])) {
-                    $app['security.authentication_provider.'.$name] = $app['security.authentication_provider.'.('anonymous' == $name ? 'anonymous' : 'dao').'._proto']($name);
+                $provider = 'anonymous' === $type ? 'anonymous' : 'dao';
+                if (!isset($app['security.authentication_provider.'.$name.'.'.$provider])) {
+                    $app['security.authentication_provider.'.$name.'.'.$provider] = $app['security.authentication_provider.'.$provider.'._proto']($name);
                 }
 
                 return array(
-                    'security.authentication_provider.'.$name,
+                    'security.authentication_provider.'.$name.'.'.$provider,
                     'security.authentication_listener.'.$name.'.'.$type,
                     $entryPoint ? 'security.entry_point.'.$name.'.'.$entryPoint : null,
                     $type
