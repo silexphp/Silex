@@ -49,10 +49,10 @@ class ConstraintValidatorFactory implements ConstraintValidatorFactoryInterface
     {
         $name = $constraint->validatedBy();
 
-        if (!isset($this->validators[$name])) {
+        if (!in_array($name, $this->validators)) {
             $this->validators[$name] = new $name();
-        } elseif (is_string($this->validators[$name])) {
-            $this->validators[$name] = $this->container[$this->validators[$name]];
+        } else {
+            $this->validators[$name] = $this->container[$name];
         }
 
         return $this->validators[$name];

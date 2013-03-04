@@ -68,14 +68,6 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
     /**
      * @depends testRegister
      */
-    public function testSymfonyConstraintValidatorFactory($app)
-    {
-        $this->assertInstanceOf('Symfony\Component\Validator\ConstraintValidatorFactory', $app['validator.validator_factory']);
-    }
-
-    /**
-     * @depends testRegister
-     */
     public function testValidatorServiceIsAValidator($app)
     {
         $this->assertInstanceOf('Symfony\Component\Validator\Validator', $app['validator']);
