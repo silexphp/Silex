@@ -49,7 +49,8 @@ class ValidatorServiceProvider implements ServiceProviderInterface
                 return new Validator(
                     $app['validator.mapping.class_metadata_factory'],
                     $app['validator.validator_factory'],
-                    isset($app['translator']) ? $app['translator'] : new DefaultTranslator()
+                    isset($app['translator']) ? $app['translator'] : new DefaultTranslator(),
+                    'validators'
                 );
             }
         });
