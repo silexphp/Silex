@@ -61,8 +61,8 @@ class ValidatorServiceProvider implements ServiceProviderInterface
         $app['validator.validator_factory'] = $app->share(function() use ($app) {
             $validators = array();
             if (isset($app['validator.validator_service_ids'])) {
-                foreach ($app['validator.validator_service_ids'] as $service) {
-                    $validators[] = $service;
+                foreach ($app['validator.validator_service_ids'] as $alias => $service) {
+                    $validators[$alias] = $service;
                 }
             }
             return new ConstraintValidatorFactory($app, $validators);

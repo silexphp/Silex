@@ -49,8 +49,8 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $app->register(new ValidatorServiceProvider(), array(
             'validator.validator_service_ids' => array(
-                'validator.x',
-                'validator.y'
+                'alias_x' => 'validator.x',
+                'alias_y' => 'validator.y'
             )
         ));
 
@@ -60,7 +60,7 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
     /**
      * @depends testRegisterWithCustomValidators
      */
-    public function testSilexConstraintValidatorFactory($app)
+    public function testConstraintValidatorFactory($app)
     {
         $this->assertInstanceOf('Silex\ConstraintValidatorFactory', $app['validator.validator_factory']);
     }
