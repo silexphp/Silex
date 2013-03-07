@@ -148,6 +148,8 @@ class ControllerCollection
             $controller->freeze();
         }
 
+        $routes->addPrefix($prefix);
+
         $this->controllers = array();
 
         return $routes;
