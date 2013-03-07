@@ -170,6 +170,23 @@ You can register form extensions by extending ``form.extensions``::
         return $extensions;
     }));
 
+
+You can register form type extensions by extending ``form.type.extensions``::
+
+    $app['form.type.extensions'] = $app->share($app->extend('form.type.extensions', function ($extensions) use ($app) {
+        $extensions[] = new YourFormTypeExtension();
+
+        return $extensions;
+    }));
+
+You can register form type guessers by extending ``form.type.guessers``::
+
+    $app['form.type.guessers'] = $app->share($app->extend('form.type.guessers', function ($guessers) use ($app) {
+        $guessers[] = new YourFormTypeGuesser();
+
+        return $guessers;
+    }));
+
 Traits
 ------
 
