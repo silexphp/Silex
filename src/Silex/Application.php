@@ -364,7 +364,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      */
     public function flush($prefix = '')
     {
-        $this['routes']->addCollection($this['controllers']->flush($prefix), $prefix);
+        $this['routes']->addCollection($this['controllers']->flush($prefix));
     }
 
     /**
@@ -462,7 +462,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
             throw new \LogicException('The "mount" method takes either a ControllerCollection or a ControllerProviderInterface instance.');
         }
 
-        $this['routes']->addCollection($controllers->flush($prefix), $prefix);
+        $this['routes']->addCollection($controllers->flush($prefix));
 
         return $this;
     }
