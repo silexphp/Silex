@@ -34,6 +34,7 @@ use Symfony\Component\Security\Core\Authorization\AccessDecisionManager;
 use Symfony\Component\Security\Core\Role\RoleHierarchy;
 use Symfony\Component\Security\Http\Firewall;
 use Symfony\Component\Security\Http\FirewallMap;
+use Symfony\Component\Security\Http\Firewall\AbstractAuthenticationListener;
 use Symfony\Component\Security\Http\Firewall\AccessListener;
 use Symfony\Component\Security\Http\Firewall\BasicAuthenticationListener;
 use Symfony\Component\Security\Http\Firewall\LogoutListener;
@@ -246,7 +247,20 @@ class SecurityServiceProvider implements ServiceProviderInterface
             foreach ($configs as $name => $config) {
                 $map->add(
                     is_string($config[0]) ? new RequestMatcher($config[0]) : $config[0],
-                    array_map(function ($listener) use ($app) { return $app[$listener]; }, $config[1]),
+                    array_map(function ($listenerId) use ($app, $name) {
+                        $listener = $app[$listenerId];
+
+                        if (isset($app['security.remember_me.service.'.$name])) {
+                            if ($listener instanceof AbstractAuthenticationListener) {
+                                $listener->setRememberMeServices($app['security.remember_me.service.'.$name]);
+                            }
+                            if ($listener instanceof LogoutListener) {
+                                $listener->addHandler($app['security.remember_me.service.'.$name]);
+                            }
+                        }
+
+                        return $listener;
+                    }, $config[1]),
                     $config[2] ? $app['security.exception_listener.'.$name] : null
                 );
             }
