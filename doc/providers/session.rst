@@ -21,10 +21,10 @@ Parameters
   * **name**: The cookie name (_SESS by default)
   * **id**: The session id (null by default)
   * **cookie_lifetime**: Cookie lifetime
-  * **path**: Cookie path
-  * **domain**: Cookie domain
-  * **secure**: Cookie secure (HTTPS)
-  * **httponly**: Whether the cookie is http only
+  * **cookie_path**: Cookie path
+  * **cookie_domain**: Cookie domain
+  * **cookie_secure**: Cookie secure (HTTPS)
+  * **cookie_httponly**: Whether the cookie is http only
 
   However, all of these are optional. Sessions last as long as the browser is
   open. To override this, set the ``lifetime`` option.
