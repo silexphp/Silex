@@ -21,6 +21,23 @@ software tests in general, check out `PHPUnit
 talk on Clean Code
 <http://www.slideshare.net/avalanche123/clean-code-5609451>`_.
 
+Note that by default your Silex application does not include the libraries
+needed for running PHPUnit tests.  If you are installing via Composer, add
+the following section to your composer.json file:
+
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*",
+        "symfony/browser-kit": ">=2.1,<2.3-dev",
+        "symfony/css-selector": ">=2.1,<2.3-dev",
+        "symfony/dom-crawler": ">=2.1,<2.3-dev",
+        "symfony/finder": ">=2.1,<2.3-dev"
+    }
+
+And then run ``composer.phar update --dev``.  That will pull down copies of
+PHPUnit as well as the BrowserKit, CssSelector, DomCrawler, and Finder Symfony
+components.  Only PHPUnit and BrowserKit are required, but the others will make
+writing functional tests much easier.
+
 PHPUnit
 -------
 
