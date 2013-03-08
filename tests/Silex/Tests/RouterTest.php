@@ -181,25 +181,10 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
     public function testHostSpecification()
     {
-        $app = new Application();
+        $route = new \Silex\Route();
 
-        $app->match('/', function ($locale) {
-            if ($locale === 'pl') {
-                return 'wersja polska';
-            }
-            return 'english version';
-        })
-        ->host('{locale}.example.com');
-
-        $request = Request::create('http://en.example.com');
-        $response = $app->handle($request);
-
-        $this->assertContains('english version', $response->getContent());
-
-        $request = Request::create('http://pl.example.com');
-        $response = $app->handle($request);
-
-        $this->assertContains('wersja polska', $response->getContent());
+        $this->assertSame($route, $route->host('{locale}.example.com'));
+        $this->assertEquals('{locale}.example.com', $route->getHost());
     }
 
     public function testRequireHttpRedirect()
