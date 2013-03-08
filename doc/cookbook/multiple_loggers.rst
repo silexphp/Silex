@@ -40,7 +40,8 @@ particular service separately, including your customizations.
     });
 
 Alternatively, you could attempt to make the factory more complicated, and rely
-on some conventions.
+on some conventions, such as checking for an array of handlers registered with
+the container with the channel name, defaulting to the bundled handler.
 
 .. code-block:: php
     
