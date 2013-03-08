@@ -2,7 +2,7 @@ Using multiple monolog loggers
 ==============================
 
 Having separate instances of `Monolog` for different parts of your system is
-often desirable and allows you to configure them independantly, allowing for fine
+often desirable and allows you to configure them independently, allowing for fine
 grained control of where your logging goes and in what detail.
 
 This simple example allows you to quickly configure several monolog instances,
@@ -25,7 +25,7 @@ using the bundled handler, but each with a different channel.
 
 As your application grows, or your logging needs for certain areas of the
 system become apparent, it should be straightforward to then configure that
-particular service separately, including your customisations.
+particular service separately, including your customizations.
 
 .. code-block:: php
 
