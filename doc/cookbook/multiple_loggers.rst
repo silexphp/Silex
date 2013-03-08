@@ -29,6 +29,8 @@ particular service separately, including your customizations.
 
 .. code-block:: php
 
+    use Monolog\Handler\StreamHandler;
+
     $app['monolog.payments'] = $app->share(function ($app) {
         $log = new $app['monolog.logger.class']('payments');
         $handler = new StreamHandler($app['monolog.payments.logfile'], $app['monolog.payment.level']);
@@ -41,6 +43,9 @@ Alternatively, you could attempt to make the factory more complicated, and rely
 on some conventions.
 
 .. code-block:: php
+    
+    use Monolog\Handler\StreamHandler;
+    use Monolog\Logger;
 
     $app['monolog.factory'] = $app->protect(function ($name) use ($app) {
         $log = new $app['monolog.logger.class']($name);
@@ -58,7 +63,7 @@ on some conventions.
 
     $app['monolog.payments.handlers'] = $app->share(function ($app) {
         return array(
-            new \Monolog\Handler\StreamHandler(__DIR__.'/../payments.log', \Monolog\Logger::DEBUG),
+            new StreamHandler(__DIR__.'/../payments.log', Logger::DEBUG),
         );
     });
 
