@@ -14,6 +14,7 @@ namespace Silex\Provider;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Provider\RememberMeAuthenticationProvider;
 use Symfony\Component\Security\Http\Firewall\RememberMeListener;
 use Symfony\Component\Security\Http\RememberMe\TokenBasedRememberMeServices;
@@ -100,6 +101,11 @@ class RememberMeServiceProvider implements ServiceProviderInterface
             throw new \LogicException('You must register the SecurityServiceProvider to use the RememberMeServiceProvider');
         }
 
-        $app['dispatcher']->addSubscriber($app['security.remember_me.response_listener']);
+        // In Symfony 2.2, this is a proper subscriber
+        if ($app['security.remember_me.response_listener'] instanceof EventSubscriberInterface) {
+            $app['dispatcher']->addSubscriber($app['security.remember_me.response_listener']);
+        } else {
+            $app['dispatcher']->addListener('kernel.response', array($app['security.remember_me.response_listener'], 'onKernelResponse'));
+        }
     }
 }
