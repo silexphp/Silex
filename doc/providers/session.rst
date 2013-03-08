@@ -16,7 +16,7 @@ Parameters
 
   In case of the default `NativeSessionStorage
   <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/NativeSessionStorage.html>`_,
-  the possible options are:
+  the most useful options are:
 
   * **name**: The cookie name (_SESS by default)
   * **id**: The session id (null by default)
@@ -28,6 +28,9 @@ Parameters
 
   However, all of these are optional. Sessions last as long as the browser is
   open. To override this, set the ``lifetime`` option.
+
+  For a full list of available options, read the `PHP
+  <http://php.net/session.configuration>`_ official documentation.
 
 * **session.test**: Whether to simulate sessions or not (useful when writing
   functional tests).
