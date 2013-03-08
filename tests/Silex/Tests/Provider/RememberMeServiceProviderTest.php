@@ -34,16 +34,20 @@ class RememberMeServiceProviderTest extends WebTestCase
 
         $client->request('get', '/');
         $client->request('post', '/login_check', array('_username' => 'fabien', '_password' => 'foo', '_remember_me' => 'true'));
-        $this->assertTrue($client->getResponse()->isRedirect('http://localhost/'));
         $client->followRedirect();
         $this->assertEquals('AUTHENTICATED_FULLY', $client->getResponse()->getContent());
 
-        $this->assertNotNull($client->getCookiejar()->get('REMEMBERME'));
+        $this->assertNotNull($client->getCookiejar()->get('REMEMBERME'), 'The REMEMBERME cookie is set');
 
         $client->getCookiejar()->expire('MOCKSESSID');
 
         $client->request('get', '/');
         $this->assertEquals('AUTHENTICATED_REMEMBERED', $client->getResponse()->getContent());
+
+        $client->request('get', '/logout');
+        $client->followRedirect();
+
+        $this->assertNull($client->getCookiejar()->get('REMEMBERME'), 'The REMEMBERME cookie has been removed');
     }
 
     public function createApplication($authenticationMethod = 'form')
