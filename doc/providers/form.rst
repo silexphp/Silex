@@ -55,7 +55,7 @@ Registering
     .. code-block:: json
 
         "require": {
-            "symfony/form": "~2.1"
+            "symfony/form": "~2.1.4"
         }
 
     If you are going to use the validation extension with forms, you must also
@@ -168,6 +168,23 @@ You can register form extensions by extending ``form.extensions``::
         $extensions[] = new YourTopFormExtension();
 
         return $extensions;
+    }));
+
+
+You can register form type extensions by extending ``form.type.extensions``::
+
+    $app['form.type.extensions'] = $app->share($app->extend('form.type.extensions', function ($extensions) use ($app) {
+        $extensions[] = new YourFormTypeExtension();
+
+        return $extensions;
+    }));
+
+You can register form type guessers by extending ``form.type.guessers``::
+
+    $app['form.type.guessers'] = $app->share($app->extend('form.type.guessers', function ($guessers) use ($app) {
+        $guessers[] = new YourFormTypeGuesser();
+
+        return $guessers;
     }));
 
 Traits

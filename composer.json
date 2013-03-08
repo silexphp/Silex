@@ -26,7 +26,7 @@
         "symfony/security": ">=2.1,<2.3-dev",
         "symfony/config": ">=2.1,<2.3-dev",
         "symfony/locale": ">=2.1,<2.3-dev",
-        "symfony/form": ">=2.1,<2.3-dev",
+        "symfony/form": ">=2.1.4,<2.3-dev",
         "symfony/browser-kit": ">=2.1,<2.3-dev",
         "symfony/css-selector": ">=2.1,<2.3-dev",
         "symfony/dom-crawler": ">=2.1,<2.3-dev",
@@ -45,7 +45,8 @@
     "suggest": {
         "symfony/browser-kit": ">=2.1,<2.3-dev",
         "symfony/css-selector": ">=2.1,<2.3-dev",
-        "symfony/dom-crawler": ">=2.1,<2.3-dev"
+        "symfony/dom-crawler": ">=2.1,<2.3-dev",
+        "symfony/form": "To make use of the FormServiceProvider, >= 2.1.4 is required"
     },
     "autoload": {
         "psr-0": { "Silex": "src/" }
