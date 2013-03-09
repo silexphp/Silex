@@ -149,7 +149,7 @@ class SecurityServiceProviderTest extends WebTestCase
 
         $app->boot();
 
-        $this->assertInstanceOf('Symfony\Component\Security\Core\Validator\Constraint\UserPasswordValidator', $app['security.validator.user_password_validator']);
+        $this->assertInstanceOf('Symfony\Component\Security\Core\Validator\Constraints\UserPasswordValidator', $app['security.validator.user_password_validator']);
     }
 
     public function createApplication($authenticationMethod = 'form')
