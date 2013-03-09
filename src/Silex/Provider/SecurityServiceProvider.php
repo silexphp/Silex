@@ -32,6 +32,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\RoleHierarchyVoter;
 use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManager;
 use Symfony\Component\Security\Core\Role\RoleHierarchy;
+use Symfony\Component\Security\Core\Validator\Constraint\UserPasswordValidator;
 use Symfony\Component\Security\Http\Firewall;
 use Symfony\Component\Security\Http\FirewallMap;
 use Symfony\Component\Security\Http\Firewall\AccessListener;
@@ -504,6 +505,20 @@ class SecurityServiceProvider implements ServiceProviderInterface
                 return new AnonymousAuthenticationProvider($name);
             });
         });
+
+        if (isset($app['validator'])) {
+            $app['security.validator.user_password_validator'] = $app->share(function ($app) {
+                return new UserPasswordValidator($app['security'], $app['security.encoder_factory']);
+            });
+
+            if (isset($app['validator.validator_service_ids'])) {
+                $app['validator.validator_service_ids']['security.validator.user_password'] = 'security.validator.user_password_validator';
+            } else {
+                $app['validator.validator_service_ids'] = array(
+                    'security.validator.user_password' => 'security.validator.user_password_validator'
+                );
+            }
+        }
     }
 
     public function boot(Application $app)

@@ -65,6 +65,7 @@ class ValidatorServiceProvider implements ServiceProviderInterface
                     $validators[$alias] = $service;
                 }
             }
+
             return new ConstraintValidatorFactory($app, $validators);
         });
     }
