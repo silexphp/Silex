@@ -134,7 +134,7 @@ case::
         return false;
     }
 
-    $app = require __DIR__.'/../src/app.php';
+    $app = new Silex\Application();
     $app->run();
 
 
