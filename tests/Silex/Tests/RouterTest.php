@@ -207,6 +207,20 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($response->isRedirect('https://example.com/secured'));
     }
 
+    public function testRequireHttpsRedirectIncludesQueryString()
+    {
+        $app = new Application();
+
+        $app->match('/secured', function () {
+            return 'secured content';
+        })
+        ->requireHttps();
+
+        $request = Request::create('http://example.com/secured?query=string');
+        $response = $app->handle($request);
+        $this->assertTrue($response->isRedirect('https://example.com/secured?query=string'));
+    }
+
     public function testClassNameControllerSyntax()
     {
         $app = new Application();
