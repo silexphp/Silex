@@ -29,8 +29,14 @@ class RedirectableUrlMatcher extends BaseRedirectableUrlMatcher
     {
         $url = $this->context->getBaseUrl().$path;
 
-        if ($this->context->hasParameter('QUERY_STRING')) {
-            $url .= '?'.$this->context->getParameter('QUERY_STRING');
+        // Query string support was added to RequestContext in 2.3
+        // Fall back to parameter injected by url_matcher closure for earlier versions
+        $query = method_exists($this->context, 'getQueryString')
+            ? $this->context->getQueryString()
+            : $this->context->getParameter('QUERY_STRING');
+
+        if ($query != null) {
+            $url .= '?'.$query;
         }
 
         if ($this->context->getHost()) {
