@@ -33,9 +33,9 @@ class RedirectableUrlMatcher extends BaseRedirectableUrlMatcher
         // Fall back to parameter injected by url_matcher closure for earlier versions
         $query = method_exists($this->context, 'getQueryString')
             ? $this->context->getQueryString()
-            : $this->context->getParameter('QUERY_STRING');
+            : $this->context->getParameter('QUERY_STRING') ?: '';
 
-        if ($query != null) {
+        if ($query !== '') {
             $url .= '?'.$query;
         }
 
