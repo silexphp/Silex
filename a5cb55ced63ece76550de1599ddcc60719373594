@@ -1,0 +1,29 @@
+---------------------------------------------------------------------------
+
+by igorw at 2013-02-07T21:03:13Z
+
+Looks good, can you add a test case for this?
+
+---------------------------------------------------------------------------
+
+by lmcnearney at 2013-02-07T21:05:27Z
+
+Sure, I'll write a test and fix the code style issues.
+
+---------------------------------------------------------------------------
+
+by henrikbjorn at 2013-02-08T10:23:08Z
+
+I overwrite that service. I think it should be fixed in Symfony.
+
+---------------------------------------------------------------------------
+
+by fabpot at 2013-03-23T08:14:42Z
+
+upstream PR has been merged now. This PR should be updated accordingly (using the new method for Symfony > 2.3 and fallback to the workaround for previous versions).
+
+---------------------------------------------------------------------------
+
+by lmcnearney at 2013-03-25T17:29:19Z
+
+@fabpot That should do it. The existing test covers the fallback for the moment but when Silex is updated to 2.3 then it will start covering the added getQueryString method. At that point, we can rip out the fallback code.
