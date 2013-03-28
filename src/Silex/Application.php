@@ -104,7 +104,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
             $dispatcher->addSubscriber(new MiddlewareListener($app));
             $dispatcher->addSubscriber(new ConverterListener($app['routes']));
             $dispatcher->addSubscriber(new StringToResponseListener());
-            $dispatcher->addSubscriber(new RequestContextQueryStringListener($app));
+            $dispatcher->addSubscriber(new RequestContextQueryStringListener($app['request_context']));
 
             return $dispatcher;
         });

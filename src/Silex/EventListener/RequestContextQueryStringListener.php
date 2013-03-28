@@ -11,11 +11,10 @@
 
 namespace Silex\EventListener;
 
-use Silex\Application;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RequestContext;
 
 /**
  * Inject the query string into the RequestContext for Symfony versions <= 2.2
@@ -24,11 +23,11 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class RequestContextQueryStringListener implements EventSubscriberInterface
 {
-    private $app;
+    private $context;
 
-    public function __construct(Application $app)
+    public function __construct(RequestContext $context)
     {
-        $this->app = $app;
+        $this->context = $context;
     }
 
     public function onKernelRequest(GetResponseEvent $event)
@@ -39,7 +38,7 @@ class RequestContextQueryStringListener implements EventSubscriberInterface
 
         $request = $event->getRequest();
         if ($request->server->get('QUERY_STRING') !== '') {
-            $this->app['request_context']->setParameter('QUERY_STRING', $request->server->get('QUERY_STRING'));
+            $this->context->setParameter('QUERY_STRING', $request->server->get('QUERY_STRING'));
         }
     }
 
