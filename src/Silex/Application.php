@@ -35,6 +35,7 @@ use Silex\EventListener\LocaleListener;
 use Silex\EventListener\MiddlewareListener;
 use Silex\EventListener\ConverterListener;
 use Silex\EventListener\StringToResponseListener;
+use Silex\EventListener\RequestContextQueryStringListener;
 
 /**
  * The Silex framework class.
@@ -103,6 +104,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
             $dispatcher->addSubscriber(new MiddlewareListener($app));
             $dispatcher->addSubscriber(new ConverterListener($app['routes']));
             $dispatcher->addSubscriber(new StringToResponseListener());
+            $dispatcher->addSubscriber(new RequestContextQueryStringListener($app['request_context']));
 
             return $dispatcher;
         });
