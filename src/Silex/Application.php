@@ -48,8 +48,8 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
     const EARLY_EVENT = 512;
     const LATE_EVENT  = -512;
 
-    private $providers = array();
-    private $booted = false;
+    protected $providers = array();
+    protected $booted = false;
 
     /**
      * Instantiate a new Application.
