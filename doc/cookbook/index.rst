@@ -14,6 +14,7 @@ The cookbook section contains recipes for solving specific problems.
     validator_yaml
     sub_requests
     error_handler
+    multiple_loggers
 
 Recipes
 -------
@@ -35,3 +36,5 @@ Recipes
 * :doc:`How to make sub-requests <sub_requests>`.
 
 * :doc:`How to convert errors to exceptions <error_handler>`.
+
+* :doc:`How to use multiple monolog loggers <multiple_loggers>`.
