@@ -28,7 +28,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\RouteCollection;
-use Symfony\Component\Routing\RequestContext;
+use Silex\RequestContext;
 use Silex\RedirectableUrlMatcher;
 use Silex\ControllerResolver;
 use Silex\EventListener\LocaleListener;
@@ -125,11 +125,6 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
         });
 
         $this['url_matcher'] = $this->share(function () use ($app) {
-            // Inject the query string into the RequestContext for Symfony versions <= 2.2
-            if ($app['request']->server->get('QUERY_STRING') !== '' && !method_exists($app['request_context'], 'getQueryString')) {
-                $app['request_context']->setParameter('QUERY_STRING', $app['request']->server->get('QUERY_STRING'));
-            }
-
             return new RedirectableUrlMatcher($app['routes'], $app['request_context']);
         });
 
