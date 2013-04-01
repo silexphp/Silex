@@ -143,6 +143,15 @@ those definitions.
 
     This also works for shared services.
 
+Going back to our initial example, here's how we could use the container 
+to manage its dependencies::
+
+    $app['user.persist_path'] = '/tmp/users';
+    $app['user.persister'] = $app->share(function ($app) {
+        return new JsonUserPersister($app['user.persist_path']);
+    });
+
+
 Protected closures
 ~~~~~~~~~~~~~~~~~~
 
