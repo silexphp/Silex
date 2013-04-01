@@ -1,0 +1,15 @@
+---------------------------------------------------------------------------
+
+by igorw at 2013-03-29T14:22:08Z
+
+Dave [suggested the same fix](https://github.com/davedevelopment/Silex/compare/alternative-request-context-fix).
+
+I specifically avoided this because extending a data structure with behaviour seems messy. After giving it more thought I think this is probably an acceptable fix after all.
+
+But I still think it should be in Symfony's RequestContext directly, instead of forcing everyone to hack around this bug.
+
+---------------------------------------------------------------------------
+
+by erikaheidi at 2013-03-29T14:50:22Z
+
+Worked well for me.
