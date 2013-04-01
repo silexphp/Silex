@@ -179,6 +179,14 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('/foo/', $response->getTargetUrl());
     }
 
+    public function testHostSpecification()
+    {
+        $route = new \Silex\Route();
+
+        $this->assertSame($route, $route->host('{locale}.example.com'));
+        $this->assertEquals('{locale}.example.com', $route->getHost());
+    }
+
     public function testRequireHttpRedirect()
     {
         $app = new Application();
