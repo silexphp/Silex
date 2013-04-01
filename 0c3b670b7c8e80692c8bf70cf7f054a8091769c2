@@ -1,0 +1,37 @@
+---------------------------------------------------------------------------
+
+by tiraeth at 2013-03-08T18:55:51Z
+
+And yes, I know that it was possible to do so using `->setHost()` but wanted to introduce a shortcut in same way other options are exposed.
+
+---------------------------------------------------------------------------
+
+by igorw at 2013-03-08T20:00:15Z
+
+Generally I'm :+1:
+
+Silex is currently depending on Symfony 2.1, so we should only support this feature on 2.2. It might be worth using reflection to check if the `setHost` method exists and throw a descriptive exception if it does not.
+
+---------------------------------------------------------------------------
+
+by GromNaN at 2013-03-08T21:07:42Z
+
+This is a good idea :+1:
+
+Can you add a note to the doc ?
+
+---------------------------------------------------------------------------
+
+by davedevelopment at 2013-03-08T22:43:16Z
+
+:+1:
+
+With regards to what Igor said, might be nice to have a comment in the code to remind us the reflection can go when we bump to 2.2
+
+---------------------------------------------------------------------------
+
+by henrikbjorn at 2013-03-10T09:18:57Z
+
+Is there a reason not to depend on 2.2 now it is the latest stable?
+
+Also instead of reflection i think this should be noted in the documentation (as if one does it in 2.1 he/she will get a bad method call error).
