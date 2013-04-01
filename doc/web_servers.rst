@@ -4,7 +4,7 @@ Webserver Configuration
 Apache
 ------
 
-If you are using Apache you can use a ``.htaccess`` file for this:
+If you are using Apache, make sure ``mod_rewrite`` is enabled and you can use the following ``.htaccess`` file:
 
 .. code-block:: apache
 
