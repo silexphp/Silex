@@ -1,0 +1,123 @@
+---------------------------------------------------------------------------
+
+by davedevelopment at 2013-04-02T11:16:50Z
+
+I wasn't familiar with the problem here, but I think it's due to the order of the autoloading. I've tried to come up with a minimum test case, but failed so far.
+
+---------------------------------------------------------------------------
+
+by nean at 2013-04-02T11:26:47Z
+
+The problem is that `LazyUrlMatcher` lies in `Silex` nampspace.
+so `Silex\RequestContext` is aliased as `RequestContext`, and the use statement tries to alias symfony request context as `RequestContext` so php throws the error.
+
+more info here in [stack overflow](http://stackoverflow.com/questions/11988892/php-unusual-fatal-error-with-name-is-already-in-use)
+
+---------------------------------------------------------------------------
+
+by davedevelopment at 2013-04-02T11:36:27Z
+
+I understand that, but it doesn't explain why the tests are passing in master, which is what I was trying to get to the bottom of.
+
+---------------------------------------------------------------------------
+
+by stof at 2013-04-02T12:11:11Z
+
+@davedevelopment because PHP itself does not forbid aliasing to a class which exist in the namespace in another file. I think the issue might come from APC instead (which is not enabled when running the testsuite)
+
+---------------------------------------------------------------------------
+
+by bobdenotter at 2013-04-02T12:14:19Z
+
+@stof When I disable APC on my setup, the problem is still there.
+
+---------------------------------------------------------------------------
+
+by davedevelopment at 2013-04-02T12:16:55Z
+
+@stof apparently php does care, see https://bugs.php.net/bug.php?id=55068
+
+So in this case, if Silex\RequestContext has already been loaded by the autoloader, we get the fatal, otherwise it's ok.
+
+``` php
+
+<?php
+
+require_once "vendor/autoload.php";
+
+$context = new Silex\RequestContext; // removing this line will stop the fatal
+$app = new Silex\Application();
+$app->before(function () {} );
+
+```
+
+---------------------------------------------------------------------------
+
+by davedevelopment at 2013-04-02T12:20:02Z
+
+So there must be something in Bolt's bootstrapping that's causing services to load in a particular order.
+
+I think Bolt's bootstrapping could do with a bit of a review, but this fix needs to go in, perhaps with a comment explaining it? If I came to this file as it is in this PR, I might tidy it up and not see failing tests.
+
+---------------------------------------------------------------------------
+
+by nean at 2013-04-02T12:34:34Z
+
+Oops you already found out why :)
+
+---------------------------------------------------------------------------
+
+by davedevelopment at 2013-04-02T12:36:14Z
+
+@nean the problem with the test you posted, is that it's depending on the order in which phpunit will run the tests. If we happen to add a test class AbTest.php in the future, your test will forever pass.
+
+---------------------------------------------------------------------------
+
+by nean at 2013-04-02T12:41:20Z
+
+@davedevelopment i just wrote it for reference, thats not a real testcase
+
+and is there any nice way to test these kind of bugs?
+
+---------------------------------------------------------------------------
+
+by davedevelopment at 2013-04-02T12:47:47Z
+
+@nean there's not a *nice* way I can think of, running all tests in process isolation would solve it.
+
+Edit: I don't think process isolation is an option though, it goes crazy when I try it, trying to serialize closures. I'm not familiar enough with it.
+
+---------------------------------------------------------------------------
+
+by stof at 2013-04-02T13:06:31Z
+
+Scrutinizer-ci is able to detect these issues. But it is not enabled on Silex
+
+---------------------------------------------------------------------------
+
+by bobdenotter at 2013-04-03T16:16:35Z
+
+I don't want to come across as impatient, but is it likely that this pull-request will be merged? In it's current state, Silex is quite broken for users of my project who use composer.
+
+---------------------------------------------------------------------------
+
+by nean at 2013-04-03T16:32:06Z
+
+@davedevelopment, @bobdenotter
+I simplified the bolt bootstrap and found this
+
+```php
+#index.php
+use Silex\Application;
+use Silex\Provider\UrlGeneratorServiceProvider;
+use Silex\Provider\TwigServiceProvider;
+
+$app = new Application();
+$app->register(new UrlGeneratorServiceProvider);
+$app->register(new TwigServiceProvider);
+$app['twig'];
+$app->run();
+```
+the above throws the fatal
+
+here instantiating twig also instantiates `$app['url_generator']` which loads `Silex\RequestContext` before symfony request context
