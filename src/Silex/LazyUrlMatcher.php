@@ -11,7 +11,7 @@
 
 namespace Silex;
 
-use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\Routing\RequestContext as SymfonyRequestContext;
 use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
 
 /**
@@ -54,7 +54,7 @@ class LazyUrlMatcher implements UrlMatcherInterface
     /**
      * {@inheritdoc}
      */
-    public function setContext(RequestContext $context)
+    public function setContext(SymfonyRequestContext $context)
     {
         $this->getUrlMatcher()->setContext($context);
     }
