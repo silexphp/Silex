@@ -118,6 +118,23 @@ class SecurityServiceProviderTest extends WebTestCase
         $this->assertEquals('admin', $client->getResponse()->getContent());
     }
 
+    public function testTokenIsAvailableInErrorHandler()
+    {
+        $app = $this->createApplication('form');
+        $capturedToken = null;
+
+        $app->error(function(\Exception $e) use ($app, &$capturedToken) {
+            $capturedToken = $app['security']->getToken();
+        });
+
+        $client = new Client($app);
+        // authenticate
+        $client->request('post', '/login_check', array('_username' => 'fabien', '_password' => 'foo'));
+
+        $client->request('get', '/not_found');
+        $this->assertInstanceOf('Symfony\Component\Security\Core\Authentication\Token\TokenInterface', $capturedToken);
+    }
+
     public function createApplication($authenticationMethod = 'form')
     {
         $app = new Application();
