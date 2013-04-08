@@ -40,7 +40,8 @@
         "symfony/validator": ">=2.1,<2.3-dev",
         "twig/twig": ">=1.8.0,<2.0-dev",
         "doctrine/dbal": ">=2.2.0,<2.4.0-dev",
-        "swiftmailer/swiftmailer": "4.2.*"
+        "swiftmailer/swiftmailer": "4.2.*",
+        "monolog/monolog": "~1.4,>=1.4.1"
     },
     "suggest": {
         "symfony/browser-kit": ">=2.1,<2.3-dev",
