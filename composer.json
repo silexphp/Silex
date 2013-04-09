@@ -47,7 +47,8 @@
         "symfony/browser-kit": ">=2.1,<2.3-dev",
         "symfony/css-selector": ">=2.1,<2.3-dev",
         "symfony/dom-crawler": ">=2.1,<2.3-dev",
-        "symfony/form": "To make use of the FormServiceProvider, >= 2.1.4 is required"
+        "symfony/form": "To make use of the FormServiceProvider, >= 2.1.4 is required",
+        "symfony/yaml": "To make use of the YamlServiceProvider, ~2.2 is required"
     },
     "autoload": {
         "psr-0": { "Silex": "src/" }
