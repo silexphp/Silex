@@ -241,7 +241,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
 
             $app['security.authentication_providers'] = array_map(function ($provider) use ($app) {
                 return $app[$provider];
-            }, $providers);
+            }, array_unique($providers));
 
             $map = new FirewallMap();
             foreach ($configs as $name => $config) {
