@@ -518,13 +518,11 @@ class SecurityServiceProvider implements ServiceProviderInterface
                 return new DeprecatedUserPasswordValidator($app['security'], $app['security.encoder_factory']);
             });
 
-            if (isset($app['validator.validator_service_ids'])) {
-                $app['validator.validator_service_ids']['security.validator.user_password'] = 'security.validator.user_password_validator';
-            } else {
-                $app['validator.validator_service_ids'] = array(
-                    'security.validator.user_password' => 'security.validator.user_password_validator'
-                );
+            if (!isset($app['validator.validator_service_ids'])) {
+                $app['validator.validator_service_ids'] = array();
             }
+
+            $app['validator.validator_service_ids'] = array_merge($app['validator.validator_service_ids'], array('security.validator.user_password' => 'security.validator.user_password_validator'));
         }
     }
 
