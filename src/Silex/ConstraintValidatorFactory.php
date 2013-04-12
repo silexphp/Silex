@@ -20,41 +20,69 @@ use Symfony\Component\Validator\ConstraintValidator;
  * Uses a service container to create constraint validators with dependencies.
  *
  * @author Kris Wallsmith <kris@symfony.com>
+ * @author Alex Kalyvitis <alex.kalyvitis@gmail.com>
  */
 class ConstraintValidatorFactory implements ConstraintValidatorFactoryInterface
 {
+    /**
+     * @var Silex\Application
+     */
     protected $container;
+
+    /**
+     * @var array
+     */
+    protected $serviceNames;
+
+    /**
+     * @var array
+     */
     protected $validators;
 
     /**
-     * Constructor.
+     * Constructor
      *
-     * @param Silex\Application $container  A DI container
-     * @param array             $validators An array of validators
+     * @param Silex\Application $container    DI container
+     * @param array             $serviceNames Validator service names
      */
-    public function __construct(Application $container, array $validators = array())
+    public function __construct(Application $container, array $serviceNames = array())
     {
-        $this->container = $container;
-        $this->validators = $validators;
+        $this->container    = $container;
+        $this->serviceNames = $serviceNames;
+        $this->validators   = array();
     }
 
     /**
      * Returns the validator for the supplied constraint.
      *
-     * @param Constraint $constraint A constraint
-     *
+     * @param  Constraint          $constraint A constraint
      * @return ConstraintValidator A validator for the supplied constraint
      */
     public function getInstance(Constraint $constraint)
     {
         $name = $constraint->validatedBy();
 
-        if (!isset($this->validators[$name])) {
-            $validator = new $name();
-        } elseif (is_string($this->validators[$name])) {
-            $validator = $this->container[$this->validators[$name]];
+        if (isset($this->validators[$name])) {
+            return $this->validators[$name];
         }
 
-        return $validator;
+        $this->validators[$name] = $this->createValidator($name);
+
+        return $this->validators[$name];
+    }
+
+    /**
+     * Returns the validator instance
+     *
+     * @param  string                                          $name
+     * @return Symfony\Component\Validator\ConstraintValidator
+     */
+    private function createValidator($name)
+    {
+        if (isset($this->serviceNames[$name])) {
+            return $this->container[$this->serviceNames[$name]];
+        }
+
+        return new $name();
     }
 }
