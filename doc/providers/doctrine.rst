@@ -29,13 +29,13 @@ Parameters
 
   * **password**: The password of the database to connect to.
 
-  * **charset**: Only relevant for ``pdo_mysql``, ``pdo_oci``/``oci8``,
+  * **charset**: Only relevant for ``pdo_mysql``, and ``pdo_oci/oci8``,
     specifies the charset used when connecting to the database.
 
   * **path**: Only relevant for ``pdo_sqlite``, specifies the path to
     the SQLite database.
 
-  * **port**: Only relevant for ``pdo_mysql``, ``pdo_pgsql``, ``pdo_oci``/``oci8``,
+  * **port**: Only relevant for ``pdo_mysql``, ``pdo_pgsql``, and ``pdo_oci/oci8``,
     specifies the port of the database to connect to.
 
   These and additional options are described in detail in the `Doctrine DBAL
