@@ -64,7 +64,7 @@ class RememberMeServiceProvider implements ServiceProviderInterface
                     'name'                  => 'REMEMBERME',
                     'lifetime'              => 31536000,
                     'path'                  => '/',
-                    'domain'                => null,
+                    'domain'                => '',
                     'secure'                => false,
                     'httponly'              => true,
                     'always_remember_me'    => false,

@@ -37,7 +37,7 @@ class RememberMeServiceProviderTest extends WebTestCase
         $client->followRedirect();
         $this->assertEquals('AUTHENTICATED_FULLY', $client->getResponse()->getContent());
 
-        $this->assertNotNull($client->getCookiejar()->get('REMEMBERME'), 'The REMEMBERME cookie is set');
+        $this->assertNotNull($client->getCookiejar()->get('REMEMBERME', '/', 'localhost'), 'The REMEMBERME cookie is set');
 
         $client->getCookiejar()->expire('MOCKSESSID', '/', 'localhost');
 
