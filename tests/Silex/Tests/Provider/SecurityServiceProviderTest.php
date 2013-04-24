@@ -15,6 +15,7 @@ use Silex\Application;
 use Silex\WebTestCase;
 use Silex\Provider\SecurityServiceProvider;
 use Silex\Provider\SessionServiceProvider;
+use Silex\Provider\ValidatorServiceProvider;
 use Symfony\Component\HttpKernel\Client;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -116,6 +117,38 @@ class SecurityServiceProviderTest extends WebTestCase
         $this->assertEquals('adminAUTHENTICATEDADMIN', $client->getResponse()->getContent());
         $client->request('get', '/admin');
         $this->assertEquals('admin', $client->getResponse()->getContent());
+    }
+
+    public function testUserPasswordValidatorIsRegistered()
+    {
+        if (!is_dir(__DIR__.'/../../../../vendor/symfony/validator')) {
+            $this->markTestSkipped('Validator dependency was not installed.');
+        }
+
+        $app = new Application();
+
+        $app->register(new ValidatorServiceProvider());
+        $app->register(new SecurityServiceProvider(), array(
+            'security.firewalls' => array(
+                'admin' => array(
+                    'pattern' => '^/admin',
+                    'http' => true,
+                    'users' => array(
+                        'admin' => array('ROLE_ADMIN', '513aeb0121909'),
+                    )
+                ),
+            ),
+        ));
+
+        $app->boot();
+
+        // FIXME: in Symfony 2.2 Symfony\Component\Security\Core\Validator\Constraint
+        // is replaced by Symfony\Component\Security\Core\Validator\Constraints
+        if (class_exists('Symfony\Component\Security\Core\Validator\Constraints\UserPasswordValidator')) {
+            $this->assertInstanceOf('Symfony\Component\Security\Core\Validator\Constraints\UserPasswordValidator', $app['security.validator.user_password_validator']);
+        } else {
+            $this->assertInstanceOf('Symfony\Component\Security\Core\Validator\Constraint\UserPasswordValidator', $app['security.validator.user_password_validator']);
+        }
     }
 
     public function createApplication($authenticationMethod = 'form')
