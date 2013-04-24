@@ -1,0 +1,67 @@
+---------------------------------------------------------------------------
+
+by igorw at 2013-02-10T15:57:36Z
+
+If this is included with silex, then the factory should be a service registered by the `ValidatorServiceProvider`. `$validators` should be set from a `validator.validator_service_ids` container parameter.
+
+---------------------------------------------------------------------------
+
+by stof at 2013-02-11T18:52:41Z
+
+you should also provide unit tests.
+
+And the security service provider should register the validator for the UserPassword constraint once you update the ValidatorServiceProvider and both are registered
+
+---------------------------------------------------------------------------
+
+by alexkappa at 2013-02-12T13:11:21Z
+
+ @igorw @stof good points. Will modify accordingly.
+
+---------------------------------------------------------------------------
+
+by alexkappa at 2013-02-27T10:30:30Z
+
+@igorw @stof what do you guys think? @stof I'm not sure how to implement the UserPassword feature that you asked.
+
+---------------------------------------------------------------------------
+
+by stof at 2013-02-27T10:35:15Z
+
+@alexkappa When the Validator and the Security providers are both registered, the UserPasswordValidator should be registered as a service and added in ``validator.validator_service_ids``
+
+---------------------------------------------------------------------------
+
+by alexkappa at 2013-03-12T22:05:30Z
+
+Guys, its ready for review once more.
+
+---------------------------------------------------------------------------
+
+by alexkappa at 2013-03-14T20:30:40Z
+
+@stof @igorw ping!
+
+---------------------------------------------------------------------------
+
+by igorw at 2013-04-07T22:11:08Z
+
+Apart from the stuff I mentioned, this looks good to me.
+
+---------------------------------------------------------------------------
+
+by alexkappa at 2013-04-17T07:50:20Z
+
+@igorw done
+
+---------------------------------------------------------------------------
+
+by igorw at 2013-04-17T13:10:43Z
+
+Looks good to me. :+1:
+
+---------------------------------------------------------------------------
+
+by igorw at 2013-04-24T11:48:42Z
+
+Ok, I'd say this is ready for merge :+1:
