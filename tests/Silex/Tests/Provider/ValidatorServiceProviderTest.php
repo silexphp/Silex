@@ -15,6 +15,8 @@ use Silex\Application;
 use Silex\Provider\ValidatorServiceProvider;
 use Silex\Provider\FormServiceProvider;
 use Symfony\Component\Validator\Constraints as Assert;
+use Silex\Tests\Provider\ValidatorServiceProviderTest\Constraint\Custom;
+use Silex\Tests\Provider\ValidatorServiceProviderTest\Constraint\CustomValidator;
 
 /**
  * ValidatorServiceProvider
@@ -30,6 +32,34 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
         $app->register(new ValidatorServiceProvider());
 
         return $app;
+    }
+
+    public function testRegisterWithCustomValidators()
+    {
+        $app = new Application();
+
+        $app['custom.validator'] = $app->share(function() {
+            return new CustomValidator();
+        });
+
+        $app->register(new ValidatorServiceProvider(), array(
+            'validator.validator_service_ids' => array(
+                'test.custom.validator' => 'custom.validator',
+            )
+        ));
+
+        return $app;
+    }
+
+    /**
+     * @depends testRegisterWithCustomValidators
+     */
+    public function testConstraintValidatorFactory($app)
+    {
+        $this->assertInstanceOf('Silex\ConstraintValidatorFactory', $app['validator.validator_factory']);
+
+        $validator = $app['validator.validator_factory']->getInstance(new Custom());
+        $this->assertInstanceOf('Silex\Tests\Provider\ValidatorServiceProviderTest\Constraint\CustomValidator', $validator);
     }
 
     /**
