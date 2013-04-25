@@ -55,7 +55,7 @@ Registering
     .. code-block:: json
 
         "require": {
-            "symfony/form": "~2.1.4"
+            "symfony/form": "~2.1"
         }
 
     If you are going to use the validation extension with forms, you must also
