@@ -24,4 +24,9 @@ class CustomValidator extends ConstraintValidator
         // Validate...
         return true;
     }
+
+    public function validate($value, Constraint $constraint)
+    {
+        return $this->isValid($value, $constraint);
+    }
 }

@@ -87,7 +87,8 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
         ));
 
         $builder = $app['form.factory']->createBuilder('form', array(), array(
-            'validation_constraint' => $constraints,
+            'validation_constraint' => $constraints, // symfony/validator >=2.1,<2.3
+            'constraints' => $constraints, // symfony/validator ~2.3
             'csrf_protection'       => false,
         ));
 
