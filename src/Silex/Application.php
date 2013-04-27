@@ -12,6 +12,7 @@
 namespace Silex;
 
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\TerminableInterface;
@@ -61,6 +62,10 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
     public function __construct(array $values = array())
     {
         parent::__construct();
+
+        if (version_compare(strtolower(Kernel::VERSION), '2.3.0-dev', '>=') && !class_exists('Symfony\Component\Debug\ExceptionHandler')) {
+            throw new \RuntimeException('In order to use Silex with Symfony 2.3, you must install symfony/debug 2.3.');
+        }
 
         $app = $this;
 

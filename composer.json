@@ -38,6 +38,7 @@
         "symfony/translation": ">=2.1,<2.4-dev",
         "symfony/twig-bridge": ">=2.1,<2.4-dev",
         "symfony/validator": ">=2.1,<2.4-dev",
+        "symfony/debug": ">=2.3,<2.4-dev",
         "twig/twig": ">=1.8.0,<2.0-dev",
         "doctrine/dbal": ">=2.2.0,<2.4.0-dev",
         "swiftmailer/swiftmailer": "4.2.*",
@@ -47,7 +48,8 @@
         "symfony/browser-kit": ">=2.1,<2.4-dev",
         "symfony/css-selector": ">=2.1,<2.4-dev",
         "symfony/dom-crawler": ">=2.1,<2.4-dev",
-        "symfony/form": ">= 2.1.4,<2.4-dev"
+        "symfony/form": ">=2.1.4,<2.4-dev",
+        "symfony/debug": ">=2.3,<2.4-dev"
     },
     "autoload": {
         "psr-0": { "Silex": "src/" }
