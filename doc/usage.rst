@@ -79,13 +79,13 @@ Then, you have to configure your web server (read the :doc:`dedicated chapter
 
 .. tip::
 
-    If your application is hosted behind a reverse proxy and you want Silex to
-    trust the ``X-Forwarded-For*`` headers, you will need to run your
-    application like this::
+    If your application is hosted behind a reverse proxy at address $ip, and you 
+    want Silex to trust the ``X-Forwarded-For*`` headers, you will need to run 
+    your application like this::
 
         use Symfony\Component\HttpFoundation\Request;
 
-        Request::trustProxyData();
+        Request::setTrustedProxies(array($ip));
         $app->run();
 
 Routing
