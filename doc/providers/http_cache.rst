@@ -53,11 +53,12 @@ setting Response HTTP cache headers::
 .. tip::
 
     If you want Silex to trust the ``X-Forwarded-For*`` headers from your
-    reverse proxy, you will need to run your application like this::
+    reverse proxy at address $ip, you will need to run your application like
+    this::
 
         use Symfony\Component\HttpFoundation\Request;
 
-        Request::trustProxyData();
+        Request::setTrustedProxies(array($ip));
         $app->run();
 
 This provider allows you to use the Symfony2 reverse proxy natively with
