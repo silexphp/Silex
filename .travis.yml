@@ -5,8 +5,6 @@ env:
 
 before_script:
     # symfony/*
-    - |
-        sed -i 's/^{$/{\n    "minimum-stability": "dev",/g' composer.json
     - sh -c "if [ '$SYMFONY_DEPS_VERSION' = '2.3' ]; then sed -i 's/>=2.3,<2.4-dev/2.3.*@dev/g' composer.json; composer update --dev --prefer-source; fi"
     - composer install --dev --prefer-source
 
