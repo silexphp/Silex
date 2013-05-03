@@ -33,7 +33,6 @@ use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManager;
 use Symfony\Component\Security\Core\Role\RoleHierarchy;
 use Symfony\Component\Security\Core\Validator\Constraints\UserPasswordValidator;
-use Symfony\Component\Security\Core\Validator\Constraint\UserPasswordValidator as DeprecatedUserPasswordValidator;
 use Symfony\Component\Security\Http\Firewall;
 use Symfony\Component\Security\Http\FirewallMap;
 use Symfony\Component\Security\Http\Firewall\AbstractAuthenticationListener;
@@ -524,13 +523,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
 
         if (isset($app['validator'])) {
             $app['security.validator.user_password_validator'] = $app->share(function ($app) {
-                // FIXME: in Symfony 2.2 Symfony\Component\Security\Core\Validator\Constraint
-                // is replaced by Symfony\Component\Security\Core\Validator\Constraints
-                if (class_exists('Symfony\Component\Security\Core\Validator\Constraints\UserPasswordValidator')) {
-                    return new UserPasswordValidator($app['security'], $app['security.encoder_factory']);
-                }
-
-                return new DeprecatedUserPasswordValidator($app['security'], $app['security.encoder_factory']);
+                return new UserPasswordValidator($app['security'], $app['security.encoder_factory']);
             });
 
             if (!isset($app['validator.validator_service_ids'])) {
@@ -543,9 +536,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
 
     public function boot(Application $app)
     {
-        // FIXME: in Symfony 2.2, this is a proper subscriber
-        //$app['dispatcher']->addSubscriber($app['security.firewall']);
-        $app['dispatcher']->addListener('kernel.request', array($app['security.firewall'], 'onKernelRequest'), 8);
+        $app['dispatcher']->addSubscriber($app['security.firewall']);
 
         foreach ($this->fakeRoutes as $route) {
             list($method, $pattern, $name) = $route;

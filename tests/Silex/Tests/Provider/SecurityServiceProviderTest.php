@@ -142,13 +142,7 @@ class SecurityServiceProviderTest extends WebTestCase
 
         $app->boot();
 
-        // FIXME: in Symfony 2.2 Symfony\Component\Security\Core\Validator\Constraint
-        // is replaced by Symfony\Component\Security\Core\Validator\Constraints
-        if (class_exists('Symfony\Component\Security\Core\Validator\Constraints\UserPasswordValidator')) {
-            $this->assertInstanceOf('Symfony\Component\Security\Core\Validator\Constraints\UserPasswordValidator', $app['security.validator.user_password_validator']);
-        } else {
-            $this->assertInstanceOf('Symfony\Component\Security\Core\Validator\Constraint\UserPasswordValidator', $app['security.validator.user_password_validator']);
-        }
+        $this->assertInstanceOf('Symfony\Component\Security\Core\Validator\Constraints\UserPasswordValidator', $app['security.validator.user_password_validator']);
     }
 
     public function createApplication($authenticationMethod = 'form')

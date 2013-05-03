@@ -28,9 +28,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\RouteCollection;
-use Silex\RequestContext;
-use Silex\RedirectableUrlMatcher;
-use Silex\ControllerResolver;
+use Symfony\Component\Routing\RequestContext;
 use Silex\EventListener\LocaleListener;
 use Silex\EventListener\MiddlewareListener;
 use Silex\EventListener\ConverterListener;
@@ -437,10 +435,6 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      */
     public function sendFile($file, $status = 200, $headers = array(), $contentDisposition = null)
     {
-        if (!class_exists('Symfony\Component\HttpFoundation\BinaryFileResponse')) {
-            throw new \RuntimeException('The "sendFile" method is only supported as of Http Foundation 2.2.');
-        }
-
         return new BinaryFileResponse($file, $status, $headers, true, $contentDisposition);
     }
 
