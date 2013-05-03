@@ -25,7 +25,7 @@ If you want more flexibility, use Composer instead. Create a
 
     {
         "require": {
-            "silex/silex": "1.0.*"
+            "silex/silex": "~1.0"
         }
     }
 
@@ -81,8 +81,8 @@ Then, you have to configure your web server (read the :doc:`dedicated chapter
 
 .. tip::
 
-    If your application is hosted behind a reverse proxy at address $ip, and you 
-    want Silex to trust the ``X-Forwarded-For*`` headers, you will need to run 
+    If your application is hosted behind a reverse proxy at address $ip, and you
+    want Silex to trust the ``X-Forwarded-For*`` headers, you will need to run
     your application like this::
 
         use Symfony\Component\HttpFoundation\Request;
@@ -234,9 +234,9 @@ methods on your application: ``get``, ``post``, ``put``, ``delete``::
 
 .. tip::
 
-    Forms in most web browsers do not directly support the use of other HTTP 
-    methods. To use methods other than GET and POST you can utilize a special 
-    form field with a name of ``_method``. The form's ``method`` attribute must 
+    Forms in most web browsers do not directly support the use of other HTTP
+    methods. To use methods other than GET and POST you can utilize a special
+    form field with a name of ``_method``. The form's ``method`` attribute must
     be set to POST when using this field::
 
         <form action="/my/target/route/" method="post">
