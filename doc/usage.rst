@@ -46,7 +46,9 @@ Upgrading
 ---------
 
 Upgrading Silex to the latest version is as easy as running the ``update``
-command::
+command:
+
+.. code-block:: bash
 
     $ php composer.phar update
 
