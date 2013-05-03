@@ -25,7 +25,7 @@ If you want more flexibility, use Composer instead. Create a
 
     {
         "require": {
-            "silex/silex": "1.0.*@dev"
+            "silex/silex": "1.0.*"
         }
     }
 

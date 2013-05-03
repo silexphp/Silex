@@ -40,7 +40,7 @@
         "symfony/validator": ">=2.1,<2.4-dev",
         "twig/twig": ">=1.8.0,<2.0-dev",
         "doctrine/dbal": ">=2.2.0,<2.4.0-dev",
-        "swiftmailer/swiftmailer": "4.2.*",
+        "swiftmailer/swiftmailer": "5.*",
         "monolog/monolog": "~1.4,>=1.4.1"
     },
     "suggest": {
