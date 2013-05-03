@@ -101,11 +101,6 @@ class RememberMeServiceProvider implements ServiceProviderInterface
             throw new \LogicException('You must register the SecurityServiceProvider to use the RememberMeServiceProvider');
         }
 
-        // In Symfony 2.2, this is a proper subscriber
-        if ($app['security.remember_me.response_listener'] instanceof EventSubscriberInterface) {
-            $app['dispatcher']->addSubscriber($app['security.remember_me.response_listener']);
-        } else {
-            $app['dispatcher']->addListener('kernel.response', array($app['security.remember_me.response_listener'], 'onKernelResponse'));
-        }
+        $app['dispatcher']->addSubscriber($app['security.remember_me.response_listener']);
     }
 }
