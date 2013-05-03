@@ -60,7 +60,7 @@ Registering
     .. code-block:: json
 
         "require": {
-            "symfony/security": "~2.1"
+            "symfony/security": "~2.3"
         }
 
 .. caution::
@@ -76,7 +76,7 @@ Usage
 
 The Symfony Security component is powerful. To learn more about it, read the
 `Symfony2 Security documentation
-<http://symfony.com/doc/2.1/book/security.html>`_.
+<http://symfony.com/doc/2.3/book/security.html>`_.
 
 .. tip::
 
