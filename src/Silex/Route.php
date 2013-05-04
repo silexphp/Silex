@@ -89,8 +89,6 @@ class Route extends BaseRoute
     /**
      * Sets the requirement of host on this Route.
      *
-     * Note that this only works with at least version 2.2 of the Symfony Routing component.
-     *
      * @param string $host The host for which this route should be enabled
      *
      * @return Route $this The current Route instance

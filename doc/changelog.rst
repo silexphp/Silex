@@ -4,7 +4,7 @@ Changelog
 1.1.0 (2013-XX-XX)
 ------------------
 
-* n/a
+* **2013-05-03: Dropped support for 2.1 and 2.2 versions of symfony.
 
 1.0.0 (2013-05-03)
 ------------------
