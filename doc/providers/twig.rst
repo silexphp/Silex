@@ -19,6 +19,10 @@ Parameters
 * **twig.form.templates** (optional): An array of templates used to render
   forms (only available when the ``FormServiceProvider`` is enabled).
 
+* **assets.path** (optional): Absolute (when starting with ``/``) or relative
+  to ``app.request.basePath`` (when ommitting ``/``) path where your assets (publicly
+  available files, e.g. CSS, JavaScript) exist.
+
 Services
 --------
 
@@ -124,6 +128,22 @@ from a template:
 
     You must prepend the ``app.request.baseUrl`` to render calls to ensure
     that the render works when deployed into a sub-directory of the docroot.
+
+A ``asset`` function is there to help you show a relative path to an asset of
+your choice, e.g. javascript file:
+
+.. code-block:: jinja
+
+    {# by default this will be converted to /js/jquery.min.js #}
+    {{ asset('js/jquery.min.js') }}
+
+You can customize the base path to assets by setting up ``assets.path`` parameter.
+If you ommit starting slash, it will get prefixed by ``app.request.basePath``. 
+
+.. note::
+
+    The function will return absolute URI to the resource if you provide
+    ``true`` as second parameter, like ``{{ asset('js/jquery.min.js', true) }}``.
 
 Traits
 ------
