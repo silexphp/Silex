@@ -55,6 +55,6 @@ trait UrlGeneratorTrait
      */
     public function redirectRoute($route, $parameters = array(), $status = 302)
     {
-        return parent::redirect($this->path($route, $parameters), $status);
+        return $this->redirect($this->path($route, $parameters), $status);
     }
 }
