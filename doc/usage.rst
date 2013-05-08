@@ -462,8 +462,8 @@ the defaults for new controllers.
 .. note::
 
     The global configuration does not apply to controller providers you might
-    mount as they have their own global configuration (see the Modularity
-    paragraph below).
+    mount as they have their own global configuration (read the 
+    :doc:`dedicated chapter<organizing_controllers>` for more information).
 
 Error handlers
 --------------
