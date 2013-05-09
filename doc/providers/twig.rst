@@ -138,7 +138,7 @@ your choice, e.g. javascript file:
     {{ asset('js/jquery.min.js') }}
 
 You can customize the base path to assets by setting up ``assets.path`` parameter.
-If you omit starting slash, it will get prefixed by ``app.request.basePath``. 
+If you omit starting slash, it will get prefixed with ``app.request.basePath``. 
 
 .. note::
 
