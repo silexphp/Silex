@@ -20,7 +20,7 @@ Parameters
   forms (only available when the ``FormServiceProvider`` is enabled).
 
 * **assets.path** (optional): Absolute (when starting with ``/``) or relative
-  to ``app.request.basePath`` (when ommitting ``/``) path where your assets (publicly
+  to ``app.request.basePath`` (when omitting ``/``) path where your assets (publicly
   available files, e.g. CSS, JavaScript) exist.
 
 Services
@@ -138,7 +138,7 @@ your choice, e.g. javascript file:
     {{ asset('js/jquery.min.js') }}
 
 You can customize the base path to assets by setting up ``assets.path`` parameter.
-If you ommit starting slash, it will get prefixed by ``app.request.basePath``. 
+If you omit starting slash, it will get prefixed by ``app.request.basePath``. 
 
 .. note::
 
