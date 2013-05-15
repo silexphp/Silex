@@ -4,6 +4,8 @@ Changelog
 1.1.0 (2013-XX-XX)
 ------------------
 
+* Make dispatcher proxy methods ``on``, ``before``, ``after`` and ``error``
+  lazy, so that they will not instantiate the dispatcher early.
 * **2013-05-03: Dropped support for 2.1 and 2.2 versions of symfony.
 
 1.0.0 (2013-05-03)
