@@ -4,7 +4,8 @@ Changelog
 1.0.1 (2013-XX-XX)
 ------------------
 
-* n/a
+* Make dispatcher proxy methods ``on``, ``before``, ``after`` and ``error``
+  lazy, so that they will not instantiate the dispatcher early.
 
 1.0.0 (2013-05-03)
 ------------------

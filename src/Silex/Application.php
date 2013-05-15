@@ -260,7 +260,11 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      */
     public function on($eventName, $callback, $priority = 0)
     {
-        $this['dispatcher']->addListener($eventName, $callback, $priority);
+        $this['dispatcher'] = $this->share($this->extend('dispatcher', function ($dispatcher, $app) use ($callback, $priority, $eventName) {
+            $dispatcher->addListener($eventName, $callback, $priority);
+
+            return $dispatcher;
+        }));
     }
 
     /**
@@ -274,7 +278,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      */
     public function before($callback, $priority = 0)
     {
-        $this['dispatcher']->addListener(KernelEvents::REQUEST, function (GetResponseEvent $event) use ($callback) {
+        $this->on(KernelEvents::REQUEST, function (GetResponseEvent $event) use ($callback) {
             if (HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
                 return;
             }
@@ -298,7 +302,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      */
     public function after($callback, $priority = 0)
     {
-        $this['dispatcher']->addListener(KernelEvents::RESPONSE, function (FilterResponseEvent $event) use ($callback) {
+        $this->on(KernelEvents::RESPONSE, function (FilterResponseEvent $event) use ($callback) {
             if (HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
                 return;
             }
@@ -318,7 +322,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      */
     public function finish($callback, $priority = 0)
     {
-        $this['dispatcher']->addListener(KernelEvents::TERMINATE, function (PostResponseEvent $event) use ($callback) {
+        $this->on(KernelEvents::TERMINATE, function (PostResponseEvent $event) use ($callback) {
             call_user_func($callback, $event->getRequest(), $event->getResponse());
         }, $priority);
     }
@@ -354,7 +358,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      */
     public function error($callback, $priority = -8)
     {
-        $this['dispatcher']->addListener(KernelEvents::EXCEPTION, new ExceptionListenerWrapper($this, $callback), $priority);
+        $this->on(KernelEvents::EXCEPTION, new ExceptionListenerWrapper($this, $callback), $priority);
     }
 
     /**
