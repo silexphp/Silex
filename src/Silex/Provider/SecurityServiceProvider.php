@@ -69,8 +69,13 @@ class SecurityServiceProvider implements ServiceProviderInterface
 
         $that = $this;
 
-        $app['security.role_hierarchy'] = array();
-        $app['security.access_rules'] = array();
+        if (!isset($app['security.role_hierarchy'])) {
+            $app['security.role_hierarchy'] = array();
+        }
+        
+        if (!isset($app['security.access_rules'])) {
+            $app['security.access_rules'] = array();
+        }
 
         $app['security'] = $app->share(function ($app) {
             return new SecurityContext($app['security.authentication_manager'], $app['security.access_manager']);
