@@ -82,10 +82,7 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface
         $app['swiftmailer.transport.eventdispatcher'] = $app->share(function () {
             return new \Swift_Events_SimpleEventDispatcher();
         });
-    }
 
-    public function boot(Application $app)
-    {
         $app->finish(function () use ($app) {
             // To speed things up (by avoiding Swift Mailer initialization), flush
             // messages only if our mailer has been created (potentially used)
@@ -93,5 +90,9 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface
                 $app['swiftmailer.spooltransport']->getSpool()->flushQueue($app['swiftmailer.transport']);
             }
         });
+    }
+
+    public function boot(Application $app)
+    {
     }
 }

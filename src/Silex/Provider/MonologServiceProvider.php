@@ -62,10 +62,7 @@ class MonologServiceProvider implements ServiceProviderInterface
         };
 
         $app['monolog.name'] = 'myapp';
-    }
 
-    public function boot(Application $app)
-    {
         $app->before(function (Request $request) use ($app) {
             $app['monolog']->addInfo('> '.$request->getMethod().' '.$request->getRequestUri());
         });
@@ -82,5 +79,9 @@ class MonologServiceProvider implements ServiceProviderInterface
         $app->after(function (Request $request, Response $response) use ($app) {
             $app['monolog']->addInfo('< '.$response->getStatusCode());
         });
+    }
+
+    public function boot(Application $app)
+    {
     }
 }
