@@ -16,13 +16,13 @@ user to register them.
 Registering the ErrorHandler
 ----------------------------
 
-Fortunately, Silex ships with an ``ErrorHandler`` (it's part of the
-``HttpKernel`` package) that solves this issue. It converts all errors to
-exceptions, and exceptions can be caught by Silex.
+Fortunately, the `Symfony/Debug` package has an `ErrorHandler` that solves this
+issue. It converts all errors to exceptions, and exceptions can be caught by
+Silex.
 
 You register it by calling the static ``register`` method::
 
-    use Symfony\Component\HttpKernel\Debug\ErrorHandler;
+    use Symfony\Component\Debug\ErrorHandler;
 
     ErrorHandler::register();
 
