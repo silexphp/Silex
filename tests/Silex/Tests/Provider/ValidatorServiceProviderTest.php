@@ -17,6 +17,7 @@ use Silex\Provider\FormServiceProvider;
 use Symfony\Component\Validator\Constraints as Assert;
 use Silex\Tests\Provider\ValidatorServiceProviderTest\Constraint\Custom;
 use Silex\Tests\Provider\ValidatorServiceProviderTest\Constraint\CustomValidator;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 /**
  * ValidatorServiceProvider
@@ -86,11 +87,19 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
             ),
         ));
 
-        $builder = $app['form.factory']->createBuilder('form', array(), array(
+        $options = array(
             'validation_constraint' => $constraints, // symfony/validator >=2.1,<2.3
             'constraints' => $constraints, // symfony/validator ~2.3
             'csrf_protection'       => false,
-        ));
+        );
+
+        try {
+            $builder = $app['form.factory']->createBuilder('form', array(), $options);
+        } catch (InvalidOptionsException $e) {
+            // sometime in 2.3 the OptionsResolver started validating options
+            unset($options['validation_constraint']);
+            $builder = $app['form.factory']->createBuilder('form', array(), $options);
+        }
 
         $form = $builder
             ->add('email', 'email', array('label' => 'Email'))
