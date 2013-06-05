@@ -87,19 +87,10 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
             ),
         ));
 
-        $options = array(
-            'validation_constraint' => $constraints, // symfony/validator >=2.1,<2.3
-            'constraints' => $constraints, // symfony/validator ~2.3
-            'csrf_protection'       => false,
-        );
-
-        try {
-            $builder = $app['form.factory']->createBuilder('form', array(), $options);
-        } catch (InvalidOptionsException $e) {
-            // sometime in 2.3 the OptionsResolver started validating options
-            unset($options['validation_constraint']);
-            $builder = $app['form.factory']->createBuilder('form', array(), $options);
-        }
+        $builder = $app['form.factory']->createBuilder('form', array(), array(
+            'constraints'     => $constraints,
+            'csrf_protection' => false,
+        ));
 
         $form = $builder
             ->add('email', 'email', array('label' => 'Email'))
