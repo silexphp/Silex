@@ -1,0 +1,33 @@
+---------------------------------------------------------------------------
+
+by igorw at 2013-06-04T22:24:31Z
+
+Thanks for the fix, :+1:.
+
+---------------------------------------------------------------------------
+
+by stof at 2013-06-04T23:21:50Z
+
+it always validated the options. But 2.3 removed the deprecated options.
+
+but this can be much simpler: ``constraints`` has been introduced in 2.1. So ``validation_constraint`` can be removed entirely here to use only the new one (as we don't need to support 2.0, which would fail anyway because of the use of the new option)
+
+---------------------------------------------------------------------------
+
+by davedevelopment at 2013-06-05T07:48:39Z
+
+Ah right. I was just under the impression it was starting to reject options it didn't recognise.
+
+I'd rather keep this workaround in, as I periodically run the tests against all supported versions, but happy to simplify if that's what people want.
+
+---------------------------------------------------------------------------
+
+by stof at 2013-06-05T08:18:52Z
+
+Well, using ``constraints`` also work as of 2.1 (and actually, as it is also set, ``validation_constraint`` gets ignored in 2.1 and 2.2). So I'd rather use the clean code than a workaround for a non-existent bug.
+
+---------------------------------------------------------------------------
+
+by davedevelopment at 2013-06-05T09:07:21Z
+
+@stof ah, sorry, I didn't understand you meant `constraints` was in 2.1 from such an early time, I thought you meant it had been rolled in to that branch recently (or more recently than 2.1.4). Updated.
