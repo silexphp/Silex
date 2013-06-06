@@ -4,7 +4,7 @@ Changelog
 1.0.1 (2013-XX-XX)
 ------------------
 
-* n/a
+* Make ``DoctrineServiceProvider`` multi-db support lazy.
 
 1.0.0 (2013-05-03)
 ------------------
