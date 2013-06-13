@@ -45,6 +45,7 @@
         "monolog/monolog": "~1.4,>=1.4.1"
     },
     "suggest": {
+        "php": ">=5.4.1",
         "symfony/browser-kit": ">=2.3,<2.4-dev",
         "symfony/css-selector": ">=2.3,<2.4-dev",
         "symfony/dom-crawler": ">=2.3,<2.4-dev",
