@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
+use Teapot\HttpResponse\Status\StatusCode;
 /**
  * Router test cases.
  *
@@ -51,28 +51,28 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $app = new Application();
 
         $app->put('/created', function () {
-            return new Response('', 201);
+            return new Response('', StatusCode::CREATED);
         });
 
         $app->match('/forbidden', function () {
-            return new Response('', 403);
+            return new Response('', StatusCode::FORBIDDEN);
         });
 
         $app->match('/not_found', function () {
-            return new Response('', 404);
+            return new Response('', StatusCode::NOT_FOUND);
         });
 
         $request = Request::create('/created', 'put');
         $response = $app->handle($request);
-        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertEquals(StatusCode::CREATED, $response->getStatusCode());
 
         $request = Request::create('/forbidden');
         $response = $app->handle($request);
-        $this->assertEquals(403, $response->getStatusCode());
+        $this->assertEquals(StatusCode::FORBIDDEN, $response->getStatusCode());
 
         $request = Request::create('/not_found');
         $response = $app->handle($request);
-        $this->assertEquals(404, $response->getStatusCode());
+        $this->assertEquals(StatusCode::NOT_FOUND, $response->getStatusCode());
     }
 
     public function testRedirect()

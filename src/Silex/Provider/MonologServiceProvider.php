@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bridge\Monolog\Handler\DebugHandler;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
-
+use Teapot\HttpResponse\Status\StatusCode;
 /**
  * Monolog Provider.
  *
@@ -72,7 +72,7 @@ class MonologServiceProvider implements ServiceProviderInterface
 
         $app->error(function (\Exception $e) use ($app) {
             $message = sprintf('%s: %s (uncaught exception) at %s line %s', get_class($e), $e->getMessage(), $e->getFile(), $e->getLine());
-            if ($e instanceof HttpExceptionInterface && $e->getStatusCode() < 500) {
+            if ($e instanceof HttpExceptionInterface && $e->getStatusCode() < StatusCode::INTERNAL_SERVER_ERROR) {
                 $app['monolog']->addError($message, array('exception' => $e));
             } else {
                 $app['monolog']->addCritical($message, array('exception' => $e));

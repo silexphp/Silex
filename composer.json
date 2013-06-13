@@ -21,7 +21,8 @@
         "symfony/event-dispatcher": ">=2.3,<2.4-dev",
         "symfony/http-foundation": ">=2.3,<2.4-dev",
         "symfony/http-kernel": ">=2.3,<2.4-dev",
-        "symfony/routing": ">=2.3,<2.4-dev"
+        "symfony/routing": ">=2.3,<2.4-dev",
+        "teapot/status": ">=1.0"
     },
     "require-dev": {
         "symfony/security": ">=2.3,<2.4-dev",

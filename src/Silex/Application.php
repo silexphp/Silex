@@ -33,6 +33,7 @@ use Silex\EventListener\LocaleListener;
 use Silex\EventListener\MiddlewareListener;
 use Silex\EventListener\ConverterListener;
 use Silex\EventListener\StringToResponseListener;
+use Teapot\HttpResponse\Status\StatusCode;
 
 /**
  * The Silex framework class.
@@ -377,7 +378,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      *
      * @return RedirectResponse
      */
-    public function redirect($url, $status = 302)
+    public function redirect($url, $status = StatusCode::FOUND)
     {
         return new RedirectResponse($url, $status);
     }
@@ -391,7 +392,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      *
      * @return StreamedResponse
      */
-    public function stream($callback = null, $status = 200, $headers = array())
+    public function stream($callback = null, $status = StatusCode::OK, $headers = array())
     {
         return new StreamedResponse($callback, $status, $headers);
     }
@@ -420,7 +421,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      *
      * @return JsonResponse
      */
-    public function json($data = array(), $status = 200, $headers = array())
+    public function json($data = array(), $status = StatusCode::OK, $headers = array())
     {
         return new JsonResponse($data, $status, $headers);
     }
@@ -437,7 +438,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      *
      * @throws \RuntimeException When the feature is not supported, before http-foundation v2.2
      */
-    public function sendFile($file, $status = 200, $headers = array(), $contentDisposition = null)
+    public function sendFile($file, $status = StatusCode::OK, $headers = array(), $contentDisposition = null)
     {
         return new BinaryFileResponse($file, $status, $headers, true, $contentDisposition);
     }

@@ -18,6 +18,7 @@ use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use Symfony\Component\HttpKernel\Client;
 use Symfony\Component\HttpFoundation\Request;
+use Teapot\HttpResponse\Status\StatusCode;
 
 /**
  * SecurityServiceProvider
@@ -67,23 +68,23 @@ class SecurityServiceProviderTest extends WebTestCase
         $client->request('get', '/');
         $this->assertEquals('fabienAUTHENTICATED', $client->getResponse()->getContent());
         $client->request('get', '/admin');
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
+        $this->assertEquals(StatusCode::FORBIDDEN, $client->getResponse()->getStatusCode());
 
         $client->request('get', '/logout');
-        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        $this->assertEquals(StatusCode::FOUND, $client->getResponse()->getStatusCode());
         $this->assertEquals('http://localhost/', $client->getResponse()->getTargetUrl());
 
         $client->request('get', '/');
         $this->assertEquals('ANONYMOUS', $client->getResponse()->getContent());
 
         $client->request('get', '/admin');
-        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        $this->assertEquals(StatusCode::FOUND, $client->getResponse()->getStatusCode());
         $this->assertEquals('http://localhost/login', $client->getResponse()->getTargetUrl());
 
         $client->request('post', '/login_check', array('_username' => 'admin', '_password' => 'foo'));
         $this->assertEquals('', $app['security.last_error']($client->getRequest()));
         $client->getRequest()->getSession()->save();
-        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        $this->assertEquals(StatusCode::FOUND, $client->getResponse()->getStatusCode());
         $this->assertEquals('http://localhost/admin', $client->getResponse()->getTargetUrl());
 
         $client->request('get', '/');
@@ -99,18 +100,18 @@ class SecurityServiceProviderTest extends WebTestCase
         $client = new Client($app);
 
         $client->request('get', '/');
-        $this->assertEquals(401, $client->getResponse()->getStatusCode());
+        $this->assertEquals(StatusCode::UNAUTHORIZED, $client->getResponse()->getStatusCode());
         $this->assertEquals('Basic realm="Secured"', $client->getResponse()->headers->get('www-authenticate'));
 
         $client->request('get', '/', array(), array(), array('PHP_AUTH_USER' => 'dennis', 'PHP_AUTH_PW' => 'foo'));
         $this->assertEquals('dennisAUTHENTICATED', $client->getResponse()->getContent());
         $client->request('get', '/admin');
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
+        $this->assertEquals(StatusCode::FORBIDDEN, $client->getResponse()->getStatusCode());
 
         $client->restart();
 
         $client->request('get', '/');
-        $this->assertEquals(401, $client->getResponse()->getStatusCode());
+        $this->assertEquals(StatusCode::UNAUTHORIZED, $client->getResponse()->getStatusCode());
         $this->assertEquals('Basic realm="Secured"', $client->getResponse()->headers->get('www-authenticate'));
 
         $client->request('get', '/', array(), array(), array('PHP_AUTH_USER' => 'admin', 'PHP_AUTH_PW' => 'foo'));

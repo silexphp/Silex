@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\EventDispatcher\Event;
+use Teapot\HttpResponse\Status\StatusCode;
 
 /**
  * Application test cases.
@@ -141,10 +142,10 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $app = new Application();
 
         try {
-            $app->abort(404);
+            $app->abort(StatusCode::NOT_FOUND);
             $this->fail();
         } catch (HttpException $e) {
-            $this->assertEquals(404, $e->getStatusCode());
+            $this->assertEquals(StatusCode::NOT_FOUND, $e->getStatusCode());
         }
     }
 
