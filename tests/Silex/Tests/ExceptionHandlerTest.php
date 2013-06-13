@@ -16,7 +16,7 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
+use Teapot\HttpResponse\Status\StatusCode;
 /**
  * Error handler test cases.
  *
@@ -36,7 +36,7 @@ class ExceptionHandlerTest extends \PHPUnit_Framework_TestCase
         $request = Request::create('/foo');
         $response = $app->handle($request);
         $this->assertContains('<h1>Whoops, looks like something went wrong.</h1>', $response->getContent());
-        $this->assertEquals(500, $response->getStatusCode());
+        $this->assertEquals(StatusCode::INTERNAL_SERVER_ERROR, $response->getStatusCode());
     }
 
     public function testExceptionHandlerExceptionDebug()
@@ -52,7 +52,7 @@ class ExceptionHandlerTest extends \PHPUnit_Framework_TestCase
         $response = $app->handle($request);
 
         $this->assertContains('foo exception', $response->getContent());
-        $this->assertEquals(500, $response->getStatusCode());
+        $this->assertEquals(StatusCode::INTERNAL_SERVER_ERROR, $response->getStatusCode());
     }
 
     public function testExceptionHandlerNotFoundNoDebug()
@@ -63,7 +63,7 @@ class ExceptionHandlerTest extends \PHPUnit_Framework_TestCase
         $request = Request::create('/foo');
         $response = $app->handle($request);
         $this->assertContains('<h1>Sorry, the page you are looking for could not be found.</h1>', $response->getContent());
-        $this->assertEquals(404, $response->getStatusCode());
+        $this->assertEquals(StatusCode::NOT_FOUND, $response->getStatusCode());
     }
 
     public function testExceptionHandlerNotFoundDebug()
@@ -74,7 +74,7 @@ class ExceptionHandlerTest extends \PHPUnit_Framework_TestCase
         $request = Request::create('/foo');
         $response = $app->handle($request);
         $this->assertContains('No route found for "GET /foo"', $response->getContent());
-        $this->assertEquals(404, $response->getStatusCode());
+        $this->assertEquals(StatusCode::NOT_FOUND, $response->getStatusCode());
     }
 
     public function testExceptionHandlerMethodNotAllowedNoDebug()
@@ -87,7 +87,7 @@ class ExceptionHandlerTest extends \PHPUnit_Framework_TestCase
         $request = Request::create('/foo', 'POST');
         $response = $app->handle($request);
         $this->assertContains('<h1>Whoops, looks like something went wrong.</h1>', $response->getContent());
-        $this->assertEquals(405, $response->getStatusCode());
+        $this->assertEquals(StatusCode::METHOD_NOT_ALLOWED, $response->getStatusCode());
         $this->assertEquals('GET', $response->headers->get('Allow'));
     }
 
@@ -101,7 +101,7 @@ class ExceptionHandlerTest extends \PHPUnit_Framework_TestCase
         $request = Request::create('/foo', 'POST');
         $response = $app->handle($request);
         $this->assertContains('No route found for "POST /foo": Method Not Allowed (Allow: GET)', $response->getContent());
-        $this->assertEquals(405, $response->getStatusCode());
+        $this->assertEquals(StatusCode::METHOD_NOT_ALLOWED, $response->getStatusCode());
         $this->assertEquals('GET', $response->headers->get('Allow'));
     }
 
@@ -142,13 +142,13 @@ class ExceptionHandlerTest extends \PHPUnit_Framework_TestCase
         });
 
         $response = $this->checkRouteResponse($app, '/500', 'foo exception handler');
-        $this->assertEquals(500, $response->getStatusCode());
+        $this->assertEquals(StatusCode::INTERNAL_SERVER_ERROR, $response->getStatusCode());
 
         $response = $app->handle(Request::create('/404'));
-        $this->assertEquals(404, $response->getStatusCode());
+        $this->assertEquals(StatusCode::NOT_FOUND, $response->getStatusCode());
 
         $response = $app->handle(Request::create('/405', 'POST'));
-        $this->assertEquals(405, $response->getStatusCode());
+        $this->assertEquals(StatusCode::METHOD_NOT_ALLOWED, $response->getStatusCode());
         $this->assertEquals('GET', $response->headers->get('Allow'));
     }
 
@@ -283,13 +283,13 @@ class ExceptionHandlerTest extends \PHPUnit_Framework_TestCase
         });
 
         $app->error(function (\Exception $e) {
-            return new Response("Exception thrown", 500);
+            return new Response("Exception thrown", StatusCode::INTERNAL_SERVER_ERROR);
         });
 
         $request = Request::create('/foo');
         $response = $app->handle($request);
         $this->assertContains('Exception thrown', $response->getContent());
-        $this->assertEquals(500, $response->getStatusCode());
+        $this->assertEquals(StatusCode::INTERNAL_SERVER_ERROR, $response->getStatusCode());
     }
 
     public function testExceptionHandlerWithStandardException()

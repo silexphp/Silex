@@ -15,7 +15,7 @@ use Silex\Application;
 use Silex\Provider\TwigServiceProvider;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-
+use Teapot\HttpResponse\Status\StatusCode;
 /**
  * TwigTrait test cases.
  *
@@ -44,8 +44,8 @@ class TwigTraitTest extends \PHPUnit_Framework_TestCase
         $app['twig'] = $mailer = $this->getMockBuilder('Twig_Environment')->disableOriginalConstructor()->getMock();
         $mailer->expects($this->once())->method('render')->will($this->returnValue('foo'));
 
-        $response = $app->render('view', array(), new Response('', 404));
-        $this->assertEquals(404, $response->getStatusCode());
+        $response = $app->render('view', array(), new Response('', StatusCode::NOT_FOUND));
+        $this->assertEquals(StatusCode::NOT_FOUND, $response->getStatusCode());
     }
 
     public function testRenderForStream()

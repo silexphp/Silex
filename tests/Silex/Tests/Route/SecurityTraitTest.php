@@ -14,6 +14,7 @@ namespace Silex\Tests\Route;
 use Silex\Application;
 use Silex\Provider\SecurityServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
+use Teapot\HttpResponse\Status\StatusCode;
 
 /**
  * SecurityTrait test cases.
@@ -45,12 +46,12 @@ class SecurityTraitTest extends \PHPUnit_Framework_TestCase
 
         $request = Request::create('/');
         $response = $app->handle($request);
-        $this->assertEquals(401, $response->getStatusCode());
+        $this->assertEquals(StatusCode::UNAUTHORIZED, $response->getStatusCode());
 
         $request = Request::create('/');
         $request->headers->set('PHP_AUTH_USER', 'fabien');
         $request->headers->set('PHP_AUTH_PW', 'foo');
         $response = $app->handle($request);
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(StatusCode::OK, $response->getStatusCode());
     }
 }

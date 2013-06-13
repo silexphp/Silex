@@ -14,6 +14,7 @@ namespace Silex;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Matcher\RedirectableUrlMatcher as BaseRedirectableUrlMatcher;
 use Symfony\Component\Routing\Matcher\RedirectableUrlMatcherInterface;
+use Teapot\HttpResponse\Status\StatusCode;
 
 /**
  * Implements the RedirectableUrlMatcherInterface for Silex.
@@ -48,7 +49,7 @@ class RedirectableUrlMatcher extends BaseRedirectableUrlMatcher
         }
 
         return array(
-            '_controller' => function ($url) { return new RedirectResponse($url, 301); },
+            '_controller' => function ($url) { return new RedirectResponse($url, StatusCode::MOVED_PERMANENTLY); },
             'url' => $url,
         );
     }

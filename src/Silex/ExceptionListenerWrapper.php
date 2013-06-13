@@ -17,6 +17,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Silex\Application;
+use Teapot\HttpResponse\Status\StatusCode;
 
 /**
  * Wraps exception listeners.
@@ -47,7 +48,7 @@ class ExceptionListenerWrapper
             return;
         }
 
-        $code = $exception instanceof HttpExceptionInterface ? $exception->getStatusCode() : 500;
+        $code = $exception instanceof HttpExceptionInterface ? $exception->getStatusCode() : StatusCode::INTERNAL_SERVER_ERROR;
 
         $response = call_user_func($this->callback, $exception, $code);
 
