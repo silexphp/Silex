@@ -70,6 +70,10 @@ Registering
     don't forget to call ``boot()`` first::
 
         $application->boot();
+        
+.. caution::
+
+    The security service provider requires the SessionServiceProvider
 
 Usage
 -----
