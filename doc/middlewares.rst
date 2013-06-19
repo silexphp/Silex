@@ -95,7 +95,7 @@ Before Middleware
 A *before* route middleware is fired just before the route callback, but after
 the *before* application middlewares::
 
-    $before = function (Request $request) use ($app) {
+    $before = function (Request $request, Application $app) {
         // ...
     };
 
@@ -110,7 +110,7 @@ After Middleware
 An *after* route middleware is fired just after the route callback, but before
 the application *after* application middlewares::
 
-    $after = function (Request $request, Response $response) use ($app) {
+    $after = function (Request $request, Response $response, Application $app) {
         // ...
     };
 
