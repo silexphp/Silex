@@ -23,24 +23,13 @@ class RouteCollection extends BaseRouteCollection
 
     protected static function stableSort($routes)
     {
-        $temp = array();
         $i = 0;
-        foreach ($routes as $name => $route) {
-            $temp[] = array($i++, $name, $route);
-        }
-
-        usort($temp, function(&$a, &$b){
-            if ($b[2]->getOption('priority') == $a[2]->getOption('priority')) {
-                return $a[0] - $b[1];
-            }
-            return $b[2]->getOption('priority') - $a[2]->getOption('priority');
+        array_walk($routes, function(&$v, $k) use (&$i) {
+            $v = array(-$v->getOption('priority'), $i++, $v);
         });
+        asort($routes);
+        array_walk($routes, function(&$v, $k){ $v = $v[2]; });
 
-        $sorted = array();
-        foreach ($temp as $route) {
-            $sorted[$route[1]] = $route[2];
-        }
-
-        return $sorted;
+        return $routes;
     }
 }
