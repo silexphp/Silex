@@ -18,16 +18,29 @@ class RouteCollection extends BaseRouteCollection
 {
     public function getIterator()
     {
-        $routes = $this->all();
+        return new \ArrayIterator(static::stableSort($this->all()));
+    }
 
-        uasort($routes, function($a, $b){
-            if ($a->getOption('priority') > $b->getOption('priority')) {
-                return -1;
+    protected static function stableSort($routes)
+    {
+        $temp = array();
+        $i = 0;
+        foreach ($routes as $name => $route) {
+            $temp[] = array($i++, $name, $route);
+        }
+
+        usort($temp, function(&$a, &$b){
+            if ($b[2]->getOption('priority') == $a[2]->getOption('priority')) {
+                return $a[0] - $b[1];
             }
-
-            return 1;
+            return $b[2]->getOption('priority') - $a[2]->getOption('priority');
         });
-        
-        return new \ArrayIterator($routes);
+
+        $sorted = array();
+        foreach ($temp as $route) {
+            $sorted[$route[1]] = $route[2];
+        }
+
+        return $sorted;
     }
 }
