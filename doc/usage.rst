@@ -410,6 +410,32 @@ really be used. You can give a route a name by calling ``bind`` on the
     It only makes sense to name routes if you use providers that make use of
     the ``RouteCollection``.
 
+Ordered routes
+~~~~~~~~~~~~~~
+
+If you mix mount strategy with default match strategy you can get surprised
+that mounted routes take precedence even if attached after ``match``. That's
+because the latter strategy gets attached to ``RouteCollection`` on ``flush``.
+You can give a route a priority by calling ``priority`` on the ``Controller``
+object that is returned by the routing methods::
+
+    $app->get('/', function () {
+        return 'foo';
+    })
+    ->priority(10);
+
+    $app->get('/', function () {
+        return 'bar';
+    })
+    ->priority(11);
+
+The above example will print ``bar`` when requesting ``/`` because the attached
+controller has a higher priority.
+
+.. note::
+
+    By default all routes are assigned with value of 10.
+
 Controllers in classes
 ~~~~~~~~~~~~~~~~~~~~~~
 

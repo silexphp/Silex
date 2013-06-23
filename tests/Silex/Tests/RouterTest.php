@@ -108,6 +108,39 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $app->handle($request);
     }
 
+    public function testPriorityRouting()
+    {
+        $app = new Application();
+
+        $app->match('/', function(){
+            return 'foo';
+        })->priority(10);
+
+        $app->match('/', function(){
+            return 'bar';
+        })->priority(11);
+
+        $this->checkRouteResponse($app, '/', 'bar');
+    }
+
+    public function testPriorityRoutingWithMount()
+    {
+        $app = new Application();
+
+        $sub = $app['controllers_factory'];
+        $sub->match('/', function(){
+            return 'foo';
+        })->priority(10);
+
+        $app->mount('/', $sub);
+
+        $app->match('/', function(){
+            return 'bar';
+        })->priority(11);
+
+        $this->checkRouteResponse($app, '/', 'bar');
+    }
+
     public function testMethodRouting()
     {
         $app = new Application();
