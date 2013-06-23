@@ -20,8 +20,15 @@ use Symfony\Component\Routing\Route as BaseRoute;
  */
 class Route extends BaseRoute
 {
+    /**
+     * Default priority for each route
+     */
+    const PRIORITY_DEFAULT = 10;
+
     public function __construct($pattern = '', array $defaults = array(), array $requirements = array(), array $options = array())
     {
+        $options['priority'] = static::PRIORITY_DEFAULT;
+
         parent::__construct($pattern, $defaults, $requirements, $options);
     }
 
@@ -68,6 +75,20 @@ class Route extends BaseRoute
         $converters = $this->getOption('_converters');
         $converters[$variable] = $callback;
         $this->setOption('_converters', $converters);
+
+        return $this;
+    }
+
+    /**
+     * Sets the priority for a route
+     *
+     * @param int $priority The priority value
+     *
+     * @return Route $this The current Route instance
+     */
+    public function priority($priority)
+    {
+        $this->setOption('priority', (int)$priority);
 
         return $this;
     }
