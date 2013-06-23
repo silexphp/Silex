@@ -24,10 +24,23 @@ class TwigCoreExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'render' => new \Twig_Function_Method($this, 'render', array('needs_environment' => true, 'is_safe' => array('html'))),
+            'asset'     => new \Twig_Function_Method($this, 'asset', array('needs_environment' => true)),
+            'render'    => new \Twig_Function_Method($this, 'render', array('needs_environment' => true, 'is_safe' => array('html'))),
         );
     }
 
+    public function asset(\Twig_Environment $twig, $uri)
+    {
+        $globals = $twig->getGlobals();
+        $app = $globals['app'];
+
+        $assetDir = isset($app['asset.dir']) ?
+            $app['asset.dir'] :
+            $app['request']->getBasePath();
+
+        return $assetDir . '/' . ltrim($uri, '/');
+    }
+    
     public function render(\Twig_Environment $twig, $uri)
     {
         $globals = $twig->getGlobals();
