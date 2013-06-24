@@ -12,6 +12,7 @@
 namespace Silex;
 
 use Silex\Exception\ControllerFrozenException;
+use Symfony\Component\Routing\RouteCollection;
 
 /**
  * A wrapper for a controller, mapped to a route.
@@ -27,9 +28,10 @@ use Silex\Exception\ControllerFrozenException;
  * @method \Silex\Controller requireHttps()
  * @method \Silex\Controller before(mixed $callback)
  * @method \Silex\Controller after(mixed $callback)
+ * @method \Silex\Controller attach(RouteCollection $routes, string $prefix)
  * @author Igor Wiedler <igor@wiedler.ch>
  */
-class Controller
+class Controller implements AttachableControllerInterface
 {
     private $route;
     private $routeName;
@@ -114,5 +116,24 @@ class Controller
         $routeName = preg_replace('/[^a-z0-9A-Z_.]+/', '', $routeName);
 
         return $routeName;
+    }
+
+    public function attach(RouteCollection $routes, $prefix = '')
+    {
+        if ($this->isFrozen) {
+            return;
+        }
+        
+        if (!$name = $this->getRouteName()) {
+            $name = $this->generateRouteName($prefix);
+            while ($routes->get($name)) {
+                $name .= '_';
+            }
+            $this->bind($name);
+        }
+        $routes->add($name, $this->getRoute());
+        $this->freeze();
+
+        return $this;
     }
 }

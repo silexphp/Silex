@@ -110,6 +110,21 @@ class ControllerCollection
         return $this->match($pattern, $to)->method('DELETE');
     }
 
+    /**
+     * Mounts controllers under the given route prefix.
+     *
+     * @param string                                           $prefix      The route prefix
+     * @param ControllerCollection|ControllerProviderInterface $controllers A ControllerCollection or a ControllerProviderInterface instance
+     *
+     * @return ControllerCollection
+     */
+    public function mount($prefix, $controllers)
+    {
+        $this->controllers[] = new MountController($prefix, $controllers);
+
+        return $this;
+    }
+
     public function __call($method, $arguments)
     {
         if (!method_exists($this->defaultRoute, $method)) {
@@ -119,7 +134,9 @@ class ControllerCollection
         call_user_func_array(array($this->defaultRoute, $method), $arguments);
 
         foreach ($this->controllers as $controller) {
-            call_user_func_array(array($controller, $method), $arguments);
+            if ($controller instanceof Controller) {
+                call_user_func_array(array($controller, $method), $arguments);
+            }
         }
 
         return $this;
@@ -137,15 +154,7 @@ class ControllerCollection
         $routes = new RouteCollection();
 
         foreach ($this->controllers as $controller) {
-            if (!$name = $controller->getRouteName()) {
-                $name = $controller->generateRouteName($prefix);
-                while ($routes->get($name)) {
-                    $name .= '_';
-                }
-                $controller->bind($name);
-            }
-            $routes->add($name, $controller->getRoute());
-            $controller->freeze();
+            $controller->attach($routes, $prefix);
         }
 
         $routes->addPrefix($prefix);
