@@ -29,11 +29,11 @@ class MonologServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
-        if ($bridge = class_exists('Symfony\Bridge\Monolog\Logger')) {
-            $app['logger'] = function () use ($app) {
-                return $app['monolog'];
-            };
+        $app['logger'] = function () use ($app) {
+            return $app['monolog'];
+        };
 
+        if ($bridge = class_exists('Symfony\Bridge\Monolog\Logger')) {
             $app['monolog.handler.debug'] = function () use ($app) {
                 return new DebugHandler($app['monolog.level']);
             };
