@@ -229,6 +229,9 @@ don't want to mess with most of them.
   disabled as the value is set to ``null``. When the Symfony2 Monolog bridge is
   installed, Monolog is automatically used as the default logger.
 
+  In versions of Silex before 1.1 this must be a
+  ``Symfony\Component\HttpKernel\Log\LoggerInterface``.
+
 .. note::
 
     All of these Silex core services are shared.
