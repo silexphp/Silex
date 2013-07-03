@@ -143,7 +143,7 @@ those definitions.
 
     This also works for shared services.
 
-Going back to our initial example, here's how we could use the container 
+Going back to our initial example, here's how we could use the container
 to manage its dependencies::
 
     $app['user.persist_path'] = '/tmp/users';
@@ -225,12 +225,12 @@ don't want to mess with most of them.
   does not return a Response. Disable it with
   ``$app['exception_handler']->disable()``.
 
-* **logger**: A
-  `LoggerInterface
-  <http://api.symfony.com/master/Symfony/Component/HttpKernel/Log/LoggerInterface.html>`_
-  instance. By default, logging is disabled as the value is set to ``null``.
-  When the Symfony2 Monolog bridge is installed, Monolog is automatically used
-  as the default logger.
+* **logger**: A ``Psr\Log\LoggerInterface`` instance. By default, logging is
+  disabled as the value is set to ``null``. When the Symfony2 Monolog bridge is
+  installed, Monolog is automatically used as the default logger.
+
+  In versions of Silex before 1.1 this must be a
+  ``Symfony\Component\HttpKernel\Log\LoggerInterface``.
 
 .. note::
 
