@@ -1,0 +1,17 @@
+---------------------------------------------------------------------------
+
+by davedevelopment at 2013-06-03T09:38:57Z
+
+:+1: although this should probably have targetted the 1.0 branch... I think.
+
+---------------------------------------------------------------------------
+
+by igorw at 2013-06-03T11:47:28Z
+
+Yeah, this was fixed in symfony, so it should not be needed. See also #687.
+
+---------------------------------------------------------------------------
+
+by GromNaN at 2013-06-06T06:15:47Z
+
+:+1:
