@@ -1,0 +1,17 @@
+---------------------------------------------------------------------------
+
+by chrisguitarguy at 2013-07-03T19:49:01Z
+
+Should psr/log be included in the deps in composer.json?
+
+---------------------------------------------------------------------------
+
+by igorw at 2013-07-03T19:55:43Z
+
+It is, indirectly. `symfony/http-kernel:2.3` depends on it.
+
+---------------------------------------------------------------------------
+
+by chrisguitarguy at 2013-07-03T19:58:23Z
+
+Ah, cool, thanks!
