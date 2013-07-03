@@ -29,8 +29,19 @@ You register it by calling the static ``register`` method::
 It is recommended that you do this in your front controller, i.e.
 ``web/index.php``.
 
-.. note::
+Handling fatal errors
+---------------------
 
-    The ``ErrorHandler`` has nothing to do with the ``ExceptionHandler``. The
-    ``ExceptionHandler`` is responsible for displaying caught exceptions
-    nicely.
+To handle fatal errors, you can additionally register a global
+``ExceptionHandler``::
+
+    use Symfony\Component\HttpKernel\Debug\ExceptionHandler;
+
+    ExceptionHandler::register();
+
+In production you may want to disable the debug output by passing ``false`` as
+the ``$debug`` argument::
+
+    use Symfony\Component\HttpKernel\Debug\ExceptionHandler;
+
+    ExceptionHandler::register(false);
