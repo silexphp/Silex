@@ -42,11 +42,10 @@ Read the [documentation][3] for more information.
 
 ## Tests
 
-To run the test suite, you need [composer](http://getcomposer.org) and
-[PHPUnit](https://github.com/sebastianbergmann/phpunit).
+To run the test suite, you need [composer](http://getcomposer.org).
 
     $ php composer.phar install --dev
-    $ phpunit
+    $ vendor/bin/phpunit
 
 ## Community
 
