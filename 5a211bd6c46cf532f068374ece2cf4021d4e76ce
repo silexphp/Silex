@@ -1,0 +1,26 @@
+---------------------------------------------------------------------------
+
+by GromNaN at 2013-05-22T20:05:31Z
+
+Silex is a simplification layer on top of components and the arguments by reference is not an easy concept.
+Instead of passing an array by reference, what do you think about returning the array of failed recipients ?
+
+---------------------------------------------------------------------------
+
+by NLZ13 at 2013-05-22T21:25:40Z
+
+Swiftmailers send function already returns an integer which represents the count of sent mails.
+
+Based on this number people will often check if the mail is sent successfully, so instead returning the failed recipients isn't really an option.
+
+---------------------------------------------------------------------------
+
+by tiraeth at 2013-05-22T21:29:03Z
+
+Traits in Silex are to simplify access to Service Providers (proxy the call). In this case, I am :+1: for this PR because it fully implements `send` method from `$app['mailer']` which is the goal of having a such trait.
+
+---------------------------------------------------------------------------
+
+by NLZ13 at 2013-05-23T07:16:38Z
+
+Correct. I just added the return to the PHPDoc
