@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0.1 (2013-XX-XX)
+1.0.1 (2013-07-04)
 ------------------
 
 * Fixed RedirectableUrlMatcher::redirect() when Silex is configured to use a logger
