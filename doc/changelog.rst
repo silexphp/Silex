@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.1.0 (2013-XX-XX)
+1.1.0 (2013-07-04)
 ------------------
 
 * Support for any ``Psr\Log\LoggerInterface`` as opposed to the monolog-bridge
