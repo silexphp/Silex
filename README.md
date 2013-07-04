@@ -3,8 +3,8 @@ Silex, a simple Web Framework
 
 [![Build Status](https://secure.travis-ci.org/fabpot/Silex.png?branch=master)](http://travis-ci.org/fabpot/Silex)
 
-Silex is a simple web framework to develop simple websites based on
-[Symfony2][1] components:
+Silex is a PHP micro-framework to develop websites based on [Symfony2][1]
+components:
 
 
 ```php
