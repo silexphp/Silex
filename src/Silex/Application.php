@@ -80,6 +80,44 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
         $this['route_factory'] = function () use ($app) {
             return new $app['route_class']();
         };
+        // Response factories
+        $this['response_factory.json'] = $this->protect(
+            function (
+                $data = array(),
+                $status = 200,
+                $headers = array()
+            ) use ($app) {
+                return new JsonResponse($data, $status, $headers);
+            }
+        );
+        $this['response_factory.stream'] = $this->protect(
+            function (
+                $callback = null,
+                $status = 200,
+                $headers = array()
+            ) use ($app) {
+                return new StreamedResponse($callback, $status, $headers);
+            }
+        );
+        $this['response_factory.redirect'] = $this->protect(
+            function (
+                $url,
+                $status = 302
+            ) use ($app) {
+                return new RedirectResponse($url, $status);
+            }
+        );
+        $this['response_factory.sendfile'] = $this->protect(
+            function (
+                $file,
+                $status = 200,
+                $headers = array(),
+                $contentDisposition = null
+            ) use ($app) {
+                return new BinaryFileResponse($file, $status, $headers, true, $contentDisposition);
+            }
+        );
+
 
         $this['exception_handler'] = $this->share(function () use ($app) {
             return new ExceptionHandler($app['debug']);
@@ -379,7 +417,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      */
     public function redirect($url, $status = 302)
     {
-        return new RedirectResponse($url, $status);
+        return $this['response_factory.redirect']($url, $status);
     }
 
     /**
@@ -393,7 +431,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      */
     public function stream($callback = null, $status = 200, $headers = array())
     {
-        return new StreamedResponse($callback, $status, $headers);
+        return $this['response_factory.stream']($callback, $status, $headers);
     }
 
     /**
@@ -422,7 +460,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      */
     public function json($data = array(), $status = 200, $headers = array())
     {
-        return new JsonResponse($data, $status, $headers);
+        return $this['response_factory.json']($data, $status, $headers);
     }
 
     /**
@@ -439,7 +477,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      */
     public function sendFile($file, $status = 200, $headers = array(), $contentDisposition = null)
     {
-        return new BinaryFileResponse($file, $status, $headers, true, $contentDisposition);
+        return $this['response_factory.sendfile']($file, $status, $headers, $contentDisposition);
     }
 
     /**
