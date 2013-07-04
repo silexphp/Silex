@@ -78,9 +78,9 @@ use it by making your test extend it::
 
 .. note::
 
-    If you want to use the Symfony2 `WebTestCase` you will need to explicitly
-    install its dependencies for your project. Add the following to your
-    `composer.json` file:
+    If you want to use the Symfony2 ``WebTestCase`` class you will need to
+    explicitly install its dependencies for your project. Add the following to
+    your ``composer.json`` file:
 
     .. code-block:: json
 

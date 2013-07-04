@@ -16,9 +16,9 @@ user to register them.
 Registering the ErrorHandler
 ----------------------------
 
-Fortunately, the `Symfony/Debug` package has an `ErrorHandler` that solves this
-issue. It converts all errors to exceptions, and exceptions can be caught by
-Silex.
+Fortunately, the ``Symfony/Debug`` package has an ``ErrorHandler`` class that
+solves this issue. It converts all errors to exceptions, and exceptions can be
+caught by Silex.
 
 You register it by calling the static ``register`` method::
 
