@@ -226,8 +226,9 @@ don't want to mess with most of them.
   ``$app['exception_handler']->disable()``.
 
 * **logger**: A ``Psr\Log\LoggerInterface`` instance. By default, logging is
-  disabled as the value is set to ``null``. When the Symfony2 Monolog bridge is
-  installed, Monolog is automatically used as the default logger.
+  disabled as the value is set to ``null``. To enable logging you can either use
+  the ``MonologServiceProvider`` or define your own ``logger`` service that
+  conforms to the PSR logger interface.
 
   In versions of Silex before 1.1 this must be a
   ``Symfony\Component\HttpKernel\Log\LoggerInterface``.
