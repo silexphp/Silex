@@ -75,14 +75,16 @@ use it by making your test extend it::
 
     To make your application testable, you need to make sure you follow "Reusing
     applications" instructions from :doc:`usage`.
-    
+
 .. note::
 
     If you want to use the Symfony2 `WebTestCase` you will need to explicitly
     install its dependencies for your project. Add the following to your
-    `composer.json` file.
+    `composer.json` file:
 
-        "require-dev":{
+    .. code-block:: json
+
+        "require-dev": {
             "symfony/browser-kit": ">=2.3,<2.4-dev"
         }
 
