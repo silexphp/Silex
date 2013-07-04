@@ -30,7 +30,7 @@ it can be used for functional tests too. You write tests by creating a new
 class, that extends the ``PHPUnit_Framework_TestCase``. Your test cases are
 methods prefixed with ``test``::
 
-    class ContactFormTest extends PHPUnit_Framework_TestCase
+    class ContactFormTest extends \PHPUnit_Framework_TestCase
     {
         public function testInitialPage()
         {

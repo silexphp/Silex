@@ -10,6 +10,12 @@ Changelog
   lazy, so that they will not instantiate the dispatcher early.
 * Dropped support for 2.1 and 2.2 versions of symfony.
 
+1.0.1 (2013-07-04)
+------------------
+
+* Fixed RedirectableUrlMatcher::redirect() when Silex is configured to use a logger
+* Make ``DoctrineServiceProvider`` multi-db support lazy.
+
 1.0.0 (2013-05-03)
 ------------------
 
