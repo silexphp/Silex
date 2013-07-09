@@ -39,6 +39,15 @@ class UrlGeneratorTraitTest extends \PHPUnit_Framework_TestCase
         $app->path('foo');
     }
 
+    public function testRedirectRoute()
+    {
+        $app = $this->createApplication();
+        $app['url_generator'] = $translator = $this->getMockBuilder('Symfony\Component\Routing\Generator\UrlGeneratorInterface')->disableOriginalConstructor()->getMock();
+        $translator->expects($this->once())->method('generate')->with('foo', array(), false)->will($this->returnValue('/foo'));
+        $response = $app->redirectRoute('foo');
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $response);
+    }
+
     public function createApplication()
     {
         $app = new UrlGeneratorApplication();

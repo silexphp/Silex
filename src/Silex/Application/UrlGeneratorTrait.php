@@ -11,6 +11,8 @@
 
 namespace Silex\Application;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
 /**
  * UrlGenerator trait.
  *
@@ -47,8 +49,8 @@ trait UrlGeneratorTrait
     /**
      * Overrides the default redirect behaviour of the Application class
      *
-     * @param string  $url        The URL to redirect to
-     * @param array   $parameters An array of paramaters
+     * @param string  $route      The named route to redirect to
+     * @param array   $parameters An array of parameters
      * @param integer $status     The status code (302 by default)
      *
      * @return RedirectResponse
