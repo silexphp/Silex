@@ -26,24 +26,24 @@ class UrlGeneratorTraitTest extends \PHPUnit_Framework_TestCase
     public function testUrl()
     {
         $app = $this->createApplication();
-        $app['url_generator'] = $translator = $this->getMockBuilder('Symfony\Component\Routing\Generator\UrlGeneratorInterface')->disableOriginalConstructor()->getMock();
-        $translator->expects($this->once())->method('generate')->with('foo', array(), true);
+        $app['url_generator'] = $generator = $this->getMockBuilder('Symfony\Component\Routing\Generator\UrlGeneratorInterface')->disableOriginalConstructor()->getMock();
+        $generator->expects($this->once())->method('generate')->with('foo', array(), true);
         $app->url('foo');
     }
 
     public function testPath()
     {
         $app = $this->createApplication();
-        $app['url_generator'] = $translator = $this->getMockBuilder('Symfony\Component\Routing\Generator\UrlGeneratorInterface')->disableOriginalConstructor()->getMock();
-        $translator->expects($this->once())->method('generate')->with('foo', array(), false);
+        $app['url_generator'] = $generator = $this->getMockBuilder('Symfony\Component\Routing\Generator\UrlGeneratorInterface')->disableOriginalConstructor()->getMock();
+        $generator->expects($this->once())->method('generate')->with('foo', array(), false);
         $app->path('foo');
     }
 
     public function testRedirectRoute()
     {
         $app = $this->createApplication();
-        $app['url_generator'] = $translator = $this->getMockBuilder('Symfony\Component\Routing\Generator\UrlGeneratorInterface')->disableOriginalConstructor()->getMock();
-        $translator->expects($this->once())->method('generate')->with('foo', array(), false)->will($this->returnValue('/foo'));
+        $app['url_generator'] = $generator = $this->getMockBuilder('Symfony\Component\Routing\Generator\UrlGeneratorInterface')->disableOriginalConstructor()->getMock();
+        $generator->expects($this->once())->method('generate')->with('foo', array(), false)->will($this->returnValue('/foo'));
         $response = $app->redirectRoute('foo');
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $response);
     }
