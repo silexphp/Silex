@@ -28,23 +28,30 @@ use Symfony\Bridge\Twig\Form\TwigRenderer;
  */
 class TwigServiceProvider implements ServiceProviderInterface
 {
+    protected $providerName;
+
+    public function __construct($name = "twig") {
+        $this->providerName = $name;
+    }
+
     public function register(Application $app)
     {
-        $app['twig.options'] = array();
-        $app['twig.form.templates'] = array('form_div_layout.html.twig');
-        $app['twig.path'] = array();
-        $app['twig.templates'] = array();
+        $providerName = $this->providerName;
+        $app[$providerName.'.options'] = array();
+        $app[$providerName.'.form.templates'] = array('form_div_layout.html.twig');
+        $app[$providerName.'.path'] = array();
+        $app[$providerName.'.templates'] = array();
 
-        $app['twig'] = $app->share(function ($app) {
-            $app['twig.options'] = array_replace(
+        $app[$providerName] = $app->share(function ($app ) use ( $providerName ) {
+            $app[$providerName.'.options'] = array_replace(
                 array(
-                    'charset'          => $app['charset'],
-                    'debug'            => $app['debug'],
-                    'strict_variables' => $app['debug'],
-                ), $app['twig.options']
+                     'charset'          => $app['charset'],
+                     'debug'            => $app['debug'],
+                     'strict_variables' => $app['debug'],
+                ), $app[$providerName.'.options']
             );
 
-            $twig = new \Twig_Environment($app['twig.loader'], $app['twig.options']);
+            $twig = new \Twig_Environment($app[$providerName.'.loader'], $app['twig.options']);
             $twig->addGlobal('app', $app);
             $twig->addExtension(new TwigCoreExtension());
 
@@ -67,38 +74,38 @@ class TwigServiceProvider implements ServiceProviderInterface
 
                 if (isset($app['form.factory'])) {
                     $app['twig.form.engine'] = $app->share(function ($app) {
-                        return new TwigRendererEngine($app['twig.form.templates']);
+                        return new TwigRendererEngine($app[$providerName.'.form.templates']);
                     });
 
                     $app['twig.form.renderer'] = $app->share(function ($app) {
-                        return new TwigRenderer($app['twig.form.engine'], $app['form.csrf_provider']);
+                        return new TwigRenderer($app[$providerName.'.form.engine'], $app['form.csrf_provider']);
                     });
 
-                    $twig->addExtension(new FormExtension($app['twig.form.renderer']));
+                    $twig->addExtension(new FormExtension($app[$providerName.'.form.renderer']));
 
                     // add loader for Symfony built-in form templates
                     $reflected = new \ReflectionClass('Symfony\Bridge\Twig\Extension\FormExtension');
                     $path = dirname($reflected->getFileName()).'/../Resources/views/Form';
-                    $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($path));
+                    $app[$providerName.'.loader']->addLoader(new \Twig_Loader_Filesystem($path));
                 }
             }
 
             return $twig;
         });
 
-        $app['twig.loader.filesystem'] = $app->share(function ($app) {
-            return new \Twig_Loader_Filesystem($app['twig.path']);
+        $app[$providerName.'.loader.filesystem'] = $app->share(function ($app) use ( $providerName ) {
+            return new \Twig_Loader_Filesystem($app[$providerName.'.path']);
         });
 
-        $app['twig.loader.array'] = $app->share(function ($app) {
-            return new \Twig_Loader_Array($app['twig.templates']);
+        $app[$providerName.'.loader.array'] = $app->share(function ($app) use ( $providerName ) {
+            return new \Twig_Loader_Array($app[$providerName.'.templates']);
         });
 
-        $app['twig.loader'] = $app->share(function ($app) {
+        $app[$providerName.'.loader'] = $app->share(function ($app) use ( $providerName ) {
             return new \Twig_Loader_Chain(array(
-                $app['twig.loader.array'],
-                $app['twig.loader.filesystem'],
-            ));
+                                               $app[$providerName.'.loader.array'],
+                                               $app[$providerName.'.loader.filesystem'],
+                                          ));
         });
     }
 
