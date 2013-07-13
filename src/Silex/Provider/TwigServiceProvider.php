@@ -42,7 +42,7 @@ class TwigServiceProvider implements ServiceProviderInterface
         $app[$providerName.'.path'] = array();
         $app[$providerName.'.templates'] = array();
 
-        $app[$providerName] = $app->share(function ($app ) use ( $providerName ) {
+        $app[$providerName] = $app->share(function ($app) use ($providerName) {
             $app[$providerName.'.options'] = array_replace(
                 array(
                      'charset'          => $app['charset'],
