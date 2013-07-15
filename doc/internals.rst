@@ -37,7 +37,7 @@ The Symfony2 `Route
 <http://api.symfony.com/master/Symfony/Component/Routing/Route.html>`_ is
 actually quite powerful. Routes can be named, which allows for URL generation.
 They can also have requirements for the variable parts. In order to allow
-settings these through a nice interface the ``match`` method (which is used by
+setting these through a nice interface, the ``match`` method (which is used by
 ``get``, ``post``, etc.) returns an instance of the ``Controller``, which
 wraps a route.
 
