@@ -70,6 +70,10 @@ class MonologServiceProvider implements ServiceProviderInterface
             $app['monolog']->addInfo('> '.$request->getMethod().' '.$request->getRequestUri());
         });
 
+        /**
+         * Priority -4 is used to come after those from SecurityServiceProvider 
+         * but before the error handlers added with Silex\Application::error
+         */
         $app->error(function (\Exception $e) use ($app) {
             $message = sprintf('%s: %s (uncaught exception) at %s line %s', get_class($e), $e->getMessage(), $e->getFile(), $e->getLine());
             if ($e instanceof HttpExceptionInterface && $e->getStatusCode() < 500) {
