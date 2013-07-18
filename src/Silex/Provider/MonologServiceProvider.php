@@ -77,7 +77,7 @@ class MonologServiceProvider implements ServiceProviderInterface
             } else {
                 $app['monolog']->addCritical($message, array('exception' => $e));
             }
-        }, 255);
+        }, -4);
 
         $app->after(function (Request $request, Response $response) use ($app) {
             $app['monolog']->addInfo('< '.$response->getStatusCode());
