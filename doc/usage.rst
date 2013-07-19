@@ -511,7 +511,7 @@ You can restrict an error handler to only handle some Exception classes by
 setting a more specific type hint for the Closure argument::
 
     $app->error(function (\LogicException $e, $code) {
-        // this handler will only \LogicException exceptions
+        // this handler will only handle \LogicException exceptions
         // and exceptions that extends \LogicException
     });
 
