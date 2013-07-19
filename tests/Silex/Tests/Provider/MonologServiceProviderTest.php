@@ -99,15 +99,15 @@ class MonologServiceProviderTest extends \PHPUnit_Framework_TestCase
         $app = $this->getApplication();
         $app['monolog.level'] = Logger::ERROR;
 
-        $app->register(new \Silex\Provider\SecurityServiceProvider(), [
-            'security.firewalls' => [
-                'admin' => [
+        $app->register(new \Silex\Provider\SecurityServiceProvider(), array(
+            'security.firewalls' => array(
+                'admin' => array(
                     'pattern' => '^/admin',
                     'http' => true,
-                    'users' => [],
-                ],
-            ],
-        ]);
+                    'users' => array(),
+                ),
+            ),
+        ));
 
         $app->get("/admin", function () {
             return "SECURE!";
