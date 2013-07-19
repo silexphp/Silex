@@ -1,0 +1,23 @@
+---------------------------------------------------------------------------
+
+by fabpot at 2013-07-18T12:52:57Z
+
+@davedevelopment Can you add a comment in the code explaining why you chose -4 as a value?
+
+---------------------------------------------------------------------------
+
+by davedevelopment at 2013-07-18T13:43:57Z
+
+@fabpot How's that?
+
+---------------------------------------------------------------------------
+
+by davedevelopment at 2013-07-19T08:41:37Z
+
+@fabpot done
+
+---------------------------------------------------------------------------
+
+by GromNaN at 2013-07-19T09:30:43Z
+
+Is it possible to add a test for that ?
