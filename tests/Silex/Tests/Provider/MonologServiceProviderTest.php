@@ -94,6 +94,31 @@ class MonologServiceProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertMatchingRecord($pattern, Logger::CRITICAL, $app['monolog.handler']);
     }
 
+    public function testErrorLoggingGivesWayToSecurityExceptionHandling()
+    {
+        $app = $this->getApplication();
+        $app['monolog.level'] = Logger::ERROR;
+
+        $app->register(new \Silex\Provider\SecurityServiceProvider(), [
+            'security.firewalls' => [
+                'admin' => [
+                    'pattern' => '^/admin',
+                    'http' => true,
+                    'users' => [],
+                ],
+            ],
+        ]);
+
+        $app->get("/admin", function () {
+            return "SECURE!";
+        });
+
+        $request = Request::create("/admin");
+        $app->run($request);
+
+        $this->assertEmpty($app['monolog.handler']->getRecords(), "Expected no logging to occur");
+    }
+
     protected function assertMatchingRecord($pattern, $level, $handler)
     {
         $found = false;
