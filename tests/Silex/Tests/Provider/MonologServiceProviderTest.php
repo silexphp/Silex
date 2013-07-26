@@ -15,6 +15,7 @@ use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 use Silex\Application;
 use Silex\Provider\MonologServiceProvider;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -92,6 +93,22 @@ class MonologServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $pattern = "#RuntimeException: very bad error \(uncaught exception\) at .* line \d+#";
         $this->assertMatchingRecord($pattern, Logger::CRITICAL, $app['monolog.handler']);
+    }
+
+    public function testRedirectLogging()
+    {
+        $app = $this->getApplication();
+
+        $app->get('/foo', function () use ($app) {
+            return new RedirectResponse("/bar", 302);
+        });
+
+        $this->assertFalse($app['monolog.handler']->hasInfoRecords());
+
+        $request = Request::create('/foo');
+        $app->handle($request);
+
+        $this->assertTrue($app['monolog.handler']->hasInfo('< 302 /bar'));
     }
 
     public function testErrorLoggingGivesWayToSecurityExceptionHandling()
