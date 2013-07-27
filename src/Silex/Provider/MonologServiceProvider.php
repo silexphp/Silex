@@ -86,7 +86,7 @@ class MonologServiceProvider implements ServiceProviderInterface
 
         $app->after(function (Request $request, Response $response) use ($app) {
             if ($response instanceof RedirectResponse) {
-                $app['monolog']->addInfo('< '.$response->getStatusCode() . ' ' . $response->getTargetUrl());
+                $app['monolog']->addInfo('< '.$response->getStatusCode().' '.$response->getTargetUrl());
             } else {
                 $app['monolog']->addInfo('< '.$response->getStatusCode());
             }
