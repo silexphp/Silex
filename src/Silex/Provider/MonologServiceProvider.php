@@ -15,6 +15,7 @@ use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bridge\Monolog\Handler\DebugHandler;
@@ -84,7 +85,11 @@ class MonologServiceProvider implements ServiceProviderInterface
         }, -4);
 
         $app->after(function (Request $request, Response $response) use ($app) {
-            $app['monolog']->addInfo('< '.$response->getStatusCode());
+            if ($response instanceof RedirectResponse) {
+                $app['monolog']->addInfo('< '.$response->getStatusCode() . ' ' . $response->getTargetUrl());
+            } else {
+                $app['monolog']->addInfo('< '.$response->getStatusCode());
+            }
         });
     }
 }
