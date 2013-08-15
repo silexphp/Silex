@@ -50,7 +50,7 @@ class ControllerCollection
     public function match($pattern, $to)
     {
         $route = clone $this->defaultRoute;
-        $route->setPattern($pattern);
+        $route->setPath($pattern);
         $route->setDefault('_controller', $to);
 
         $this->controllers[] = $controller = new Controller($route);
