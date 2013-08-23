@@ -1,0 +1,17 @@
+---------------------------------------------------------------------------
+
+by igorw at 2013-08-23T12:40:38Z
+
+`$pattern` (the first constructor arg) is not optional on the original route object. That's why the tests are failing.
+
+---------------------------------------------------------------------------
+
+by Tobion at 2013-08-23T13:57:35Z
+
+Thx, I see. Fixed it and changed it to `/` because thats what '' actually means.
+
+---------------------------------------------------------------------------
+
+by igorw at 2013-08-23T14:05:51Z
+
+:+1:
