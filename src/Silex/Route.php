@@ -20,9 +20,25 @@ use Symfony\Component\Routing\Route as BaseRoute;
  */
 class Route extends BaseRoute
 {
-    public function __construct($pattern = '', array $defaults = array(), array $requirements = array(), array $options = array())
+    /**
+     * Constructor.
+     *
+     * Available options:
+     *
+     *  * compiler_class: A class name able to compile this route instance (RouteCompiler by default)
+     *
+     * @param string       $path         The path pattern to match
+     * @param array        $defaults     An array of default parameter values
+     * @param array        $requirements An array of requirements for parameters (regexes)
+     * @param array        $options      An array of options
+     * @param string       $host         The host pattern to match
+     * @param string|array $schemes      A required URI scheme or an array of restricted schemes
+     * @param string|array $methods      A required HTTP method or an array of restricted methods
+     */
+    public function __construct($path = '/', array $defaults = array(), array $requirements = array(), array $options = array(), $host = '', $schemes = array(), $methods = array())
     {
-        parent::__construct($pattern, $defaults, $requirements, $options);
+        // overridden constructor to make $path optional
+        parent::__construct($path, $defaults, $requirements, $options, $host, $schemes, $methods);
     }
 
     /**
@@ -81,7 +97,7 @@ class Route extends BaseRoute
      */
     public function method($method)
     {
-        $this->setRequirement('_method', $method);
+        $this->setMethods(explode('|', $method));
 
         return $this;
     }
@@ -107,7 +123,7 @@ class Route extends BaseRoute
      */
     public function requireHttp()
     {
-        $this->setRequirement('_scheme', 'http');
+        $this->setSchemes('http');
 
         return $this;
     }
@@ -119,7 +135,7 @@ class Route extends BaseRoute
      */
     public function requireHttps()
     {
-        $this->setRequirement('_scheme', 'https');
+        $this->setSchemes('https');
 
         return $this;
     }
