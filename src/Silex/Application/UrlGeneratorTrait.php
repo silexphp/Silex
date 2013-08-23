@@ -11,6 +11,8 @@
 
 namespace Silex\Application;
 
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+
 /**
  * UrlGenerator trait.
  *
@@ -28,7 +30,7 @@ trait UrlGeneratorTrait
      */
     public function path($route, $parameters = array())
     {
-        return $this['url_generator']->generate($route, $parameters, false);
+        return $this['url_generator']->generate($route, $parameters, UrlGeneratorInterface::ABSOLUTE_PATH);
     }
 
     /**
@@ -41,6 +43,6 @@ trait UrlGeneratorTrait
      */
     public function url($route, $parameters = array())
     {
-        return $this['url_generator']->generate($route, $parameters, true);
+        return $this['url_generator']->generate($route, $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
     }
 }
