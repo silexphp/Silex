@@ -20,11 +20,6 @@ use Symfony\Component\Routing\Route as BaseRoute;
  */
 class Route extends BaseRoute
 {
-    public function __construct($pattern = '', array $defaults = array(), array $requirements = array(), array $options = array())
-    {
-        parent::__construct($pattern, $defaults, $requirements, $options);
-    }
-
     /**
      * Sets the requirement for a route variable.
      *
@@ -81,7 +76,7 @@ class Route extends BaseRoute
      */
     public function method($method)
     {
-        $this->setRequirement('_method', $method);
+        $this->setMethods(explode('|', $method));
 
         return $this;
     }
@@ -107,7 +102,7 @@ class Route extends BaseRoute
      */
     public function requireHttp()
     {
-        $this->setRequirement('_scheme', 'http');
+        $this->setSchemes('http');
 
         return $this;
     }
@@ -119,7 +114,7 @@ class Route extends BaseRoute
      */
     public function requireHttps()
     {
-        $this->setRequirement('_scheme', 'https');
+        $this->setSchemes('https');
 
         return $this;
     }
