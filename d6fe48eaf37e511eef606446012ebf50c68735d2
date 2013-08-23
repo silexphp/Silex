@@ -1,0 +1,45 @@
+---------------------------------------------------------------------------
+
+by lyrixx at 2013-08-22T14:16:24Z
+
+A symfony 2.3 is supposed to keep BC, can we only require `~2.3` ?
+
+---------------------------------------------------------------------------
+
+by romainneutron at 2013-08-23T12:50:04Z
+
+I've updated the PR according to @lyrixx and @davedevelopment comments
+
+---------------------------------------------------------------------------
+
+by igorw at 2013-08-23T13:11:57Z
+
+@lyrixx what does the LTS have to do with `~2.3`? Once you use `~`, you're assuming that later versions don't break BC at all, or that silex will support any future version of symfony 2.x (with adding in hacks if needed). IMO silex *should* be bounded, and the supported symfony versions *should* be explicit.
+
+---------------------------------------------------------------------------
+
+by davedevelopment at 2013-08-23T13:30:02Z
+
+I think @lyrixx was getting at...
+
+> So, except when fixing a security issue, we must not break backward compatibility anymore after Symfony 2.3 and until Symfony 3.0.
+
+.. but I'm with Igor, I'd rather we keep on as we are for now.
+
+---------------------------------------------------------------------------
+
+by lyrixx at 2013-08-23T13:35:08Z
+
+@igorw I did not talk about LTS ;) And @davedevelopment got the point.
+
+---------------------------------------------------------------------------
+
+by fabpot at 2013-08-23T15:24:28Z
+
+The previous version was better. We consciously made the decision to limit our support in Silex instead of trusting Symfony BC policy ;)
+
+---------------------------------------------------------------------------
+
+by romainneutron at 2013-08-23T15:42:39Z
+
+@fabpot reverted
