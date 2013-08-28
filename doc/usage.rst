@@ -347,7 +347,7 @@ The converter callback also receives the ``Request`` as its second argument::
 
     $app->get('/blog/{id}/{slug}', function (Post $post) {
         // ...
-    })->convert('post', $callback);
+    })->convert('slug', $callback);
 
 Requirements
 ~~~~~~~~~~~~
