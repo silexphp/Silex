@@ -510,7 +510,8 @@ class SecurityServiceProvider implements ServiceProviderInterface
                     $app['security.user_provider.'.$name],
                     $app['security.user_checker'],
                     $name,
-                    $app['security.encoder_factory']
+                    $app['security.encoder_factory'],
+                    isset($app['security.hide_user_not_found']) ? (boolean) $app['security.hide_user_not_found'] : true
                 );
             });
         });
