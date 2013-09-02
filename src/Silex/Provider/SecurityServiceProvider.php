@@ -71,6 +71,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
 
         $app['security.role_hierarchy'] = array();
         $app['security.access_rules'] = array();
+        $app['security.hide_user_not_found'] = true;
 
         $app['security'] = $app->share(function ($app) {
             return new SecurityContext($app['security.authentication_manager'], $app['security.access_manager']);
@@ -511,7 +512,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
                     $app['security.user_checker'],
                     $name,
                     $app['security.encoder_factory'],
-                    isset($app['security.hide_user_not_found']) ? (boolean) $app['security.hide_user_not_found'] : true
+                    $app['security.hide_user_not_found']
                 );
             });
         });
