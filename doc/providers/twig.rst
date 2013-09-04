@@ -14,7 +14,8 @@ Parameters
   template contents. Use this if you want to define your templates inline.
 
 * **twig.options** (optional): An associative array of twig
-  options. Check out the twig documentation for more information.
+  options. Check out the `twig documentation <http://twig.sensiolabs.org/doc/api.html#environment-options>`_
+  for more information.
 
 * **twig.form.templates** (optional): An array of templates used to render
   forms (only available when the ``FormServiceProvider`` is enabled).
