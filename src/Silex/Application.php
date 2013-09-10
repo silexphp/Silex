@@ -111,7 +111,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
         });
 
         $this['kernel'] = $this->share(function () use ($app) {
-            return new HttpKernel($app['dispatcher'], $app['resolver']);
+            return new HttpKernel($app['dispatcher'], $app['resolver'], $app['request_stack']);
         });
 
         $this['request_stack'] = $this->share(function () use ($app) {
