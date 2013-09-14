@@ -50,7 +50,7 @@ Make sure to stick to this behavior when creating your own providers.
 Included providers
 ~~~~~~~~~~~~~~~~~~
 
-There are a few provider that you get out of the box. All of these are within
+There are a few providers that you get out of the box. All of these are within
 the ``Silex\Provider`` namespace:
 
 * :doc:`DoctrineServiceProvider <providers/doctrine>`
