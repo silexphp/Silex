@@ -94,4 +94,20 @@ class ServiceControllerResolverTest extends \PHPUnit_Framework_Testcase
 
         $this->assertEquals(123, $this->resolver->getArguments($req, function() {}));
     }
+    
+    /**
+     * @expectedException InvalidArgumentException
+     */
+    public function testShouldThrowIfServiceClassDoesNotExist()
+    {
+        $this->app['some_service'] = 'ThisClassDoesNotExist';
+
+        $req = Request::create('/');
+        $req->attributes->set('_controller', 'some_service:methodName');
+
+        $this->assertEquals(
+            array($this->app['some_service'], 'methodName'),
+            $this->resolver->getController($req)
+        );
+    }
 }
