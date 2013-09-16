@@ -105,9 +105,6 @@ class ServiceControllerResolverTest extends \PHPUnit_Framework_Testcase
         $req = Request::create('/');
         $req->attributes->set('_controller', 'some_service:methodName');
 
-        $this->assertEquals(
-            array($this->app['some_service'], 'methodName'),
-            $this->resolver->getController($req)
-        );
+        $this->resolver->getController($req);
     }
 }
