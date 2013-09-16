@@ -31,6 +31,11 @@ class TranslationServiceProvider implements ServiceProviderInterface
         $app['translator'] = $app->share(function ($app) {
             $translator = new Translator($app['locale'], $app['translator.message_selector']);
 
+            // Handle deprecated 'locale_fallback'
+            if (isset($app['locale_fallback'])) {
+                $app['locale_fallbacks'] = (array) $app['locale_fallback'];
+            }
+
             $translator->setFallbackLocales($app['locale_fallbacks']);
 
             $translator->addLoader('array', new ArrayLoader());
