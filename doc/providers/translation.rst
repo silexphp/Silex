@@ -13,7 +13,7 @@ Parameters
 * **locale** (optional): The locale for the translator. You will most likely
   want to set this based on some request parameter. Defaults to ``en``.
 
-* **locale_fallback** (optional): Fallback locale for the translator. It will
+* **locale_fallbacks** (optional): Fallback locales for the translator. It will
   be used when the current locale has no messages set. Defaults to ``en``.
 
 Services
@@ -38,7 +38,7 @@ Registering
 .. code-block:: php
 
     $app->register(new Silex\Provider\TranslationServiceProvider(), array(
-        'locale_fallback' => 'en',
+        'locale_fallbacks' => array('en'),
     ));
 
 .. note::
