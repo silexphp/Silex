@@ -55,8 +55,19 @@ class ServiceControllerResolver implements ControllerResolverInterface
         if (!isset($this->app[$service])) {
             throw new \InvalidArgumentException(sprintf('Service "%s" does not exist.', $service));
         }
+        
+        $class = $this->app[$service];
+        
+        if (!is_string($class)) {
+            return array($class, $method);
+        }
 
-        return array($this->app[$service], $method);
+        if (!class_exists($class)) {
+            throw new \InvalidArgumentException(sprintf('Class "%s" does not exist.', $class));
+        }
+        
+        // Assumes the controller class constructor accepts an app instance
+        return array(new $class($this->app), $method);
     }
 
     /**

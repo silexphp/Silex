@@ -32,6 +32,17 @@ class ServiceControllerResolverRouterTest extends RouterTest
 
         $this->checkRouteResponse($app, '/bar', 'bar');
     }
+    
+    public function testControllerClassNonStaticMethod()
+    {
+        $app = new Application();
+        
+        $app['service_name'] = __NAMESPACE__ . '\\MyController';
+        
+        $app->get('/foo', 'service_name:getFoo');
+        
+        $this->checkRouteResponse($app, '/foo', 'foo');
+    }
 
     protected function checkRouteResponse($app, $path, $expectedContent, $method = 'get', $message = null)
     {
