@@ -30,6 +30,7 @@
         "symfony/form": ">=2.3,<2.5-dev",
         "symfony/browser-kit": ">=2.3,<2.5-dev",
         "symfony/css-selector": ">=2.3,<2.5-dev",
+        "symfony/debug": ">=2.3,<2.5-dev",
         "symfony/dom-crawler": ">=2.3,<2.5-dev",
         "symfony/finder": ">=2.3,<2.5-dev",
         "symfony/monolog-bridge": ">=2.3,<2.5-dev",

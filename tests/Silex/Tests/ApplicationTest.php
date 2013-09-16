@@ -18,7 +18,7 @@ use Silex\Provider\MonologServiceProvider;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\HttpKernel\Debug\ErrorHandler;
+use Symfony\Component\Debug\ErrorHandler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
