@@ -515,6 +515,56 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $response = $app->handle(Request::create('/foo'));
         $this->assertEquals(301, $response->getStatusCode());
     }
+
+    public function testPassingConfigObjectToApplicationConstructor()
+    {
+        $config = new \ArrayObject();
+        $config['foo'] = 'bar';
+        $config['bar'] = 'foo';
+
+        $app = new Application($config);
+
+        $this->assertSame('bar', $app['foo']);
+        $this->assertsame('foo', $app['bar']);
+    }
+
+    public function testRegisteringServiceProviderConfigWithTraversableObject()
+    {
+        $app = new Application();
+
+        $config = new \ArrayObject();
+        $config['foo'] = 'bar';
+        $config['bar'] = 'foo';
+
+        $provider = $this->getMock('\\Silex\\ServiceProviderInterface');
+
+        $app->register($provider, $config);
+
+        $this->assertSame('bar', $app['foo']);
+        $this->assertSame('foo', $app['bar']);
+    }
+
+    public function testPassingConfigToConstructorNotTraversableThrowsException()
+    {
+        $config = 'i trigger a foreach warning';
+
+        $message = 'The configuration value passed to Silex\\Application::__construct must be traversable';
+        $this->setExpectedException('\\InvalidArgumentException', $message);
+        $app = new Application($config);
+    }
+
+    public function testPassingConfigToRegisterProviderNotTraversableThrowsException()
+    {
+        $config = 'i trigger a foreach warning';
+        $provider = $this->getMock('\\Silex\\ServiceProviderInterface');
+
+        $app = new Application();
+
+        $message = 'The configuration value passed to Silex\\Application::register must be traversable';
+        $this->setExpectedException('\\InvalidArgumentException', $message);
+        $app->register($provider, $config);
+    }
+
 }
 
 class FooController
