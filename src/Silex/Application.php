@@ -57,9 +57,14 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      *
      * @param array $values The parameters or objects.
      */
-    public function __construct(array $values = array())
+    public function __construct($values = array())
     {
         parent::__construct();
+
+        if (!$this->isTraversable($values)) {
+            $message = 'The configuration value passed to %s must be traversable';
+            throw new \InvalidArgumentException(\sprintf($message, __METHOD__));
+        }
 
         $app = $this;
 
@@ -160,8 +165,13 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      *
      * @return Application
      */
-    public function register(ServiceProviderInterface $provider, array $values = array())
+    public function register(ServiceProviderInterface $provider, $values = array())
     {
+        if (!$this->isTraversable($values)) {
+            $message = 'The configuration value passed to %s must be traversable';
+            throw new \InvalidArgumentException(\sprintf($message, __METHOD__));
+        }
+
         $this->providers[] = $provider;
 
         $provider->register($this);
@@ -171,6 +181,18 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
         }
 
         return $this;
+    }
+
+    /**
+     * Determines whether or not a value can be supplied to foreach without triggering
+     * a warning.
+     *
+     * @param mixed $var
+     * @return boolean
+     */
+    private function isTraversable($var)
+    {
+        return (\is_array($var) || $var instanceof \Traversable || $var instanceof \stdClass);
     }
 
     /**
