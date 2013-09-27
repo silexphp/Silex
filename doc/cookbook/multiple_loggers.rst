@@ -52,7 +52,7 @@ the container with the channel name, defaulting to the bundled handler.
         $log = new $app['monolog.logger.class']($name);
 
         $handlers = isset($app['monolog.'.$name.'handlers'])
-            ? $app['monolog.'.$name.'handlers']
+            ? $app['monolog.'.$name.'.handlers']
             : array($app['monolog.handler']);
 
         foreach ($handlers as $handler) {
