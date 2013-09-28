@@ -16,6 +16,7 @@ use Pimple\ServiceProviderInterface;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Silex\Application;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bridge\Monolog\Handler\DebugHandler;
@@ -30,11 +31,11 @@ class MonologServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $app)
     {
-        if ($bridge = class_exists('Symfony\Bridge\Monolog\Logger')) {
-            $app['logger'] = function () use ($app) {
-                return $app['monolog'];
-            };
+        $app['logger'] = function () use ($app) {
+            return $app['monolog'];
+        };
 
+        if ($bridge = class_exists('Symfony\Bridge\Monolog\Logger')) {
             $app['monolog.handler.debug'] = function () use ($app) {
                 return new DebugHandler($app['monolog.level']);
             };
@@ -71,17 +72,25 @@ class MonologServiceProvider implements ServiceProviderInterface
             $app['monolog']->addInfo('> '.$request->getMethod().' '.$request->getRequestUri());
         });
 
+        /*
+         * Priority -4 is used to come after those from SecurityServiceProvider (0)
+         * but before the error handlers added with Silex\Application::error (defaults to -8)
+         */
         $app->error(function (\Exception $e) use ($app) {
             $message = sprintf('%s: %s (uncaught exception) at %s line %s', get_class($e), $e->getMessage(), $e->getFile(), $e->getLine());
             if ($e instanceof HttpExceptionInterface && $e->getStatusCode() < 500) {
-                $app['monolog']->addError($message);
+                $app['monolog']->addError($message, array('exception' => $e));
             } else {
-                $app['monolog']->addCritical($message);
+                $app['monolog']->addCritical($message, array('exception' => $e));
             }
-        }, 255);
+        }, -4);
 
         $app->after(function (Request $request, Response $response) use ($app) {
-            $app['monolog']->addInfo('< '.$response->getStatusCode());
+            if ($response instanceof RedirectResponse) {
+                $app['monolog']->addInfo('< '.$response->getStatusCode().' '.$response->getTargetUrl());
+            } else {
+                $app['monolog']->addInfo('< '.$response->getStatusCode());
+            }
         });
     }
 }

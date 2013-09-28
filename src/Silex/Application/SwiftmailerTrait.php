@@ -21,10 +21,13 @@ trait SwiftmailerTrait
     /**
      * Sends an email.
      *
-     * @param \Swift_Message $message A \Swift_Message instance
+     * @param \Swift_Message $message          A \Swift_Message instance
+     * @param array          $failedRecipients An array of failures by-reference
+     *
+     * @return int The number of sent messages
      */
-    public function mail(\Swift_Message $message)
+    public function mail(\Swift_Message $message, &$failedRecipients = null)
     {
-        return $this['mailer']->send($message);
+        return $this['mailer']->send($message, $failedRecipients);
     }
 }

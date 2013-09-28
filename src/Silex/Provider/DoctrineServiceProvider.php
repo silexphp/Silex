@@ -17,6 +17,7 @@ use Silex\Application;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Configuration;
 use Doctrine\Common\EventManager;
+use Symfony\Bridge\Doctrine\Logger\DbalLogger;
 
 /**
  * Doctrine DBAL Provider.
@@ -33,6 +34,7 @@ class DoctrineServiceProvider implements ServiceProviderInterface
             'host'     => 'localhost',
             'user'     => 'root',
             'password' => null,
+            'port'     => null,
         );
 
         $app['dbs.options.initializer'] = $app->protect(function () use ($app) {
@@ -73,7 +75,9 @@ class DoctrineServiceProvider implements ServiceProviderInterface
                     $manager = $app['dbs.event_manager'][$name];
                 }
 
-                $dbs[$name] = DriverManager::getConnection($options, $config, $manager);
+                $dbs[$name] = $dbs->share(function ($dbs) use ($options, $config, $manager) {
+                    return DriverManager::getConnection($options, $config, $manager);
+                });
             }
 
             return $dbs;
@@ -85,6 +89,10 @@ class DoctrineServiceProvider implements ServiceProviderInterface
             $configs = new Container();
             foreach ($app['dbs.options'] as $name => $options) {
                 $configs[$name] = new Configuration();
+
+                if (isset($app['logger']) && class_exists('Symfony\Bridge\Doctrine\Logger\DbalLogger')) {
+                    $configs[$name]->setSQLLogger(new DbalLogger($app['logger'], isset($app['stopwatch']) ? $app['stopwatch'] : null));
+                }
             }
 
             return $configs;

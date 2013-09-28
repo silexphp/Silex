@@ -17,11 +17,12 @@ use Pimple\ServiceProviderInterface;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\Route;
+use Silex\Provider\MonologServiceProvider;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\Debug\ErrorHandler;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\EventDispatcher\Event;
@@ -379,7 +380,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException RuntimeException
+     * @expectedException \RuntimeException
      */
     public function testNonResponseAndNonNullReturnFromRouteBeforeMiddlewareShouldThrowRuntimeException()
     {
@@ -398,7 +399,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException RuntimeException
+     * @expectedException \RuntimeException
      */
     public function testNonResponseAndNonNullReturnFromRouteAfterMiddlewareShouldThrowRuntimeException()
     {
@@ -417,7 +418,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException RuntimeException
+     * @expectedException \RuntimeException
      */
     public function testAccessingRequestOutsideOfScopeShouldThrowRuntimeException()
     {
@@ -427,7 +428,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException RuntimeException
+     * @expectedException \RuntimeException
      */
     public function testAccessingRequestOutsideOfScopeShouldThrowRuntimeExceptionAfterHandling()
     {
@@ -553,6 +554,19 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         } catch (\RuntimeException $e) {
             $this->assertFalse(class_exists('Symfony\Component\HttpFoundation\BinaryFileResponse'));
         }
+    }
+
+    public function testRedirectDoesNotRaisePHPNoticesWhenMonologIsRegistered()
+    {
+        $app = new Application();
+
+        ErrorHandler::register();
+        $app['monolog.logfile'] = 'php://memory';
+        $app->register(new MonologServiceProvider());
+        $app->get('/foo/', function() { return 'ok'; });
+
+        $response = $app->handle(Request::create('/foo'));
+        $this->assertEquals(301, $response->getStatusCode());
     }
 }
 

@@ -97,8 +97,8 @@ class TwigServiceProvider implements ServiceProviderInterface
 
         $app['twig.loader'] = $app->share(function ($app) {
             return new \Twig_Loader_Chain(array(
-                $app['twig.loader.filesystem'],
                 $app['twig.loader.array'],
+                $app['twig.loader.filesystem'],
             ));
         });
     }

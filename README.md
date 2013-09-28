@@ -3,8 +3,8 @@ Silex, a simple Web Framework
 
 [![Build Status](https://secure.travis-ci.org/fabpot/Silex.png?branch=master)](http://travis-ci.org/fabpot/Silex)
 
-Silex is a simple web framework to develop simple websites based on
-[Symfony2][1] components:
+Silex is a PHP micro-framework to develop websites based on [Symfony2][1]
+components:
 
 
 ```php
@@ -30,7 +30,7 @@ run the `php composer.phar install` command to install it:
 
     {
         "require": {
-            "silex/silex": "1.0.*@dev"
+            "silex/silex": "~1.0"
         }
     }
 
@@ -42,11 +42,10 @@ Read the [documentation][3] for more information.
 
 ## Tests
 
-To run the test suite, you need [composer](http://getcomposer.org) and
-[PHPUnit](https://github.com/sebastianbergmann/phpunit).
+To run the test suite, you need [composer](http://getcomposer.org).
 
     $ php composer.phar install --dev
-    $ phpunit
+    $ vendor/bin/phpunit
 
 ## Community
 

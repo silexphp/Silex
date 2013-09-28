@@ -29,11 +29,14 @@ Parameters
 
   * **password**: The password of the database to connect to.
 
-  * **charset**: Only relevant for ``pdo_mysql``, ``pdo_oci`` and ``oci8``,
+  * **charset**: Only relevant for ``pdo_mysql``, and ``pdo_oci/oci8``,
     specifies the charset used when connecting to the database.
 
   * **path**: Only relevant for ``pdo_sqlite``, specifies the path to
     the SQLite database.
+
+  * **port**: Only relevant for ``pdo_mysql``, ``pdo_pgsql``, and ``pdo_oci/oci8``,
+    specifies the port of the database to connect to.
 
   These and additional options are described in detail in the `Doctrine DBAL
   configuration documentation <http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html>`_.
@@ -79,7 +82,7 @@ Usage
 The Doctrine provider provides a ``db`` service. Here is a usage
 example::
 
-    $app->get('/blog/show/{id}', function ($id) use ($app) {
+    $app->get('/blog/{id}', function ($id) use ($app) {
         $sql = "SELECT * FROM posts WHERE id = ?";
         $post = $app['db']->fetchAssoc($sql, array((int) $id));
 
@@ -126,7 +129,7 @@ these two lines are equivalent::
 
 Using multiple connections::
 
-    $app->get('/blog/show/{id}', function ($id) use ($app) {
+    $app->get('/blog/{id}', function ($id) use ($app) {
         $sql = "SELECT * FROM posts WHERE id = ?";
         $post = $app['dbs']['mysql_read']->fetchAssoc($sql, array((int) $id));
 

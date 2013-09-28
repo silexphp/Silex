@@ -4,7 +4,8 @@ Webserver Configuration
 Apache
 ------
 
-If you are using Apache you can use a ``.htaccess`` file for this:
+If you are using Apache, make sure ``mod_rewrite`` is enabled and use the
+following ``.htaccess`` file:
 
 .. code-block:: apache
 
@@ -14,7 +15,7 @@ If you are using Apache you can use a ``.htaccess`` file for this:
         RewriteEngine On
         #RewriteBase /path/to/app
         RewriteCond %{REQUEST_FILENAME} !-f
-        RewriteRule ^ index.php [L]
+        RewriteRule ^ index.php [QSA,L]
     </IfModule>
 
 .. note::

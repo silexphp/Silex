@@ -47,6 +47,14 @@ class FormServiceProvider implements ServiceProviderInterface
 
         $app['form.secret'] = md5(__DIR__);
 
+        $app['form.type.extensions'] = $app->share(function ($app) {
+            return array();
+        });
+
+        $app['form.type.guessers'] = $app->share(function ($app) {
+            return array();
+        });
+
         $app['form.extensions'] = $app->share(function ($app) {
             $extensions = array(
                 new CsrfExtension($app['form.csrf_provider']),
@@ -68,6 +76,8 @@ class FormServiceProvider implements ServiceProviderInterface
         $app['form.factory'] = $app->share(function ($app) {
             return Forms::createFormFactoryBuilder()
                 ->addExtensions($app['form.extensions'])
+                ->addTypeExtensions($app['form.type.extensions'])
+                ->addTypeGuessers($app['form.type.guessers'])
                 ->getFormFactory()
             ;
         });

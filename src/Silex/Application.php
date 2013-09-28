@@ -25,14 +25,13 @@ use Symfony\Component\HttpKernel\EventListener\RouterListener;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RequestContext;
-use Silex\RedirectableUrlMatcher;
-use Silex\ControllerResolver;
 use Silex\EventListener\LocaleListener;
 use Silex\EventListener\MiddlewareListener;
 use Silex\EventListener\ConverterListener;
@@ -45,13 +44,14 @@ use Silex\EventListener\StringToResponseListener;
  */
 class Application extends Container implements HttpKernelInterface, TerminableInterface
 {
-    const VERSION = '1.0-DEV';
+    const VERSION = '1.1.1-DEV';
 
     const EARLY_EVENT = 512;
     const LATE_EVENT  = -512;
 
-    private $bootableProviders = array();
-    private $booted = false;
+    protected $providers = array();
+    protected $bootableProviders = array();
+    protected $booted = false;
 
     /**
      * Instantiate a new Application.
@@ -96,8 +96,8 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
             $urlMatcher = new LazyUrlMatcher(function () use ($app) {
                 return $app['url_matcher'];
             });
-            $dispatcher->addSubscriber(new RouterListener($urlMatcher, $app['request_context'], $app['logger']));
-            $dispatcher->addSubscriber(new LocaleListener($app, $urlMatcher));
+            $dispatcher->addSubscriber(new RouterListener($urlMatcher, $app['request_context'], $app['logger'], $app['request_stack']));
+            $dispatcher->addSubscriber(new LocaleListener($app, $urlMatcher, $app['request_stack']));
             if (isset($app['exception_handler'])) {
                 $dispatcher->addSubscriber($app['exception_handler']);
             }
@@ -114,7 +114,15 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
         });
 
         $this['kernel'] = $this->share(function () use ($app) {
-            return new HttpKernel($app['dispatcher'], $app['resolver']);
+            return new HttpKernel($app['dispatcher'], $app['resolver'], $app['request_stack']);
+        });
+
+        $this['request_stack'] = $this->share(function () use ($app) {
+            if (class_exists('Symfony\Component\HttpFoundation\RequestStack')) {
+                return new RequestStack();
+            }
+
+            return null;
         });
 
         $this['request_context'] = $this->share(function () use ($app) {
@@ -270,7 +278,11 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      */
     public function on($eventName, $callback, $priority = 0)
     {
-        $this['dispatcher']->addListener($eventName, $callback, $priority);
+        $this['dispatcher'] = $this->share($this->extend('dispatcher', function ($dispatcher, $app) use ($callback, $priority, $eventName) {
+            $dispatcher->addListener($eventName, $callback, $priority);
+
+            return $dispatcher;
+        }));
     }
 
     /**
@@ -284,7 +296,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      */
     public function before($callback, $priority = 0)
     {
-        $this['dispatcher']->addListener(KernelEvents::REQUEST, function (GetResponseEvent $event) use ($callback) {
+        $this->on(KernelEvents::REQUEST, function (GetResponseEvent $event) use ($callback) {
             if (HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
                 return;
             }
@@ -308,7 +320,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      */
     public function after($callback, $priority = 0)
     {
-        $this['dispatcher']->addListener(KernelEvents::RESPONSE, function (FilterResponseEvent $event) use ($callback) {
+        $this->on(KernelEvents::RESPONSE, function (FilterResponseEvent $event) use ($callback) {
             if (HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
                 return;
             }
@@ -328,7 +340,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      */
     public function finish($callback, $priority = 0)
     {
-        $this['dispatcher']->addListener(KernelEvents::TERMINATE, function (PostResponseEvent $event) use ($callback) {
+        $this->on(KernelEvents::TERMINATE, function (PostResponseEvent $event) use ($callback) {
             call_user_func($callback, $event->getRequest(), $event->getResponse());
         }, $priority);
     }
@@ -364,7 +376,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      */
     public function error($callback, $priority = -8)
     {
-        $this['dispatcher']->addListener(KernelEvents::EXCEPTION, new ExceptionListenerWrapper($this, $callback), $priority);
+        $this->on(KernelEvents::EXCEPTION, new ExceptionListenerWrapper($this, $callback), $priority);
     }
 
     /**
@@ -374,7 +386,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      */
     public function flush($prefix = '')
     {
-        $this['routes']->addCollection($this['controllers']->flush($prefix), $prefix);
+        $this['routes']->addCollection($this['controllers']->flush($prefix));
     }
 
     /**
@@ -447,10 +459,6 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      */
     public function sendFile($file, $status = 200, $headers = array(), $contentDisposition = null)
     {
-        if (!class_exists('Symfony\Component\HttpFoundation\BinaryFileResponse')) {
-            throw new \RuntimeException('The "senfFile" method is only supported as of Http Foundation 2.2.');
-        }
-
         return new BinaryFileResponse($file, $status, $headers, true, $contentDisposition);
     }
 
@@ -472,7 +480,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
             throw new \LogicException('The "mount" method takes either a ControllerCollection or a ControllerProviderInterface instance.');
         }
 
-        $this['routes']->addCollection($controllers->flush($prefix), $prefix);
+        $this['routes']->addCollection($controllers->flush($prefix));
 
         return $this;
     }

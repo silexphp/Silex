@@ -33,8 +33,10 @@ use Symfony\Component\Security\Core\Authorization\Voter\RoleHierarchyVoter;
 use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManager;
 use Symfony\Component\Security\Core\Role\RoleHierarchy;
+use Symfony\Component\Security\Core\Validator\Constraints\UserPasswordValidator;
 use Symfony\Component\Security\Http\Firewall;
 use Symfony\Component\Security\Http\FirewallMap;
+use Symfony\Component\Security\Http\Firewall\AbstractAuthenticationListener;
 use Symfony\Component\Security\Http\Firewall\AccessListener;
 use Symfony\Component\Security\Http\Firewall\BasicAuthenticationListener;
 use Symfony\Component\Security\Http\Firewall\LogoutListener;
@@ -138,12 +140,13 @@ class SecurityServiceProvider implements ServiceProviderInterface
                     $app['security.authentication_listener.'.$name.'.'.$type] = $app['security.authentication_listener.'.$type.'._proto']($name, $options);
                 }
 
-                if (!isset($app['security.authentication_provider.'.$name])) {
-                    $app['security.authentication_provider.'.$name] = $app['security.authentication_provider.'.('anonymous' == $name ? 'anonymous' : 'dao').'._proto']($name);
+                $provider = 'anonymous' === $type ? 'anonymous' : 'dao';
+                if (!isset($app['security.authentication_provider.'.$name.'.'.$provider])) {
+                    $app['security.authentication_provider.'.$name.'.'.$provider] = $app['security.authentication_provider.'.$provider.'._proto']($name);
                 }
 
                 return array(
-                    'security.authentication_provider.'.$name,
+                    'security.authentication_provider.'.$name.'.'.$provider,
                     'security.authentication_listener.'.$name.'.'.$type,
                     $entryPoint ? 'security.entry_point.'.$name.'.'.$entryPoint : null,
                     $type
@@ -240,13 +243,26 @@ class SecurityServiceProvider implements ServiceProviderInterface
 
             $app['security.authentication_providers'] = array_map(function ($provider) use ($app) {
                 return $app[$provider];
-            }, $providers);
+            }, array_unique($providers));
 
             $map = new FirewallMap();
             foreach ($configs as $name => $config) {
                 $map->add(
                     is_string($config[0]) ? new RequestMatcher($config[0]) : $config[0],
-                    array_map(function ($listener) use ($app) { return $app[$listener]; }, $config[1]),
+                    array_map(function ($listenerId) use ($app, $name) {
+                        $listener = $app[$listenerId];
+
+                        if (isset($app['security.remember_me.service.'.$name])) {
+                            if ($listener instanceof AbstractAuthenticationListener) {
+                                $listener->setRememberMeServices($app['security.remember_me.service.'.$name]);
+                            }
+                            if ($listener instanceof LogoutListener) {
+                                $listener->addHandler($app['security.remember_me.service.'.$name]);
+                            }
+                        }
+
+                        return $listener;
+                    }, $config[1]),
                     $config[2] ? $app['security.exception_listener.'.$name] : null
                 );
             }
@@ -505,18 +521,28 @@ class SecurityServiceProvider implements ServiceProviderInterface
                 return new AnonymousAuthenticationProvider($name);
             });
         });
+
+        if (isset($app['validator'])) {
+            $app['security.validator.user_password_validator'] = $app->share(function ($app) {
+                return new UserPasswordValidator($app['security'], $app['security.encoder_factory']);
+            });
+
+            if (!isset($app['validator.validator_service_ids'])) {
+                $app['validator.validator_service_ids'] = array();
+            }
+
+            $app['validator.validator_service_ids'] = array_merge($app['validator.validator_service_ids'], array('security.validator.user_password' => 'security.validator.user_password_validator'));
+        }
     }
 
     public function boot(Application $app)
     {
-        // FIXME: in Symfony 2.2, this is a proper subscriber
-        //$app['dispatcher']->addSubscriber($app['security.firewall']);
-        $app['dispatcher']->addListener('kernel.request', array($app['security.firewall'], 'onKernelRequest'), 8);
+        $app['dispatcher']->addSubscriber($app['security.firewall']);
 
         foreach ($this->fakeRoutes as $route) {
             list($method, $pattern, $name) = $route;
 
-            $app->$method($pattern, function() {})->bind($name);
+            $app->$method($pattern, null)->bind($name);
         }
     }
 

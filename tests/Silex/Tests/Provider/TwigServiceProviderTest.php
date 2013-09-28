@@ -23,13 +23,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class TwigServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp()
-    {
-        if (!is_dir(__DIR__.'/../../../../vendor/twig/twig/lib')) {
-            $this->markTestSkipped('Twig dependency was not installed.');
-        }
-    }
-
     public function testRegisterAndRender()
     {
         $app = new Application();
@@ -69,5 +62,19 @@ class TwigServiceProviderTest extends \PHPUnit_Framework_TestCase
         $request = Request::create('/hello');
         $response = $app->handle($request);
         $this->assertEquals('foo', $response->getContent());
+    }
+
+    public function testLoaderPriority()
+    {
+        $app = new Application();
+        $app->register(new TwigServiceProvider(), array(
+            'twig.templates'    => array('foo' => 'foo'),
+        ));
+        $loader = $this->getMock('\Twig_LoaderInterface');
+        $loader->expects($this->never())->method('getSource');
+        $app['twig.loader.filesystem'] = $app->share(function ($app) use ($loader) {
+            return $loader;
+        });
+        $this->assertEquals('foo', $app['twig.loader']->getSource('foo'));
     }
 }

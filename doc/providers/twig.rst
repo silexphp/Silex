@@ -14,7 +14,8 @@ Parameters
   template contents. Use this if you want to define your templates inline.
 
 * **twig.options** (optional): An associative array of twig
-  options. Check out the twig documentation for more information.
+  options. Check out the `twig documentation <http://twig.sensiolabs.org/doc/api.html#environment-options>`_
+  for more information.
 
 * **twig.form.templates** (optional): An array of templates used to render
   forms (only available when the ``FormServiceProvider`` is enabled).
@@ -60,7 +61,7 @@ some Symfony2 components and Twig. Add it as a dependency to your
 .. code-block:: json
 
     "require": {
-        "symfony/twig-bridge": "~2.1",
+        "symfony/twig-bridge": "~2.3"
     }
 
 When present, the ``TwigServiceProvider`` will provide you with the following

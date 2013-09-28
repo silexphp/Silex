@@ -44,7 +44,7 @@ Registering
     .. code-block:: json
 
         "require": {
-            "symfony/validator": "~2.1"
+            "symfony/validator": "~2.3"
         }
 
 Usage
@@ -99,10 +99,10 @@ collection of constraints::
     );
 
     $constraint = new Assert\Collection(array(
-        'title' => new Assert\MinLength(10),
+        'title' => new Assert\Length(array('min' => 10)),
         'author' => new Assert\Collection(array(
-            'first_name' => array(new Assert\NotBlank(), new Assert\MinLength(10)),
-            'last_name'  => new Assert\MinLength(10),
+            'first_name' => array(new Assert\NotBlank(), new Assert\Length(array('min' => 10))),
+            'last_name'  => new Assert\Length(array('min' => 10)),
         )),
     ));
     $errors = $app['validator']->validateValue($book, $constraint);
@@ -131,13 +131,13 @@ the class properties and getters, and then call the ``validate`` method::
     $book->title = 'My Book';
     $book->author = $author;
 
-    $metadata = $app['validator.mapping.class_metadata_factory']->getClassMetadata('Author');
+    $metadata = $app['validator.mapping.class_metadata_factory']->getMetadataFor('Author');
     $metadata->addPropertyConstraint('first_name', new Assert\NotBlank());
-    $metadata->addPropertyConstraint('first_name', new Assert\MinLength(10));
-    $metadata->addPropertyConstraint('last_name', new Assert\MinLength(10));
+    $metadata->addPropertyConstraint('first_name', new Assert\Length(array('min' => 10)));
+    $metadata->addPropertyConstraint('last_name', new Assert\Length(array('min' => 10)));
 
-    $metadata = $app['validator.mapping.class_metadata_factory']->getClassMetadata('Book');
-    $metadata->addPropertyConstraint('title', new Assert\MinLength(10));
+    $metadata = $app['validator.mapping.class_metadata_factory']->getMetadataFor('Book');
+    $metadata->addPropertyConstraint('title', new Assert\Length(array('min' => 10)));
     $metadata->addPropertyConstraint('author', new Assert\Valid());
 
     $errors = $app['validator']->validate($book);
@@ -163,7 +163,7 @@ You can also declare the class constraint by adding a static
 
         static public function loadValidatorMetadata(ClassMetadata $metadata)
         {
-            $metadata->addPropertyConstraint('title', new Assert\MinLength(10));
+            $metadata->addPropertyConstraint('title', new Assert\Length(array('min' => 10)));
             $metadata->addPropertyConstraint('author', new Assert\Valid());
         }
     }
@@ -176,8 +176,8 @@ You can also declare the class constraint by adding a static
         static public function loadValidatorMetadata(ClassMetadata $metadata)
         {
             $metadata->addPropertyConstraint('first_name', new Assert\NotBlank());
-            $metadata->addPropertyConstraint('first_name', new Assert\MinLength(10));
-            $metadata->addPropertyConstraint('last_name', new Assert\MinLength(10));
+            $metadata->addPropertyConstraint('first_name', new Assert\Length(array('min' => 10)));
+            $metadata->addPropertyConstraint('last_name', new Assert\Length(array('min' => 10)));
         }
     }
 

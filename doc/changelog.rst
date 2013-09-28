@@ -1,10 +1,50 @@
 Changelog
 =========
 
-* **2013-xx-xx**: Updated to ``Pimple`` 2.0, use its ``ServiceProviderInterface``.
-  In all existing service providers, the interfaces and type hints need to be updated.
+1.1.1 (2013-XX-XX)
+------------------
 
-* **2013-02-07**: added ``Application::sendFile()`` to ease sending
+* Only convert attributes on the request that actually exist.
+* Updated to ``Pimple`` 2.0, use its ``ServiceProviderInterface``. In all
+  existing service providers, the interfaces and type hints need to be updated.
+
+1.1.0 (2013-07-04)
+------------------
+
+* Support for any ``Psr\Log\LoggerInterface`` as opposed to the monolog-bridge
+  one.
+* Made dispatcher proxy methods ``on``, ``before``, ``after`` and ``error``
+  lazy, so that they will not instantiate the dispatcher early.
+* Dropped support for 2.1 and 2.2 versions of Symfony.
+
+1.0.1 (2013-07-04)
+------------------
+
+* Fixed RedirectableUrlMatcher::redirect() when Silex is configured to use a logger
+* Make ``DoctrineServiceProvider`` multi-db support lazy.
+
+1.0.0 (2013-05-03)
+------------------
+
+* **2013-04-12**: Added support for validators as services.
+
+* **2013-04-01**: Added support for host matching with symfony 2.2:
+
+      $app->match('/', function() {
+          // app-specific action
+      })->host('example.com');
+
+      $app->match('/', function ($user) {
+          // user-specific action
+      })->host('{user}.example.com');
+
+* **2013-03-08**: Added support for form type extensions and guessers as
+  services.
+
+* **2013-03-08**: Added support for remember-me via the
+  ``RememberMeServiceProvider``.
+
+* **2013-02-07**: Added ``Application::sendFile()`` to ease sending
   ``BinaryFileResponse``.
 
 * **2012-11-05**: Filters have been renamed to application middlewares in the
