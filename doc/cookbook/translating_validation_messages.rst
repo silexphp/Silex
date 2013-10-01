@@ -14,7 +14,7 @@ translated resources::
 
     $app->before(function () use ($app) {
         $app['translator']->addLoader('xlf', new Symfony\Component\Translation\Loader\XliffFileLoader());
-        $app['translator']->addResource('xlf', __DIR__.'/vendor/symfony/src/Symfony/Bundle/FrameworkBundle/Resources/translations/validators.sr_Latn.xlf', 'sr_Latn', 'validators');
+        $app['translator']->addResource('xlf', __DIR__.'/vendor/symfony/validator/Symfony/Component/Validator/Resources/translations/validators/validators.sr_Latn.xlf', 'sr_Latn', 'validators');
     });
 
 And that's all you need to load translations from Symfony2 ``xlf`` files.
