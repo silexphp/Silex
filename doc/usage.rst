@@ -349,6 +349,42 @@ The converter callback also receives the ``Request`` as its second argument::
         // ...
     })->convert('post', $callback);
 
+A converter can also be defined as a service. For example, here is a user
+converter based on Doctrine ObjectManager::
+
+    use Doctrine\Common\Persistence\ObjectManager
+    use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
+    class UserConverter
+    {
+        private $om;
+
+        public function __construct(ObjectManager $om)
+        {
+            $this->om = $om;
+        }
+
+        public function convert($id)
+        {
+            if (null === $user = $this->om->find('User', (int) $id)) {
+                throw new NotFoundHttpException(sprintf('User %d does not exist', $id));
+            }
+
+            return $user;
+        }
+    }
+
+The service will now be registered in the application, and the
+convert method will be used as converter::
+
+    $app['converter.user'] = $app->share(function () {
+        return new UserConverter();
+    });
+
+    $app->get('/user/{user}', function (User $user) {
+        // ...
+    })->convert('user', 'converter.user:convert');
+
 Requirements
 ~~~~~~~~~~~~
 
