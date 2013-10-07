@@ -100,10 +100,14 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
             }
             $dispatcher->addSubscriber(new ResponseListener($app['charset']));
             $dispatcher->addSubscriber(new MiddlewareListener($app));
-            $dispatcher->addSubscriber(new ConverterListener($app['routes']));
+            $dispatcher->addSubscriber(new ConverterListener($app['routes'], $app['callback_resolver']));
             $dispatcher->addSubscriber(new StringToResponseListener());
 
             return $dispatcher;
+        });
+
+        $this['callback_resolver'] = $this->share(function () use ($app) {
+            return new CallbackResolver($app);
         });
 
         $this['resolver'] = $this->share(function () use ($app) {
