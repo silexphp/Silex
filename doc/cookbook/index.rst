@@ -13,6 +13,7 @@ The cookbook section contains recipes for solving specific problems.
     form_no_csrf
     validator_yaml
     sub_requests
+    twig_esi
     error_handler
     multiple_loggers
 
@@ -34,6 +35,8 @@ Recipes
 * :doc:`How to use YAML to configure validation <validator_yaml>`.
 
 * :doc:`How to make sub-requests <sub_requests>`.
+
+* :doc:`How to enable ESI tags in Twig templates <twig_esi>`.
 
 * :doc:`How to convert errors to exceptions <error_handler>`.
 
