@@ -55,10 +55,7 @@ class TranslationServiceProvider implements ServiceProviderInterface
         });
 
         $app['translator.domains'] = array();
-
-        $app['locale_fallbacks'] = array(
-            'en'
-        );
+        $app['locale_fallbacks'] = array('en');
     }
 
     public function boot(Application $app)
