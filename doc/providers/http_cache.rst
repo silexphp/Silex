@@ -1,7 +1,8 @@
 HttpCacheServiceProvider
 ========================
 
-The *HttpCacheProvider* provides support for the Symfony2 Reverse Proxy.
+The *HttpCacheServiceProvider* provides support for the Symfony2 Reverse
+Proxy.
 
 Parameters
 ----------
