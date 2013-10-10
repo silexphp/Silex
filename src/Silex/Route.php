@@ -20,6 +20,8 @@ use Symfony\Component\Routing\Route as BaseRoute;
  */
 class Route extends BaseRoute
 {
+    private $extensions;
+
     /**
      * Constructor.
      *
@@ -39,6 +41,16 @@ class Route extends BaseRoute
     {
         // overridden constructor to make $path optional
         parent::__construct($path, $defaults, $requirements, $options, $host, $schemes, $methods);
+    }
+
+    /**
+     * Sets available extensions.
+     *
+     * @param array $extensions An array of named extensions
+     */
+    public function setExtensions($extensions)
+    {
+        $this->extensions = $extensions;
     }
 
     /**
@@ -168,6 +180,18 @@ class Route extends BaseRoute
         $callbacks = $this->getOption('_after_middlewares');
         $callbacks[] = $callback;
         $this->setOption('_after_middlewares', $callbacks);
+
+        return $this;
+    }
+
+    public function __call($method, $arguments)
+    {
+        if (!isset($this->extensions[$method])) {
+            throw new \BadMethodCallException(sprintf('No route extensions define the "%s" method.', $method));
+        }
+
+        array_unshift($arguments, $this);
+        call_user_func_array($this->extensions[$method], $arguments);
 
         return $this;
     }
