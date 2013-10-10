@@ -18,6 +18,7 @@ use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Bridge\Twig\Extension\SecurityExtension;
+use Symfony\Bridge\Twig\Extension\HttpKernelExtension;
 use Symfony\Bridge\Twig\Form\TwigRendererEngine;
 use Symfony\Bridge\Twig\Form\TwigRenderer;
 
@@ -46,7 +47,6 @@ class TwigServiceProvider implements ServiceProviderInterface
 
             $twig = new \Twig_Environment($app['twig.loader'], $app['twig.options']);
             $twig->addGlobal('app', $app);
-            $twig->addExtension(new TwigCoreExtension());
 
             if ($app['debug']) {
                 $twig->addExtension(new \Twig_Extension_Debug());
@@ -63,6 +63,15 @@ class TwigServiceProvider implements ServiceProviderInterface
 
                 if (isset($app['security'])) {
                     $twig->addExtension(new SecurityExtension($app['security']));
+                }
+
+                if (isset($app['fragment.handler'])) {
+                    $app['fragment.renderer.hinclude']->setTemplating($twig);
+
+                    $twig->addExtension(new HttpKernelExtension($app['fragment.handler']));
+                } else {
+                    // fallback for BC, to be removed in 1.3
+                    $twig->addExtension(new TwigCoreExtension());
                 }
 
                 if (isset($app['form.factory'])) {
