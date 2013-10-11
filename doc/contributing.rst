@@ -14,7 +14,8 @@ steps.
 
 * Optionally, add some technical documentation.
 
-* Send a pull request, to the correct `target branch`_. Bonus points for topic branches.
+* `Send a pull request <https://help.github.com/articles/creating-a-pull-request>`_, to the correct `target branch`_. 
+  Bonus points for topic branches.
 
 If you have a big change or would like to discuss something,
 please join us on the `mailing list
