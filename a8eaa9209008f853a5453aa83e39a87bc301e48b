@@ -1,0 +1,17 @@
+---------------------------------------------------------------------------
+
+by davedevelopment at 2013-08-12T14:26:48Z
+
+It's not technically a dependency, it's not required for stateless authentication methods. I think the note should be there, but it should clarify this.
+
+---------------------------------------------------------------------------
+
+by fabpot at 2013-08-23T15:25:13Z
+
+@davedevelopment is right. If you are using a stateless basic HTTP authentication, there is no need for the session service provider. Can you tweak your note accordingly?
+
+---------------------------------------------------------------------------
+
+by igorw at 2013-09-23T15:32:33Z
+
+@jmontoyaa what's the status on this?
