@@ -7,7 +7,8 @@ your applications.
 Parameters
 ----------
 
-n/a
+* **security.hide_user_not_found** (optional): Defines whether to hide user not
+  found exception or not. Defaults to ``true``.
 
 Services
 --------

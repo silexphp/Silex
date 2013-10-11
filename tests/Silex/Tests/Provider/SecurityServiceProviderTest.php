@@ -145,6 +145,25 @@ class SecurityServiceProviderTest extends WebTestCase
         $this->assertInstanceOf('Symfony\Component\Security\Core\Validator\Constraints\UserPasswordValidator', $app['security.validator.user_password_validator']);
     }
 
+    public function testExposedExceptions()
+    {
+        $app = $this->createApplication('form');
+        $app['security.hide_user_not_found'] = false;
+
+        $client = new Client($app);
+
+        $client->request('get', '/');
+        $this->assertEquals('ANONYMOUS', $client->getResponse()->getContent());
+
+        $client->request('post', '/login_check', array('_username' => 'fabien', '_password' => 'bar'));
+        $this->assertEquals('The presented password is invalid.', $app['security.last_error']($client->getRequest()));
+        $client->getRequest()->getSession()->save();
+
+        $client->request('post', '/login_check', array('_username' => 'unknown', '_password' => 'bar'));
+        $this->assertEquals('Username "unknown" does not exist.', $app['security.last_error']($client->getRequest()));
+        $client->getRequest()->getSession()->save();
+    }
+
     public function createApplication($authenticationMethod = 'form')
     {
         $app = new Application();
