@@ -2,7 +2,7 @@ Introduction
 ============
 
 Silex is a PHP microframework for PHP 5.3. It is built on the shoulders of
-Symfony2 and Pimple and also inspired by sinatra.
+Symfony2 and `Pimple`_ and also inspired by `sinatra`_.
 
 A microframework provides the guts for building simple single-file apps. Silex
 aims to be:
@@ -46,3 +46,5 @@ Installing Silex is as easy as it can get. `Download`_ the archive file,
 extract it, and you're done!
 
 .. _Download: http://silex.sensiolabs.org/download
+.. _Pimple: http://pimple.sensiolabs.org/
+.. _sinatra: http://www.sinatrarb.com
