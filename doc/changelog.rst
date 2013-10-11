@@ -1,10 +1,11 @@
 Changelog
 =========
 
-1.1.2 (2013-XX-XX)
+1.2.0 (2013-XX-XX)
 ------------------
 
-* n/a
+* Deprecated TwigCoreExtension (register the new HttpFragmentServiceProvider instead)
+* Added HttpFragmentServiceProvider
 
 1.1.1 (2013-10-11)
 ------------------

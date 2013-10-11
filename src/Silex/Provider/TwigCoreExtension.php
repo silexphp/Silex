@@ -18,6 +18,8 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
  * Twig extension.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ *
+ * @deprecated deprecated since 1.2, will be removed in 1.3. Use HttpFragmentServiceProvider instead
  */
 class TwigCoreExtension extends \Twig_Extension
 {

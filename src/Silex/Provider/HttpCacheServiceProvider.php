@@ -16,6 +16,7 @@ use Silex\ServiceProviderInterface;
 use Silex\HttpCache;
 use Symfony\Component\HttpKernel\HttpCache\Esi;
 use Symfony\Component\HttpKernel\HttpCache\Store;
+use Symfony\Component\HttpKernel\EventListener\EsiListener;
 
 /**
  * Symfony HttpKernel component Provider for HTTP cache.
@@ -38,10 +39,15 @@ class HttpCacheServiceProvider implements ServiceProviderInterface
             return new Store($app['http_cache.cache_dir']);
         });
 
+        $app['http_cache.esi_listener'] = $app->share(function ($app) {
+            return new EsiListener($app['http_cache.esi']);
+        });
+
         $app['http_cache.options'] = array();
     }
 
     public function boot(Application $app)
     {
+        $app['dispatcher']->addSubscriber($app['http_cache.esi_listener']);
     }
 }
