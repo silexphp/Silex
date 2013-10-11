@@ -47,13 +47,18 @@ class ControllerCollection
      *
      * @return Controller
      */
-    public function match($pattern, $to)
+    public function match($pattern, $to = null)
     {
         $route = clone $this->defaultRoute;
         $route->setPath($pattern);
-        $route->setDefault('_controller', $to);
-
         $this->controllers[] = $controller = new Controller($route);
+
+        if (null === $to) {
+            $to = function () use ($controller) {
+                throw new \LogicException(sprintf('The "%s" route must have code to run when it matches.', $controller->getRouteName()));
+            };
+        }
+        $route->setDefault('_controller', $to);
 
         return $controller;
     }
@@ -66,7 +71,7 @@ class ControllerCollection
      *
      * @return Controller
      */
-    public function get($pattern, $to)
+    public function get($pattern, $to = null)
     {
         return $this->match($pattern, $to)->method('GET');
     }
@@ -79,7 +84,7 @@ class ControllerCollection
      *
      * @return Controller
      */
-    public function post($pattern, $to)
+    public function post($pattern, $to = null)
     {
         return $this->match($pattern, $to)->method('POST');
     }
@@ -92,7 +97,7 @@ class ControllerCollection
      *
      * @return Controller
      */
-    public function put($pattern, $to)
+    public function put($pattern, $to = null)
     {
         return $this->match($pattern, $to)->method('PUT');
     }
@@ -105,7 +110,7 @@ class ControllerCollection
      *
      * @return Controller
      */
-    public function delete($pattern, $to)
+    public function delete($pattern, $to = null)
     {
         return $this->match($pattern, $to)->method('DELETE');
     }
