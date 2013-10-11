@@ -37,7 +37,7 @@ class SessionServiceProvider implements ServiceProviderInterface
     {
         $this->app = $app;
 
-        $app['session.test'] = false;
+        $app['session.test'] = (isset($app['session.test'])?$app['session.test']:false);
 
         $app['session'] = $app->share(function ($app) {
             if (!isset($app['session.storage'])) {
