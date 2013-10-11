@@ -1,9 +1,11 @@
 Changelog
 =========
 
-1.1.1 (2013-XX-XX)
+1.1.1 (2013-10-11)
 ------------------
 
+* Removed or replaced deprecated Symfony code
+* Updated code to take advantages of 2.3 new features
 * Only convert attributes on the request that actually exist.
 
 1.1.0 (2013-07-04)
