@@ -25,7 +25,7 @@ If you want more flexibility, use Composer instead. Create a
 
     {
         "require": {
-            "silex/silex": "~1.0"
+            "silex/silex": "~1.1"
         }
     }
 
@@ -462,7 +462,7 @@ the defaults for new controllers.
 .. note::
 
     The global configuration does not apply to controller providers you might
-    mount as they have their own global configuration (read the 
+    mount as they have their own global configuration (read the
     :doc:`dedicated chapter<organizing_controllers>` for more information).
 
 Error handlers
