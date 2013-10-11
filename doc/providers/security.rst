@@ -71,10 +71,11 @@ Registering
     don't forget to call ``boot()`` first::
 
         $application->boot();
-        
+
 .. caution::
 
-    If you're using a form to authenticate users the security provider requires the SessionServiceProvider.
+    If you're using a form to authenticate users, you need to enable
+    ``SessionServiceProvider``.
 
 Usage
 -----
