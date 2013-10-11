@@ -30,7 +30,7 @@ run the `php composer.phar install` command to install it:
 
     {
         "require": {
-            "silex/silex": "~1.0"
+            "silex/silex": "~1.1"
         }
     }
 
