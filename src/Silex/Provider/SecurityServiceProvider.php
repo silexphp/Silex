@@ -11,8 +11,9 @@
 
 namespace Silex\Provider;
 
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Silex\Application;
-use Silex\ServiceProviderInterface;
 
 use Symfony\Component\HttpFoundation\RequestMatcher;
 use Symfony\Component\HttpFoundation\Request;
@@ -62,7 +63,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
 {
     protected $fakeRoutes;
 
-    public function register(Application $app)
+    public function register(Container $app)
     {
         // used to register routes for login_check and logout
         $this->fakeRoutes = array();

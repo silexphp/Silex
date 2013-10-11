@@ -11,8 +11,9 @@
 
 namespace Silex\Provider;
 
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Silex\Application;
-use Silex\ServiceProviderInterface;
 
 /**
  * Swiftmailer Provider.
@@ -21,7 +22,7 @@ use Silex\ServiceProviderInterface;
  */
 class SwiftmailerServiceProvider implements ServiceProviderInterface
 {
-    public function register(Application $app)
+    public function register(Container $app)
     {
         $app['swiftmailer.options'] = array();
 

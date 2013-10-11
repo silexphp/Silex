@@ -12,6 +12,8 @@ Changelog
 * Removed or replaced deprecated Symfony code
 * Updated code to take advantages of 2.3 new features
 * Only convert attributes on the request that actually exist.
+* Updated to ``Pimple`` 2.0, use its ``ServiceProviderInterface``. In all
+  existing service providers, the interfaces and type hints need to be updated.
 
 1.1.0 (2013-07-04)
 ------------------

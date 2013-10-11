@@ -11,8 +11,9 @@
 
 namespace Silex\Provider;
 
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Silex\Application;
-use Silex\ServiceProviderInterface;
 
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
@@ -28,7 +29,7 @@ use Symfony\Bridge\Twig\Form\TwigRenderer;
  */
 class TwigServiceProvider implements ServiceProviderInterface
 {
-    public function register(Application $app)
+    public function register(Container $app)
     {
         $app['twig.options'] = array();
         $app['twig.form.templates'] = array('form_div_layout.html.twig');

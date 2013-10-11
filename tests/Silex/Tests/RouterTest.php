@@ -26,7 +26,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 {
     public function testMapRouting()
     {
-        $app = new Application();
+        $app = $this->createApplication();
 
         $app->match('/foo', function () {
             return 'foo';
@@ -47,7 +47,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
     public function testStatusCode()
     {
-        $app = new Application();
+        $app = $this->createApplication();
 
         $app->put('/created', function () {
             return new Response('', 201);
@@ -76,7 +76,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
     public function testRedirect()
     {
-        $app = new Application();
+        $app = $this->createApplication();
 
         $app->match('/redirect', function () {
             return new RedirectResponse('/target');
@@ -100,7 +100,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     */
     public function testMissingRoute()
     {
-        $app = new Application();
+        $app = $this->createApplication();
         $app['exception_handler']->disable();
 
         $request = Request::create('/baz');
@@ -109,7 +109,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
     public function testMethodRouting()
     {
-        $app = new Application();
+        $app = $this->createApplication();
 
         $app->match('/foo', function () {
             return 'foo';
@@ -146,7 +146,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
     public function testRequestShouldBeStoredRegardlessOfRouting()
     {
-        $app = new Application();
+        $app = $this->createApplication();
 
         $app->get('/foo', function () use ($app) {
             return new Response($app['request']->getRequestUri());
@@ -165,7 +165,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
     public function testTrailingSlashBehavior()
     {
-        $app = new Application();
+        $app = $this->createApplication();
 
         $app->get('/foo/', function () use ($app) {
             return new Response('ok');
@@ -192,7 +192,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
     public function testRequireHttpRedirect()
     {
-        $app = new Application();
+        $app = $this->createApplication();
 
         $app->match('/secured', function () {
             return 'secured content';
@@ -206,7 +206,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
     public function testRequireHttpsRedirect()
     {
-        $app = new Application();
+        $app = $this->createApplication();
 
         $app->match('/secured', function () {
             return 'secured content';
@@ -234,7 +234,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
     public function testClassNameControllerSyntax()
     {
-        $app = new Application();
+        $app = $this->createApplication();
 
         $app->get('/foo', 'Silex\Tests\MyController::getFoo');
 
@@ -243,11 +243,16 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
     public function testClassNameControllerSyntaxWithStaticMethod()
     {
-        $app = new Application();
+        $app = $this->createApplication();
 
         $app->get('/bar', 'Silex\Tests\MyController::getBar');
 
         $this->checkRouteResponse($app, '/bar', 'bar');
+    }
+
+    protected function createApplication()
+    {
+        return new Application();
     }
 
     protected function checkRouteResponse($app, $path, $expectedContent, $method = 'get', $message = null)

@@ -11,10 +11,11 @@
 
 namespace Silex\Provider;
 
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Silex\Application;
-use Silex\ServiceProviderInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,7 +29,7 @@ use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
  */
 class MonologServiceProvider implements ServiceProviderInterface
 {
-    public function register(Application $app)
+    public function register(Container $app)
     {
         $app['logger'] = function () use ($app) {
             return $app['monolog'];

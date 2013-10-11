@@ -11,8 +11,9 @@
 
 namespace Silex\Provider;
 
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Silex\Application;
-use Silex\ServiceProviderInterface;
 use Silex\ConstraintValidatorFactory;
 
 use Symfony\Component\Validator\Validator;
@@ -27,7 +28,7 @@ use Symfony\Component\Validator\Mapping\Loader\StaticMethodLoader;
  */
 class ValidatorServiceProvider implements ServiceProviderInterface
 {
-    public function register(Application $app)
+    public function register(Container $app)
     {
         $app['validator'] = $app->share(function ($app) {
             $r = new \ReflectionClass('Symfony\Component\Validator\Validator');

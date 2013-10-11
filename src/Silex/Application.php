@@ -11,6 +11,8 @@
 
 namespace Silex;
 
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -40,7 +42,7 @@ use Silex\EventListener\StringToResponseListener;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Application extends \Pimple implements HttpKernelInterface, TerminableInterface
+class Application extends Container implements HttpKernelInterface, TerminableInterface
 {
     const VERSION = '1.1.2-DEV';
 
@@ -48,6 +50,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
     const LATE_EVENT  = -512;
 
     protected $providers = array();
+    protected $bootableProviders = array();
     protected $booted = false;
 
     /**
@@ -162,6 +165,14 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      */
     public function register(ServiceProviderInterface $provider, array $values = array())
     {
+        if (method_exists($provider, 'boot')) {
+            if ($this->booted) {
+                throw new \RuntimeException('You cannot register a bootable service provider after the application is booted.');
+            }
+
+            $this->bootableProviders[] = $provider;
+        }
+
         $this->providers[] = $provider;
 
         $provider->register($this);
@@ -182,7 +193,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
     public function boot()
     {
         if (!$this->booted) {
-            foreach ($this->providers as $provider) {
+            foreach ($this->bootableProviders as $provider) {
                 $provider->boot($this);
             }
 

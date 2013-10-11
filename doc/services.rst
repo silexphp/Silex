@@ -3,7 +3,7 @@ Services
 
 Silex is not only a microframework. It is also a micro service container. It
 does this by extending `Pimple <http://pimple.sensiolabs.org>`_ which provides
-service goodness in just 44 NCLOC.
+service goodness in just 50 NCLOC.
 
 Dependency Injection
 --------------------
@@ -62,11 +62,11 @@ Pimple
 Pimple is probably the simplest service container out there. It makes strong
 use of closures and implements the ArrayAccess interface.
 
-We will start off by creating a new instance of Pimple -- and because
-``Silex\Application`` extends ``Pimple`` all of this applies to Silex as
-well::
+We will start off by creating a new instance of Pimple -- and
+because ``Silex\Application`` extends ``Pimple\Container`` all of
+this applies to Silex as well::
 
-    $container = new Pimple();
+    $container = new Pimple\Container();
 
 or::
 
