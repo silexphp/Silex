@@ -1,0 +1,107 @@
+---------------------------------------------------------------------------
+
+by fabpot at 2013-10-11T14:34:30Z
+
+What do you think of that change? @igorw
+
+---------------------------------------------------------------------------
+
+by GromNaN at 2013-10-11T15:00:36Z
+
+:+1: Useful feature.
+
+The fake routes can be simplified in the SecurityServiceProvider.
+
+---------------------------------------------------------------------------
+
+by henrikbjorn at 2013-10-11T15:01:50Z
+
+hopefully the old way will continue to work as it is easier if you do not use bind, value, convert or any of the other methods.
+
+---------------------------------------------------------------------------
+
+by stof at 2013-10-11T15:03:47Z
+
+@henrikbjorn It does. The second argument is now optional but it is not removed
+
+---------------------------------------------------------------------------
+
+by henrikbjorn at 2013-10-11T15:09:51Z
+
+@stof yep i know :) But just wanted to highlight it, since i read it as "work until we can deprecate it".
+
+---------------------------------------------------------------------------
+
+by fabpot at 2013-10-11T15:16:38Z
+
+@henrikbjorn I have no intentions in deprecating or removing the current way as it still makes sense.
+
+---------------------------------------------------------------------------
+
+by davedevelopment at 2013-10-11T18:48:10Z
+
+> @henrikbjorn I have no intentions in deprecating or removing the current way as it still makes sense.
+
+Given this, I'm :+1:
+
+---------------------------------------------------------------------------
+
+by fabpot at 2013-10-12T07:14:24Z
+
+I've made the change suggested by @davedevelopment and everything looks better now.
+
+---------------------------------------------------------------------------
+
+by GromNaN at 2013-10-12T07:49:15Z
+
+The default controller cannot be a `Closure` to be serializable (See #775).
+That's why I suggested using a static class method as default value.
+
+---------------------------------------------------------------------------
+
+by fabpot at 2013-10-12T07:53:05Z
+
+About the method name: `run`, `execute`, `call`, or?
+
+---------------------------------------------------------------------------
+
+by fabpot at 2013-10-12T07:55:37Z
+
+@GromNaN I'm very reluctant to add yet another class for that. As we are talking about an edge case here, what about changing the code to:
+
+```php
+$app->$method($pattern)->run(null)->bind($name);
+```
+
+---------------------------------------------------------------------------
+
+by fabpot at 2013-10-12T08:18:47Z
+
+I've made the changes for the fake routes and I've added a test to avoid any regressions in the future.
+
+---------------------------------------------------------------------------
+
+by GromNaN at 2013-10-12T09:10:06Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by igorw at 2013-10-12T11:23:46Z
+
+I agree that indentation is currently a bit awkward, but this can be solved by:
+
+    $app
+        ->get('/foo', function ($id) {
+            // ...
+        })
+        ->bind('home')
+        ->assert('id', '\d+');
+
+I have no objections to this patch as an option for those who want it, but I don't see the need of changing all the examples in the docs to it.
+
+---------------------------------------------------------------------------
+
+by cordoval at 2013-10-12T11:52:45Z
+
+:+1: :baby:
