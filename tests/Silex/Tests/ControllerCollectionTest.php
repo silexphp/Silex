@@ -30,6 +30,19 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(0, count($routes->all()));
     }
 
+    /**
+     * @expectedException \LogicException
+     * @expectedExceptionMessage The "foo" route must have code to run when it matches.
+     */
+    public function testGetRouteCollectionWithRouteWithoutController()
+    {
+        $controllers = new ControllerCollection(new Route());
+        $controllers->match('/foo')->bind('foo');
+        $routes = $controllers->flush();
+
+        call_user_func($routes->get('foo')->getDefault('_controller'));
+    }
+
     public function testGetRouteCollectionWithRoutes()
     {
         $controllers = new ControllerCollection(new Route());

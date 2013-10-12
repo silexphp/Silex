@@ -93,7 +93,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
             return 'foo';
         });
 
-        $app->get('/bar', function () {
+        $app->get('/bar')->run(function () {
             return 'bar';
         });
 
