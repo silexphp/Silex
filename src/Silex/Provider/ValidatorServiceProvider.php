@@ -47,7 +47,7 @@ class ValidatorServiceProvider implements ServiceProviderInterface
             return new ClassMetadataFactory(new StaticMethodLoader());
         });
 
-        $app['validator.validator_factory'] = $app->share(function() use ($app) {
+        $app['validator.validator_factory'] = $app->share(function () use ($app) {
             $validators = isset($app['validator.validator_service_ids']) ? $app['validator.validator_service_ids'] : array();
 
             return new ConstraintValidatorFactory($app, $validators);

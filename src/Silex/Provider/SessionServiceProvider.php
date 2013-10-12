@@ -62,7 +62,7 @@ class SessionServiceProvider implements ServiceProviderInterface
             );
         });
 
-        $app['session.storage.test'] = $app->share(function() {
+        $app['session.storage.test'] = $app->share(function () {
             return new MockFileSessionStorage();
         });
 

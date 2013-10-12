@@ -131,7 +131,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
                 $entryPoint = 'form';
             }
 
-            $app['security.authentication_listener.factory.'.$type] = $app->protect(function($name, $options) use ($type, $app, $entryPoint) {
+            $app['security.authentication_listener.factory.'.$type] = $app->protect(function ($name, $options) use ($type, $app, $entryPoint) {
                 if ($entryPoint && !isset($app['security.entry_point.'.$name.'.'.$entryPoint])) {
                     $app['security.entry_point.'.$name.'.'.$entryPoint] = $app['security.entry_point.'.$entryPoint.'._proto']($name, $options);
                 }

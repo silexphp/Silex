@@ -28,11 +28,11 @@ class RememberMeServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
-        $app['security.remember_me.response_listener'] = $app->share(function() {
+        $app['security.remember_me.response_listener'] = $app->share(function () {
             return new ResponseListener();
         });
 
-        $app['security.authentication_listener.factory.remember_me'] = $app->protect(function($name, $options) use ($app) {
+        $app['security.authentication_listener.factory.remember_me'] = $app->protect(function ($name, $options) use ($app) {
             if (empty($options['key'])) {
                 $options['key'] = $name;
             }
@@ -57,7 +57,7 @@ class RememberMeServiceProvider implements ServiceProviderInterface
             );
         });
 
-        $app['security.remember_me.service._proto'] = $app->protect(function($providerKey, $options) use ($app) {
+        $app['security.remember_me.service._proto'] = $app->protect(function ($providerKey, $options) use ($app) {
             return $app->share(function () use ($providerKey, $options, $app) {
                 $options = array_replace(array(
                     'name'                  => 'REMEMBERME',
