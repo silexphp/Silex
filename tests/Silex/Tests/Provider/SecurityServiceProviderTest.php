@@ -160,6 +160,24 @@ class SecurityServiceProviderTest extends WebTestCase
         $client->getRequest()->getSession()->save();
     }
 
+    public function testFakeRoutesAreSerializable()
+    {
+        $app = new Application();
+
+        $app->register(new SecurityServiceProvider(), array(
+            'security.firewalls' => array(
+                'admin' => array(
+                    'logout' => true,
+                ),
+            ),
+        ));
+
+        $app->boot();
+        $app->flush();
+
+        $this->assertCount(1, unserialize(serialize($app['routes'])));
+    }
+
     public function createApplication($authenticationMethod = 'form')
     {
         $app = new Application();

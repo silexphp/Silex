@@ -200,7 +200,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      *
      * @return Controller
      */
-    public function match($pattern, $to)
+    public function match($pattern, $to = null)
     {
         return $this['controllers']->match($pattern, $to);
     }
@@ -213,7 +213,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      *
      * @return Controller
      */
-    public function get($pattern, $to)
+    public function get($pattern, $to = null)
     {
         return $this['controllers']->get($pattern, $to);
     }
@@ -226,7 +226,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      *
      * @return Controller
      */
-    public function post($pattern, $to)
+    public function post($pattern, $to = null)
     {
         return $this['controllers']->post($pattern, $to);
     }
@@ -239,7 +239,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      *
      * @return Controller
      */
-    public function put($pattern, $to)
+    public function put($pattern, $to = null)
     {
         return $this['controllers']->put($pattern, $to);
     }
@@ -252,7 +252,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      *
      * @return Controller
      */
-    public function delete($pattern, $to)
+    public function delete($pattern, $to = null)
     {
         return $this['controllers']->delete($pattern, $to);
     }
