@@ -121,10 +121,6 @@ class SecurityServiceProviderTest extends WebTestCase
 
     public function testUserPasswordValidatorIsRegistered()
     {
-        if (!is_dir(__DIR__.'/../../../../vendor/symfony/validator')) {
-            $this->markTestSkipped('Validator dependency was not installed.');
-        }
-
         $app = new Application();
 
         $app->register(new ValidatorServiceProvider());
