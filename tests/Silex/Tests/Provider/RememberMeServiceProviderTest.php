@@ -55,7 +55,7 @@ class RememberMeServiceProviderTest extends WebTestCase
         $app = new Application();
 
         $app['debug'] = true;
-        unset($app['exception_handler']);
+        $app['exception_handler']->disable();
 
         $app->register(new SessionServiceProvider(), array(
             'session.test' => true,

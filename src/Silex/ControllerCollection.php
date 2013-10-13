@@ -12,6 +12,7 @@
 namespace Silex;
 
 use Symfony\Component\Routing\RouteCollection;
+use Symfony\Component\HttpFoundation\Request;
 use Silex\Controller;
 
 /**
@@ -28,6 +29,7 @@ class ControllerCollection
 {
     protected $controllers = array();
     protected $defaultRoute;
+    protected $defaultController;
 
     /**
      * Constructor.
@@ -35,6 +37,9 @@ class ControllerCollection
     public function __construct(Route $defaultRoute)
     {
         $this->defaultRoute = $defaultRoute;
+        $this->defaultController = function (Request $request) {
+            throw new \LogicException(sprintf('The "%s" route must have code to run when it matches.', $request->attributes->get('_route')));
+        };
     }
 
     /**
@@ -52,13 +57,7 @@ class ControllerCollection
         $route = clone $this->defaultRoute;
         $route->setPath($pattern);
         $this->controllers[] = $controller = new Controller($route);
-
-        if (null === $to) {
-            $to = function () use ($controller) {
-                throw new \LogicException(sprintf('The "%s" route must have code to run when it matches.', $controller->getRouteName()));
-            };
-        }
-        $route->setDefault('_controller', $to);
+        $route->setDefault('_controller', null === $to ? $this->defaultController : $to);
 
         return $controller;
     }
