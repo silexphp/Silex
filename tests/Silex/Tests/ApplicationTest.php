@@ -502,6 +502,18 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * @expectedException        \LogicException
+     * @expectedExceptionMessage The "homepage" route must have code to run when it matches.
+     */
+    public function testGetRouteCollectionWithRouteWithoutController()
+    {
+        $app = new Application();
+        $app['exception_handler']->disable();
+        $app->match('/')->bind('homepage');
+        $app->handle(Request::create('/'));
+    }
+
     public function testRedirectDoesNotRaisePHPNoticesWhenMonologIsRegistered()
     {
         $app = new Application();
