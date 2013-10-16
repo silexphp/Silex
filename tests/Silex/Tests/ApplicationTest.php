@@ -489,6 +489,19 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($app, $app->mount('/hello', $mounted));
     }
 
+    public function testMountIsStagedUntilFlush()
+    {
+        $app = new Application();
+        $mounted = new ControllerCollection(new Route());
+        $mounted->get('/{name}', function($name) { return new Response($name); });
+
+        $app->mount('/', $mounted);
+        $this->assertCount(0, $app['routes']->all());
+
+        $app->flush();
+        $this->assertCount(1, $app['routes']->all());
+    }
+
     public function testSendFile()
     {
         $app = new Application();
