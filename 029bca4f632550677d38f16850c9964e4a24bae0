@@ -1,0 +1,41 @@
+---------------------------------------------------------------------------
+
+by romainneutron at 2013-10-07T12:38:38Z
+
+If you're okay with this feature, I'll be glad to pimp up the doc to mention this
+
+---------------------------------------------------------------------------
+
+by fabpot at 2013-10-12T07:37:26Z
+
+@romainneutron :+1: Can you update the docs?
+
+---------------------------------------------------------------------------
+
+by Danez at 2013-10-13T09:32:44Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by romainneutron at 2013-10-15T10:08:26Z
+
+docs updated, feedback appreciated
+
+---------------------------------------------------------------------------
+
+by romainneutron at 2013-10-15T10:59:07Z
+
+Comments addressed, please note the update in the `UserConverter` class example to address @staabm comment.
+
+---------------------------------------------------------------------------
+
+by fabpot at 2013-10-15T13:12:42Z
+
+Can you also add a note in the changelog?
+
+---------------------------------------------------------------------------
+
+by romainneutron at 2013-10-16T09:07:00Z
+
+Changelog updated
