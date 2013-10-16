@@ -14,6 +14,7 @@ Changelog
 * Removed or replaced deprecated Symfony code
 * Updated code to take advantages of 2.3 new features
 * Only convert attributes on the request that actually exist.
+* Add support for using a service method as a converter.
 
 1.1.0 (2013-07-04)
 ------------------
