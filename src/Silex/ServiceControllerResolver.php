@@ -11,7 +11,6 @@
 
 namespace Silex;
 
-use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
 
@@ -22,21 +21,19 @@ use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
  */
 class ServiceControllerResolver implements ControllerResolverInterface
 {
-    const SERVICE_PATTERN = "/[A-Za-z0-9\._\-]+:[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/";
-
-    protected $resolver;
-    protected $app;
+    protected $controllerResolver;
+    protected $callbackResolver;
 
     /**
      * Constructor.
      *
-     * @param ControllerResolverInterface $resolver A ControllerResolverInterface instance to delegate to
-     * @param Application                 $app      An Application instance
+     * @param ControllerResolverInterface $controllerResolver A ControllerResolverInterface instance to delegate to
+     * @param CallbackResolver             $callbackResolver    A service resolver instance
      */
-    public function __construct(ControllerResolverInterface $resolver, Application $app)
+    public function __construct(ControllerResolverInterface $controllerResolver, CallbackResolver $callbackResolver)
     {
-        $this->resolver = $resolver;
-        $this->app = $app;
+        $this->controllerResolver = $controllerResolver;
+        $this->callbackResolver = $callbackResolver;
     }
 
     /**
@@ -46,17 +43,11 @@ class ServiceControllerResolver implements ControllerResolverInterface
     {
         $controller = $request->attributes->get('_controller', null);
 
-        if (!is_string($controller) || !preg_match(static::SERVICE_PATTERN, $controller)) {
-            return $this->resolver->getController($request);
+        if (!$this->callbackResolver->isValid($controller)) {
+            return $this->controllerResolver->getController($request);
         }
 
-        list($service, $method) = explode(':', $controller, 2);
-
-        if (!isset($this->app[$service])) {
-            throw new \InvalidArgumentException(sprintf('Service "%s" does not exist.', $service));
-        }
-
-        return array($this->app[$service], $method);
+        return $this->callbackResolver->getCallback($controller);
     }
 
     /**
@@ -64,6 +55,6 @@ class ServiceControllerResolver implements ControllerResolverInterface
      */
     public function getArguments(Request $request, $controller)
     {
-        return $this->resolver->getArguments($request, $controller);
+        return $this->controllerResolver->getArguments($request, $controller);
     }
 }
