@@ -38,4 +38,23 @@ class LazyDispatcherTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($dispatcherCreated);
     }
+
+    /** @test */
+    public function eventHelpersShouldDirectlyAddListenersAfterBoot()
+    {
+        $app = new Application();
+
+        $fired = false;
+        $app->get("/", function () use ($app, &$fired) {
+            $app->finish(function () use (&$fired) {
+                $fired = true;
+            });
+        });
+
+        $request = Request::create('/');
+        $response = $app->handle($request);
+        $app->terminate($request, $response);
+
+        $this->assertTrue($fired, 'Event was not fired');
+    }
 }
