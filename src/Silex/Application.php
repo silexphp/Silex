@@ -267,6 +267,11 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      */
     public function on($eventName, $callback, $priority = 0)
     {
+        if ($this->booted) {
+            $this['dispatcher']->addListener($eventName, $callback, $priority);
+            return;
+        }
+
         $this['dispatcher'] = $this->share($this->extend('dispatcher', function ($dispatcher, $app) use ($callback, $priority, $eventName) {
             $dispatcher->addListener($eventName, $callback, $priority);
 
