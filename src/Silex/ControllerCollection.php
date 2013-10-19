@@ -30,6 +30,7 @@ class ControllerCollection
     protected $controllers = array();
     protected $defaultRoute;
     protected $defaultController;
+    protected $prefix;
 
     /**
      * Constructor.
@@ -40,6 +41,19 @@ class ControllerCollection
         $this->defaultController = function (Request $request) {
             throw new \LogicException(sprintf('The "%s" route must have code to run when it matches.', $request->attributes->get('_route')));
         };
+    }
+
+    /**
+     * Mounts controllers under the given route prefix.
+     *
+     * @param string               $prefix      The route prefix
+     * @param ControllerCollection $controllers A ControllerCollection instance
+     */
+    public function mount($prefix, ControllerCollection $controllers)
+    {
+        $controllers->prefix = $prefix;
+
+        $this->controllers[] = $controllers;
     }
 
     /**
@@ -123,7 +137,9 @@ class ControllerCollection
         call_user_func_array(array($this->defaultRoute, $method), $arguments);
 
         foreach ($this->controllers as $controller) {
-            call_user_func_array(array($controller, $method), $arguments);
+            if ($controller instanceof Controller) {
+                call_user_func_array(array($controller, $method), $arguments);
+            }
         }
 
         return $this;
@@ -141,15 +157,19 @@ class ControllerCollection
         $routes = new RouteCollection();
 
         foreach ($this->controllers as $controller) {
-            if (!$name = $controller->getRouteName()) {
-                $name = $controller->generateRouteName($prefix);
-                while ($routes->get($name)) {
-                    $name .= '_';
+            if ($controller instanceof Controller) {
+                if (!$name = $controller->getRouteName()) {
+                    $name = $controller->generateRouteName($prefix);
+                    while ($routes->get($name)) {
+                        $name .= '_';
+                    }
+                    $controller->bind($name);
                 }
-                $controller->bind($name);
+                $routes->add($name, $controller->getRoute());
+                $controller->freeze();
+            } else {
+                $routes->addCollection($controller->flush($controller->prefix));
             }
-            $routes->add($name, $controller->getRoute());
-            $controller->freeze();
         }
 
         $routes->addPrefix($prefix);
