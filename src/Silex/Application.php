@@ -473,7 +473,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
             throw new \LogicException('The "mount" method takes either a ControllerCollection or a ControllerProviderInterface instance.');
         }
 
-        $this['routes']->addCollection($controllers->flush($prefix));
+        $this['controllers']->mount($prefix, $controllers);
 
         return $this;
     }

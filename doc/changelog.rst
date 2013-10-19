@@ -4,6 +4,7 @@ Changelog
 1.2.0 (2013-XX-XX)
 ------------------
 
+* [BC BREAK] Routes are now always added in the order of their registration (even for mounted routes)
 * Added run() on Route to be able to define the controller code
 * Deprecated TwigCoreExtension (register the new HttpFragmentServiceProvider instead)
 * Added HttpFragmentServiceProvider
