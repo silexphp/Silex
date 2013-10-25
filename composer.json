@@ -21,7 +21,8 @@
         "symfony/event-dispatcher": ">=2.3,<2.5-dev",
         "symfony/http-foundation": ">=2.3,<2.5-dev",
         "symfony/http-kernel": ">=2.3,<2.5-dev",
-        "symfony/routing": ">=2.3,<2.5-dev"
+        "symfony/routing": ">=2.3,<2.5-dev",
+        "uwej711/pimplex": "dev-master"
     },
     "require-dev": {
         "symfony/security": ">=2.3,<2.5-dev",
