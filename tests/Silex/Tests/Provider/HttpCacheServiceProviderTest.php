@@ -13,7 +13,6 @@ namespace Silex\Tests\Provider;
 
 use Silex\Application;
 use Silex\Provider\HttpCacheServiceProvider;
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

@@ -11,6 +11,10 @@
 
 namespace Silex;
 
+use Silex\EventListener\LocaleListener;
+use Silex\EventListener\MiddlewareListener;
+use Silex\EventListener\ConverterListener;
+use Silex\EventListener\StringToResponseListener;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -30,10 +34,6 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RequestContext;
-use Silex\EventListener\LocaleListener;
-use Silex\EventListener\MiddlewareListener;
-use Silex\EventListener\ConverterListener;
-use Silex\EventListener\StringToResponseListener;
 
 /**
  * The Silex framework class.

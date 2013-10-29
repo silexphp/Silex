@@ -16,7 +16,6 @@ use Silex\WebTestCase;
 use Silex\Provider\RememberMeServiceProvider;
 use Silex\Provider\SecurityServiceProvider;
 use Silex\Provider\SessionServiceProvider;
-
 use Symfony\Component\HttpKernel\Client;
 
 /**

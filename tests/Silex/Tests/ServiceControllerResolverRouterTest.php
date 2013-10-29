@@ -13,7 +13,6 @@ namespace Silex\Tests;
 
 use Silex\Application;
 use Silex\Provider\ServiceControllerServiceProvider;
-
 use Symfony\Component\HttpFoundation\Request;
 
 /**

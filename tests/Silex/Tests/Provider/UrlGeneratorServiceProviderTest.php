@@ -13,7 +13,6 @@ namespace Silex\Tests\Provider;
 
 use Silex\Application;
 use Silex\Provider\UrlGeneratorServiceProvider;
-
 use Symfony\Component\HttpFoundation\Request;
 
 /**

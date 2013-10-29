@@ -13,7 +13,6 @@ namespace Silex\Tests;
 
 use Silex\ControllerResolver;
 use Silex\Application;
-
 use Symfony\Component\HttpFoundation\Request;
 
 /**

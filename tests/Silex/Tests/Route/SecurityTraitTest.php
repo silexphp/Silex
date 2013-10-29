@@ -13,7 +13,6 @@ namespace Silex\Tests\Route;
 
 use Silex\Application;
 use Silex\Provider\SecurityServiceProvider;
-
 use Symfony\Component\HttpFoundation\Request;
 
 /**
