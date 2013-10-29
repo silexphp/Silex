@@ -13,7 +13,6 @@ namespace Silex\Tests\Provider;
 
 use Silex\Application;
 use Silex\Provider\TwigServiceProvider;
-
 use Symfony\Component\HttpFoundation\Request;
 
 /**

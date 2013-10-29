@@ -12,7 +12,6 @@
 namespace Silex\Tests;
 
 use Silex\Application;
-
 use Symfony\Component\HttpFoundation\Request;
 
 class LazyDispatcherTest extends \PHPUnit_Framework_TestCase
