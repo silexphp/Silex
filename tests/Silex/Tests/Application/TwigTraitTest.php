@@ -13,6 +13,7 @@ namespace Silex\Tests\Application;
 
 use Silex\Application;
 use Silex\Provider\TwigServiceProvider;
+
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 

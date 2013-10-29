@@ -14,9 +14,10 @@ namespace Silex\Tests\Provider;
 use Silex\Application;
 use Silex\Provider\ValidatorServiceProvider;
 use Silex\Provider\FormServiceProvider;
-use Symfony\Component\Validator\Constraints as Assert;
 use Silex\Tests\Provider\ValidatorServiceProviderTest\Constraint\Custom;
 use Silex\Tests\Provider\ValidatorServiceProviderTest\Constraint\CustomValidator;
+
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * ValidatorServiceProvider

@@ -11,12 +11,13 @@
 
 namespace Silex\Tests\Provider;
 
-use Monolog\Handler\TestHandler;
-use Monolog\Logger;
 use Silex\Application;
 use Silex\Provider\MonologServiceProvider;
+
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Monolog\Handler\TestHandler;
+use Monolog\Logger;
 
 /**
  * MonologProvider test cases.

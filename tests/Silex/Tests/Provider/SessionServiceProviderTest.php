@@ -14,6 +14,7 @@ namespace Silex\Tests\Provider;
 use Silex\Application;
 use Silex\WebTestCase;
 use Silex\Provider\SessionServiceProvider;
+
 use Symfony\Component\HttpKernel\Client;
 
 /**
