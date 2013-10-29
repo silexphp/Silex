@@ -179,10 +179,6 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
     public function testHostSpecification()
     {
-        if (!method_exists('Symfony\Component\Routing\Route', 'setHost')) {
-            $this->markTestSkipped('setHost() is only supported in the Symfony Routing 2.2+');
-        }
-
         $route = new \Silex\Route();
 
         $this->assertSame($route, $route->host('{locale}.example.com'));
