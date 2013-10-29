@@ -181,7 +181,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     public function testHostSpecification()
     {
         if (!method_exists('Symfony\Component\Routing\Route', 'setHost')) {
-            $this->markTestSkipped('host() is only supported in the Symfony Routing 2.2+');
+            $this->markTestSkipped('setHost() is only supported in the Symfony Routing 2.2+');
         }
 
         $route = new \Silex\Route();
@@ -250,7 +250,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $this->checkRouteResponse($app, '/bar', 'bar');
     }
 
-    protected function checkRouteResponse($app, $path, $expectedContent, $method = 'get', $message = null)
+    protected function checkRouteResponse(Application $app, $path, $expectedContent, $method = 'get', $message = null)
     {
         $request = Request::create($path, $method);
         $response = $app->handle($request);
