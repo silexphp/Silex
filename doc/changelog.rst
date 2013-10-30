@@ -4,7 +4,8 @@ Changelog
 1.1.2 (2013-XX-XX)
 ------------------
 
-* n/a
+* Added missing "security.hide_user_not_found" support in SecurityServiceProvider
+* Fixed event listeners that are registered after the boot via the on() method
 
 1.0.2 (2013-10-30)
 ------------------
