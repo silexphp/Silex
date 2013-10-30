@@ -11,10 +11,10 @@
 
 namespace Silex\Tests\Application;
 
-use Monolog\Handler\TestHandler;
-use Monolog\Logger;
 use Silex\Application;
 use Silex\Provider\MonologServiceProvider;
+use Monolog\Handler\TestHandler;
+use Monolog\Logger;
 
 /**
  * MonologTrait test cases.

@@ -11,11 +11,11 @@
 
 namespace Silex\Provider;
 
+use Silex\Application;
+use Silex\ServiceProviderInterface;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Configuration;
 use Doctrine\Common\EventManager;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 use Symfony\Bridge\Doctrine\Logger\DbalLogger;
 
 /**
