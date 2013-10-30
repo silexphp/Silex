@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.1.2 (2013-XX-XX)
+1.1.2 (2013-10-30)
 ------------------
 
 * Added missing "security.hide_user_not_found" support in SecurityServiceProvider
