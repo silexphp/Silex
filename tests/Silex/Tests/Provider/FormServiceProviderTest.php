@@ -13,7 +13,6 @@ namespace Silex\Tests\Provider;
 
 use Silex\Application;
 use Silex\Provider\FormServiceProvider;
-
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormTypeGuesserChain;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;

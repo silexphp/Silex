@@ -15,7 +15,6 @@ use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\Route;
 use Silex\Provider\MonologServiceProvider;
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Debug\ErrorHandler;
