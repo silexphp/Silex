@@ -123,6 +123,25 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('foobar', $response->getContent());
     }
 
+    public function testConvertedAttributeIsAvailableInBeforeFilter()
+    {
+        $app = new Application();
+
+        $beforeValue = null;
+        $app
+            ->get('/foo/{foo}', function ($foo) {
+                return $foo;
+            })
+            ->convert('foo', function ($foo) { return $foo.'converted'; })
+            ->before(function (Request $request) use (&$beforeValue) {
+                $beforeValue = $request->attributes->get('foo');
+            });
+
+        $response = $app->handle(Request::create('/foo/bar'));
+        $this->assertEquals('barconverted', $beforeValue);
+        $this->assertEquals('barconverted', $response->getContent());
+    }
+
     public function testOn()
     {
         $app = new Application();
