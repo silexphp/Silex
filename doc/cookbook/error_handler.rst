@@ -35,13 +35,13 @@ Handling fatal errors
 To handle fatal errors, you can additionally register a global
 ``ExceptionHandler``::
 
-    use Symfony\Component\HttpKernel\Debug\ExceptionHandler;
+    use Symfony\Component\Debug\ExceptionHandler;
 
     ExceptionHandler::register();
 
 In production you may want to disable the debug output by passing ``false`` as
 the ``$debug`` argument::
 
-    use Symfony\Component\HttpKernel\Debug\ExceptionHandler;
+    use Symfony\Component\Debug\ExceptionHandler;
 
     ExceptionHandler::register(false);
