@@ -49,8 +49,9 @@ class ConverterListener implements EventSubscriberInterface
         $request = $event->getRequest();
         $route = $this->routes->get($request->attributes->get('_route'));
         if ($route && $converters = $route->getOption('_converters')) {
+            $parameters = $this->getControllerArgumentNames($event->getController());
             foreach ($converters as $name => $callback) {
-                if ($request->attributes->has($name)) {
+                if (isset($parameters[$name])) {
                     $callback = $this->callbackResolver->isValid($callback) ? $this->callbackResolver->getCallback($callback) : $callback;
                     $request->attributes->set($name, call_user_func($callback, $request->attributes->get($name), $request));
                 }
@@ -63,5 +64,24 @@ class ConverterListener implements EventSubscriberInterface
         return array(
             KernelEvents::CONTROLLER => 'onKernelController',
         );
+    }
+
+    private function getControllerArgumentNames($controller)
+    {
+        if (is_array($controller)) {
+            $r = new \ReflectionMethod($controller[0], $controller[1]);
+        } elseif (is_object($controller) && !$controller instanceof \Closure) {
+            $r = new \ReflectionObject($controller);
+            $r = $r->getMethod('__invoke');
+        } else {
+            $r = new \ReflectionFunction($controller);
+        }
+
+        $names = array();
+        foreach ($r->getParameters() as $parameter) {
+            $names[$parameter->getName()] = true;
+        }
+
+        return $names;
     }
 }

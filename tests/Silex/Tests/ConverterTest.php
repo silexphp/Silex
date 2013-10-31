@@ -21,20 +21,26 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class ConverterTest extends \PHPUnit_Framework_TestCase
 {
-    public function testConvertingNonExistentAttributeShouldNotCallConverter()
+    public function test()
     {
-        $called = false;
-        $converter = function () use (&$called) {
-            $called = true;
-        };
+        $called = array();
+        $globalFooConverter = function () use (&$called) { $called[] = 'global_foo'; };
+        $globalBarConverter = function () use (&$called) { $called[] = 'global_bar'; };
+        $fooConverter = function () use (&$called) { $called[] = 'foo'; };
+        $barConverter = function () use (&$called) { $called[] = 'bar'; };
 
         $app = new Application();
-        $app->get('/', function () { return 'hallo'; });
-        $app['controllers']->convert('foo', $converter);
+        $app
+            ->get('/', function ($foo, $globalBar) { return 'hallo'; })
+            ->convert('foo', $fooConverter)
+            ->convert('bar', $barConverter)
+        ;
+        $app['controllers']->convert('globalFoo', $globalFooConverter);
+        $app['controllers']->convert('globalBar', $globalBarConverter);
 
         $request = Request::create('/');
         $app->handle($request);
 
-        $this->assertFalse($called);
+        $this->assertEquals(array('foo', 'global_bar'), $called);
     }
 }
