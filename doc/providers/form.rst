@@ -111,7 +111,7 @@ example::
             ->getForm();
 
         if ('POST' == $request->getMethod()) {
-            $form->bind($request);
+            $form->submit($request);
 
             if ($form->isValid()) {
                 $data = $form->getData();
