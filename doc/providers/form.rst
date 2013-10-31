@@ -110,17 +110,15 @@ example::
             ))
             ->getForm();
 
-        if ('POST' == $request->getMethod()) {
-            $form->bind($request);
+        $form->handleRequest($request);
 
-            if ($form->isValid()) {
-                $data = $form->getData();
+        if ($form->isValid()) {
+            $data = $form->getData();
 
-                // do something with the data
+            // do something with the data
 
-                // redirect somewhere
-                return $app->redirect('...');
-            }
+            // redirect somewhere
+            return $app->redirect('...');
         }
 
         // display the form
