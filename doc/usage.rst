@@ -501,6 +501,10 @@ the defaults for new controllers.
     mount as they have their own global configuration (read the
     :doc:`dedicated chapter<organizing_controllers>` for more information).
 
+.. warning::
+
+    The converters are run for **all** registered controllers.
+
 Error handlers
 --------------
 
