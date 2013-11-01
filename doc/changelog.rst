@@ -11,6 +11,22 @@ Changelog
 * Added HttpFragmentServiceProvider
 * Add support for using a service method as a converter.
 
+1.1.3 (2013-XX-XX)
+------------------
+
+* Fixed translator locale management
+
+1.1.2 (2013-10-30)
+------------------
+
+* Added missing "security.hide_user_not_found" support in SecurityServiceProvider
+* Fixed event listeners that are registered after the boot via the on() method
+
+1.0.2 (2013-10-30)
+------------------
+
+* Fixed SecurityServiceProvider to use null as a fake controller so that routes can be dumped
+
 1.1.1 (2013-10-11)
 ------------------
 
