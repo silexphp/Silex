@@ -4,7 +4,7 @@ Changelog
 1.1.3 (2013-XX-XX)
 ------------------
 
-* n/a
+* Fixed translator locale management
 
 1.1.2 (2013-10-30)
 ------------------
