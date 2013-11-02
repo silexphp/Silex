@@ -49,21 +49,21 @@ Options
 
 * **key**: A secret key to generate tokens (you should generate a random string).
 
-* **name**: Cookie name (default: `REMEMBERME`).
+* **name**: Cookie name (default: ``REMEMBERME``).
 
-* **lifetime**: Cookie lifetime (default: `31536000` = ~1 year).
+* **lifetime**: Cookie lifetime (default: ``31536000`` = ~1 year).
 
-* **path**: Cookie path (default: `/`).
+* **path**: Cookie path (default: ``/``).
 
-* **domain**: Cookie domain (defalt: `null` = request domain).
+* **domain**: Cookie domain (default: ``null`` = request domain).
 
-* **secure**: Cookie is secure (default: `false`).
+* **secure**: Cookie is secure (default: ``false``).
 
-* **httponly**: Cookie is HTTP only (default: u`true`)
+* **httponly**: Cookie is HTTP only (default: ``true``)
 
-* **always_remember_me**: Enable remember me (default: `false`)
+* **always_remember_me**: Enable remember me (default: ``false``)
 
-* **remember_me_parameter**: (default: `remember_me`). Name of the request
+* **remember_me_parameter**: (default: ``_remember_me``). Name of the request
 paramater enabling remember_me on login. To add the checkbox to the login form.
 You can find more information in the `Symfony cookbook <http://symfony.com/doc/current/cookbook/security/remember_me.html>
 
