@@ -1,4 +1,4 @@
-Accepting a JSON request body
+Accepting a JSON Request Body
 =============================
 
 A common need when building a restful API is the ability to accept a JSON

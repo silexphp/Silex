@@ -1,5 +1,5 @@
-Disable CSRF Protection on a form using the FormExtension
-=========================================================
+Disabling CSRF Protection on a Form using the FormExtension
+===========================================================
 
 The *FormExtension* provides a service for building form in your application
 with the Symfony2 Form component. By default, the *FormExtension* uses the

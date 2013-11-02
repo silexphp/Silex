@@ -1,4 +1,4 @@
-Using multiple monolog loggers
+Using multiple Monolog Loggers
 ==============================
 
 Having separate instances of `Monolog` for different parts of your system is

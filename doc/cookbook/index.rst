@@ -19,22 +19,22 @@ The cookbook section contains recipes for solving specific problems.
 Recipes
 -------
 
-* :doc:`Accepting a JSON request body <json_request_body>` A common need when
+* :doc:`Accepting a JSON Request Body <json_request_body>` A common need when
   building a restful API is the ability to accept a JSON encoded entity from
   the request body.
 
 * :doc:`Translating Validation Messages<translating_validation_messages>`.
 
-* :doc:`How to use PdoSessionStorage to store sessions in the database
+* :doc:`Using PdoSessionStorage to store Sessions in the Database
   <session_storage>`.
 
-* :doc:`How to disable the CSRF Protection on a form using the FormExtension
+* :doc:`Disabling the CSRF Protection on a Form using the FormExtension
   <form_no_csrf>`.
 
-* :doc:`How to use YAML to configure validation <validator_yaml>`.
+* :doc:`Using YAML to configure Validation <validator_yaml>`.
 
-* :doc:`How to make sub-requests <sub_requests>`.
+* :doc:`Making sub-Requests <sub_requests>`.
 
-* :doc:`How to convert errors to exceptions <error_handler>`.
+* :doc:`Converting Errors to Exceptions <error_handler>`.
 
-* :doc:`How to use multiple monolog loggers <multiple_loggers>`.
+* :doc:`Using multiple Monolog Loggers <multiple_loggers>`.

@@ -1,5 +1,5 @@
-How to use YAML to configure validation
-=======================================
+Using YAML to configure Validation
+==================================
 
 Simplicity is at the heart of Silex so there is no out of the box solution to
 use YAML files for validation. But this doesn't mean that this is not

@@ -1,5 +1,5 @@
-How to convert errors to exceptions
-===================================
+Converting Errors to Exceptions
+===============================
 
 Silex will catch exceptions that are thrown from within a request/response
 cycle. It will however *not* catch PHP errors and notices. You can catch them
