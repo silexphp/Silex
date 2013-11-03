@@ -13,6 +13,8 @@ namespace Silex\Provider;
 
 use Silex\Application;
 use Silex\ServiceProviderInterface;
+use Silex\EventListenerProviderInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RequestMatcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContext;
@@ -57,7 +59,7 @@ use Symfony\Component\Security\Http\HttpUtils;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class SecurityServiceProvider implements ServiceProviderInterface
+class SecurityServiceProvider implements ServiceProviderInterface, EventListenerProviderInterface
 {
     protected $fakeRoutes;
 
@@ -535,10 +537,13 @@ class SecurityServiceProvider implements ServiceProviderInterface
         }
     }
 
+    public function subscribe(Application $app, EventDispatcherInterface $dispatcher)
+    {
+        $dispatcher->addSubscriber($app['security.firewall']);
+    }
+
     public function boot(Application $app)
     {
-        $app['dispatcher']->addSubscriber($app['security.firewall']);
-
         foreach ($this->fakeRoutes as $route) {
             list($method, $pattern, $name) = $route;
 
