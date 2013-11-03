@@ -29,7 +29,11 @@ class RememberMeServiceProvider implements ServiceProviderInterface, EventListen
 {
     public function register(Application $app)
     {
-        $app['security.remember_me.response_listener'] = $app->share(function () {
+        $app['security.remember_me.response_listener'] = $app->share(function ($app) {
+            if (!isset($app['security'])) {
+                throw new \LogicException('You must register the SecurityServiceProvider to use the RememberMeServiceProvider');
+            }
+
             return new ResponseListener();
         });
 
@@ -102,8 +106,5 @@ class RememberMeServiceProvider implements ServiceProviderInterface, EventListen
 
     public function boot(Application $app)
     {
-        if (!isset($app['security'])) {
-            throw new \LogicException('You must register the SecurityServiceProvider to use the RememberMeServiceProvider');
-        }
     }
 }
