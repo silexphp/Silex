@@ -39,6 +39,44 @@ class TwigServiceProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Hello john!', $response->getContent());
     }
 
+    public function testAssetFunction()
+    {
+        $app = new Application();
+
+        $app->register(new TwigServiceProvider(), array(
+            'twig.templates'    => array(
+                'hello' => '{{ asset("/foo.js") }}',
+                'hello_abs' => '{{ asset("/foo.js", true) }}',
+            ),
+        ));
+
+        $app->get('/hello', function () use ($app) {
+            return $app['twig']->render('hello');
+        });
+
+        $app->get('/hello_abs', function () use ($app) {
+            return $app['twig']->render('hello_abs');
+        });
+
+        $request = Request::create('http://localhost/hello_abs');
+        $response = $app->handle($request);
+        $this->assertEquals('http://localhost/foo.js', $response->getContent());
+
+        $request = Request::create('/hello');
+        $response = $app->handle($request);
+        $this->assertEquals(sprintf('%s/foo.js', $request->getBasePath()), $response->getContent());
+
+        $app['assets.path'] = '/assets';
+
+        $response = $app->handle($request);
+        $this->assertEquals('/assets/foo.js', $response->getContent());
+
+        $app['assets.path'] = 'assets';
+
+        $response = $app->handle($request);
+        $this->assertEquals(sprintf('%s/assets/foo.js', $request->getBasePath()), $response->getContent());
+    }
+
     public function testRenderFunction()
     {
         $app = new Application();

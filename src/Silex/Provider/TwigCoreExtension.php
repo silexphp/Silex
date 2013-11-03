@@ -26,8 +26,28 @@ class TwigCoreExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
+            'asset' => new \Twig_Function_Method($this, 'asset', array('needs_environment' => true)),
             'render' => new \Twig_Function_Method($this, 'render', array('needs_environment' => true, 'is_safe' => array('html'))),
         );
+    }
+
+    public function asset(\Twig_Environment $twig, $path, $absolute = false)
+    {
+        $globals = $twig->getGlobals();
+        $request = $globals['app']['request'];
+        $assetsPath = $request->getBasePath();
+
+        $optionPath = isset($globals['app']['assets.path']) ? $globals['app']['assets.path'] : '';
+
+        if (strpos($optionPath, '/') === 0) {
+            $assetsPath = $optionPath;
+        } else {
+            $assetsPath = $assetsPath . '/' . $optionPath;
+        }
+
+        $path = sprintf('%s/%s', rtrim($assetsPath, '/'), ltrim($path, '/'));
+
+        return $absolute ? $request->getSchemeAndHttpHost() . $path : $path;
     }
 
     public function render(\Twig_Environment $twig, $uri)
