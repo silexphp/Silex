@@ -99,6 +99,6 @@ class RememberMeServiceProvider implements ServiceProviderInterface
             throw new \LogicException('You must register the SecurityServiceProvider to use the RememberMeServiceProvider');
         }
 
-        $app['dispatcher']->addSubscriber($app['security.remember_me.response_listener']);
+        $app->subscribe($app['security.remember_me.response_listener']);
     }
 }

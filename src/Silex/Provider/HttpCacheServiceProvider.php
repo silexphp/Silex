@@ -54,6 +54,6 @@ class HttpCacheServiceProvider implements ServiceProviderInterface
 
     public function boot(Application $app)
     {
-        $app['dispatcher']->addSubscriber($app['http_cache.esi_listener']);
+        $app->subscribe($app['http_cache.esi_listener']);
     }
 }
