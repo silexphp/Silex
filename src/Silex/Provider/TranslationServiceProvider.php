@@ -59,5 +59,8 @@ class TranslationServiceProvider implements ServiceProviderInterface
 
     public function boot(Application $app)
     {
+        if (!isset($app['locale'])) {
+            throw new \LogicException('You must register the LocaleServiceProvider to use the TranslationServiceProvider');
+        }
     }
 }

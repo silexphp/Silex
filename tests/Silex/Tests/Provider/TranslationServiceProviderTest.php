@@ -13,6 +13,7 @@ namespace Silex\Tests\Provider;
 
 use Silex\Application;
 use Silex\Provider\TranslationServiceProvider;
+use Silex\Provider\LocaleServiceProvider;
 
 /**
  * TranslationProvider test cases.
@@ -28,6 +29,7 @@ class TranslationServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
+        $app->register(new LocaleServiceProvider());
         $app->register(new TranslationServiceProvider());
         $app['translator.domains'] = array(
             'messages' => array(
