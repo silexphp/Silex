@@ -186,11 +186,15 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
     public function boot()
     {
         if (!$this->booted) {
+            $this->booted = true;
+
             foreach ($this->providers as $provider) {
+                if ($provider instanceof EventListenerProviderInterface) {
+                    $provider->subscribe($this, $this['dispatcher']);
+                }
+
                 $provider->boot($this);
             }
-
-            $this->booted = true;
         }
     }
 
@@ -273,6 +277,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
     {
         if ($this->booted) {
             $this['dispatcher']->addListener($eventName, $callback, $priority);
+
             return;
         }
 
