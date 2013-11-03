@@ -69,5 +69,5 @@ would secure all controllers for the backend collection::
         // app.php
         $app->mount('/blog', include 'blog.php');
 
-    Instead of requiring a file, you can also create a :doc:`Controller
-    provider </providers#controllers-providers>`.
+    Instead of requiring a file, you can also create a :ref:`Controller
+    provider <controller-providers>`.

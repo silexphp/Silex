@@ -140,8 +140,10 @@ You can now use this provider as follows::
 In this example we are getting the ``name`` parameter from the query string,
 so the request path would have to be ``/hello?name=Fabien``.
 
-Controllers providers
----------------------
+.. _controller-providers:
+
+Controller Providers
+--------------------
 
 Loading providers
 ~~~~~~~~~~~~~~~~~

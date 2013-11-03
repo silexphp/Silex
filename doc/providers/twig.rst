@@ -163,5 +163,5 @@ You can configure the Twig environment before using it by extending the
         return $twig;
     }));
 
-For more information, check out the `Twig documentation
+For more information, check out the `official Twig documentation
 <http://twig.sensiolabs.org>`_.

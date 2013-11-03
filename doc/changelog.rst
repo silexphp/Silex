@@ -54,7 +54,7 @@ Changelog
 
 * **2013-04-12**: Added support for validators as services.
 
-* **2013-04-01**: Added support for host matching with symfony 2.2:
+* **2013-04-01**: Added support for host matching with symfony 2.2::
 
       $app->match('/', function() {
           // app-specific action
