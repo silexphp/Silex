@@ -273,6 +273,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
     {
         if ($this->booted) {
             $this['dispatcher']->addListener($eventName, $callback, $priority);
+
             return;
         }
 
