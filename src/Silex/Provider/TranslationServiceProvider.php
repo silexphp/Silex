@@ -28,6 +28,10 @@ class TranslationServiceProvider implements ServiceProviderInterface
     public function register(Application $app)
     {
         $app['translator'] = $app->share(function ($app) {
+            if (!isset($app['locale'])) {
+                throw new \LogicException('You must register the LocaleServiceProvider to use the TranslationServiceProvider');
+            }
+
             $translator = new Translator($app, $app['translator.message_selector']);
 
             // Handle deprecated 'locale_fallback'
