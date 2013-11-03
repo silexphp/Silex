@@ -537,7 +537,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
 
     public function boot(Application $app)
     {
-        $app['dispatcher']->addSubscriber($app['security.firewall']);
+        $app->subscribe($app['security.firewall']);
 
         foreach ($this->fakeRoutes as $route) {
             list($method, $pattern, $name) = $route;

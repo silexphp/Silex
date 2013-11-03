@@ -84,6 +84,6 @@ class HttpFragmentServiceProvider implements ServiceProviderInterface
 
     public function boot(Application $app)
     {
-        $app['dispatcher']->addSubscriber($app['fragment.listener']);
+        $app->subscribe($app['fragment.listener']);
     }
 }

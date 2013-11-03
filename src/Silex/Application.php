@@ -11,6 +11,7 @@
 
 namespace Silex;
 
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -186,11 +187,11 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
     public function boot()
     {
         if (!$this->booted) {
+            $this->booted = true;
+
             foreach ($this->providers as $provider) {
                 $provider->boot($this);
             }
-
-            $this->booted = true;
         }
     }
 
@@ -278,6 +279,21 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
 
         $this['dispatcher'] = $this->share($this->extend('dispatcher', function ($dispatcher, $app) use ($callback, $priority, $eventName) {
             $dispatcher->addListener($eventName, $callback, $priority);
+
+            return $dispatcher;
+        }));
+    }
+
+    public function subscribe(EventSubscriberInterface $subscriber)
+    {
+        if ($this->booted) {
+            $this['dispatcher']->addSubscriber($subscriber);
+
+            return;
+        }
+
+        $this['dispatcher'] = $this->share($this->extend('dispatcher', function ($dispatcher, $app) use ($subscriber) {
+            $this['dispatcher']->addSubscriber($subscriber);
 
             return $dispatcher;
         }));
