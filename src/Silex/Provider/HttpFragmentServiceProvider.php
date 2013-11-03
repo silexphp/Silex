@@ -13,6 +13,8 @@ namespace Silex\Provider;
 
 use Silex\Application;
 use Silex\ServiceProviderInterface;
+use Silex\EventListenerProviderInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpKernel\Fragment\FragmentHandler;
 use Symfony\Component\HttpKernel\Fragment\InlineFragmentRenderer;
 use Symfony\Component\HttpKernel\Fragment\EsiFragmentRenderer;
@@ -25,7 +27,7 @@ use Symfony\Component\HttpKernel\UriSigner;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class HttpFragmentServiceProvider implements ServiceProviderInterface
+class HttpFragmentServiceProvider implements ServiceProviderInterface, EventListenerProviderInterface
 {
     public function register(Application $app)
     {
@@ -76,8 +78,12 @@ class HttpFragmentServiceProvider implements ServiceProviderInterface
         });
     }
 
+    public function subscribe(Application $app, EventDispatcherInterface $dispatcher)
+    {
+        $dispatcher->addSubscriber($app['fragment.listener']);
+    }
+
     public function boot(Application $app)
     {
-        $app['dispatcher']->addSubscriber($app['fragment.listener']);
     }
 }

@@ -9,6 +9,7 @@ Changelog
   if you want Silex to manage your locale (must also be registered for the translation service provider)
 
 1.2.0 (2014-03-29)
+------------------
 
 * Allowed disabling the boot logic of MonologServiceProvider
 * Reverted "convert attributes on the request that actually exist"

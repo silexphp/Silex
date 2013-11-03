@@ -13,8 +13,10 @@ namespace Silex\Provider;
 
 use Silex\Application;
 use Silex\ServiceProviderInterface;
+use Silex\EventListenerProviderInterface;
 use Silex\EventListener\SessionListener;
 use Silex\EventListener\TestSessionListener;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
@@ -25,7 +27,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class SessionServiceProvider implements ServiceProviderInterface
+class SessionServiceProvider implements ServiceProviderInterface, EventListenerProviderInterface
 {
     private $app;
 
@@ -75,12 +77,16 @@ class SessionServiceProvider implements ServiceProviderInterface
         $app['session.storage.save_path'] = null;
     }
 
-    public function boot(Application $app)
+    public function subscribe(Application $app, EventDispatcherInterface $dispatcher)
     {
-        $app['dispatcher']->addSubscriber($app['session.listener']);
+        $dispatcher->addSubscriber($app['session.listener']);
 
         if ($app['session.test']) {
             $app['dispatcher']->addSubscriber($app['session.listener.test']);
         }
+    }
+
+    public function boot(Application $app)
+    {
     }
 }
