@@ -19,13 +19,11 @@ n/a
     The service provider defines many other services that are used internally
     but rarely need to be customized.
 
-
 Registering
 -----------
 
-Before registering this service provider, you must register the *SecurityServiceProvider*.
-
-.. code-block:: php
+Before registering this service provider, you must register the
+*SecurityServiceProvider*::
 
     $app->register(new Silex\Provider\SecurityServiceProvider());
     $app->register(new Silex\Provider\RememberMeServiceProvider());
@@ -36,7 +34,7 @@ Before registering this service provider, you must register the *SecurityService
             'form'        => true,
             'logout'      => true,
             'remember_me' => array(
-                'key'                => 'Choose_An_Unique_Random_Key',
+                'key'                => 'Choose_A_Unique_Random_Key',
                 'always_remember_me' => true,
                 /* Other options */
             ),
@@ -47,11 +45,12 @@ Before registering this service provider, you must register the *SecurityService
 Options
 -------
 
-* **key**: A secret key to generate tokens (you should generate a random string).
+* **key**: A secret key to generate tokens (you should generate a random
+  string).
 
 * **name**: Cookie name (default: ``REMEMBERME``).
 
-* **lifetime**: Cookie lifetime (default: ``31536000`` = ~1 year).
+* **lifetime**: Cookie lifetime (default: ``31536000`` ~ 1 year).
 
 * **path**: Cookie path (default: ``/``).
 
@@ -59,11 +58,12 @@ Options
 
 * **secure**: Cookie is secure (default: ``false``).
 
-* **httponly**: Cookie is HTTP only (default: ``true``)
+* **httponly**: Cookie is HTTP only (default: ``true``).
 
-* **always_remember_me**: Enable remember me (default: ``false``)
+* **always_remember_me**: Enable remember me (default: ``false``).
 
-* **remember_me_parameter**: (default: ``_remember_me``). Name of the request
-paramater enabling remember_me on login. To add the checkbox to the login form.
-You can find more information in the `Symfony cookbook <http://symfony.com/doc/current/cookbook/security/remember_me.html>
-
+* **remember_me_parameter**: Name of the request paramater enabling remember_me
+  on login. To add the checkbox to the login form. You can find more
+  information in the `Symfony cookbook
+  <http://symfony.com/doc/current/cookbook/security/remember_me.html> (default:
+  ``_remember_me``).
