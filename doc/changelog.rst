@@ -4,7 +4,7 @@ Changelog
 2.0.0 (2013-XX-XX)
 ------------------
 
-* n/a
+* Updated session listeners to extends HttpKernel ones
 
 1.2.0 (2014-03-29)
 

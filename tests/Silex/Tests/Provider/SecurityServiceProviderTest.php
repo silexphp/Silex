@@ -200,7 +200,9 @@ class SecurityServiceProviderTest extends WebTestCase
                 'default' => array(
                     'pattern' => '^.*$',
                     'anonymous' => true,
-                    'form' => true,
+                    'form' => array(
+                        'require_previous_session' => false,
+                    ),
                     'logout' => true,
                     'users' => array(
                         // password is foo
