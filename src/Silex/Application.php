@@ -30,7 +30,6 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RequestContext;
-use Silex\EventListener\LocaleListener;
 use Silex\EventListener\MiddlewareListener;
 use Silex\EventListener\ConverterListener;
 use Silex\EventListener\StringToResponseListener;
@@ -94,7 +93,6 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
                 return $app['url_matcher'];
             });
             $dispatcher->addSubscriber(new RouterListener($urlMatcher, $app['request_context'], $app['logger'], $app['request_stack']));
-            $dispatcher->addSubscriber(new LocaleListener($app, $urlMatcher, $app['request_stack']));
             if (isset($app['exception_handler'])) {
                 $dispatcher->addSubscriber($app['exception_handler']);
             }
@@ -149,7 +147,6 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
         $this['request.https_port'] = 443;
         $this['debug'] = false;
         $this['charset'] = 'UTF-8';
-        $this['locale'] = 'en';
 
         foreach ($values as $key => $value) {
             $this[$key] = $value;
