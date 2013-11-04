@@ -85,8 +85,4 @@ class SessionServiceProvider implements ServiceProviderInterface, EventListenerP
             $app['dispatcher']->addSubscriber($app['session.listener.test']);
         }
     }
-
-    public function boot(Application $app)
-    {
-    }
 }

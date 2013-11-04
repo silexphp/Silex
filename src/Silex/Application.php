@@ -30,6 +30,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RequestContext;
+use Silex\Api\BootableProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
 use Silex\Api\ControllerProviderInterface;
 use Silex\Api\ServiceProviderInterface;
@@ -189,7 +190,9 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
                     $provider->subscribe($this, $this['dispatcher']);
                 }
 
-                $provider->boot($this);
+                if ($provider instanceof BootableProviderInterface) {
+                    $provider->boot($this);
+                }
             }
         }
     }

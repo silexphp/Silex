@@ -49,15 +49,4 @@ class SerializerServiceProvider implements ServiceProviderInterface
             return array(new CustomNormalizer(), new GetSetMethodNormalizer());
         });
     }
-
-    /**
-     * {@inheritDoc}
-     *
-     * This provider does not execute any code when booting.
-     *
-     * @param Silex\Application $app
-     */
-    public function boot(Application $app)
-    {
-    }
 }

@@ -106,8 +106,4 @@ class TwigServiceProvider implements ServiceProviderInterface
             ));
         });
     }
-
-    public function boot(Application $app)
-    {
-    }
 }

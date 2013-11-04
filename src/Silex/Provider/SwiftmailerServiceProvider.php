@@ -98,8 +98,4 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface, EventListe
             }
         });
     }
-
-    public function boot(Application $app)
-    {
-    }
 }
