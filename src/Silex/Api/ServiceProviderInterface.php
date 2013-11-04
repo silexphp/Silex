@@ -11,22 +11,20 @@
 
 namespace Silex\Api;
 
-use Silex\Application;
-
 /**
- * Interface that must implement all Silex service providers.
+ * Interface that must implement all service providers.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 interface ServiceProviderInterface
 {
     /**
-     * Registers services on the given app.
+     * Registers services on the given Pimple container.
      *
      * This method should only be used to configure services and parameters.
      * It should not get services.
      *
-     * @param Application $app An Application instance
+     * @param Pimple $app A Pimple instance
      */
-    public function register(Application $app);
+    public function register(\Pimple $app);
 }

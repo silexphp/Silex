@@ -11,7 +11,6 @@
 
 namespace Silex\Provider;
 
-use Silex\Application;
 use Silex\Api\ServiceProviderInterface;
 use Silex\Translator;
 use Symfony\Component\Translation\MessageSelector;
@@ -25,7 +24,7 @@ use Symfony\Component\Translation\Loader\XliffFileLoader;
  */
 class TranslationServiceProvider implements ServiceProviderInterface
 {
-    public function register(Application $app)
+    public function register(\Pimple $app)
     {
         $app['translator'] = $app->share(function ($app) {
             if (!isset($app['locale'])) {

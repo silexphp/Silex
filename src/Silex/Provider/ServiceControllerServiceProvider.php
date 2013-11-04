@@ -11,13 +11,12 @@
 
 namespace Silex\Provider;
 
-use Silex\Application;
 use Silex\Api\ServiceProviderInterface;
 use Silex\ServiceControllerResolver;
 
 class ServiceControllerServiceProvider implements ServiceProviderInterface
 {
-    public function register(Application $app)
+    public function register(\Pimple $app)
     {
         $app['resolver'] = $app->share($app->extend('resolver', function ($resolver, $app) {
             return new ServiceControllerResolver($resolver, $app['callback_resolver']);

@@ -11,7 +11,6 @@
 
 namespace Silex\Provider;
 
-use Silex\Application;
 use Silex\Api\ServiceProviderInterface;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 
@@ -22,7 +21,7 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
  */
 class UrlGeneratorServiceProvider implements ServiceProviderInterface
 {
-    public function register(Application $app)
+    public function register(\Pimple $app)
     {
         $app['url_generator'] = $app->share(function ($app) {
             $app->flush();

@@ -11,7 +11,6 @@
 
 namespace Silex\Provider;
 
-use Silex\Application;
 use Silex\Api\ServiceProviderInterface;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Configuration;
@@ -25,7 +24,7 @@ use Symfony\Bridge\Doctrine\Logger\DbalLogger;
  */
 class DoctrineServiceProvider implements ServiceProviderInterface
 {
-    public function register(Application $app)
+    public function register(\Pimple $app)
     {
         $app['db.default_options'] = array(
             'driver'   => 'pdo_mysql',

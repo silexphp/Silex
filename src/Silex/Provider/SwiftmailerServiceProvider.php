@@ -11,7 +11,6 @@
 
 namespace Silex\Provider;
 
-use Silex\Application;
 use Silex\Api\ServiceProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -25,7 +24,7 @@ use Symfony\Component\HttpKernel\Event\PostResponseEvent;
  */
 class SwiftmailerServiceProvider implements ServiceProviderInterface, EventListenerProviderInterface
 {
-    public function register(Application $app)
+    public function register(\Pimple $app)
     {
         $app['swiftmailer.options'] = array();
 
@@ -88,7 +87,7 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface, EventListe
         });
     }
 
-    public function subscribe(Application $app, EventDispatcherInterface $dispatcher)
+    public function subscribe(\Pimple $app, EventDispatcherInterface $dispatcher)
     {
         $dispatcher->addListener(KernelEvents::TERMINATE, function (PostResponseEvent $event) use ($app) {
             // To speed things up (by avoiding Swift Mailer initialization), flush

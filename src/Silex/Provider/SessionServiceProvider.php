@@ -11,7 +11,6 @@
 
 namespace Silex\Provider;
 
-use Silex\Application;
 use Silex\Api\ServiceProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
 use Silex\EventListener\SessionListener;
@@ -31,7 +30,7 @@ class SessionServiceProvider implements ServiceProviderInterface, EventListenerP
 {
     private $app;
 
-    public function register(Application $app)
+    public function register(\Pimple $app)
     {
         $this->app = $app;
 
@@ -77,7 +76,7 @@ class SessionServiceProvider implements ServiceProviderInterface, EventListenerP
         $app['session.storage.save_path'] = null;
     }
 
-    public function subscribe(Application $app, EventDispatcherInterface $dispatcher)
+    public function subscribe(\Pimple $app, EventDispatcherInterface $dispatcher)
     {
         $dispatcher->addSubscriber($app['session.listener']);
 
