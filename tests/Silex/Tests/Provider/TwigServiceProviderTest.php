@@ -39,30 +39,6 @@ class TwigServiceProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Hello john!', $response->getContent());
     }
 
-    public function testRenderFunction()
-    {
-        $app = new Application();
-
-        $app->register(new TwigServiceProvider(), array(
-            'twig.templates'    => array(
-                'hello' => '{{ render("/foo") }}',
-                'foo'   => 'foo',
-            ),
-        ));
-
-        $app->get('/hello', function () use ($app) {
-            return $app['twig']->render('hello');
-        });
-
-        $app->get('/foo', function () use ($app) {
-            return $app['twig']->render('foo');
-        });
-
-        $request = Request::create('/hello');
-        $response = $app->handle($request);
-        $this->assertEquals('foo', $response->getContent());
-    }
-
     public function testLoaderPriority()
     {
         $app = new Application();
