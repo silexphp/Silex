@@ -52,6 +52,10 @@
         "symfony/dom-crawler": ">=2.4,<2.6-dev",
         "symfony/form": ">=2.4,<2.6-dev"
     },
+    "replace": {
+        "silex/silex-api": "self.version",
+        "silex/silex-providers": "self.version"
+    },
     "autoload": {
         "psr-0": { "Silex": "src/" }
     },
