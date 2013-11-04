@@ -21,8 +21,9 @@
         "silex/api": "*"
     },
     "autoload": {
-        "psr-0": { "Silex": "src/" }
+        "psr-0": { "Silex/Provider": "" }
     },
+    "target-dir": "Silex/Provider",
     "extra": {
         "branch-alias": {
             "dev-master": "2.0.x-dev"
