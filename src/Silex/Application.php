@@ -117,11 +117,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
         });
 
         $this['request_stack'] = $this->share(function () use ($app) {
-            if (class_exists('Symfony\Component\HttpFoundation\RequestStack')) {
-                return new RequestStack();
-            }
-
-            return null;
+            return new RequestStack();
         });
 
         $this['request_context'] = $this->share(function () use ($app) {
