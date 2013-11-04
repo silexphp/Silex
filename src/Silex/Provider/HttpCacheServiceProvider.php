@@ -31,7 +31,7 @@ class HttpCacheServiceProvider implements ServiceProviderInterface, EventListene
         $app['http_cache'] = $app->share(function ($app) {
             $app['http_cache.options'] = array_replace(
                 array(
-                    'debug' => $app['debug'],
+                    'debug' => isset($app['debug']) ? $app['debug'] : false,
                 ), $app['http_cache.options']
             );
 

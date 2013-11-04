@@ -37,16 +37,16 @@ class TwigServiceProvider implements ServiceProviderInterface
         $app['twig'] = $app->share(function ($app) {
             $app['twig.options'] = array_replace(
                 array(
-                    'charset'          => $app['charset'],
-                    'debug'            => $app['debug'],
-                    'strict_variables' => $app['debug'],
+                    'charset'          => isset($app['charset']) ? $app['charset'] : 'UTF-8',
+                    'debug'            => isset($app['debug']) ? $app['debug'] : false,
+                    'strict_variables' => isset($app['debug']) ? $app['debug'] : false,
                 ), $app['twig.options']
             );
 
             $twig = new \Twig_Environment($app['twig.loader'], $app['twig.options']);
             $twig->addGlobal('app', $app);
 
-            if ($app['debug']) {
+            if (isset($app['debug']) && $app['debug']) {
                 $twig->addExtension(new \Twig_Extension_Debug());
             }
 
