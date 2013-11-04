@@ -28,7 +28,7 @@ class TestSessionListener extends BaseTestSessionListener
         $this->app = $app;
     }
 
-    public function getSession()
+    protected function getSession()
     {
         if (!isset($this->app['session'])) {
             return null;
