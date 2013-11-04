@@ -1,6 +1,6 @@
 {
     "minimum-stability": "dev",
-    "name": "silex/silex-providers",
+    "name": "silex/providers",
     "description": "The Silex providers",
     "keywords": ["microframework"],
     "homepage": "http://silex.sensiolabs.org",
@@ -18,7 +18,7 @@
     "require": {
         "php": ">=5.3.3",
         "pimple/pimple": "~1.0",
-        "silex/silex-api": "*"
+        "silex/api": "*"
     },
     "autoload": {
         "psr-0": { "Silex": "src/" }
