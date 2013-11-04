@@ -11,8 +11,9 @@
 
 namespace Silex\Provider;
 
-use Silex\Application;
-use Silex\ServiceProviderInterface;
+use Silex\Api\ServiceProviderInterface;
+use Silex\Api\EventListenerProviderInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpKernel\Fragment\FragmentHandler;
 use Symfony\Component\HttpKernel\Fragment\InlineFragmentRenderer;
 use Symfony\Component\HttpKernel\Fragment\EsiFragmentRenderer;
@@ -25,9 +26,9 @@ use Symfony\Component\HttpKernel\UriSigner;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class HttpFragmentServiceProvider implements ServiceProviderInterface
+class HttpFragmentServiceProvider implements ServiceProviderInterface, EventListenerProviderInterface
 {
-    public function register(Application $app)
+    public function register(\Pimple $app)
     {
         $app['fragment.handler'] = $app->share(function ($app) {
             return new FragmentHandler($app['fragment.renderers'], $app['debug'], $app['request_stack']);
@@ -76,8 +77,8 @@ class HttpFragmentServiceProvider implements ServiceProviderInterface
         });
     }
 
-    public function boot(Application $app)
+    public function subscribe(\Pimple $app, EventDispatcherInterface $dispatcher)
     {
-        $app['dispatcher']->addSubscriber($app['fragment.listener']);
+        $dispatcher->addSubscriber($app['fragment.listener']);
     }
 }

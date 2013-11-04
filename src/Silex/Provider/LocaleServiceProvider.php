@@ -11,19 +11,20 @@
 
 namespace Silex\Provider;
 
-use Silex\Application;
-use Silex\LazyUrlMatcher;
-use Silex\ServiceProviderInterface;
-use Silex\EventListener\LocaleListener;
+use Silex\Api\ServiceProviderInterface;
+use Silex\Api\EventListenerProviderInterface;
+use Silex\Provider\Locale\LocaleListener;
+use Silex\Provider\Router\LazyUrlMatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Locale Provider.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class LocaleServiceProvider implements ServiceProviderInterface
+class LocaleServiceProvider implements ServiceProviderInterface, EventListenerProviderInterface
 {
-    public function register(Application $app)
+    public function register(\Pimple $app)
     {
         $app['locale.listener'] = $app->share(function ($app) {
             $urlMatcher = null;
@@ -39,8 +40,12 @@ class LocaleServiceProvider implements ServiceProviderInterface
         $app['locale'] = 'en';
     }
 
+    public function subscribe(\Pimple $app, EventDispatcherInterface $dispatcher)
+    {
+        $dispatcher->addSubscriber($app['locale.listener']);
+    }
+
     public function boot(Application $app)
     {
-        $app['dispatcher']->addSubscriber($app['locale.listener']);
     }
 }

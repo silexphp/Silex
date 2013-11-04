@@ -11,10 +11,11 @@
 
 namespace Silex\Provider;
 
-use Silex\Application;
-use Silex\ServiceProviderInterface;
-use Silex\EventListener\SessionListener;
-use Silex\EventListener\TestSessionListener;
+use Silex\Api\ServiceProviderInterface;
+use Silex\Api\EventListenerProviderInterface;
+use Silex\Provider\Session\SessionListener;
+use Silex\Provider\Session\TestSessionListener;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
@@ -25,11 +26,11 @@ use Symfony\Component\HttpFoundation\Session\Session;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class SessionServiceProvider implements ServiceProviderInterface
+class SessionServiceProvider implements ServiceProviderInterface, EventListenerProviderInterface
 {
     private $app;
 
-    public function register(Application $app)
+    public function register(\Pimple $app)
     {
         $this->app = $app;
 
@@ -75,9 +76,9 @@ class SessionServiceProvider implements ServiceProviderInterface
         $app['session.storage.save_path'] = null;
     }
 
-    public function boot(Application $app)
+    public function subscribe(\Pimple $app, EventDispatcherInterface $dispatcher)
     {
-        $app['dispatcher']->addSubscriber($app['session.listener']);
+        $dispatcher->addSubscriber($app['session.listener']);
 
         if ($app['session.test']) {
             $app['dispatcher']->addSubscriber($app['session.listener.test']);

@@ -11,6 +11,7 @@ Changelog
 1.2.0 (2013-XX-XX)
 ------------------
 
+* added EventListenerProviderInterface
 * Reverted "convert attributes on the request that actually exist"
 * [BC BREAK] Routes are now always added in the order of their registration (even for mounted routes)
 * Added run() on Route to be able to define the controller code
