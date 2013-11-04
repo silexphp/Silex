@@ -230,9 +230,6 @@ don't want to mess with most of them.
   the ``MonologServiceProvider`` or define your own ``logger`` service that
   conforms to the PSR logger interface.
 
-  In versions of Silex before 1.1 this must be a
-  ``Symfony\Component\HttpKernel\Log\LoggerInterface``.
-
 .. note::
 
     All of these Silex core services are shared.
