@@ -12,7 +12,7 @@
 namespace Silex\Tests\Application;
 
 use Silex\Application;
-use Silex\Provider\UrlGeneratorServiceProvider;
+use Silex\Provider\RoutingServiceProvider;
 
 /**
  * UrlGeneratorTrait test cases.
@@ -25,7 +25,7 @@ class UrlGeneratorTraitTest extends \PHPUnit_Framework_TestCase
 {
     public function testUrl()
     {
-        $app = $this->createApplication();
+        $app = new UrlGeneratorApplication();
         $app['url_generator'] = $translator = $this->getMockBuilder('Symfony\Component\Routing\Generator\UrlGeneratorInterface')->disableOriginalConstructor()->getMock();
         $translator->expects($this->once())->method('generate')->with('foo', array(), true);
         $app->url('foo');
@@ -33,17 +33,9 @@ class UrlGeneratorTraitTest extends \PHPUnit_Framework_TestCase
 
     public function testPath()
     {
-        $app = $this->createApplication();
+        $app = new UrlGeneratorApplication();
         $app['url_generator'] = $translator = $this->getMockBuilder('Symfony\Component\Routing\Generator\UrlGeneratorInterface')->disableOriginalConstructor()->getMock();
         $translator->expects($this->once())->method('generate')->with('foo', array(), false);
         $app->path('foo');
-    }
-
-    public function createApplication()
-    {
-        $app = new UrlGeneratorApplication();
-        $app->register(new UrlGeneratorServiceProvider());
-
-        return $app;
     }
 }
