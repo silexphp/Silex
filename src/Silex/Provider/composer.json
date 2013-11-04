@@ -17,7 +17,8 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "pimple/pimple": "~1.0"
+        "pimple/pimple": "~1.0",
+        "silex/silex-api": "*"
     },
     "autoload": {
         "psr-0": { "Silex": "src/" }
