@@ -23,18 +23,12 @@ use Symfony\Component\HttpKernel\UriSigner;
 /**
  * HttpKernel Fragment integration for Silex.
  *
- * This service provider requires Symfony 2.4+.
- *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class HttpFragmentServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
-        if (!class_exists('Symfony\Component\HttpFoundation\RequestStack')) {
-            throw new \LogicException('The HTTP Fragment service provider only works with Symfony 2.4+.');
-        }
-
         $app['fragment.handler'] = $app->share(function ($app) {
             return new FragmentHandler($app['fragment.renderers'], $app['debug'], $app['request_stack']);
         });

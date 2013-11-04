@@ -103,15 +103,6 @@ class TranslationServiceProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function testBackwardCompatiblityForFallback()
-    {
-        $app = $this->getPreparedApp();
-        $app['locale_fallback'] = 'de';
-
-        $result = $app['translator']->trans('key1', array(), null, 'ru');
-        $this->assertEquals('The german translation', $result);
-    }
-
     public function testFallbacks()
     {
         $app = $this->getPreparedApp();
