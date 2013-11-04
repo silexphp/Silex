@@ -42,7 +42,7 @@ class HttpFragmentServiceProvider implements ServiceProviderInterface, EventList
         });
 
         $app['fragment.renderer.hinclude'] = $app->share(function ($app) {
-            $renderer = new HIncludeFragmentRenderer(null, $app['uri_signer'], $app['fragment.renderer.hinclude.global_template'], $app['charset']);
+            $renderer = new HIncludeFragmentRenderer(null, $app['uri_signer'], $app['fragment.renderer.hinclude.global_template'], isset($app['charset']) ? $app['charset'] : 'UTF-8');
             $renderer->setFragmentPath($app['fragment.path']);
 
             return $renderer;
