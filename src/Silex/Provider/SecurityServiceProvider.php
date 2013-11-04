@@ -12,7 +12,11 @@
 namespace Silex\Provider;
 
 use Silex\Application;
-use Silex\ServiceProviderInterface;
+use Silex\Api\BootableProviderInterface;
+use Silex\Api\ControllerProviderInterface;
+use Silex\Api\ServiceProviderInterface;
+use Silex\Api\EventListenerProviderInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RequestMatcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContext;
@@ -57,11 +61,11 @@ use Symfony\Component\Security\Http\HttpUtils;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class SecurityServiceProvider implements ServiceProviderInterface
+class SecurityServiceProvider implements ServiceProviderInterface, EventListenerProviderInterface, ControllerProviderInterface, BootableProviderInterface
 {
     protected $fakeRoutes;
 
-    public function register(Application $app)
+    public function register(\Pimple $app)
     {
         // used to register routes for login_check and logout
         $this->fakeRoutes = array();
@@ -535,15 +539,26 @@ class SecurityServiceProvider implements ServiceProviderInterface
         }
     }
 
-    public function boot(Application $app)
+    public function subscribe(\Pimple $app, EventDispatcherInterface $dispatcher)
     {
-        $app['dispatcher']->addSubscriber($app['security.firewall']);
+        $dispatcher->addSubscriber($app['security.firewall']);
+    }
 
+    public function connect(Application $app)
+    {
+        $controllers = $app['controllers_factory'];
         foreach ($this->fakeRoutes as $route) {
             list($method, $pattern, $name) = $route;
 
-            $app->$method($pattern)->run(null)->bind($name);
+            $controllers->$method($pattern)->run(null)->bind($name);
         }
+
+        return $controllers;
+    }
+
+    public function boot(Application $app)
+    {
+        $app->mount('/', $this->connect($app));
     }
 
     public function addFakeRoute($method, $pattern, $name)

@@ -1,9 +1,17 @@
 Changelog
 =========
 
+2.0.0 (2013-XX-XX)
+------------------
+
+* Updated session listeners to extends HttpKernel ones
+* [BC BREAK] Locale management has been moved to LocaleServiceProvider which must be registered
+  if you want Silex to manage your locale (must also be registered for the translation service provider)
+
 1.2.0 (2013-XX-XX)
 ------------------
 
+* added EventListenerProviderInterface
 * Reverted "convert attributes on the request that actually exist"
 * [BC BREAK] Routes are now always added in the order of their registration (even for mounted routes)
 * Added run() on Route to be able to define the controller code

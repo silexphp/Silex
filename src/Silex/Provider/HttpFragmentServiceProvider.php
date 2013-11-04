@@ -11,8 +11,9 @@
 
 namespace Silex\Provider;
 
-use Silex\Application;
-use Silex\ServiceProviderInterface;
+use Silex\Api\ServiceProviderInterface;
+use Silex\Api\EventListenerProviderInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpKernel\Fragment\FragmentHandler;
 use Symfony\Component\HttpKernel\Fragment\InlineFragmentRenderer;
 use Symfony\Component\HttpKernel\Fragment\EsiFragmentRenderer;
@@ -23,20 +24,14 @@ use Symfony\Component\HttpKernel\UriSigner;
 /**
  * HttpKernel Fragment integration for Silex.
  *
- * This service provider requires Symfony 2.4+.
- *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class HttpFragmentServiceProvider implements ServiceProviderInterface
+class HttpFragmentServiceProvider implements ServiceProviderInterface, EventListenerProviderInterface
 {
-    public function register(Application $app)
+    public function register(\Pimple $app)
     {
-        if (!class_exists('Symfony\Component\HttpFoundation\RequestStack')) {
-            throw new \LogicException('The HTTP Fragment service provider only works with Symfony 2.4+.');
-        }
-
         $app['fragment.handler'] = $app->share(function ($app) {
-            return new FragmentHandler($app['fragment.renderers'], $app['debug'], $app['request_stack']);
+            return new FragmentHandler($app['fragment.renderers'], isset($app['debug']) ? $app['debug'] : false, $app['request_stack']);
         });
 
         $app['fragment.renderer.inline'] = $app->share(function ($app) {
@@ -47,7 +42,7 @@ class HttpFragmentServiceProvider implements ServiceProviderInterface
         });
 
         $app['fragment.renderer.hinclude'] = $app->share(function ($app) {
-            $renderer = new HIncludeFragmentRenderer(null, $app['uri_signer'], $app['fragment.renderer.hinclude.global_template'], $app['charset']);
+            $renderer = new HIncludeFragmentRenderer(null, $app['uri_signer'], $app['fragment.renderer.hinclude.global_template'], isset($app['charset']) ? $app['charset'] : 'UTF-8');
             $renderer->setFragmentPath($app['fragment.path']);
 
             return $renderer;
@@ -82,8 +77,8 @@ class HttpFragmentServiceProvider implements ServiceProviderInterface
         });
     }
 
-    public function boot(Application $app)
+    public function subscribe(\Pimple $app, EventDispatcherInterface $dispatcher)
     {
-        $app['dispatcher']->addSubscriber($app['fragment.listener']);
+        $dispatcher->addSubscriber($app['fragment.listener']);
     }
 }

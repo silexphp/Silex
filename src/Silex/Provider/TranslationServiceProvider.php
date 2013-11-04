@@ -11,9 +11,8 @@
 
 namespace Silex\Provider;
 
-use Silex\Application;
-use Silex\ServiceProviderInterface;
-use Silex\Translator;
+use Silex\Api\ServiceProviderInterface;
+use Silex\Provider\Translation\Translator;
 use Symfony\Component\Translation\MessageSelector;
 use Symfony\Component\Translation\Loader\ArrayLoader;
 use Symfony\Component\Translation\Loader\XliffFileLoader;
@@ -25,18 +24,15 @@ use Symfony\Component\Translation\Loader\XliffFileLoader;
  */
 class TranslationServiceProvider implements ServiceProviderInterface
 {
-    public function register(Application $app)
+    public function register(\Pimple $app)
     {
         $app['translator'] = $app->share(function ($app) {
-            $translator = new Translator($app, $app['translator.message_selector']);
-
-            // Handle deprecated 'locale_fallback'
-            if (isset($app['locale_fallback'])) {
-                $app['locale_fallbacks'] = (array) $app['locale_fallback'];
+            if (!isset($app['locale'])) {
+                throw new \LogicException('You must register the LocaleServiceProvider to use the TranslationServiceProvider');
             }
 
+            $translator = new Translator($app, $app['translator.message_selector']);
             $translator->setFallbackLocales($app['locale_fallbacks']);
-
             $translator->addLoader('array', new ArrayLoader());
             $translator->addLoader('xliff', new XliffFileLoader());
 
@@ -55,9 +51,5 @@ class TranslationServiceProvider implements ServiceProviderInterface
 
         $app['translator.domains'] = array();
         $app['locale_fallbacks'] = array('en');
-    }
-
-    public function boot(Application $app)
-    {
     }
 }

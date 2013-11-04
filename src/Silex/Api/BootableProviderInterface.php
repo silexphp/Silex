@@ -9,25 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Silex;
+namespace Silex\Api;
+
+use Silex\Application;
 
 /**
  * Interface that must implement all Silex service providers.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-interface ServiceProviderInterface
+interface BootableProviderInterface
 {
-    /**
-     * Registers services on the given app.
-     *
-     * This method should only be used to configure services and parameters.
-     * It should not get services.
-     *
-     * @param Application $app An Application instance
-     */
-    public function register(Application $app);
-
     /**
      * Bootstraps the application.
      *

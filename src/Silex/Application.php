@@ -30,10 +30,14 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RequestContext;
-use Silex\EventListener\LocaleListener;
+use Silex\Api\BootableProviderInterface;
+use Silex\Api\EventListenerProviderInterface;
+use Silex\Api\ControllerProviderInterface;
+use Silex\Api\ServiceProviderInterface;
 use Silex\EventListener\MiddlewareListener;
 use Silex\EventListener\ConverterListener;
 use Silex\EventListener\StringToResponseListener;
+use Silex\Provider\Router\LazyUrlMatcher;
 
 /**
  * The Silex framework class.
@@ -42,7 +46,7 @@ use Silex\EventListener\StringToResponseListener;
  */
 class Application extends \Pimple implements HttpKernelInterface, TerminableInterface
 {
-    const VERSION = '1.2.0-DEV';
+    const VERSION = '2.0.0-DEV';
 
     const EARLY_EVENT = 512;
     const LATE_EVENT  = -512;
@@ -94,7 +98,6 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
                 return $app['url_matcher'];
             });
             $dispatcher->addSubscriber(new RouterListener($urlMatcher, $app['request_context'], $app['logger'], $app['request_stack']));
-            $dispatcher->addSubscriber(new LocaleListener($app, $urlMatcher, $app['request_stack']));
             if (isset($app['exception_handler'])) {
                 $dispatcher->addSubscriber($app['exception_handler']);
             }
@@ -119,11 +122,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
         });
 
         $this['request_stack'] = $this->share(function () use ($app) {
-            if (class_exists('Symfony\Component\HttpFoundation\RequestStack')) {
-                return new RequestStack();
-            }
-
-            return null;
+            return new RequestStack();
         });
 
         $this['request_context'] = $this->share(function () use ($app) {
@@ -149,7 +148,6 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
         $this['request.https_port'] = 443;
         $this['debug'] = false;
         $this['charset'] = 'UTF-8';
-        $this['locale'] = 'en';
 
         foreach ($values as $key => $value) {
             $this[$key] = $value;
@@ -186,11 +184,17 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
     public function boot()
     {
         if (!$this->booted) {
-            foreach ($this->providers as $provider) {
-                $provider->boot($this);
-            }
-
             $this->booted = true;
+
+            foreach ($this->providers as $provider) {
+                if ($provider instanceof EventListenerProviderInterface) {
+                    $provider->subscribe($this, $this['dispatcher']);
+                }
+
+                if ($provider instanceof BootableProviderInterface) {
+                    $provider->boot($this);
+                }
+            }
         }
     }
 
@@ -273,6 +277,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
     {
         if ($this->booted) {
             $this['dispatcher']->addListener($eventName, $callback, $priority);
+
             return;
         }
 
@@ -452,8 +457,6 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      * @param null|string         $contentDisposition The type of Content-Disposition to set automatically with the filename
      *
      * @return BinaryFileResponse
-     *
-     * @throws \RuntimeException When the feature is not supported, before http-foundation v2.2
      */
     public function sendFile($file, $status = 200, $headers = array(), $contentDisposition = null)
     {

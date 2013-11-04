@@ -11,9 +11,8 @@
 
 namespace Silex\Provider;
 
-use Silex\Application;
-use Silex\ServiceProviderInterface;
-use Silex\ConstraintValidatorFactory;
+use Silex\Api\ServiceProviderInterface;
+use Silex\Provider\Validator\ConstraintValidatorFactory;
 use Symfony\Component\Validator\Validator;
 use Symfony\Component\Validator\DefaultTranslator;
 use Symfony\Component\Validator\Mapping\ClassMetadataFactory;
@@ -26,7 +25,7 @@ use Symfony\Component\Validator\Mapping\Loader\StaticMethodLoader;
  */
 class ValidatorServiceProvider implements ServiceProviderInterface
 {
-    public function register(Application $app)
+    public function register(\Pimple $app)
     {
         $app['validator'] = $app->share(function ($app) {
             $r = new \ReflectionClass('Symfony\Component\Validator\Validator');
@@ -51,9 +50,5 @@ class ValidatorServiceProvider implements ServiceProviderInterface
 
             return new ConstraintValidatorFactory($app, $validators);
         });
-    }
-
-    public function boot(Application $app)
-    {
     }
 }
