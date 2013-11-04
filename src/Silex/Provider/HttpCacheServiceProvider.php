@@ -11,7 +11,7 @@
 
 namespace Silex\Provider;
 
-use Silex\HttpCache;
+use Silex\Provider\HttpCache\HttpCache;
 use Silex\Api\ServiceProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

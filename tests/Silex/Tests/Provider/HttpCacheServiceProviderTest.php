@@ -31,7 +31,7 @@ class HttpCacheServiceProviderTest extends \PHPUnit_Framework_TestCase
             'http_cache.cache_dir' => sys_get_temp_dir().'/silex_http_cache_'.uniqid(),
         ));
 
-        $this->assertInstanceOf('Silex\HttpCache', $app['http_cache']);
+        $this->assertInstanceOf('Silex\Provider\HttpCache\HttpCache', $app['http_cache']);
 
         return $app;
     }

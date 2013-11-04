@@ -12,7 +12,7 @@
 namespace Silex\Provider;
 
 use Silex\Api\ServiceProviderInterface;
-use Silex\Translator;
+use Silex\Provider\Translation\Translator;
 use Symfony\Component\Translation\MessageSelector;
 use Symfony\Component\Translation\Loader\ArrayLoader;
 use Symfony\Component\Translation\Loader\XliffFileLoader;

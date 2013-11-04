@@ -37,6 +37,7 @@ use Silex\Api\ServiceProviderInterface;
 use Silex\EventListener\MiddlewareListener;
 use Silex\EventListener\ConverterListener;
 use Silex\EventListener\StringToResponseListener;
+use Silex\Provider\Router\LazyUrlMatcher;
 
 /**
  * The Silex framework class.
