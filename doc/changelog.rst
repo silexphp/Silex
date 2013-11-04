@@ -4,7 +4,8 @@ Changelog
 2.0.0 (2013-XX-XX)
 ------------------
 
-* n/a
+* [BC BREAK] Locale management has been moved to LocaleServiceProvider which must be registered
+  if you want Silex to manage your locale (must also be registered for the translation service provider)
 
 1.2.0 (2013-XX-XX)
 ------------------
