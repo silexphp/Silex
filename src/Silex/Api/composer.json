@@ -1,6 +1,6 @@
 {
     "minimum-stability": "dev",
-    "name": "silex/silex-api",
+    "name": "silex/api",
     "description": "The Silex interfaces",
     "keywords": ["microframework"],
     "homepage": "http://silex.sensiolabs.org",
