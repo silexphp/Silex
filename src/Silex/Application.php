@@ -30,9 +30,14 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RequestContext;
+use Silex\Api\BootableProviderInterface;
+use Silex\Api\EventListenerProviderInterface;
+use Silex\Api\ControllerProviderInterface;
+use Silex\Api\ServiceProviderInterface;
 use Silex\EventListener\MiddlewareListener;
 use Silex\EventListener\ConverterListener;
 use Silex\EventListener\StringToResponseListener;
+use Silex\Provider\Router\LazyUrlMatcher;
 
 /**
  * The Silex framework class.
@@ -179,11 +184,17 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
     public function boot()
     {
         if (!$this->booted) {
-            foreach ($this->providers as $provider) {
-                $provider->boot($this);
-            }
-
             $this->booted = true;
+
+            foreach ($this->providers as $provider) {
+                if ($provider instanceof EventListenerProviderInterface) {
+                    $provider->subscribe($this, $this['dispatcher']);
+                }
+
+                if ($provider instanceof BootableProviderInterface) {
+                    $provider->boot($this);
+                }
+            }
         }
     }
 

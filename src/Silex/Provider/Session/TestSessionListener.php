@@ -9,21 +9,20 @@
  * file that was distributed with this source code.
  */
 
-namespace Silex\EventListener;
+namespace Silex\Provider\Session;
 
-use Silex\Application;
-use Symfony\Component\HttpKernel\EventListener\SessionListener as BaseSessionListener;
+use Symfony\Component\HttpKernel\EventListener\TestSessionListener as BaseTestSessionListener;
 
 /**
- * Sets the session in the request.
+ * Simulates sessions for testing purpose.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class SessionListener extends BaseSessionListener
+class TestSessionListener extends BaseTestSessionListener
 {
     private $app;
 
-    public function __construct(Application $app)
+    public function __construct(\Pimple $app)
     {
         $this->app = $app;
     }
