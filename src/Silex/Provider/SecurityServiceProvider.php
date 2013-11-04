@@ -12,6 +12,7 @@
 namespace Silex\Provider;
 
 use Silex\Application;
+use Silex\Api\BootableProviderInterface;
 use Silex\Api\ControllerProviderInterface;
 use Silex\Api\ServiceProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
@@ -60,7 +61,7 @@ use Symfony\Component\Security\Http\HttpUtils;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class SecurityServiceProvider implements ServiceProviderInterface, EventListenerProviderInterface, ControllerProviderInterface
+class SecurityServiceProvider implements ServiceProviderInterface, EventListenerProviderInterface, ControllerProviderInterface, BootableProviderInterface
 {
     protected $fakeRoutes;
 

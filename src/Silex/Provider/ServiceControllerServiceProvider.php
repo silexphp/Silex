@@ -23,9 +23,4 @@ class ServiceControllerServiceProvider implements ServiceProviderInterface
             return new ServiceControllerResolver($resolver, $app['callback_resolver']);
         }));
     }
-
-    public function boot(Application $app)
-    {
-        // noop
-    }
 }

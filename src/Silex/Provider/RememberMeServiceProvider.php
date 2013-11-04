@@ -103,8 +103,4 @@ class RememberMeServiceProvider implements ServiceProviderInterface, EventListen
     {
         $dispatcher->addSubscriber($app['security.remember_me.response_listener']);
     }
-
-    public function boot(Application $app)
-    {
-    }
 }

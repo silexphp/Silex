@@ -14,19 +14,18 @@ namespace Silex\Api;
 use Silex\Application;
 
 /**
- * Interface that all Silex service providers must implement.
+ * Interface that must implement all Silex service providers.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-interface ServiceProviderInterface
+interface BootableProviderInterface
 {
     /**
-     * Registers services on the given app.
+     * Bootstraps the application.
      *
-     * This method should only be used to configure services and parameters.
-     * It should not get services.
-     *
-     * @param Application $app An Application instance
+     * This method is called after all services are registered
+     * and should be used for "dynamic" configuration (whenever
+     * a service must be requested).
      */
-    public function register(Application $app);
+    public function boot(Application $app);
 }

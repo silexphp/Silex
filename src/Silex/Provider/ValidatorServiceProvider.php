@@ -58,8 +58,4 @@ class ValidatorServiceProvider implements ServiceProviderInterface
             return array();
         });
     }
-
-    public function boot(Application $app)
-    {
-    }
 }

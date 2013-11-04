@@ -127,8 +127,4 @@ class DoctrineServiceProvider implements ServiceProviderInterface
             return $dbs[$app['dbs.default']];
         });
     }
-
-    public function boot(Application $app)
-    {
-    }
 }
