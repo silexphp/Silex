@@ -33,14 +33,7 @@ class TranslationServiceProvider implements ServiceProviderInterface
             }
 
             $translator = new Translator($app, $app['translator.message_selector']);
-
-            // Handle deprecated 'locale_fallback'
-            if (isset($app['locale_fallback'])) {
-                $app['locale_fallbacks'] = (array) $app['locale_fallback'];
-            }
-
             $translator->setFallbackLocales($app['locale_fallbacks']);
-
             $translator->addLoader('array', new ArrayLoader());
             $translator->addLoader('xliff', new XliffFileLoader());
 
