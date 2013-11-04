@@ -31,7 +31,7 @@ class HttpFragmentServiceProvider implements ServiceProviderInterface, EventList
     public function register(\Pimple $app)
     {
         $app['fragment.handler'] = $app->share(function ($app) {
-            return new FragmentHandler($app['fragment.renderers'], $app['debug'], $app['request_stack']);
+            return new FragmentHandler($app['fragment.renderers'], isset($app['debug']) ? $app['debug'] : false, $app['request_stack']);
         });
 
         $app['fragment.renderer.inline'] = $app->share(function ($app) {
