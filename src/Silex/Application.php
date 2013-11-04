@@ -465,8 +465,6 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      * @param null|string         $contentDisposition The type of Content-Disposition to set automatically with the filename
      *
      * @return BinaryFileResponse
-     *
-     * @throws \RuntimeException When the feature is not supported, before http-foundation v2.2
      */
     public function sendFile($file, $status = 200, array $headers = array(), $contentDisposition = null)
     {
