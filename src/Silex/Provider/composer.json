@@ -21,7 +21,7 @@
         "silex/api": "*"
     },
     "autoload": {
-        "psr-0": { "Silex/Provider": "" }
+        "psr-0": { "Silex\\Provider": "" }
     },
     "target-dir": "Silex/Provider",
     "extra": {
