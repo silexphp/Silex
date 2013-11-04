@@ -11,7 +11,7 @@
 
 namespace Silex\Tests;
 
-use Silex\Provider\Router\LazyUrlMatcher;
+use Silex\Provider\Routing\LazyUrlMatcher;
 
 /**
  * LazyUrlMatcher test case.

@@ -19,7 +19,6 @@ use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\HttpKernel\EventListener\ResponseListener;
-use Symfony\Component\HttpKernel\EventListener\RouterListener;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,7 +28,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\RouteCollection;
-use Symfony\Component\Routing\RequestContext;
 use Silex\Api\BootableProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
 use Silex\Api\ControllerProviderInterface;
@@ -37,7 +35,7 @@ use Silex\Api\ServiceProviderInterface;
 use Silex\EventListener\MiddlewareListener;
 use Silex\EventListener\ConverterListener;
 use Silex\EventListener\StringToResponseListener;
-use Silex\Provider\Router\LazyUrlMatcher;
+use Silex\Provider\RoutingServiceProvider;
 
 /**
  * The Silex framework class.
@@ -94,10 +92,6 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
         $this['dispatcher'] = $this->share(function () use ($app) {
             $dispatcher = new $app['dispatcher_class']();
 
-            $urlMatcher = new LazyUrlMatcher(function () use ($app) {
-                return $app['url_matcher'];
-            });
-            $dispatcher->addSubscriber(new RouterListener($urlMatcher, $app['request_context'], $app['logger'], $app['request_stack']));
             if (isset($app['exception_handler'])) {
                 $dispatcher->addSubscriber($app['exception_handler']);
             }
@@ -125,23 +119,12 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
             return new RequestStack();
         });
 
-        $this['request_context'] = $this->share(function () use ($app) {
-            $context = new RequestContext();
-
-            $context->setHttpPort($app['request.http_port']);
-            $context->setHttpsPort($app['request.https_port']);
-
-            return $context;
-        });
-
-        $this['url_matcher'] = $this->share(function () use ($app) {
-            return new RedirectableUrlMatcher($app['routes'], $app['request_context']);
-        });
-
         $this['request.http_port'] = 80;
         $this['request.https_port'] = 443;
         $this['debug'] = false;
         $this['charset'] = 'UTF-8';
+
+        $this->register(new RoutingServiceProvider());
 
         foreach ($values as $key => $value) {
             $this[$key] = $value;

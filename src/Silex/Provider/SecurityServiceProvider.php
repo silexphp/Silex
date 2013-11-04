@@ -120,7 +120,10 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
         $app['security.channel_listener'] = $app->share(function ($app) {
             return new ChannelListener(
                 $app['security.access_map'],
-                new RetryAuthenticationEntryPoint($app['request.http_port'], $app['request.https_port']),
+                new RetryAuthenticationEntryPoint(
+                    isset($app['request.http_port']) ? $app['request.http_port'] : 80,
+                    isset($app['request.https_port']) ? $app['request.https_port'] : 443
+                ),
                 $app['logger']
             );
         });
