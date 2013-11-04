@@ -11,12 +11,14 @@ it, you should have the following directory structure:
 
 .. code-block:: text
 
-    ├── composer.json
-    ├── composer.lock
-    ├── vendor
-    │   └── ...
-    └── web
-        └── index.php
+    path/to/webroot/ <- your web server directory (sometimes named htdocs or public)
+        Silex/ <- the new directory
+            composer.json
+            composer.lock
+            vendor/
+                ...
+            web/
+                index.php
 
 If you want more flexibility, use Composer instead. Create a
 ``composer.json``:
