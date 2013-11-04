@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Silex;
+namespace Silex\Provider\Translation;
 
 use Symfony\Component\Translation\Translator as BaseTranslator;
 use Symfony\Component\Translation\MessageSelector;
 
 /**
- * Translator that gets the current locale from the Silex application.
+ * Translator that gets the current locale from the container.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -23,7 +23,7 @@ class Translator extends BaseTranslator
 {
     protected $app;
 
-    public function __construct(Application $app, MessageSelector $selector)
+    public function __construct(\Pimple $app, MessageSelector $selector)
     {
         $this->app = $app;
 

@@ -11,10 +11,10 @@
 
 namespace Silex\Provider;
 
-use Silex\LazyUrlMatcher;
 use Silex\Api\ServiceProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
-use Silex\EventListener\LocaleListener;
+use Silex\Provider\Locale\LocaleListener;
+use Silex\Provider\Router\LazyUrlMatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**

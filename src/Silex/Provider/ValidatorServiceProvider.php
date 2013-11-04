@@ -12,7 +12,7 @@
 namespace Silex\Provider;
 
 use Silex\Api\ServiceProviderInterface;
-use Silex\ConstraintValidatorFactory;
+use Silex\Provider\Validator\ConstraintValidatorFactory;
 use Symfony\Component\Validator\Validator;
 use Symfony\Component\Validator\DefaultTranslator;
 use Symfony\Component\Validator\Mapping\ClassMetadataFactory;
