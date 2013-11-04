@@ -12,9 +12,9 @@
 namespace Silex\Provider;
 
 use Silex\Application;
-use Silex\ControllerProviderInterface;
-use Silex\ServiceProviderInterface;
-use Silex\EventListenerProviderInterface;
+use Silex\Api\ControllerProviderInterface;
+use Silex\Api\ServiceProviderInterface;
+use Silex\Api\EventListenerProviderInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RequestMatcher;
 use Symfony\Component\HttpFoundation\Request;

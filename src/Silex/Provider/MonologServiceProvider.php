@@ -14,7 +14,10 @@ namespace Silex\Provider;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Silex\Application;
-use Silex\ServiceProviderInterface;
+use Silex\Api\ServiceProviderInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bridge\Monolog\Handler\DebugHandler;
 use Silex\EventListener\LogListener;
 

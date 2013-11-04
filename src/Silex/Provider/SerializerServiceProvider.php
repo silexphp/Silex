@@ -12,7 +12,7 @@
 namespace Silex\Provider;
 
 use Silex\Application;
-use Silex\ServiceProviderInterface;
+use Silex\Api\ServiceProviderInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;

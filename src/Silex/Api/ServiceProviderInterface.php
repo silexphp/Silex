@@ -9,7 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Silex;
+namespace Silex\Api;
+
+use Silex\Application;
 
 /**
  * Interface that all Silex service providers must implement.

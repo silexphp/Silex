@@ -9,9 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Silex;
+namespace Silex\Api;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Silex\Application;
 
 /**
  * Interface for event listener providers.

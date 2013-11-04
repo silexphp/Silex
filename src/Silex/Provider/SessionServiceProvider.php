@@ -12,8 +12,8 @@
 namespace Silex\Provider;
 
 use Silex\Application;
-use Silex\ServiceProviderInterface;
-use Silex\EventListenerProviderInterface;
+use Silex\Api\ServiceProviderInterface;
+use Silex\Api\EventListenerProviderInterface;
 use Silex\EventListener\SessionListener;
 use Silex\EventListener\TestSessionListener;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

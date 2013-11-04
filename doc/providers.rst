@@ -80,7 +80,7 @@ You are encouraged to share yours.
 Creating a provider
 ~~~~~~~~~~~~~~~~~~~
 
-Providers must implement the ``Silex\ServiceProviderInterface``::
+Providers must implement the ``Silex\Api\ServiceProviderInterface``::
 
     interface ServiceProviderInterface
     {
@@ -100,7 +100,7 @@ Here is an example of such a provider::
     namespace Acme;
 
     use Silex\Application;
-    use Silex\ServiceProviderInterface;
+    use Silex\Api\ServiceProviderInterface;
 
     class HelloServiceProvider implements ServiceProviderInterface
     {
@@ -161,7 +161,7 @@ All controllers defined by the provider will now be available under the
 Creating a provider
 ~~~~~~~~~~~~~~~~~~~
 
-Providers must implement the ``Silex\ControllerProviderInterface``::
+Providers must implement the ``Silex\Api\ControllerProviderInterface``::
 
     interface ControllerProviderInterface
     {
@@ -173,7 +173,7 @@ Here is an example of such a provider::
     namespace Acme;
 
     use Silex\Application;
-    use Silex\ControllerProviderInterface;
+    use Silex\Api\ControllerProviderInterface;
 
     class HelloControllerProvider implements ControllerProviderInterface
     {
