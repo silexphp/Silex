@@ -12,7 +12,7 @@
 namespace Silex\Provider;
 
 use Silex\Application;
-use Silex\ServiceProviderInterface;
+use Silex\Api\ServiceProviderInterface;
 use Silex\ServiceControllerResolver;
 
 class ServiceControllerServiceProvider implements ServiceProviderInterface

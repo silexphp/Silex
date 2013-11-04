@@ -13,8 +13,8 @@ namespace Silex\Provider;
 
 use Silex\Application;
 use Silex\HttpCache;
-use Silex\ServiceProviderInterface;
-use Silex\EventListenerProviderInterface;
+use Silex\Api\ServiceProviderInterface;
+use Silex\Api\EventListenerProviderInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpKernel\HttpCache\Esi;
 use Symfony\Component\HttpKernel\HttpCache\Store;

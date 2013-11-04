@@ -13,8 +13,8 @@ namespace Silex\Provider;
 
 use Silex\Application;
 use Silex\LazyUrlMatcher;
-use Silex\ServiceProviderInterface;
-use Silex\EventListenerProviderInterface;
+use Silex\Api\ServiceProviderInterface;
+use Silex\Api\EventListenerProviderInterface;
 use Silex\EventListener\LocaleListener;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
