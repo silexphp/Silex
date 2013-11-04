@@ -1,8 +1,12 @@
 Changelog
 =========
 
-1.2.0 (2014-03-29)
+2.0.0 (2013-XX-XX)
 ------------------
+
+* n/a
+
+1.2.0 (2014-03-29)
 
 * Allowed disabling the boot logic of MonologServiceProvider
 * Reverted "convert attributes on the request that actually exist"
