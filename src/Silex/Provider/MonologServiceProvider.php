@@ -29,7 +29,7 @@ use Silex\EventListener\LogListener;
  */
 class MonologServiceProvider implements ServiceProviderInterface, BootableProviderInterface
 {
-    public function register(Application $app)
+    public function register(\Pimple $app)
     {
         $app['logger'] = function () use ($app) {
             return $app['monolog'];

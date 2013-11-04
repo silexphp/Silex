@@ -11,7 +11,6 @@
 
 namespace Silex\Provider;
 
-use Silex\Application;
 use Silex\Api\ServiceProviderInterface;
 use Symfony\Component\Form\Extension\Csrf\CsrfExtension;
 use Symfony\Component\Form\Extension\Csrf\CsrfProvider\DefaultCsrfProvider;
@@ -28,7 +27,7 @@ use Symfony\Component\Form\ResolvedFormTypeFactory;
  */
 class FormServiceProvider implements ServiceProviderInterface
 {
-    public function register(Application $app)
+    public function register(\Pimple $app)
     {
         if (!class_exists('Locale') && !class_exists('Symfony\Component\Locale\Stub\StubLocale')) {
             throw new \RuntimeException('You must either install the PHP intl extension or the Symfony Locale Component to use the Form extension.');

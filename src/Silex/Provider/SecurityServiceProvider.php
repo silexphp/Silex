@@ -65,7 +65,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
 {
     protected $fakeRoutes;
 
-    public function register(Application $app)
+    public function register(\Pimple $app)
     {
         // used to register routes for login_check and logout
         $this->fakeRoutes = array();
@@ -539,7 +539,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
         }
     }
 
-    public function subscribe(Application $app, EventDispatcherInterface $dispatcher)
+    public function subscribe(\Pimple $app, EventDispatcherInterface $dispatcher)
     {
         $dispatcher->addSubscriber($app['security.firewall']);
     }
