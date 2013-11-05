@@ -152,12 +152,12 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->get('/foo', function () use ($app) {
-            return new Response($app['request']->getRequestUri());
+        $app->get('/foo', function (Request $request) use ($app) {
+            return new Response($request->getRequestUri());
         });
 
-        $app->error(function ($e) use ($app) {
-            return new Response($app['request']->getRequestUri());
+        $app->error(function ($e, Request $request, $code) use ($app) {
+            return new Response($request->getRequestUri());
         });
 
         foreach (array('/foo', '/bar') as $path) {
