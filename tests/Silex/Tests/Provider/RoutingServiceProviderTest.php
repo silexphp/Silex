@@ -12,21 +12,19 @@
 namespace Silex\Tests\Provider;
 
 use Silex\Application;
-use Silex\Provider\UrlGeneratorServiceProvider;
+use Silex\Provider\RoutingServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * UrlGeneratorProvider test cases.
+ * RoutingProvider test cases.
  *
  * @author Igor Wiedler <igor@wiedler.ch>
  */
-class UrlGeneratorServiceProviderTest extends \PHPUnit_Framework_TestCase
+class RoutingServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
     public function testRegister()
     {
         $app = new Application();
-
-        $app->register(new UrlGeneratorServiceProvider());
 
         $app->get('/hello/{name}', function ($name) {})
             ->bind('hello');
@@ -42,8 +40,6 @@ class UrlGeneratorServiceProviderTest extends \PHPUnit_Framework_TestCase
     public function testUrlGeneration()
     {
         $app = new Application();
-
-        $app->register(new UrlGeneratorServiceProvider());
 
         $app->get('/hello/{name}', function ($name) {})
             ->bind('hello');
@@ -62,8 +58,6 @@ class UrlGeneratorServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->register(new UrlGeneratorServiceProvider());
-
         $app->get('/hello/{name}', function ($name) {})
             ->bind('hello');
 
@@ -80,8 +74,6 @@ class UrlGeneratorServiceProviderTest extends \PHPUnit_Framework_TestCase
     public function testUrlGenerationWithHttp()
     {
         $app = new Application();
-
-        $app->register(new UrlGeneratorServiceProvider());
 
         $app->get('/insecure', function () {})
             ->bind('insecure_page')
@@ -100,8 +92,6 @@ class UrlGeneratorServiceProviderTest extends \PHPUnit_Framework_TestCase
     public function testUrlGenerationWithHttps()
     {
         $app = new Application();
-
-        $app->register(new UrlGeneratorServiceProvider());
 
         $app->get('/secure', function () {})
             ->bind('secure_page')
