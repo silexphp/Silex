@@ -138,12 +138,6 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
             return new RedirectableUrlMatcher($app['routes'], $app['request_context']);
         });
 
-        $this['request_error'] = $this->protect(function () {
-            throw new \RuntimeException('Accessed request service outside of request scope. Try moving that call to a before handler or controller.');
-        });
-
-        $this['request'] = $this['request_error'];
-
         $this['request.http_port'] = 80;
         $this['request.https_port'] = 443;
         $this['debug'] = false;
@@ -514,17 +508,9 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
             $this->boot();
         }
 
-        $current = HttpKernelInterface::SUB_REQUEST === $type ? $this['request'] : $this['request_error'];
-
-        $this['request'] = $request;
-
         $this->flush();
 
-        $response = $this['kernel']->handle($request, $type, $catch);
-
-        $this['request'] = $current;
-
-        return $response;
+        return $this['kernel']->handle($request, $type, $catch);
     }
 
     /**
