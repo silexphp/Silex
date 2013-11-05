@@ -53,7 +53,7 @@ class RoutingServiceProvider implements ServiceProviderInterface, EventListenerP
                 return $app['url_matcher'];
             });
 
-            return new RouterListener($urlMatcher, $app['request_context'], $app['logger'], $app['request_stack']);
+            return new RouterListener($urlMatcher, $app['request_context'], isset($app['logger']) ? $app['logger'] : null, $app['request_stack']);
         });
     }
 
