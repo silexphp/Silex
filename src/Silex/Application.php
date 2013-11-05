@@ -65,8 +65,6 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
 
         $app = $this;
 
-        $this['logger'] = null;
-
         $this['routes'] = $this->share(function () {
             return new RouteCollection();
         });
@@ -123,6 +121,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
         $this['request.https_port'] = 443;
         $this['debug'] = false;
         $this['charset'] = 'UTF-8';
+        $this['logger'] = null;
 
         $this->register(new RoutingServiceProvider());
 
