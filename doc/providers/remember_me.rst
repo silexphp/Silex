@@ -62,7 +62,7 @@ Options
 
 * **always_remember_me**: Enable remember me (default: ``false``).
 
-* **remember_me_parameter**: Name of the request paramater enabling remember_me
+* **remember_me_parameter**: Name of the request parameter enabling remember_me
   on login. To add the checkbox to the login form. You can find more
   information in the `Symfony cookbook
   <http://symfony.com/doc/current/cookbook/security/remember_me.html>`_
