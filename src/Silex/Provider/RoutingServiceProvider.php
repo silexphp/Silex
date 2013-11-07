@@ -30,8 +30,6 @@ class RoutingServiceProvider implements ServiceProviderInterface, EventListenerP
     public function register(\Pimple $app)
     {
         $app['url_generator'] = $app->share(function ($app) {
-            $app->flush();
-
             return new UrlGenerator($app['routes'], $app['request_context']);
         });
 
