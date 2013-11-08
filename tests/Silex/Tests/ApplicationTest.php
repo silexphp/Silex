@@ -509,6 +509,60 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $response = $app->handle(Request::create('/'));
         $this->assertEquals('ok', $response->getContent());
     }
+
+    public function testViewListener()
+    {
+        $app = new Application();
+        $app->get('/foo', function() { return array('ok'); });
+        $app->view(function ($event) {
+            $view = $event->getControllerResult();
+
+            $event->setResponse(new Response($view[0]));
+        });
+
+        $response = $app->handle(Request::create('/foo'));
+
+        $this->assertEquals('ok', $response->getContent());
+    }
+
+    public function testDefaultPriorityStringResponseTriggerViewListener()
+    {
+        $app = new Application();
+        $app->get('/foo', function() { return 'not ok'; });
+        $app->view(function ($event) {
+            $event->setResponse(new Response('ok'));
+        });
+
+        $response = $app->handle(Request::create('/foo'));
+
+        $this->assertEquals('ok', $response->getContent());
+    }
+
+    public function testLowPriorityStringResponseDoesNotTriggerViewListener()
+    {
+        $app = new Application();
+        $app->get('/foo', function() { return 'ok'; });
+        $app->view(function ($event) {
+            $event->setResponse(new Response('not ok'));
+        }, -100);
+
+        $response = $app->handle(Request::create('/foo'));
+
+        $this->assertEquals('ok', $response->getContent());
+    }
+
+    public function testResponseInstanceResponseDoesNotTriggerViewListener()
+    {
+        $app = new Application();
+        $app->get('/foo', function() { return new Response('ok'); });
+        $app->view(function ($event) {
+            $event->setResponse(new Response('not ok'));
+        });
+
+        $response = $app->handle(Request::create('/foo'));
+
+        $this->assertEquals('ok', $response->getContent());
+    }
 }
 
 class FooController
