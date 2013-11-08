@@ -17,6 +17,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\TerminableInterface;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\HttpKernel\EventListener\ResponseListener;
 use Symfony\Component\HttpKernel\EventListener\RouterListener;
@@ -375,6 +376,28 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
     public function error($callback, $priority = -8)
     {
         $this->on(KernelEvents::EXCEPTION, new ExceptionListenerWrapper($this, $callback), $priority);
+    }
+
+    /**
+     * Registers a view handler.
+     *
+     * View handlers are simple callables which take a single
+     * GetResponseForControllerResultEvent as an argument. They care called
+     * when a controller returns a value that is not an instance of Response.
+     *
+     * Call setResponse() to set the response that will be returned for the
+     * current request. The propagation of this event is stopped as soon as a
+     * response is set.
+     *
+     * @param mixed   $callback View handelr callback
+     * @param integer $priority The higher this value, the earlier an event
+     *                          listener will be triggered in the chain (defaults to 0)
+     */
+    public function view($callback, $priority = 0)
+    {
+        $this->on(KernelEvents::VIEW, function (GetResponseForControllerResultEvent $event) use ($callback) {
+            call_user_func($callback, $event);
+        }, $priority);
     }
 
     /**
