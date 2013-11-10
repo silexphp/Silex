@@ -41,7 +41,7 @@ class ServiceControllerResolverTest extends \PHPUnit_Framework_Testcase
             ->will($this->returnValue(true));
 
         $this->mockCallbackResolver->expects($this->once())
-            ->method('getCallback')
+            ->method('convertCallback')
             ->with('some_service:methodName')
             ->will($this->returnValue(array('callback')));
 
