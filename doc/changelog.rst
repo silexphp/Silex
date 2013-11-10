@@ -10,6 +10,7 @@ Changelog
 * Deprecated TwigCoreExtension (register the new HttpFragmentServiceProvider instead)
 * Added HttpFragmentServiceProvider
 * Add support for using a service method as a converter.
+* [BC BREAK] Converter is now executed prior the before middleware
 
 1.1.3 (2013-XX-XX)
 ------------------
