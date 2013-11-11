@@ -32,10 +32,10 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $app->register(new FormServiceProvider());
 
-        $app['form.type.extensions'] = $app->share($app->extend('form.type.extensions', function($extensions) {
+        $app['form.type.extensions'] = $app->extend('form.type.extensions', function($extensions) {
             $extensions[] = new DummyFormTypeExtension();
             return $extensions;
-        }));
+        });
 
         $form = $app['form.factory']->createBuilder('form', array())
             ->add('file', 'file', array('image_path' => 'webPath'))
@@ -50,10 +50,10 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $app->register(new FormServiceProvider());
 
-        $app['form.type.guessers'] = $app->share($app->extend('form.type.guessers', function($guessers) {
+        $app['form.type.guessers'] = $app->extend('form.type.guessers', function($guessers) {
             $guessers[] = new FormTypeGuesserChain(array());
             return $guessers;
-        }));
+        });
 
         $this->assertInstanceOf('Symfony\Component\Form\FormFactory', $app['form.factory']);
     }

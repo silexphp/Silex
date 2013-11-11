@@ -30,21 +30,21 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface, EventListe
 
         $app['mailer.initialized'] = false;
 
-        $app['mailer'] = $app->share(function ($app) {
+        $app['mailer'] = function ($app) {
             $app['mailer.initialized'] = true;
 
             return new \Swift_Mailer($app['swiftmailer.spooltransport']);
-        });
+        };
 
-        $app['swiftmailer.spooltransport'] = $app->share(function ($app) {
+        $app['swiftmailer.spooltransport'] = function ($app) {
             return new \Swift_SpoolTransport($app['swiftmailer.spool']);
-        });
+        };
 
-        $app['swiftmailer.spool'] = $app->share(function ($app) {
+        $app['swiftmailer.spool'] = function ($app) {
             return new \Swift_MemorySpool();
-        });
+        };
 
-        $app['swiftmailer.transport'] = $app->share(function ($app) {
+        $app['swiftmailer.transport'] = function ($app) {
             $transport = new \Swift_Transport_EsmtpTransport(
                 $app['swiftmailer.transport.buffer'],
                 array($app['swiftmailer.transport.authhandler']),
@@ -68,23 +68,23 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface, EventListe
             $transport->setAuthMode($options['auth_mode']);
 
             return $transport;
-        });
+        };
 
-        $app['swiftmailer.transport.buffer'] = $app->share(function () {
+        $app['swiftmailer.transport.buffer'] = function () {
             return new \Swift_Transport_StreamBuffer(new \Swift_StreamFilters_StringReplacementFilterFactory());
-        });
+        };
 
-        $app['swiftmailer.transport.authhandler'] = $app->share(function () {
+        $app['swiftmailer.transport.authhandler'] = function () {
             return new \Swift_Transport_Esmtp_AuthHandler(array(
                 new \Swift_Transport_Esmtp_Auth_CramMd5Authenticator(),
                 new \Swift_Transport_Esmtp_Auth_LoginAuthenticator(),
                 new \Swift_Transport_Esmtp_Auth_PlainAuthenticator(),
             ));
-        });
+        };
 
-        $app['swiftmailer.transport.eventdispatcher'] = $app->share(function () {
+        $app['swiftmailer.transport.eventdispatcher'] = function () {
             return new \Swift_Events_SimpleEventDispatcher();
-        });
+        };
     }
 
     public function subscribe(\Pimple $app, EventDispatcherInterface $dispatcher)
