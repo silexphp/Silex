@@ -27,7 +27,7 @@ class TwigServiceProviderTest extends \PHPUnit_Framework_TestCase
         $app = new Application();
 
         $app->register(new TwigServiceProvider(), array(
-            'twig.templates'    => array('hello' => 'Hello {{ name }}!'),
+            'twig.templates' => array('hello' => 'Hello {{ name }}!'),
         ));
 
         $app->get('/hello/{name}', function ($name) use ($app) {
@@ -47,9 +47,9 @@ class TwigServiceProviderTest extends \PHPUnit_Framework_TestCase
         ));
         $loader = $this->getMock('\Twig_LoaderInterface');
         $loader->expects($this->never())->method('getSource');
-        $app['twig.loader.filesystem'] = $app->share(function ($app) use ($loader) {
+        $app['twig.loader.filesystem'] = function ($app) use ($loader) {
             return $loader;
-        });
+        };
         $this->assertEquals('foo', $app['twig.loader']->getSource('foo'));
     }
 }

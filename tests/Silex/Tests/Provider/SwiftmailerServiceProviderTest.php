@@ -34,9 +34,9 @@ class SwiftmailerServiceProviderTest extends \PHPUnit_Framework_TestCase
         $app->register(new SwiftmailerServiceProvider());
         $app->boot();
 
-        $app['swiftmailer.spool'] = $app->share(function () {
+        $app['swiftmailer.spool'] = function () {
             return new SpoolStub();
-        });
+        };
 
         $app->get('/', function() use ($app) {
             $app['mailer']->send(\Swift_Message::newInstance());
@@ -60,9 +60,9 @@ class SwiftmailerServiceProviderTest extends \PHPUnit_Framework_TestCase
         $app->register(new SwiftmailerServiceProvider());
         $app->boot();
 
-        $app['swiftmailer.spool'] = $app->share(function () {
+        $app['swiftmailer.spool'] = function () {
             return new SpoolStub();
-        });
+        };
 
         $app->get('/', function() use ($app) { });
 

@@ -26,7 +26,7 @@ class LocaleServiceProvider implements ServiceProviderInterface, EventListenerPr
 {
     public function register(\Pimple $app)
     {
-        $app['locale.listener'] = $app->share(function ($app) {
+        $app['locale.listener'] = function ($app) {
             $urlMatcher = null;
             if (isset($app['url_matcher'])) {
                 $urlMatcher = new LazyUrlMatcher(function () use ($app) {
@@ -35,7 +35,7 @@ class LocaleServiceProvider implements ServiceProviderInterface, EventListenerPr
             }
 
             return new LocaleListener($app, $urlMatcher, $app['request_stack']);
-        });
+        };
 
         $app['locale'] = 'en';
     }

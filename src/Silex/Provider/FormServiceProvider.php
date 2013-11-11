@@ -45,15 +45,15 @@ class FormServiceProvider implements ServiceProviderInterface
 
         $app['form.secret'] = md5(__DIR__);
 
-        $app['form.type.extensions'] = $app->share(function ($app) {
+        $app['form.type.extensions'] = function ($app) {
             return array();
-        });
+        };
 
-        $app['form.type.guessers'] = $app->share(function ($app) {
+        $app['form.type.guessers'] = function ($app) {
             return array();
-        });
+        };
 
-        $app['form.extensions'] = $app->share(function ($app) {
+        $app['form.extensions'] = function ($app) {
             $extensions = array(
                 new CsrfExtension($app['form.csrf_provider']),
                 new HttpFoundationExtension(),
@@ -69,23 +69,23 @@ class FormServiceProvider implements ServiceProviderInterface
             }
 
             return $extensions;
-        });
+        };
 
-        $app['form.factory'] = $app->share(function ($app) {
+        $app['form.factory'] = function ($app) {
             return Forms::createFormFactoryBuilder()
                 ->addExtensions($app['form.extensions'])
                 ->addTypeExtensions($app['form.type.extensions'])
                 ->addTypeGuessers($app['form.type.guessers'])
                 ->getFormFactory()
             ;
-        });
+        };
 
-        $app['form.csrf_provider'] = $app->share(function ($app) {
+        $app['form.csrf_provider'] = function ($app) {
             if (isset($app['session'])) {
                 return new SessionCsrfProvider($app['session'], $app['form.secret']);
             }
 
             return new DefaultCsrfProvider($app['form.secret']);
-        });
+        };
     }
 }

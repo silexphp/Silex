@@ -28,7 +28,7 @@ class HttpCacheServiceProvider implements ServiceProviderInterface, EventListene
 {
     public function register(\Pimple $app)
     {
-        $app['http_cache'] = $app->share(function ($app) {
+        $app['http_cache'] = function ($app) {
             $app['http_cache.options'] = array_replace(
                 array(
                     'debug' => isset($app['debug']) ? $app['debug'] : false,
@@ -36,19 +36,19 @@ class HttpCacheServiceProvider implements ServiceProviderInterface, EventListene
             );
 
             return new HttpCache($app, $app['http_cache.store'], $app['http_cache.esi'], $app['http_cache.options']);
-        });
+        };
 
-        $app['http_cache.esi'] = $app->share(function ($app) {
+        $app['http_cache.esi'] = function ($app) {
             return new Esi();
-        });
+        };
 
-        $app['http_cache.store'] = $app->share(function ($app) {
+        $app['http_cache.store'] = function ($app) {
             return new Store($app['http_cache.cache_dir']);
-        });
+        };
 
-        $app['http_cache.esi_listener'] = $app->share(function ($app) {
+        $app['http_cache.esi_listener'] = function ($app) {
             return new EsiListener($app['http_cache.esi']);
-        });
+        };
 
         $app['http_cache.options'] = array();
     }
