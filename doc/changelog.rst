@@ -17,7 +17,7 @@ Changelog
 * Added run() on Route to be able to define the controller code
 * Deprecated TwigCoreExtension (register the new HttpFragmentServiceProvider instead)
 * Added HttpFragmentServiceProvider
-* Add support for using a service method as a converter.
+* Allowed a callback to be a method call on a service (before, after, finish, error, on Application; convert, before, after on Controller)
 
 1.1.3 (2013-XX-XX)
 ------------------

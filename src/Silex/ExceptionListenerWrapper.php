@@ -42,6 +42,7 @@ class ExceptionListenerWrapper
     public function __invoke(GetResponseForExceptionEvent $event)
     {
         $exception = $event->getException();
+        $this->callback = $this->app['callback_resolver']->resolveCallback($this->callback);
 
         if (!$this->shouldRun($exception)) {
             return;

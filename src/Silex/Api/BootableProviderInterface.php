@@ -14,7 +14,7 @@ namespace Silex\Api;
 use Silex\Application;
 
 /**
- * Interface that must implement all Silex service providers.
+ * Interface that all Silex service providers must implement.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

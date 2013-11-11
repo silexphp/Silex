@@ -162,4 +162,3 @@ class MonologServiceProviderTest extends \PHPUnit_Framework_TestCase
         return $app;
     }
 }
-

@@ -5,7 +5,7 @@ We are open to contributions to the Silex code. If you find
 a bug or want to contribute a provider, just follow these
 steps.
 
-* Fork `the Silex repository <https://github.com/fabpot/Silex>`_
+* Fork `the Silex repository <https://github.com/silexphp/Silex>`_
   on github.
 
 * Make your feature addition or bug fix.

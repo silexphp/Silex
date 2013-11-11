@@ -43,7 +43,7 @@ class CallbackResolver
      *
      * @throws \InvalidArgumentException In case the method does not exist.
      */
-    public function getCallback($name)
+    public function convertCallback($name)
     {
         list($service, $method) = explode(':', $name, 2);
 
@@ -52,5 +52,19 @@ class CallbackResolver
         }
 
         return array($this->app[$service], $method);
+    }
+
+    /**
+     * Returns a callable given its string representation if it is a valid service method.
+     *
+     * @param string $name
+     *
+     * @return array A callable array
+     *
+     * @throws \InvalidArgumentException In case the method does not exist.
+     */
+    public function resolveCallback($name)
+    {
+        return $this->isValid($name) ? $this->convertCallback($name) : $name;
     }
 }

@@ -47,7 +47,7 @@ class ServiceControllerResolver implements ControllerResolverInterface
             return $this->controllerResolver->getController($request);
         }
 
-        return $this->callbackResolver->getCallback($controller);
+        return $this->callbackResolver->convertCallback($controller);
     }
 
     /**

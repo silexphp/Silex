@@ -50,6 +50,7 @@ class TranslationServiceProviderTest extends \PHPUnit_Framework_TestCase
                 )
             )
         );
+
         return $app;
     }
 

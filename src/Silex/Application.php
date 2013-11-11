@@ -252,13 +252,13 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
     public function on($eventName, $callback, $priority = 0)
     {
         if ($this->booted) {
-            $this['dispatcher']->addListener($eventName, $callback, $priority);
+            $this['dispatcher']->addListener($eventName, $this['callback_resolver']->resolveCallback($callback), $priority);
 
             return;
         }
 
         $this->extend('dispatcher', function ($dispatcher, $app) use ($callback, $priority, $eventName) {
-            $dispatcher->addListener($eventName, $callback, $priority);
+            $dispatcher->addListener($eventName, $app['callback_resolver']->resolveCallback($callback), $priority);
 
             return $dispatcher;
         });
@@ -275,12 +275,14 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      */
     public function before($callback, $priority = 0)
     {
-        $this->on(KernelEvents::REQUEST, function (GetResponseEvent $event) use ($callback) {
+        $app = $this;
+
+        $this->on(KernelEvents::REQUEST, function (GetResponseEvent $event) use ($callback, $app) {
             if (HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
                 return;
             }
 
-            $ret = call_user_func($callback, $event->getRequest());
+            $ret = call_user_func($app['callback_resolver']->resolveCallback($callback), $event->getRequest());
 
             if ($ret instanceof Response) {
                 $event->setResponse($ret);
@@ -299,12 +301,14 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      */
     public function after($callback, $priority = 0)
     {
-        $this->on(KernelEvents::RESPONSE, function (FilterResponseEvent $event) use ($callback) {
+        $app = $this;
+
+        $this->on(KernelEvents::RESPONSE, function (FilterResponseEvent $event) use ($callback, $app) {
             if (HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
                 return;
             }
 
-            call_user_func($callback, $event->getRequest(), $event->getResponse());
+            call_user_func($app['callback_resolver']->resolveCallback($callback), $event->getRequest(), $event->getResponse());
         }, $priority);
     }
 
@@ -319,8 +323,10 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      */
     public function finish($callback, $priority = 0)
     {
-        $this->on(KernelEvents::TERMINATE, function (PostResponseEvent $event) use ($callback) {
-            call_user_func($callback, $event->getRequest(), $event->getResponse());
+        $app = $this;
+
+        $this->on(KernelEvents::TERMINATE, function (PostResponseEvent $event) use ($callback, $app) {
+            call_user_func($app['callback_resolver']->resolveCallback($callback), $event->getRequest(), $event->getResponse());
         }, $priority);
     }
 

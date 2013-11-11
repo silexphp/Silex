@@ -34,6 +34,7 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $app->extend('form.type.extensions', function($extensions) {
             $extensions[] = new DummyFormTypeExtension();
+
             return $extensions;
         });
 
@@ -52,6 +53,7 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $app->extend('form.type.guessers', function($guessers) {
             $guessers[] = new FormTypeGuesserChain(array());
+
             return $guessers;
         });
 
