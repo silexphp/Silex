@@ -45,7 +45,7 @@ class MonologServiceProvider implements ServiceProviderInterface, BootableProvid
 
         $app['monolog.logger.class'] = $bridge ? 'Symfony\Bridge\Monolog\Logger' : 'Monolog\Logger';
 
-        $app['monolog'] = $app->share(function ($app) {
+        $app['monolog'] = function ($app) {
             $log = new $app['monolog.logger.class']($app['monolog.name']);
 
             $log->pushHandler($app['monolog.handler']);
@@ -55,7 +55,7 @@ class MonologServiceProvider implements ServiceProviderInterface, BootableProvid
             }
 
             return $log;
-        });
+        };
 
         $app['monolog.handler'] = function () use ($app) {
             $level = MonologServiceProvider::translateLevel($app['monolog.level']);
@@ -67,9 +67,9 @@ class MonologServiceProvider implements ServiceProviderInterface, BootableProvid
             return Logger::DEBUG;
         };
 
-        $app['monolog.listener'] = $app->share(function () use ($app) {
+        $app['monolog.listener'] = function () use ($app) {
             return new LogListener($app['logger']);
-        });
+        };
 
         $app['monolog.name'] = 'myapp';
     }

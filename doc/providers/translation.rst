@@ -144,7 +144,7 @@ translation files::
 
     use Symfony\Component\Translation\Loader\YamlFileLoader;
 
-    $app['translator'] = $app->share($app->extend('translator', function($translator, $app) {
+    $app->extend('translator', function($translator, $app) {
         $translator->addLoader('yaml', new YamlFileLoader());
 
         $translator->addResource('yaml', __DIR__.'/locales/en.yml', 'en');
@@ -152,7 +152,7 @@ translation files::
         $translator->addResource('yaml', __DIR__.'/locales/fr.yml', 'fr');
 
         return $translator;
-    }));
+    });
 
 XLIFF-based language files
 ~~~~~~~~~~~~~~~~~~~~~~~~~~

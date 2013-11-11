@@ -107,19 +107,6 @@ And to retrieve the service, use::
 Every time you call ``$app['some_service']``, a new instance of the service is
 created.
 
-Shared services
-~~~~~~~~~~~~~~~
-
-You may want to use the same instance of a service across all of your code. In
-order to do that you can make a *shared* service::
-
-    $app['some_service'] = $app->share(function () {
-        return new Service();
-    });
-
-This will create the service on first invocation, and then return the existing
-instance on any subsequent access.
-
 Access container from closure
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -139,17 +126,13 @@ options. The dependency is only created when ``some_service`` is accessed, and
 it is possible to replace either of the dependencies by simply overriding
 those definitions.
 
-.. note::
-
-    This also works for shared services.
-
 Going back to our initial example, here's how we could use the container
 to manage its dependencies::
 
     $app['user.persist_path'] = '/tmp/users';
-    $app['user.persister'] = $app->share(function ($app) {
+    $app['user.persister'] = function ($app) {
         return new JsonUserPersister($app['user.persist_path']);
-    });
+    };
 
 
 Protected closures
@@ -229,10 +212,6 @@ don't want to mess with most of them.
   disabled as the value is set to ``null``. To enable logging you can either use
   the ``MonologServiceProvider`` or define your own ``logger`` service that
   conforms to the PSR logger interface.
-
-.. note::
-
-    All of these Silex core services are shared.
 
 Core parameters
 ---------------

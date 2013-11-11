@@ -27,7 +27,7 @@ class ValidatorServiceProvider implements ServiceProviderInterface
 {
     public function register(\Pimple $app)
     {
-        $app['validator'] = $app->share(function ($app) {
+        $app['validator'] = function ($app) {
             $r = new \ReflectionClass('Symfony\Component\Validator\Validator');
 
             if (isset($app['translator'])) {
@@ -41,20 +41,20 @@ class ValidatorServiceProvider implements ServiceProviderInterface
                 'validators',
                 $app['validator.object_initializers']
             );
-        });
+        };
 
-        $app['validator.mapping.class_metadata_factory'] = $app->share(function ($app) {
+        $app['validator.mapping.class_metadata_factory'] = function ($app) {
             return new ClassMetadataFactory(new StaticMethodLoader());
-        });
+        };
 
-        $app['validator.validator_factory'] = $app->share(function () use ($app) {
+        $app['validator.validator_factory'] = function () use ($app) {
             $validators = isset($app['validator.validator_service_ids']) ? $app['validator.validator_service_ids'] : array();
 
             return new ConstraintValidatorFactory($app, $validators);
-        });
+        };
 
-        $app['validator.object_initializers'] = $app->share(function ($app) {
+        $app['validator.object_initializers'] = function ($app) {
             return array();
-        });
+        };
     }
 }

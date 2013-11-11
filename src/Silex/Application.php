@@ -65,29 +65,29 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
 
         $app = $this;
 
-        $this['routes'] = $this->share(function () {
+        $this['routes'] = function () {
             return new RouteCollection();
-        });
-
-        $this['controllers'] = $this->share(function () use ($app) {
-            return $app['controllers_factory'];
-        });
-
-        $this['controllers_factory'] = function () use ($app) {
-            return new ControllerCollection($app['route_factory']);
         };
+
+        $this['controllers'] = function () use ($app) {
+            return $app['controllers_factory'];
+        };
+
+        $this['controllers_factory'] = $this->factory(function () use ($app) {
+            return new ControllerCollection($app['route_factory']);
+        });
 
         $this['route_class'] = 'Silex\\Route';
         $this['route_factory'] = function () use ($app) {
             return new $app['route_class']();
         };
 
-        $this['exception_handler'] = $this->share(function () use ($app) {
+        $this['exception_handler'] = function () use ($app) {
             return new ExceptionHandler($app['debug']);
-        });
+        };
 
         $this['dispatcher_class'] = 'Symfony\\Component\\EventDispatcher\\EventDispatcher';
-        $this['dispatcher'] = $this->share(function () use ($app) {
+        $this['dispatcher'] = function () use ($app) {
             $dispatcher = new $app['dispatcher_class']();
 
             if (isset($app['exception_handler'])) {
@@ -99,23 +99,23 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
             $dispatcher->addSubscriber(new StringToResponseListener());
 
             return $dispatcher;
-        });
+        };
 
-        $this['callback_resolver'] = $this->share(function () use ($app) {
+        $this['callback_resolver'] = function () use ($app) {
             return new CallbackResolver($app);
-        });
+        };
 
-        $this['resolver'] = $this->share(function () use ($app) {
+        $this['resolver'] = function () use ($app) {
             return new ControllerResolver($app, $app['logger']);
-        });
+        };
 
-        $this['kernel'] = $this->share(function () use ($app) {
+        $this['kernel'] = function () use ($app) {
             return new HttpKernel($app['dispatcher'], $app['resolver'], $app['request_stack']);
-        });
+        };
 
-        $this['request_stack'] = $this->share(function () use ($app) {
+        $this['request_stack'] = function () use ($app) {
             return new RequestStack();
-        });
+        };
 
         $this['request.http_port'] = 80;
         $this['request.https_port'] = 443;
@@ -270,11 +270,11 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
             return;
         }
 
-        $this['dispatcher'] = $this->share($this->extend('dispatcher', function ($dispatcher, $app) use ($callback, $priority, $eventName) {
+        $this->extend('dispatcher', function ($dispatcher, $app) use ($callback, $priority, $eventName) {
             $dispatcher->addListener($eventName, $app['callback_resolver']->resolveCallback($callback), $priority);
 
             return $dispatcher;
-        }));
+        });
     }
 
     /**
