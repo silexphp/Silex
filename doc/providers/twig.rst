@@ -156,12 +156,12 @@ Customization
 You can configure the Twig environment before using it by extending the
 ``twig`` service::
 
-    $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
+    $app->extend('twig', function($twig, $app) {
         $twig->addGlobal('pi', 3.14);
         $twig->addFilter('levenshtein', new \Twig_Filter_Function('levenshtein'));
 
         return $twig;
-    }));
+    });
 
 For more information, check out the `official Twig documentation
 <http://twig.sensiolabs.org>`_.

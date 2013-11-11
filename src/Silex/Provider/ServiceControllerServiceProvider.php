@@ -18,8 +18,8 @@ class ServiceControllerServiceProvider implements ServiceProviderInterface
 {
     public function register(\Pimple $app)
     {
-        $app['resolver'] = $app->share($app->extend('resolver', function ($resolver, $app) {
+        $app->extend('resolver', function ($resolver, $app) {
             return new ServiceControllerResolver($resolver, $app['callback_resolver']);
-        }));
+        });
     }
 }

@@ -36,7 +36,7 @@ class SessionServiceProvider implements ServiceProviderInterface, EventListenerP
 
         $app['session.test'] = false;
 
-        $app['session'] = $app->share(function ($app) {
+        $app['session'] = function ($app) {
             if (!isset($app['session.storage'])) {
                 if ($app['session.test']) {
                     $app['session.storage'] = $app['session.storage.test'];
@@ -46,30 +46,30 @@ class SessionServiceProvider implements ServiceProviderInterface, EventListenerP
             }
 
             return new Session($app['session.storage']);
-        });
+        };
 
-        $app['session.storage.handler'] = $app->share(function ($app) {
+        $app['session.storage.handler'] = function ($app) {
             return new NativeFileSessionHandler($app['session.storage.save_path']);
-        });
+        };
 
-        $app['session.storage.native'] = $app->share(function ($app) {
+        $app['session.storage.native'] = function ($app) {
             return new NativeSessionStorage(
                 $app['session.storage.options'],
                 $app['session.storage.handler']
             );
-        });
+        };
 
-        $app['session.listener'] = $app->share(function ($app) {
+        $app['session.listener'] = function ($app) {
             return new SessionListener($app);
-        });
+        };
 
-        $app['session.storage.test'] = $app->share(function () {
+        $app['session.storage.test'] = function () {
             return new MockFileSessionStorage();
-        });
+        };
 
-        $app['session.listener.test'] = $app->share(function ($app) {
+        $app['session.listener.test'] = function ($app) {
             return new TestSessionListener($app);
-        });
+        };
 
         $app['session.storage.options'] = array();
         $app['session.default_locale'] = 'en';

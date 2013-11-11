@@ -36,16 +36,16 @@ class SerializerServiceProvider implements ServiceProviderInterface
      */
     public function register(\Pimple $app)
     {
-        $app['serializer'] = $app->share(function () use ($app) {
+        $app['serializer'] = function () use ($app) {
             return new Serializer($app['serializer.normalizers'], $app['serializer.encoders']);
-        });
+        };
 
-        $app['serializer.encoders'] = $app->share(function () {
+        $app['serializer.encoders'] = function () {
             return array(new JsonEncoder(), new XmlEncoder());
-        });
+        };
 
-        $app['serializer.normalizers'] = $app->share(function () {
+        $app['serializer.normalizers'] = function () {
             return array(new CustomNormalizer(), new GetSetMethodNormalizer());
-        });
+        };
     }
 }

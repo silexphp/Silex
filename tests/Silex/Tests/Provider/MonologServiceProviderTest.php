@@ -155,9 +155,9 @@ class MonologServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $app->register(new MonologServiceProvider());
 
-        $app['monolog.handler'] = $app->share(function () use ($app) {
+        $app['monolog.handler'] = function () use ($app) {
             return new TestHandler($app['monolog.level']);
-        });
+        };
 
         return $app;
     }
