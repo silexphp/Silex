@@ -30,43 +30,43 @@ class HttpFragmentServiceProvider implements ServiceProviderInterface, EventList
 {
     public function register(\Pimple $app)
     {
-        $app['fragment.handler'] = $app->share(function ($app) {
+        $app['fragment.handler'] = function ($app) {
             return new FragmentHandler($app['fragment.renderers'], isset($app['debug']) ? $app['debug'] : false, $app['request_stack']);
-        });
+        };
 
-        $app['fragment.renderer.inline'] = $app->share(function ($app) {
+        $app['fragment.renderer.inline'] = function ($app) {
             $renderer = new InlineFragmentRenderer($app['kernel'], $app['dispatcher']);
             $renderer->setFragmentPath($app['fragment.path']);
 
             return $renderer;
-        });
+        };
 
-        $app['fragment.renderer.hinclude'] = $app->share(function ($app) {
+        $app['fragment.renderer.hinclude'] = function ($app) {
             $renderer = new HIncludeFragmentRenderer(null, $app['uri_signer'], $app['fragment.renderer.hinclude.global_template'], isset($app['charset']) ? $app['charset'] : 'UTF-8');
             $renderer->setFragmentPath($app['fragment.path']);
 
             return $renderer;
-        });
+        };
 
-        $app['fragment.renderer.esi'] = $app->share(function ($app) {
+        $app['fragment.renderer.esi'] = function ($app) {
             $renderer = new EsiFragmentRenderer($app['http_cache.esi'], $app['fragment.renderer.inline']);
             $renderer->setFragmentPath($app['fragment.path']);
 
             return $renderer;
-        });
+        };
 
-        $app['fragment.listener'] = $app->share(function ($app) {
+        $app['fragment.listener'] = function ($app) {
             return new FragmentListener($app['uri_signer'], $app['fragment.path']);
-        });
+        };
 
-        $app['uri_signer'] = $app->share(function ($app) {
+        $app['uri_signer'] = function ($app) {
             return new UriSigner($app['uri_signer.secret']);
-        });
+        };
 
         $app['uri_signer.secret'] = md5(__DIR__);
         $app['fragment.path'] = '/_fragment';
         $app['fragment.renderer.hinclude.global_template'] = null;
-        $app['fragment.renderers'] = $app->share(function ($app) {
+        $app['fragment.renderers'] = function ($app) {
             $renderers = array($app['fragment.renderer.inline'], $app['fragment.renderer.hinclude']);
 
             if (isset($app['http_cache.esi'])) {
@@ -74,7 +74,7 @@ class HttpFragmentServiceProvider implements ServiceProviderInterface, EventList
             }
 
             return $renderers;
-        });
+        };
     }
 
     public function subscribe(\Pimple $app, EventDispatcherInterface $dispatcher)

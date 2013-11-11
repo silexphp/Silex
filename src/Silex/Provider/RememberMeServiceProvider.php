@@ -28,13 +28,13 @@ class RememberMeServiceProvider implements ServiceProviderInterface, EventListen
 {
     public function register(\Pimple $app)
     {
-        $app['security.remember_me.response_listener'] = $app->share(function ($app) {
+        $app['security.remember_me.response_listener'] = function ($app) {
             if (!isset($app['security'])) {
                 throw new \LogicException('You must register the SecurityServiceProvider to use the RememberMeServiceProvider');
             }
 
             return new ResponseListener();
-        });
+        };
 
         $app['security.authentication_listener.factory.remember_me'] = $app->protect(function ($name, $options) use ($app) {
             if (empty($options['key'])) {
@@ -62,7 +62,7 @@ class RememberMeServiceProvider implements ServiceProviderInterface, EventListen
         });
 
         $app['security.remember_me.service._proto'] = $app->protect(function ($providerKey, $options) use ($app) {
-            return $app->share(function () use ($providerKey, $options, $app) {
+            return function () use ($providerKey, $options, $app) {
                 $options = array_replace(array(
                     'name'                  => 'REMEMBERME',
                     'lifetime'              => 31536000,
@@ -75,11 +75,11 @@ class RememberMeServiceProvider implements ServiceProviderInterface, EventListen
                 ), $options);
 
                 return new TokenBasedRememberMeServices(array($app['security.user_provider.'.$providerKey]), $options['key'], $providerKey, $options, isset($app['logger']) ? $app['logger'] : null);
-            });
+            };
         });
 
         $app['security.authentication_listener.remember_me._proto'] = $app->protect(function ($providerKey) use ($app) {
-            return $app->share(function () use ($app, $providerKey) {
+            return function () use ($app, $providerKey) {
                 $listener = new RememberMeListener(
                     $app['security'],
                     $app['security.remember_me.service.'.$providerKey],
@@ -88,13 +88,13 @@ class RememberMeServiceProvider implements ServiceProviderInterface, EventListen
                 );
 
                 return $listener;
-            });
+            };
         });
 
         $app['security.authentication_provider.remember_me._proto'] = $app->protect(function ($name, $options) use ($app) {
-            return $app->share(function () use ($app, $name, $options) {
+            return function () use ($app, $name, $options) {
                 return new RememberMeAuthenticationProvider($app['security.user_checker'], $options['key'], $name);
-            });
+            };
         });
     }
 

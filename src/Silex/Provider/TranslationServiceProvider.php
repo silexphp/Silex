@@ -26,7 +26,7 @@ class TranslationServiceProvider implements ServiceProviderInterface
 {
     public function register(\Pimple $app)
     {
-        $app['translator'] = $app->share(function ($app) {
+        $app['translator'] = function ($app) {
             if (!isset($app['locale'])) {
                 throw new \LogicException('You must register the LocaleServiceProvider to use the TranslationServiceProvider');
             }
@@ -43,11 +43,11 @@ class TranslationServiceProvider implements ServiceProviderInterface
             }
 
             return $translator;
-        });
+        };
 
-        $app['translator.message_selector'] = $app->share(function () {
+        $app['translator.message_selector'] = function () {
             return new MessageSelector();
-        });
+        };
 
         $app['translator.domains'] = array();
         $app['locale_fallbacks'] = array('en');

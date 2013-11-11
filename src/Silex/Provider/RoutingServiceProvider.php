@@ -29,30 +29,30 @@ class RoutingServiceProvider implements ServiceProviderInterface, EventListenerP
 {
     public function register(\Pimple $app)
     {
-        $app['url_generator'] = $app->share(function ($app) {
+        $app['url_generator'] = function ($app) {
             return new UrlGenerator($app['routes'], $app['request_context']);
-        });
+        };
 
-        $app['url_matcher'] = $app->share(function () use ($app) {
+        $app['url_matcher'] = function () use ($app) {
             return new RedirectableUrlMatcher($app['routes'], $app['request_context']);
-        });
+        };
 
-        $app['request_context'] = $app->share(function () use ($app) {
+        $app['request_context'] = function () use ($app) {
             $context = new RequestContext();
 
             $context->setHttpPort(isset($app['request.http_port']) ? $app['request.http_port'] : 80);
             $context->setHttpsPort(isset($app['request.https_port']) ? $app['request.https_port'] : 443);
 
             return $context;
-        });
+        };
 
-        $app['routing.listener'] = $app->share(function () use ($app) {
+        $app['routing.listener'] = function () use ($app) {
             $urlMatcher = new LazyUrlMatcher(function () use ($app) {
                 return $app['url_matcher'];
             });
 
             return new RouterListener($urlMatcher, $app['request_context'], isset($app['logger']) ? $app['logger'] : null, $app['request_stack']);
-        });
+        };
     }
 
     public function subscribe(\Pimple $app, EventDispatcherInterface $dispatcher)
