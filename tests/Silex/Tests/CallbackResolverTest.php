@@ -28,7 +28,7 @@ class CallbackResolverTest extends \PHPUnit_Framework_Testcase
         $this->assertTrue($this->resolver->isValid('some_service:methodName'));
         $this->assertEquals(
             array($this->app['some_service'], 'methodName'),
-            $this->resolver->getCallback('some_service:methodName')
+            $this->resolver->convertCallback('some_service:methodName')
         );
     }
 
@@ -44,6 +44,6 @@ class CallbackResolverTest extends \PHPUnit_Framework_Testcase
      */
     public function testShouldThrowAnExceptionIfServiceIsMissing()
     {
-        $this->resolver->getCallback('some_service:methodName');
+        $this->resolver->convertCallback('some_service:methodName');
     }
 }
