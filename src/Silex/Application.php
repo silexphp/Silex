@@ -416,7 +416,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      *
      * @return StreamedResponse
      */
-    public function stream($callback = null, $status = 200, $headers = array())
+    public function stream($callback = null, $status = 200, array $headers = array())
     {
         return new StreamedResponse($callback, $status, $headers);
     }
@@ -445,7 +445,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      *
      * @return JsonResponse
      */
-    public function json($data = array(), $status = 200, $headers = array())
+    public function json($data = array(), $status = 200, array $headers = array())
     {
         return new JsonResponse($data, $status, $headers);
     }
@@ -462,7 +462,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      *
      * @throws \RuntimeException When the feature is not supported, before http-foundation v2.2
      */
-    public function sendFile($file, $status = 200, $headers = array(), $contentDisposition = null)
+    public function sendFile($file, $status = 200, array $headers = array(), $contentDisposition = null)
     {
         return new BinaryFileResponse($file, $status, $headers, true, $contentDisposition);
     }
