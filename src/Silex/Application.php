@@ -78,9 +78,9 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
         });
 
         $this['route_class'] = 'Silex\\Route';
-        $this['route_factory'] = function () use ($app) {
+        $this['route_factory'] = $this->factory(function () use ($app) {
             return new $app['route_class']();
-        };
+        });
 
         $this['exception_handler'] = function () use ($app) {
             return new ExceptionHandler($app['debug']);
