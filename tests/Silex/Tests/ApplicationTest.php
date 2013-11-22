@@ -513,6 +513,18 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $response = $app->handle(Request::create('/foo'));
         $this->assertEquals(301, $response->getStatusCode());
     }
+
+    public function testBeforeFilterOnMountedControllerGroupIsolatedToGroup()
+    {
+        $app = new Application();
+        $app->match('/', function() { return new Response('ok'); });
+        $mounted = $app['controllers_factory'];
+        $mounted->before(function() { return new Response('not ok'); });
+        $app->mount('/group', $mounted);
+
+        $response = $app->handle(Request::create('/'));
+        $this->assertEquals('ok', $response->getContent());
+    }
 }
 
 class FooController
