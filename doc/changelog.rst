@@ -10,6 +10,7 @@ Changelog
 * Deprecated TwigCoreExtension (register the new HttpFragmentServiceProvider instead)
 * Added HttpFragmentServiceProvider
 * Allowed a callback to be a method call on a service (before, after, finish, error, on Application; convert, before, after on Controller)
+* Add a cached translator
 
 1.1.3 (2013-XX-XX)
 ------------------

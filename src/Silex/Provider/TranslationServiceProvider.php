@@ -12,6 +12,7 @@
 namespace Silex\Provider;
 
 use Silex\Application;
+use Silex\CachedTranslator;
 use Silex\ServiceProviderInterface;
 use Silex\Translator;
 use Symfony\Component\Translation\MessageSelector;
@@ -27,8 +28,20 @@ class TranslationServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
+        $app['translator.cache-options'] = array();
+
         $app['translator'] = $app->share(function ($app) {
-            $translator = new Translator($app, $app['translator.message_selector']);
+            if (class_exists('Symfony\Component\Config\ConfigCache') && isset($app['translator.cache-options']['cache_dir'])) {
+                $app['translator.cache-options'] = array_replace(
+                    array(
+                        'debug' => $app['debug'],
+                    ), $app['translator.cache-options']
+                );
+
+                $translator = new CachedTranslator($app, $app['translator.message_selector'], $app['translator.cache-options']);
+            } else {
+                $translator = new Translator($app, $app['translator.message_selector']);
+            }
 
             // Handle deprecated 'locale_fallback'
             if (isset($app['locale_fallback'])) {
