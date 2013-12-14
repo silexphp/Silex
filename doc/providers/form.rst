@@ -77,6 +77,14 @@ Registering
         "require": {
             "symfony/locale": "~2.3"
         }
+        
+    The Symfony Security CSRF component is used to protect forms against CSRF attacks:
+
+    .. code-block:: json
+    
+        "require": {
+            "symfony/security-csrf": "~2.4"
+        }
 
     If you want to use forms in your Twig templates, make sure to install the
     Symfony Twig Bridge:
