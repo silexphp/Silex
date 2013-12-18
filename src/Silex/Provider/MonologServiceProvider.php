@@ -30,6 +30,18 @@ class MonologServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
+        if (empty ($app['monolog.level'])) {
+            $app['monolog.level'] = function () use ($app) {
+                return Logger::DEBUG;
+            };
+        } elseif (!is_numeric($app['monolog.level'])) {
+            $levels = Logger::getLevels(); // name => code
+            $level = $levels[strtoupper($app['monolog.level'])];
+            $app['monolog.level'] = function () use ($level) {
+                return $level;
+            };
+        }
+        
         $app['logger'] = function () use ($app) {
             return $app['monolog'];
         };
@@ -56,10 +68,6 @@ class MonologServiceProvider implements ServiceProviderInterface
 
         $app['monolog.handler'] = function () use ($app) {
             return new StreamHandler($app['monolog.logfile'], $app['monolog.level']);
-        };
-
-        $app['monolog.level'] = function () {
-            return Logger::DEBUG;
         };
 
         $app['monolog.name'] = 'myapp';
