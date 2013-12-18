@@ -30,7 +30,7 @@ class MonologServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
-        if (empty ($app['monolog.level'])) {
+        if ($app['debug'] || empty ($app['monolog.level'])) {
             $app['monolog.level'] = function () use ($app) {
                 return Logger::DEBUG;
             };
