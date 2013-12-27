@@ -53,7 +53,7 @@ Registering
     .. code-block:: json
 
         "require": {
-            "monolog/monolog": ">=1.0.0",
+            "monolog/monolog": ">=1.0.0"
         }
 
 Usage
