@@ -19,6 +19,8 @@ Parameters
   everything, ``INFO`` will log everything except ``DEBUG``,
   etc.
 
+  May also be a string of ``DEBUG``, ``INFO``, ``WARNING``, ``ERROR``.
+
 * **monolog.name** (optional): Name of the monolog channel,
   defaults to ``myapp``.
 
