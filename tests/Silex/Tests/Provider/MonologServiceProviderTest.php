@@ -136,6 +136,26 @@ class MonologServiceProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertEmpty($app['monolog.handler']->getRecords(), "Expected no logging to occur");
     }
 
+    public function testStringErrorLevel()
+    {
+        $app = $this->getApplication();
+        $app['monolog.level'] = 'info';
+
+        $this->assertSame(Logger::INFO, $app['monolog.handler']->getLevel());
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Provided logging level 'foo' does not exist. Must be a valid monolog logging level.
+     */
+    public function testNonExistentStringErrorLevel()
+    {
+        $app = $this->getApplication();
+        $app['monolog.level'] = 'foo';
+
+        $app['monolog.handler']->getLevel();
+    }
+
     protected function assertMatchingRecord($pattern, $level, $handler)
     {
         $found = false;
@@ -156,7 +176,8 @@ class MonologServiceProviderTest extends \PHPUnit_Framework_TestCase
         $app->register(new MonologServiceProvider());
 
         $app['monolog.handler'] = $app->share(function () use ($app) {
-            return new TestHandler($app['monolog.level']);
+            $level = MonologServiceProvider::translateLevel($app['monolog.level']);
+            return new TestHandler($level);
         });
 
         return $app;

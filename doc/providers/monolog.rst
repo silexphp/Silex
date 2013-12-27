@@ -19,6 +19,10 @@ Parameters
   everything, ``INFO`` will log everything except ``DEBUG``,
   etc.
 
+  In addition to the ``Logger::`` constants, it is also possible to supply the
+  level in string form, for example: ``"DEBUG"``, ``"INFO"``, ``"WARNING"``,
+  ``"ERROR"``.
+
 * **monolog.name** (optional): Name of the monolog channel,
   defaults to ``myapp``.
 
@@ -49,7 +53,7 @@ Registering
     .. code-block:: json
 
         "require": {
-            "monolog/monolog": ">=1.0.0",
+            "monolog/monolog": ">=1.0.0"
         }
 
 Usage

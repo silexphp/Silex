@@ -36,7 +36,8 @@ class MonologServiceProvider implements ServiceProviderInterface
 
         if ($bridge = class_exists('Symfony\Bridge\Monolog\Logger')) {
             $app['monolog.handler.debug'] = function () use ($app) {
-                return new DebugHandler($app['monolog.level']);
+                $level = MonologServiceProvider::translateLevel($app['monolog.level']);
+                return new DebugHandler($level);
             };
         }
 
@@ -55,7 +56,8 @@ class MonologServiceProvider implements ServiceProviderInterface
         });
 
         $app['monolog.handler'] = function () use ($app) {
-            return new StreamHandler($app['monolog.logfile'], $app['monolog.level']);
+            $level = MonologServiceProvider::translateLevel($app['monolog.level']);
+            return new StreamHandler($app['monolog.logfile'], $level);
         };
 
         $app['monolog.level'] = function () {
@@ -91,5 +93,22 @@ class MonologServiceProvider implements ServiceProviderInterface
                 $app['monolog']->addInfo('< '.$response->getStatusCode());
             }
         });
+    }
+
+    public static function translateLevel($name)
+    {
+        // level is already translated to logger constant, return as-is
+        if (is_int($name)) {
+            return $name;
+        }
+
+        $levels = Logger::getLevels();
+        $upper = strtoupper($name);
+
+        if (!isset($levels[$upper])) {
+            throw new \InvalidArgumentException("Provided logging level '$name' does not exist. Must be a valid monolog logging level.");
+        }
+
+        return $levels[$upper];
     }
 }
