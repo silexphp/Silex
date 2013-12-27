@@ -19,7 +19,9 @@ Parameters
   everything, ``INFO`` will log everything except ``DEBUG``,
   etc.
 
-  May also be a string of ``DEBUG``, ``INFO``, ``WARNING``, ``ERROR``.
+  In addition to the ``Logger::`` constants, it is also possible to supply the
+  level in string form, for example: ``"DEBUG"``, ``"INFO"``, ``"WARNING"``,
+  ``"ERROR"``.
 
 * **monolog.name** (optional): Name of the monolog channel,
   defaults to ``myapp``.
