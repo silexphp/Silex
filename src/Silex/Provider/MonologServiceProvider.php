@@ -64,35 +64,47 @@ class MonologServiceProvider implements ServiceProviderInterface
             return Logger::DEBUG;
         };
 
+        $app['monolog.boot.before'] = $app->protect(
+            function (Request $request) use ($app) {
+                $app['monolog']->addInfo('> '.$request->getMethod().' '.$request->getRequestUri());
+            }
+        );
+
+        $app['monolog.boot.error'] = $app->protect(
+            function (\Exception $e) use ($app) {
+                $message = sprintf('%s: %s (uncaught exception) at %s line %s', get_class($e), $e->getMessage(), $e->getFile(), $e->getLine());
+                if ($e instanceof HttpExceptionInterface && $e->getStatusCode() < 500) {
+                    $app['monolog']->addError($message, array('exception' => $e));
+                } else {
+                    $app['monolog']->addCritical($message, array('exception' => $e));
+                }
+            }
+        );
+
+        $app['monolog.boot.after'] = $app->protect(
+            function (Request $request, Response $response) use ($app) {
+                if ($response instanceof RedirectResponse) {
+                    $app['monolog']->addInfo('< '.$response->getStatusCode().' '.$response->getTargetUrl());
+                } else {
+                    $app['monolog']->addInfo('< '.$response->getStatusCode());
+                }
+            }
+        );
+
         $app['monolog.name'] = 'myapp';
     }
 
     public function boot(Application $app)
     {
-        $app->before(function (Request $request) use ($app) {
-            $app['monolog']->addInfo('> '.$request->getMethod().' '.$request->getRequestUri());
-        });
+        $app->before($app['monolog.boot.before']);
 
         /*
          * Priority -4 is used to come after those from SecurityServiceProvider (0)
          * but before the error handlers added with Silex\Application::error (defaults to -8)
          */
-        $app->error(function (\Exception $e) use ($app) {
-            $message = sprintf('%s: %s (uncaught exception) at %s line %s', get_class($e), $e->getMessage(), $e->getFile(), $e->getLine());
-            if ($e instanceof HttpExceptionInterface && $e->getStatusCode() < 500) {
-                $app['monolog']->addError($message, array('exception' => $e));
-            } else {
-                $app['monolog']->addCritical($message, array('exception' => $e));
-            }
-        }, -4);
+        $app->error($app['monolog.boot.error'], -4);
 
-        $app->after(function (Request $request, Response $response) use ($app) {
-            if ($response instanceof RedirectResponse) {
-                $app['monolog']->addInfo('< '.$response->getStatusCode().' '.$response->getTargetUrl());
-            } else {
-                $app['monolog']->addInfo('< '.$response->getStatusCode());
-            }
-        });
+        $app->after($app['monolog.boot.after']);
     }
 
     public static function translateLevel($name)
