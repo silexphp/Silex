@@ -142,7 +142,7 @@ form by adding constraints on the fields::
 
     $app->register(new Silex\Provider\ValidatorServiceProvider());
     $app->register(new Silex\Provider\TranslationServiceProvider(), array(
-        'translator.messages' => array(),
+        'translator.domains' => array(),
     ));
 
     $form = $app['form.factory']->createBuilder('form')
