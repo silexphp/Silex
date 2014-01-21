@@ -85,6 +85,12 @@ it by extending the ``monolog`` service::
         return $monolog;
     }));
 
+By default, all requests are logged through a ``before`` and ``after``
+middleware at boot time. You can disable or customize this behavior by
+overriding the ``monolog.boot.before`` and ``monolog.boot.after`` services
+respectively. The provider also registers a default ``error`` handler which
+logs errors; it can be customized via the ``monolog.boot.error`` service.
+
 Traits
 ------
 
