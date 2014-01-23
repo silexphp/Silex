@@ -156,6 +156,16 @@ class MonologServiceProviderTest extends \PHPUnit_Framework_TestCase
         $app['monolog.handler']->getLevel();
     }
 
+    public function testDisableListener()
+    {
+        $app = $this->getApplication();
+        unset($app['monolog.listener']);
+
+        $app->handle(Request::create('/404'));
+
+        $this->assertEmpty($app['monolog.handler']->getRecords(), "Expected no logging to occur");
+    }
+
     protected function assertMatchingRecord($pattern, $level, $handler)
     {
         $found = false;
@@ -177,6 +187,7 @@ class MonologServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $app['monolog.handler'] = $app->share(function () use ($app) {
             $level = MonologServiceProvider::translateLevel($app['monolog.level']);
+
             return new TestHandler($level);
         });
 

@@ -35,6 +35,8 @@ Services
 
     $app['monolog']->addDebug('Testing the Monolog logging.');
 
+* **monolog.listener**: An event listener to log requests, responses and errors.
+
 Registering
 -----------
 
@@ -85,11 +87,9 @@ it by extending the ``monolog`` service::
         return $monolog;
     }));
 
-By default, all requests are logged through a ``before`` and ``after``
-middleware at boot time. You can disable or customize this behavior by
-overriding the ``monolog.boot.before`` and ``monolog.boot.after`` services
-respectively. The provider also registers a default ``error`` handler which
-logs errors; it can be customized via the ``monolog.boot.error`` service.
+By default, all requests, responses and errors are logged by an event listener
+registered as a service called `monolog.listener`. You can replace or remove
+this service if you want to modify or disable the informations logged.
 
 Traits
 ------
