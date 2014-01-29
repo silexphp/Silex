@@ -55,9 +55,17 @@ class FormServiceProvider implements ServiceProviderInterface
             return array();
         });
 
+        $app['form.extension.csrf'] = $app->share(function ($app) {
+            if (isset($app['translator'])) {
+                return new CsrfExtension($app['form.csrf_provider'], $app['translator']);
+            }
+
+            return new CsrfExtension($app['form.csrf_provider']);
+        });
+
         $app['form.extensions'] = $app->share(function ($app) {
             $extensions = array(
-                new CsrfExtension($app['form.csrf_provider']),
+                $app['form.extension.csrf'],
                 new HttpFoundationExtension(),
             );
 
