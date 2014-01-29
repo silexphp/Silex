@@ -31,6 +31,17 @@ Registering
 
     $app->register(new Silex\Provider\SerializerServiceProvider());
 
+.. note::
+
+    If you are using Composer, add it as a dependency to your
+    ``composer.json`` file:
+
+    .. code-block:: json
+
+        "require": {
+            "symfony/serializer": "~2.3",
+         }
+         
 Usage
 -----
 
