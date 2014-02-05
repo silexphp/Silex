@@ -118,7 +118,7 @@ from a template:
 
     {{ render(app.request.baseUrl ~ '/sidebar') }}
 
-    {# or if you are also using UrlGeneratorServiceProvider with the SymfonyBridgesServiceProvider #}
+    {# or if you are also using the UrlGeneratorServiceProvider #}
     {{ render(url('sidebar')) }}
 
 .. note::
