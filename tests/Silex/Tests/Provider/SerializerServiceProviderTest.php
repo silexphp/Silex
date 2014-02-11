@@ -25,7 +25,7 @@ class SerializerServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->register(new SerializerServiceProvider);
+        $app->register(new SerializerServiceProvider());
 
         $this->assertInstanceOf("Symfony\Component\Serializer\Serializer", $app['serializer']);
         $this->assertTrue($app['serializer']->supportsEncoding('xml'));

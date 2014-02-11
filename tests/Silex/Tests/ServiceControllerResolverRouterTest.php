@@ -25,7 +25,7 @@ class ServiceControllerResolverRouterTest extends RouterTest
         $app = new Application();
 
         $app['service_name'] = function () {
-            return new MyController;
+            return new MyController();
         };
 
         $app->get('/bar', 'service_name:getBar');
