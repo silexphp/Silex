@@ -385,6 +385,10 @@ convert method will be used as converter::
         // ...
     })->convert('user', 'converter.user:convert');
 
+.. warning::
+
+    Please note that the ability to use a service method (with the `a:b` notation) will be in version 1.2
+
 Requirements
 ~~~~~~~~~~~~
 
