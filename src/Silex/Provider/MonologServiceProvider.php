@@ -11,6 +11,7 @@
 
 namespace Silex\Provider;
 
+use Monolog\Formatter\LineFormatter;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Silex\Application;
@@ -56,10 +57,16 @@ class MonologServiceProvider implements ServiceProviderInterface
             return $log;
         });
 
+        $app['monolog.formatter'] = function () {
+            return new LineFormatter();
+        };
+
         $app['monolog.handler'] = function () use ($app) {
             $level = MonologServiceProvider::translateLevel($app['monolog.level']);
+            $handler = new StreamHandler($app['monolog.logfile'], $level);
+            $handler->setFormatter($app['monolog.formatter']);
 
-            return new StreamHandler($app['monolog.logfile'], $level);
+            return $handler;
         };
 
         $app['monolog.level'] = function () {

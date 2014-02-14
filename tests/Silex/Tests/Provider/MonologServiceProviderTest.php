@@ -11,6 +11,7 @@
 
 namespace Silex\Tests\Provider;
 
+use Monolog\Formatter\JsonFormatter;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 use Silex\Application;
@@ -57,6 +58,17 @@ class MonologServiceProviderTest extends \PHPUnit_Framework_TestCase
         $app->handle($request);
 
         $this->assertTrue($app['monolog.handler']->hasDebug('logging a message'));
+    }
+
+    public function testOverrideFormatter()
+    {
+        $app = new Application();
+
+        $app->register(new MonologServiceProvider());
+        $app['monolog.formatter'] = new JsonFormatter();
+        $app['monolog.logfile'] = null;
+
+        $this->assertInstanceOf('Monolog\Formatter\JsonFormatter', $app['logger']->popHandler()->getFormatter());
     }
 
     public function testErrorLogging()
