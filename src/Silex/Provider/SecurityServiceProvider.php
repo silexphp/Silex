@@ -305,6 +305,8 @@ class SecurityServiceProvider implements ServiceProviderInterface
             return new HttpUtils(isset($app['url_generator']) ? $app['url_generator'] : null, $app['url_matcher']);
         });
 
+        $app['security.access_denied_handler'] = null;
+
         $app['security.last_error'] = $app->protect(function (Request $request) {
             if ($request->attributes->has(SecurityContextInterface::AUTHENTICATION_ERROR)) {
                 return $request->attributes->get(SecurityContextInterface::AUTHENTICATION_ERROR)->getMessage();
@@ -353,7 +355,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
                     $name,
                     $app[$entryPoint],
                     null, // errorPage
-                    null, // AccessDeniedHandlerInterface
+                    $app['security.access_denied_handler'],
                     $app['logger']
                 );
             });
