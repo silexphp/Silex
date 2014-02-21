@@ -30,6 +30,20 @@ Registering
 .. code-block:: php
 
     $app->register(new Silex\Provider\SerializerServiceProvider());
+    
+.. note::
+
+    The *SerializerServiceProvider* relies on Symfony's `Serializer Component
+    <http://symfony.com/doc/current/components/serializer.html>`_, 
+    which comes with the "fat" Silex archive but not with the regular
+    one. If you are using Composer, add it as a dependency to your
+    ``composer.json`` file:
+
+    .. code-block:: json
+
+        "require": {
+            "symfony/serializer": ">=2.3,<2.5-dev",
+         }
 
 Usage
 -----
