@@ -78,6 +78,9 @@ Then, you have to configure your web server (read the :doc:`dedicated chapter
     ease debugging::
 
         $app['debug'] = true;
+    
+    You should set this parameter as early as possible, because there are some
+    providers which rely on it.
 
 .. tip::
 
