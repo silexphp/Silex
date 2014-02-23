@@ -348,7 +348,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
             });
         });
 
-        $app['security.exception_listener._proto'] = $app->protect(function ($entryPoint, $name, $accessDeniedHandler) use ($app) {
+        $app['security.exception_listener._proto'] = $app->protect(function ($entryPoint, $name, $accessDeniedHandler = null) use ($app) {
             return $app->share(function () use ($app, $entryPoint, $name, $accessDeniedHandler) {
                 return new ExceptionListener(
                     $app['security'],
