@@ -213,8 +213,8 @@ the provider.
     controller provider interface and package in the same class the services
     needed to make your controllers work.
 
-If you don't like Anonymous Function or Controller Service, you can define 
-Controller and Controller Provider in the same class.
+If you don't like Anonymous Functions or Controller Services, you can define 
+the Controller and Controller Provider in the same class.
 
     namespace Acme;
     
@@ -225,11 +225,11 @@ Controller and Controller Provider in the same class.
     {
         public function connect(Application $app)
         {
-            $controller = $app['controllers_factory'];
+            $controllers = $app['controllers_factory'];
     
-            $controller->get('/public/{id}', array($this, 'web'));
+            $controllers->get('/public/{id}', array($this, 'web'));
     
-            return $controller;
+            return $controllers;
         }
     
         public function web($id)
