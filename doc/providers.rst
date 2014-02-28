@@ -214,7 +214,7 @@ the provider.
     needed to make your controllers work.
 
 If you don't like Anonymous Functions or Controller Services, you can define 
-the Controller and Controller Provider in the same class.
+the Controllers and Controller Provider in the same class.
 
     namespace Acme;
     
