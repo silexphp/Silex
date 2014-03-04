@@ -97,6 +97,22 @@ The Swiftmailer provider provides a ``mailer`` service::
         return new Response('Thank you for your feedback!', 201);
     });
 
+Usage in commands
+~~~~~~~~~~~~~~~~~
+
+The Swiftmailer provider sends the emails using the ``finish()`` application
+filter, which is run after the response has been sent. However, as console
+commands don't execute this filter, your emails won't be sent.
+
+For that reason, if you send emails using a command console, make sure to
+flush the message spool by hand before ending the command execution. To do so,
+use the following code::
+
+    $app['swiftmailer.spooltransport']
+        ->getSpool()
+        ->flushQueue($app['swiftmailer.transport'])
+    ;
+
 Traits
 ------
 
