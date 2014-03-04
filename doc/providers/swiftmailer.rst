@@ -100,9 +100,9 @@ The Swiftmailer provider provides a ``mailer`` service::
 Usage in commands
 ~~~~~~~~~~~~~~~~~
 
-The Swiftmailer provider sends the emails using the ``finish()`` application
-filter, which is run after the response has been sent. However, as console
-commands don't execute this filter, your emails won't be sent.
+The Swiftmailer provider sends the emails using the ``KernelEvents::TERMINATE``
+event, which is fired after the response has been sent. However, as this event
+isn't fired for console commands, your emails won't be sent.
 
 For that reason, if you send emails using a command console, make sure to
 flush the message spool by hand before ending the command execution. To do so,
