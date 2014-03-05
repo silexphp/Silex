@@ -467,8 +467,8 @@ class SecurityServiceProvider implements ServiceProviderInterface
                     isset($options['with_csrf']) && $options['with_csrf'] && isset($app['form.csrf_provider']) ? $app['form.csrf_provider'] : null
                 );
 
-                $tmp = isset($options['invalidate_session']) ? $options['invalidate_session'] : true;
-                if (true === $tmp) {
+                $invalidateSession = isset($options['invalidate_session']) ? $options['invalidate_session'] : true;
+                if (true === $invalidateSession) {
                     $listener->addHandler(new SessionLogoutHandler());
                 }
 
