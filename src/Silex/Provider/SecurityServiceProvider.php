@@ -469,6 +469,32 @@ class SecurityServiceProvider implements ServiceProviderInterface
 
                 $listener->addHandler(new SessionLogoutHandler());
 
+                $removeCookies = isset($options['remove_cookies']) ? $options['remove_cookies'] : null;
+                if (null !== $removeCookies) {
+                	$cookies = array();
+                	
+                	foreach ($removeCookies as $key => $value) {
+                		if (is_array($value)) {
+                			// Check for existence of method parameters otherwise
+                			// use default values given by ResponseHeaderBag:clearCookie()
+                			if (!isset($value['path'])) {
+                				$value['path'] = '/';
+                			}
+                			if (!isset($value['domain'])) {
+                				$value['domain'] = null;
+                			}
+                			
+                			$cookies[$key] = $value;
+                		} else {
+                			// Possibility to skip cookie values and use default
+                			// values given by ResponseHeaderBag:clearCookie()
+                			$cookies[$value] = array('path' => '/', 'domain' => null);
+                		}
+                	}
+                	
+                	$listener->addHandler(new CookieClearingLogoutHandler($cookies));
+                }
+
                 return $listener;
             });
         });
