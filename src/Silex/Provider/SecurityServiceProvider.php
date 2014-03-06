@@ -473,7 +473,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
                 $removeCookies = isset($options['remove_cookies']) ? $options['remove_cookies'] : null;
                 if (null !== $removeCookies) {
                     $cookies = array();
-                    
+
                     foreach ($removeCookies as $key => $value) {
                         if (is_array($value)) {
                             // Check for existence of method parameters otherwise
@@ -484,7 +484,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
                             if (!isset($value['domain'])) {
                                 $value['domain'] = null;
                             }
-                            
+
                             $cookies[$key] = $value;
                         } else {
                             // Possibility to skip cookie values and use default
@@ -492,7 +492,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
                             $cookies[$value] = array('path' => '/', 'domain' => null);
                         }
                     }
-                    
+
                     $listener->addHandler(new CookieClearingLogoutHandler($cookies));
                 }
 
