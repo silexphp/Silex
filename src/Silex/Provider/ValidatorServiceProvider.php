@@ -40,7 +40,7 @@ class ValidatorServiceProvider implements ServiceProviderInterface
                 $app['validator.validator_factory'],
                 isset($app['translator']) ? $app['translator'] : new DefaultTranslator(),
                 'validators',
-                $app['validator.validator_object_initializer']
+                $app['validator.object_initializers']
             );
         });
 
@@ -54,7 +54,7 @@ class ValidatorServiceProvider implements ServiceProviderInterface
             return new ConstraintValidatorFactory($app, $validators);
         });
 
-        $app['validator.validator_object_initializer'] = $app->share(function ($app) {
+        $app['validator.object_initializers'] = $app->share(function ($app) {
             return array();
         });
     }
