@@ -123,9 +123,9 @@ The first registered connection is the default and can simply be accessed as
 you would if there was only one connection. Given the above configuration,
 these two lines are equivalent::
 
-    $app['db']->fetchAssoc('SELECT * FROM table');
+    $app['db']->fetchAll('SELECT * FROM table');
 
-    $app['dbs']['mysql_read']->fetchAssoc('SELECT * FROM table');
+    $app['dbs']['mysql_read']->fetchAll('SELECT * FROM table');
 
 Using multiple connections::
 

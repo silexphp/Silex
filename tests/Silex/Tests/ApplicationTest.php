@@ -46,6 +46,9 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $returnValue = $app->put('/foo', function () {});
         $this->assertInstanceOf('Silex\Controller', $returnValue);
 
+        $returnValue = $app->patch('/foo', function () {});
+        $this->assertInstanceOf('Silex\Controller', $returnValue);
+
         $returnValue = $app->delete('/foo', function () {});
         $this->assertInstanceOf('Silex\Controller', $returnValue);
     }
@@ -146,7 +149,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $app = new Application();
         $app['pass'] = false;
 
-        $app->on('test', function(Event $e) use ($app) {
+        $app->on('test', function (Event $e) use ($app) {
             $app['pass'] = true;
         });
 
@@ -380,7 +383,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $app->get('/foo', function () use (&$containerTarget) {
             $containerTarget[] = '1_routeTriggered';
 
-            return new StreamedResponse(function() use (&$containerTarget) {
+            return new StreamedResponse(function () use (&$containerTarget) {
                 $containerTarget[] = '3_responseSent';
             });
         });
@@ -553,7 +556,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         ErrorHandler::register();
         $app['monolog.logfile'] = 'php://memory';
         $app->register(new MonologServiceProvider());
-        $app->get('/foo/', function() { return 'ok'; });
+        $app->get('/foo/', function () { return 'ok'; });
 
         $response = $app->handle(Request::create('/foo'));
         $this->assertEquals(301, $response->getStatusCode());

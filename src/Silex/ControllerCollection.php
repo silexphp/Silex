@@ -139,6 +139,19 @@ class ControllerCollection
         return $this->match($pattern, $to)->method('DELETE');
     }
 
+    /**
+     * Maps a PATCH request to a callable.
+     *
+     * @param string $pattern Matched route pattern
+     * @param mixed  $to      Callback that returns the response when matched
+     *
+     * @return Controller
+     */
+    public function patch($pattern, $to = null)
+    {
+        return $this->match($pattern, $to)->method('PATCH');
+    }
+
     public function __call($method, $arguments)
     {
         if (!method_exists($this->defaultRoute, $method)) {
