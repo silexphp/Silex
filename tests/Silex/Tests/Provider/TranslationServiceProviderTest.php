@@ -24,11 +24,11 @@ class TranslationServiceProviderTest extends \PHPUnit_Framework_TestCase
     /**
      * @return Application
      */
-    protected function getPreparedApp()
+    protected function getPreparedApp(array $options = array())
     {
         $app = new Application();
 
-        $app->register(new TranslationServiceProvider());
+        $app->register(new TranslationServiceProvider(), $options);
         $app['translator.domains'] = array(
             'messages' => array(
                 'en' => array (
@@ -88,6 +88,7 @@ class TranslationServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $result = $app['translator']->trans($key, array(), null, $locale);
 
+        $this->assertInstanceOf('Silex\Translator', $app['translator']);
         $this->assertEquals($expected, $result);
     }
 
@@ -134,5 +135,36 @@ class TranslationServiceProviderTest extends \PHPUnit_Framework_TestCase
         $app['locale'] = 'de';
 
         $this->assertEquals('The german translation', $app['translator']->trans('key1'));
+    }
+
+    /**
+     * @dataProvider transProvider
+     */
+    public function testCachedTranslator($key, $locale, $expected)
+    {
+        $tempDir = __DIR__ . '/temp-trans';
+        $this->cleanupTempDir($tempDir);
+
+        $app = $this->getPreparedApp(array('translator.cache-options' => array('cache_dir' => $tempDir)));
+
+        $this->assertInstanceOf('Silex\CachedTranslator', $app['translator']);
+
+        $result = $app['translator']->trans($key, array(), null, $locale);
+
+        $this->assertEquals($expected, $result);
+        $this->assertFileExists($tempDir.'/catalogue.'.($locale ?: 'en').'.php');
+    }
+
+    private function cleanupTempDir($dir)
+    {
+        if (!is_dir($dir)) {
+            return;
+        }
+
+        foreach (new \DirectoryIterator($dir) as $fileinfo) {
+            if ($fileinfo->isFile()) {
+                unlink($fileinfo->getPathname());
+            }
+        }
     }
 }

@@ -35,6 +35,9 @@ Services
 Registering
 -----------
 
+Default
+~~~~~~~
+
 .. code-block:: php
 
     $app->register(new Silex\Provider\TranslationServiceProvider(), array(
@@ -51,6 +54,35 @@ Registering
 
         "require": {
             "symfony/translation": "~2.3"
+        }
+
+Cached translator
+~~~~~~~~~~~~~~~~~
+
+Loading translations from non-PHP files can be expensive. Silex provides a
+cached translator that will speed up this process.
+
+.. code-block:: php
+
+    $app->register(new Silex\Provider\TranslationServiceProvider(), array(
+        'locale_fallbacks' => array('en'),
+        'translator.cache-options' => array(
+            'cache_dir' => '/path/to/translations/tmp-dir',
+        )
+    ));
+
+.. note::
+
+    The cached translator is automatically loaded if you provide a
+    ``cache_dir`` option and if Symfony Config Component is available.
+
+    As it requires the Symfony Config Component, add this dependency to your
+    ``composer.json`` file:
+
+    .. code-block:: json
+
+        "require": {
+            "symfony/config": "~2.3"
         }
 
 Usage
