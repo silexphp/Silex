@@ -130,6 +130,10 @@ class RouterTest extends \PHPUnit_Framework_TestCase
             return 'put resource';
         });
 
+        $app->patch('/resource', function () {
+            return 'patch resource';
+        });
+
         $app->delete('/resource', function () {
             return 'delete resource';
         });
@@ -140,6 +144,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $this->checkRouteResponse($app, '/resource', 'get resource');
         $this->checkRouteResponse($app, '/resource', 'post resource', 'post');
         $this->checkRouteResponse($app, '/resource', 'put resource', 'put');
+        $this->checkRouteResponse($app, '/resource', 'patch resource', 'patch');
         $this->checkRouteResponse($app, '/resource', 'delete resource', 'delete');
     }
 

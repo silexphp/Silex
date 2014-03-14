@@ -46,6 +46,9 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $returnValue = $app->put('/foo', function () {});
         $this->assertInstanceOf('Silex\Controller', $returnValue);
 
+        $returnValue = $app->patch('/foo', function () {});
+        $this->assertInstanceOf('Silex\Controller', $returnValue);
+
         $returnValue = $app->delete('/foo', function () {});
         $this->assertInstanceOf('Silex\Controller', $returnValue);
     }

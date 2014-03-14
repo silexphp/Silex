@@ -260,6 +260,19 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
     }
 
     /**
+     * Maps a PATCH request to a callable.
+     *
+     * @param string $pattern Matched route pattern
+     * @param mixed  $to      Callback that returns the response when matched
+     *
+     * @return Controller
+     */
+    public function patch($pattern, $to = null)
+    {
+        return $this['controllers']->patch($pattern, $to);
+    }
+
+    /**
      * Adds an event listener that listens on the specified events.
      *
      * @param string   $eventName The event to listen on
