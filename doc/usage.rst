@@ -495,7 +495,6 @@ the defaults for new controllers.
 .. note::
 
     The global configuration does not apply to controller providers you might
-<<<<<<< HEAD
     mount as they have their own global configuration (read the
     :doc:`dedicated chapter<organizing_controllers>` for more information).
 
@@ -503,13 +502,7 @@ the defaults for new controllers.
 
     The converters are run for **all** registered controllers.
 
-Error handlers
-=======
-    mount as they have their own global configuration (read the 
-    :doc:`dedicated chapter <organizing_controllers>` for more information).
-
 Error Handlers
->>>>>>> WouterJ/doc_fixes
 --------------
 
 If some part of your code throws an exception you will want to display some
