@@ -233,7 +233,11 @@ class SecurityServiceProvider implements ServiceProviderInterface
                         if (null == $entryPoint) {
                             $app[$entryPoint = 'security.entry_point.'.$name.'.form'] = $app['security.entry_point.form._proto']($name, array());
                         }
-                        $app['security.exception_listener.'.$name] = $app['security.exception_listener._proto']($entryPoint, $name);
+                        $accessDeniedHandler = null;
+                        if (isset($app['security.access_denied_handler.'.$name])) {
+                            $accessDeniedHandler = $app['security.access_denied_handler.'.$name];
+                        }
+                        $app['security.exception_listener.'.$name] = $app['security.exception_listener._proto']($entryPoint, $name, $accessDeniedHandler);
                     }
                 }
 
@@ -344,8 +348,8 @@ class SecurityServiceProvider implements ServiceProviderInterface
             });
         });
 
-        $app['security.exception_listener._proto'] = $app->protect(function ($entryPoint, $name) use ($app) {
-            return $app->share(function () use ($app, $entryPoint, $name) {
+        $app['security.exception_listener._proto'] = $app->protect(function ($entryPoint, $name, $accessDeniedHandler = null) use ($app) {
+            return $app->share(function () use ($app, $entryPoint, $name, $accessDeniedHandler) {
                 return new ExceptionListener(
                     $app['security'],
                     $app['security.trust_resolver'],
@@ -353,7 +357,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
                     $name,
                     $app[$entryPoint],
                     null, // errorPage
-                    null, // AccessDeniedHandlerInterface
+                    $accessDeniedHandler,
                     $app['logger']
                 );
             });
