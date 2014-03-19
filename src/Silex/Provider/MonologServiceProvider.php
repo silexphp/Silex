@@ -76,7 +76,7 @@ class MonologServiceProvider implements ServiceProviderInterface
             function (\Exception $e) use ($app) {
                 $message = sprintf('%s: %s (uncaught exception) at %s line %s', get_class($e), $e->getMessage(), $e->getFile(), $e->getLine());
                 if ($e instanceof HttpExceptionInterface && $e->getStatusCode() < 500) {
-                    $app['monolog']->addError($message, array('exception' => $e));
+                    $app['monolog']->addNotice($message, array('exception' => $e));
                 } else {
                     $app['monolog']->addCritical($message, array('exception' => $e));
                 }
