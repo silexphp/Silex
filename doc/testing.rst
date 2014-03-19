@@ -85,7 +85,8 @@ use it by making your test extend it::
     .. code-block:: json
 
         "require-dev": {
-            "symfony/browser-kit": ">=2.3,<2.4-dev"
+            "symfony/browser-kit": ">=2.3,<2.4-dev",
+            "symfony/css-selector": ">=2.3,<2.4-dev"
         }
 
 For your WebTestCase, you will have to implement a ``createApplication``
