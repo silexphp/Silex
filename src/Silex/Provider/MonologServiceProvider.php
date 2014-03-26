@@ -52,11 +52,12 @@ class MonologServiceProvider implements ServiceProviderInterface
 
             return $log;
         });
-
+        $app['monolog.bubble'] = true;
+        $app['monolog.permission'] = null;
         $app['monolog.handler'] = function () use ($app) {
             $level = MonologServiceProvider::translateLevel($app['monolog.level']);
 
-            return new StreamHandler($app['monolog.logfile'], $level);
+            return new StreamHandler($app['monolog.logfile'], $level, $app['monolog.bubble'], $app['monolog.permission']);
         };
 
         $app['monolog.level'] = function () {
