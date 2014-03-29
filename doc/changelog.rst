@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.2.0 (2013-XX-XX)
+1.2.0 (2014-03-29)
 ------------------
 
 * Allowed disabling the boot logic of MonologServiceProvider
