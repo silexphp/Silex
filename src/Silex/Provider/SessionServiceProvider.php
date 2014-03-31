@@ -30,7 +30,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
  */
 class SessionServiceProvider implements ServiceProviderInterface
 {
-    private $app;
+    protected $app;
 
     public function register(Application $app)
     {
