@@ -47,7 +47,19 @@ class SessionServiceProvider implements ServiceProviderInterface
                 }
             }
 
-            return new Session($app['session.storage']);
+            if (!isset($app['session.attribute_bag'])) {
+                $app['session.attribute_bag'] = null;
+            }
+
+            if (!isset($app['session.flashbag'])) {
+                $app['session.flashbag'] = null;
+            }
+
+            return new Session(
+                $app['session.storage'], 
+                $app['session.attribute_bag'], 
+                $app['session.flashbag']
+            );
         });
 
         $app['session.storage.handler'] = $app->share(function ($app) {
