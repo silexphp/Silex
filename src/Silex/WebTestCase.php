@@ -29,7 +29,7 @@ abstract class WebTestCase extends \PHPUnit_Framework_TestCase
      * Note: Child classes that define a setUp method must call
      * parent::setUp().
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->app = $this->createApplication();
     }
