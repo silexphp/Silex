@@ -78,18 +78,6 @@ collection of constraints::
 
     use Symfony\Component\Validator\Constraints as Assert;
 
-    class Book
-    {
-        public $title;
-        public $author;
-    }
-
-    class Author
-    {
-        public $first_name;
-        public $last_name;
-    }
-
     $book = array(
         'title' => 'My Book',
         'author' => array(
@@ -122,6 +110,18 @@ If you want to add validations to a class, you can define the constraint for
 the class properties and getters, and then call the ``validate`` method::
 
     use Symfony\Component\Validator\Constraints as Assert;
+
+    class Book
+    {
+        public $title;
+        public $author;
+    }
+
+    class Author
+    {
+        public $first_name;
+        public $last_name;
+    }
 
     $author = new Author();
     $author->first_name = 'Fabien';
