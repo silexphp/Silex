@@ -56,6 +56,7 @@ use Symfony\Component\Security\Http\HttpUtils;
  * Symfony Security component Provider.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ * @author Yannick Gagnon <yannick.gagnon@gmail.com>
  */
 class SecurityServiceProvider implements ServiceProviderInterface
 {
@@ -541,8 +542,11 @@ class SecurityServiceProvider implements ServiceProviderInterface
 
         foreach ($this->fakeRoutes as $route) {
             list($method, $pattern, $name) = $route;
-
-            $app->$method($pattern)->run(null)->bind($name);
+            
+            // Only add fake routes if they're not defined already
+            if( $app['routes']->get($name) === null) {
+            	$app->$method($pattern, null)->bind($name);
+            }
         }
     }
 
