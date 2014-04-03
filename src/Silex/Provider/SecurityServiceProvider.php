@@ -542,7 +542,9 @@ class SecurityServiceProvider implements ServiceProviderInterface
         foreach ($this->fakeRoutes as $route) {
             list($method, $pattern, $name) = $route;
 
-            $app->$method($pattern)->run(null)->bind($name);
+            if ( $app['routes']->get($name) === null) {
+                $app->$method($pattern, null)->bind($name);
+             }
         }
     }
 
