@@ -166,11 +166,10 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
     {
         $this->providers[] = $provider;
 
-        $provider->register($this);
-
         foreach ($values as $key => $value) {
             $this[$key] = $value;
         }
+        $provider->register($this);
 
         return $this;
     }
