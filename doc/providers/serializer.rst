@@ -41,22 +41,22 @@ The ``SerializerServiceProvider`` provider provides a ``serializer`` service:
     use Silex\Application;
     use Silex\Provider\SerializerServiceProvider;
     use Symfony\Component\HttpFoundation\Response;
-    
+
     $app = new Application();
-    
+
     $app->register(new SerializerServiceProvider());
-    
+
     // only accept content types supported by the serializer via the assert method.
     $app->get("/pages/{id}.{_format}", function ($id) use ($app) {
         // assume a page_repository service exists that returns Page objects. The
         // object returned has getters and setters exposing the state.
         $page = $app['page_repository']->find($id);
         $format = $app['request']->getRequestFormat();
-    
+
         if (!$page instanceof Page) {
             $app->abort("No page found for id: $id");
         }
-    
+
         return new Response($app['serializer']->serialize($page, $format), 200, array(
             "Content-Type" => $app['request']->getMimeType($format)
         ));
