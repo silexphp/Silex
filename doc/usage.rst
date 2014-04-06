@@ -257,10 +257,6 @@ restricted via the ``method`` method::
 
     $app->match('/blog', function () {
         ...
-    });
-
-    $app->match('/blog', function () {
-        ...
     })
     ->method('PATCH');
 
@@ -268,6 +264,10 @@ restricted via the ``method`` method::
         ...
     })
     ->method('PUT|POST');
+
+    $app->match('/blog', function () {
+        ...
+    });
 
 .. note::
 
@@ -462,7 +462,7 @@ the defaults for new controllers.
 .. note::
 
     The global configuration does not apply to controller providers you might
-    mount as they have their own global configuration (read the 
+    mount as they have their own global configuration (read the
     :doc:`dedicated chapter<organizing_controllers>` for more information).
 
 Error handlers
