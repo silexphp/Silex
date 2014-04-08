@@ -60,21 +60,21 @@ class ConstraintValidatorFactory implements ConstraintValidatorFactoryInterface
     public function getInstance(Constraint $constraint)
     {
         $name = $constraint->validatedBy();
-        
+
         // Quoting `webmozart` on the symfony/symfony project:
         // https://github.com/symfony/symfony/commit/d4ebbfd02d416504ebfed262d656941062905b76#diff-3a3e44a703775a35fbdd66850a43968dR41
-        // 
+        //
         // " The second condition is a hack that is needed when CollectionValidator
         //   calls itself recursively (Collection constraints can be nested).
         //   Since the context of the validator is overwritten when initialize()
         //   is called for the nested constraint, the outer validator is
         //   acting on the wrong context when the nested validation terminates. "
-        // 
-        // Note: This also applies to AllValidator and All constraints, hence 
+        //
+        // Note: This also applies to AllValidator and All constraints, hence
         //       the additional third condition hack.
-        if (isset($this->validators[$name]) && 
-            $name != 'Symfony\Component\Validator\Constraints\CollectionValidator' && 
-            $name != 'Symfony\Component\Validator\Constraints\AllValidator') {
+        if (isset($this->validators[$name]) &&
+            $name !== 'Symfony\Component\Validator\Constraints\CollectionValidator' &&
+            $name !== 'Symfony\Component\Validator\Constraints\AllValidator') {
             return $this->validators[$name];
         }
 
