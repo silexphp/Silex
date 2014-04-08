@@ -38,7 +38,7 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app['custom.validator'] = $app->share(function() {
+        $app['custom.validator'] = $app->share(function () {
             return new CustomValidator();
         });
 
@@ -112,7 +112,7 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
             array('email@sample.com', true, 0, 0),
         );
     }
-    
+
     /**
      * @depends testRegister
      * @dataProvider testValidatorNestedConstraintProvider
@@ -124,8 +124,8 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
         // validate data values
         $errors = $app['validator']->validateValue($data, $constraints);
 
-        foreach ($errors as $i => $e){
-        
+        foreach ($errors as $i => $e) {
+
             // confirm error property paths
             $this->assertEquals($propPaths[$i], $e->getPropertyPath());
         }
@@ -133,7 +133,7 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
 
     public function testValidatorNestedConstraintProvider()
     {
-        // nested data, constraints, expected error property paths 
+        // nested data, constraints, expected error property paths
         return array(
             array(array(
                 'name' => 'Silex Library',
@@ -157,12 +157,12 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
                         )
                     )
                 )
-            ), 
+            ),
             new Assert\Collection(array(
-                'name'  => new Assert\Blank(), 
+                'name'  => new Assert\Blank(),
                 'shelves' => new Assert\All(array('constraints' => array(
                     new Assert\Collection(array(
-                        'name'  => new Assert\Blank(), 
+                        'name'  => new Assert\Blank(),
                         'books' => new Assert\All(array('constraints' => array(
                             new Assert\Blank()
                         )))
@@ -183,5 +183,5 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
             ))
         );
     }
-    
+
 }
