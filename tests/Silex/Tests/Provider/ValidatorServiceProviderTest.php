@@ -112,5 +112,76 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
             array('email@sample.com', true, 0, 0),
         );
     }
+    
+    /**
+     * @depends testRegister
+     * @dataProvider testValidatorNestedConstraintProvider
+     */
+    public function testValidatorNestedConstraint($data, $constraints, $propPaths, $app)
+    {
+        $app->register(new ValidatorServiceProvider());
 
+        // validate data values
+        $errors = $app['validator']->validateValue($data, $constraints);
+
+        foreach ($errors as $i => $e){
+        
+            // confirm error property paths
+            $this->assertEquals($propPaths[$i], $e->getPropertyPath());
+        }
+    }
+
+    public function testValidatorNestedConstraintProvider()
+    {
+        // nested data, constraints, expected error property paths 
+        return array(
+            array(array(
+                'name' => 'Silex Library',
+                'shelves' => array(
+                    array(
+                        'name' => 'Research',
+                        'books' => array(
+                            "foo","bar"
+                        )
+                    ),
+                    array(
+                        'name' => 'Fiction',
+                        'books' => array(
+                            "foozy","barzy","bazzy"
+                        )
+                    ),
+                    array(
+                        'name' => 'DVDs',
+                        'books' => array(
+                            "xyz"
+                        )
+                    )
+                )
+            ), 
+            new Assert\Collection(array(
+                'name'  => new Assert\Blank(), 
+                'shelves' => new Assert\All(array('constraints' => array(
+                    new Assert\Collection(array(
+                        'name'  => new Assert\Blank(), 
+                        'books' => new Assert\All(array('constraints' => array(
+                            new Assert\Blank()
+                        )))
+                    ))
+                )))
+            )),
+            array(
+                "[name]",
+                "[shelves][0][name]",
+                "[shelves][0][books][0]",
+                "[shelves][0][books][1]",
+                "[shelves][1][name]",
+                "[shelves][1][books][0]",
+                "[shelves][1][books][1]",
+                "[shelves][1][books][2]",
+                "[shelves][2][name]",
+                "[shelves][2][books][0]"
+            ))
+        );
+    }
+    
 }
