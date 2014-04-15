@@ -132,8 +132,7 @@ example::
         return $app['twig']->render('index.twig', array('form' => $form->createView()));
     });
 
-And here is the ``index.twig`` form template (requires ``symfony/twig-
-bridge``):
+And here is the ``index.twig`` form template (requires ``symfony/twig-bridge``):
 
 .. code-block:: jinja
 

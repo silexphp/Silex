@@ -32,8 +32,8 @@ By calling ``handle``, you can make a sub-request manually. Here's an example::
     $response = $app->handle($subRequest, HttpKernelInterface::SUB_REQUEST, false);
 
 There's some more things that you need to keep in mind though. In most cases
-you will want to forward some parts of the current master request to the sub-
-request. That includes: Cookies, server information, session.
+you will want to forward some parts of the current master request to the
+sub-request. That includes: Cookies, server information, session.
 
 Here is a more advanced example that forwards said information (``$request``
 holds the master request)::
