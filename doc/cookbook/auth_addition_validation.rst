@@ -1,5 +1,3 @@
-auth_addition_validation.rst
-
 Create addition authenticating validation (like Captcha)
 ============================
 
