@@ -41,3 +41,5 @@ Recipes
 * :doc:`Using multiple Monolog Loggers <multiple_loggers>`.
 
 * :doc:`Managing Assets in Templates <assets>`.
+
+* :doc:`Create addition authenticating validation (like Captcha) <auth_addition_validation>`.
