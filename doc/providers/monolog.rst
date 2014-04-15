@@ -13,7 +13,7 @@ Parameters
 
 * **monolog.logfile**: File where logs are written to.
 
-* **monolog.level** (optional): Level of logging defaults
+* **monolog.level** (optional): Level of logging, defaults
   to ``DEBUG``. Must be one of ``Logger::DEBUG``, ``Logger::INFO``,
   ``Logger::WARNING``, ``Logger::ERROR``. ``DEBUG`` will log
   everything, ``INFO`` will log everything except ``DEBUG``,
