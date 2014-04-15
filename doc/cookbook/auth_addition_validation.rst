@@ -3,6 +3,8 @@ Create addition authenticating validation (like Captcha)
 
 Create a listener class
 
+.. code-block:: php
+
     use Symfony\Component\HttpFoundation\Request;
     use Symfony\Component\Security\Core\Exception\AuthenticationException;
     use Symfony\Component\Security\Http\Firewall\UsernamePasswordFormAuthenticationListener;
@@ -26,6 +28,8 @@ Create a listener class
     }
 
 and add `listener_class` to security form option
+
+.. code-block:: php
 
     $app['security.firewalls'] = array(
         'main' => array(
