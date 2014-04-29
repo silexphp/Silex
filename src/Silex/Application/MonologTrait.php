@@ -25,9 +25,9 @@ trait MonologTrait
      *
      * @param string  $message The log message
      * @param array   $context The log context
-     * @param integer $level   The logging level
+     * @param int     $level   The logging level
      *
-     * @return Boolean Whether the record has been processed
+     * @return bool    Whether the record has been processed
      */
     public function log($message, array $context = array(), $level = Logger::INFO)
     {

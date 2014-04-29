@@ -27,7 +27,7 @@ class CallbackResolver
      *
      * @param string $name
      *
-     * @return Boolean
+     * @return bool
      */
     public function isValid($name)
     {
