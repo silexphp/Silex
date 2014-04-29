@@ -300,9 +300,9 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      *
      * Before filters are run before any route has been matched.
      *
-     * @param mixed   $callback Before filter callback
-     * @param int     $priority The higher this value, the earlier an event
-     *                          listener will be triggered in the chain (defaults to 0)
+     * @param mixed $callback Before filter callback
+     * @param int   $priority The higher this value, the earlier an event
+     *                        listener will be triggered in the chain (defaults to 0)
      */
     public function before($callback, $priority = 0)
     {
@@ -326,9 +326,9 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      *
      * After filters are run after the controller has been executed.
      *
-     * @param mixed   $callback After filter callback
-     * @param int     $priority The higher this value, the earlier an event
-     *                          listener will be triggered in the chain (defaults to 0)
+     * @param mixed $callback After filter callback
+     * @param int   $priority The higher this value, the earlier an event
+     *                        listener will be triggered in the chain (defaults to 0)
      */
     public function after($callback, $priority = 0)
     {
@@ -348,9 +348,9 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      *
      * Finish filters are run after the response has been sent.
      *
-     * @param mixed   $callback Finish filter callback
-     * @param int     $priority The higher this value, the earlier an event
-     *                          listener will be triggered in the chain (defaults to 0)
+     * @param mixed $callback Finish filter callback
+     * @param int   $priority The higher this value, the earlier an event
+     *                        listener will be triggered in the chain (defaults to 0)
      */
     public function finish($callback, $priority = 0)
     {
@@ -364,9 +364,9 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
     /**
      * Aborts the current request by sending a proper HTTP error.
      *
-     * @param int     $statusCode The HTTP status code
-     * @param string  $message    The status message
-     * @param array   $headers    An array of HTTP headers
+     * @param int    $statusCode The HTTP status code
+     * @param string $message    The status message
+     * @param array  $headers    An array of HTTP headers
      */
     public function abort($statusCode, $message = '', array $headers = array())
     {
@@ -386,9 +386,9 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      *
      * For this reason you should add logging handlers before output handlers.
      *
-     * @param mixed   $callback Error handler callback, takes an Exception argument
-     * @param int     $priority The higher this value, the earlier an event
-     *                          listener will be triggered in the chain (defaults to -8)
+     * @param mixed $callback Error handler callback, takes an Exception argument
+     * @param int   $priority The higher this value, the earlier an event
+     *                        listener will be triggered in the chain (defaults to -8)
      */
     public function error($callback, $priority = -8)
     {
@@ -408,8 +408,8 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
     /**
      * Redirects the user to another URL.
      *
-     * @param string  $url    The URL to redirect to
-     * @param int     $status The status code (302 by default)
+     * @param string $url    The URL to redirect to
+     * @param int    $status The status code (302 by default)
      *
      * @return RedirectResponse
      */
@@ -421,9 +421,9 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
     /**
      * Creates a streaming response.
      *
-     * @param mixed   $callback A valid PHP callback
-     * @param int     $status   The response status code
-     * @param array   $headers  An array of response headers
+     * @param mixed $callback A valid PHP callback
+     * @param int   $status   The response status code
+     * @param array $headers  An array of response headers
      *
      * @return StreamedResponse
      */
@@ -435,10 +435,10 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
     /**
      * Escapes a text for HTML.
      *
-     * @param string  $text         The input text to be escaped
-     * @param int     $flags        The flags (@see htmlspecialchars)
-     * @param string  $charset      The charset
-     * @param bool    $doubleEncode Whether to try to avoid double escaping or not
+     * @param string $text         The input text to be escaped
+     * @param int    $flags        The flags (@see htmlspecialchars)
+     * @param string $charset      The charset
+     * @param bool   $doubleEncode Whether to try to avoid double escaping or not
      *
      * @return string Escaped text
      */
@@ -450,9 +450,9 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
     /**
      * Convert some data into a JSON response.
      *
-     * @param mixed   $data    The response data
-     * @param int     $status  The response status code
-     * @param array   $headers An array of response headers
+     * @param mixed $data    The response data
+     * @param int   $status  The response status code
+     * @param array $headers An array of response headers
      *
      * @return JsonResponse
      */

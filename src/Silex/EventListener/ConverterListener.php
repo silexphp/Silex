@@ -30,8 +30,8 @@ class ConverterListener implements EventSubscriberInterface
     /**
      * Constructor.
      *
-     * @param RouteCollection  $routes            A RouteCollection instance
-     * @param CallbackResolver $callbackResolver  A CallbackResolver instance
+     * @param RouteCollection  $routes           A RouteCollection instance
+     * @param CallbackResolver $callbackResolver A CallbackResolver instance
      */
     public function __construct(RouteCollection $routes, CallbackResolver $callbackResolver)
     {
