@@ -11,7 +11,8 @@
 
 namespace Silex\Provider;
 
-use Silex\Api\ServiceProviderInterface;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
@@ -34,7 +35,7 @@ class SerializerServiceProvider implements ServiceProviderInterface
      *
      * @param Pimple $app
      */
-    public function register(\Pimple $app)
+    public function register(Container $app)
     {
         $app['serializer'] = function () use ($app) {
             return new Serializer($app['serializer.normalizers'], $app['serializer.encoders']);

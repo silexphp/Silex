@@ -11,8 +11,9 @@
 
 namespace Silex\Provider;
 
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Silex\Provider\HttpCache\HttpCache;
-use Silex\Api\ServiceProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpKernel\HttpCache\Esi;
@@ -26,7 +27,7 @@ use Symfony\Component\HttpKernel\EventListener\EsiListener;
  */
 class HttpCacheServiceProvider implements ServiceProviderInterface, EventListenerProviderInterface
 {
-    public function register(\Pimple $app)
+    public function register(Container $app)
     {
         $app['http_cache'] = function ($app) {
             $app['http_cache.options'] = array_replace(
@@ -53,7 +54,7 @@ class HttpCacheServiceProvider implements ServiceProviderInterface, EventListene
         $app['http_cache.options'] = array();
     }
 
-    public function subscribe(\Pimple $app, EventDispatcherInterface $dispatcher)
+    public function subscribe(Container $app, EventDispatcherInterface $dispatcher)
     {
         $dispatcher->addSubscriber($app['http_cache.esi_listener']);
     }

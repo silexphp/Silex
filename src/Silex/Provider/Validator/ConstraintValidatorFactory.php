@@ -11,6 +11,7 @@
 
 namespace Silex\Provider\Validator;
 
+use Pimple\Container;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidatorFactoryInterface;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -24,7 +25,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 class ConstraintValidatorFactory implements ConstraintValidatorFactoryInterface
 {
     /**
-     * @var \Pimple
+     * @var Container
      */
     protected $container;
 
@@ -41,10 +42,10 @@ class ConstraintValidatorFactory implements ConstraintValidatorFactoryInterface
     /**
      * Constructor
      *
-     * @param \Pimple $container    DI container
-     * @param array   $serviceNames Validator service names
+     * @param Container $container    DI container
+     * @param array     $serviceNames Validator service names
      */
-    public function __construct(\Pimple $container, array $serviceNames = array())
+    public function __construct(Container $container, array $serviceNames = array())
     {
         $this->container    = $container;
         $this->serviceNames = $serviceNames;

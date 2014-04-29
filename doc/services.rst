@@ -63,10 +63,10 @@ Pimple is probably the simplest service container out there. It makes strong
 use of closures and implements the ArrayAccess interface.
 
 We will start off by creating a new instance of Pimple -- and because
-``Silex\Application`` extends ``Pimple`` all of this applies to Silex as
-well::
+``Silex\Application`` extends ``Pimple\Container`` all of this applies to Silex
+as well::
 
-    $container = new Pimple();
+    $container = new Pimple\Container();
 
 or::
 

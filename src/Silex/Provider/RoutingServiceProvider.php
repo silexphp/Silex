@@ -11,7 +11,8 @@
 
 namespace Silex\Provider;
 
-use Silex\Api\ServiceProviderInterface;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
 use Silex\Provider\Routing\RedirectableUrlMatcher;
 use Silex\Provider\Routing\LazyUrlMatcher;
@@ -27,7 +28,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class RoutingServiceProvider implements ServiceProviderInterface, EventListenerProviderInterface
 {
-    public function register(\Pimple $app)
+    public function register(Container $app)
     {
         $app['url_generator'] = function ($app) {
             return new UrlGenerator($app['routes'], $app['request_context']);
@@ -55,7 +56,7 @@ class RoutingServiceProvider implements ServiceProviderInterface, EventListenerP
         };
     }
 
-    public function subscribe(\Pimple $app, EventDispatcherInterface $dispatcher)
+    public function subscribe(Container $app, EventDispatcherInterface $dispatcher)
     {
         $dispatcher->addSubscriber($app['routing.listener']);
     }

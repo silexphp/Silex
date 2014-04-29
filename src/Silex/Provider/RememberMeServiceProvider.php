@@ -11,7 +11,8 @@
 
 namespace Silex\Provider;
 
-use Silex\Api\ServiceProviderInterface;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Authentication\Provider\RememberMeAuthenticationProvider;
@@ -26,7 +27,7 @@ use Symfony\Component\Security\Http\RememberMe\ResponseListener;
  */
 class RememberMeServiceProvider implements ServiceProviderInterface, EventListenerProviderInterface
 {
-    public function register(\Pimple $app)
+    public function register(Container $app)
     {
         $app['security.remember_me.response_listener'] = function ($app) {
             if (!isset($app['security'])) {
@@ -98,7 +99,7 @@ class RememberMeServiceProvider implements ServiceProviderInterface, EventListen
         });
     }
 
-    public function subscribe(\Pimple $app, EventDispatcherInterface $dispatcher)
+    public function subscribe(Container $app, EventDispatcherInterface $dispatcher)
     {
         $dispatcher->addSubscriber($app['security.remember_me.response_listener']);
     }

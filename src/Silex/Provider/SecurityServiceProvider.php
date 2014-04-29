@@ -11,10 +11,11 @@
 
 namespace Silex\Provider;
 
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Silex\Application;
 use Silex\Api\BootableProviderInterface;
 use Silex\Api\ControllerProviderInterface;
-use Silex\Api\ServiceProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RequestMatcher;
@@ -65,7 +66,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
 {
     protected $fakeRoutes;
 
-    public function register(\Pimple $app)
+    public function register(Container $app)
     {
         // used to register routes for login_check and logout
         $this->fakeRoutes = array();
@@ -542,7 +543,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
         }
     }
 
-    public function subscribe(\Pimple $app, EventDispatcherInterface $dispatcher)
+    public function subscribe(Container $app, EventDispatcherInterface $dispatcher)
     {
         $dispatcher->addSubscriber($app['security.firewall']);
     }

@@ -11,6 +11,7 @@
 
 namespace Silex\Provider\Translation;
 
+use Pimple\Container;
 use Symfony\Component\Translation\Translator as BaseTranslator;
 use Symfony\Component\Translation\MessageSelector;
 
@@ -23,7 +24,7 @@ class Translator extends BaseTranslator
 {
     protected $app;
 
-    public function __construct(\Pimple $app, MessageSelector $selector)
+    public function __construct(Container $app, MessageSelector $selector)
     {
         $this->app = $app;
 
