@@ -81,11 +81,11 @@ Customization
 You can configure Monolog (like adding or changing the handlers) before using
 it by extending the ``monolog`` service::
 
-    $app['monolog'] = $app->share($app->extend('monolog', function($monolog, $app) {
+    $app->extend('monolog', function($monolog, $app) {
         $monolog->pushHandler(...);
 
         return $monolog;
-    }));
+    });
 
 By default, all requests, responses and errors are logged by an event listener
 registered as a service called `monolog.listener`. You can replace or remove
