@@ -12,6 +12,8 @@ Parameters
 ----------
 
 * **monolog.logfile**: File where logs are written to.
+* **monolog.bubble** = (optional) Whether the messages that are handled can bubble up the stack or not
+* **monolog.permission** = (optional) File permissions default (0644) are only for owner read/write
 
 * **monolog.level** (optional): Level of logging defaults
   to ``DEBUG``. Must be one of ``Logger::DEBUG``, ``Logger::INFO``,
