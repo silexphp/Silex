@@ -54,9 +54,7 @@ class MonologServiceProvider implements ServiceProviderInterface
         });
         
         $app['monolog.bubble'] = true;
-        
         $app['monolog.permission'] = null;
-        
         $app['monolog.handler'] = function () use ($app) {
             return new StreamHandler($app['monolog.logfile'], $app['monolog.level'], $app['monolog.bubble'], $app['monolog.permission']);
         };
