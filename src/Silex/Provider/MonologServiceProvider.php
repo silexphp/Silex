@@ -52,7 +52,6 @@ class MonologServiceProvider implements ServiceProviderInterface
 
             return $log;
         });
-        
         $app['monolog.bubble'] = true;
         $app['monolog.permission'] = null;
         $app['monolog.handler'] = function () use ($app) {
