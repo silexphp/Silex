@@ -11,9 +11,9 @@
 
 namespace Silex\Provider;
 
-use Silex\Application;
-use Silex\ServiceProviderInterface;
-use Silex\ConstraintValidatorFactory;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
+use Silex\Provider\Validator\ConstraintValidatorFactory;
 use Symfony\Component\Validator\Validator;
 use Symfony\Component\Validator\DefaultTranslator;
 use Symfony\Component\Validator\Mapping\ClassMetadataFactory;
@@ -26,9 +26,9 @@ use Symfony\Component\Validator\Mapping\Loader\StaticMethodLoader;
  */
 class ValidatorServiceProvider implements ServiceProviderInterface
 {
-    public function register(Application $app)
+    public function register(Container $app)
     {
-        $app['validator'] = $app->share(function ($app) {
+        $app['validator'] = function ($app) {
             $r = new \ReflectionClass('Symfony\Component\Validator\Validator');
 
             if (isset($app['translator'])) {
@@ -42,24 +42,20 @@ class ValidatorServiceProvider implements ServiceProviderInterface
                 'validators',
                 $app['validator.object_initializers']
             );
-        });
+        };
 
-        $app['validator.mapping.class_metadata_factory'] = $app->share(function ($app) {
+        $app['validator.mapping.class_metadata_factory'] = function ($app) {
             return new ClassMetadataFactory(new StaticMethodLoader());
-        });
+        };
 
-        $app['validator.validator_factory'] = $app->share(function () use ($app) {
+        $app['validator.validator_factory'] = function () use ($app) {
             $validators = isset($app['validator.validator_service_ids']) ? $app['validator.validator_service_ids'] : array();
 
             return new ConstraintValidatorFactory($app, $validators);
-        });
+        };
 
-        $app['validator.object_initializers'] = $app->share(function ($app) {
+        $app['validator.object_initializers'] = function ($app) {
             return array();
-        });
-    }
-
-    public function boot(Application $app)
-    {
+        };
     }
 }

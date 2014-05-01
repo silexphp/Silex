@@ -13,6 +13,7 @@ namespace Silex\Tests\Provider;
 
 use Silex\Application;
 use Silex\Provider\TranslationServiceProvider;
+use Silex\Provider\LocaleServiceProvider;
 
 /**
  * TranslationProvider test cases.
@@ -28,6 +29,7 @@ class TranslationServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
+        $app->register(new LocaleServiceProvider());
         $app->register(new TranslationServiceProvider());
         $app['translator.domains'] = array(
             'messages' => array(
@@ -100,15 +102,6 @@ class TranslationServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $result = $app['translator']->transChoice($key, $number, array('%count%' => $number), null, $locale);
         $this->assertEquals($expected, $result);
-    }
-
-    public function testBackwardCompatiblityForFallback()
-    {
-        $app = $this->getPreparedApp();
-        $app['locale_fallback'] = 'de';
-
-        $result = $app['translator']->trans('key1', array(), null, 'ru');
-        $this->assertEquals('The german translation', $result);
     }
 
     public function testFallbacks()

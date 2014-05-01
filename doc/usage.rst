@@ -25,7 +25,7 @@ If you want more flexibility, use Composer_ instead. Create a
 
     {
         "require": {
-            "silex/silex": "~1.1"
+            "silex/silex": "~2.0"
         }
     }
 
@@ -375,9 +375,9 @@ converter based on Doctrine ObjectManager::
 The service will now be registered in the application, and the
 convert method will be used as converter::
 
-    $app['converter.user'] = $app->share(function () {
+    $app['converter.user'] = function () {
         return new UserConverter();
-    });
+    };
 
     $app->get('/user/{user}', function (User $user) {
         // ...

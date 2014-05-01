@@ -11,13 +11,15 @@
 
 namespace Silex;
 
+use Pimple\Container;
+
 class CallbackResolver
 {
     const SERVICE_PATTERN = "/[A-Za-z0-9\._\-]+:[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/";
 
     private $app;
 
-    public function __construct(\Pimple $app)
+    public function __construct(Container $app)
     {
         $this->app = $app;
     }

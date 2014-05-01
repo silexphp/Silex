@@ -63,10 +63,10 @@ Pimple is probably the simplest service container out there. It makes strong
 use of closures and implements the ArrayAccess interface.
 
 We will start off by creating a new instance of Pimple -- and because
-``Silex\Application`` extends ``Pimple`` all of this applies to Silex as
-well::
+``Silex\Application`` extends ``Pimple\Container`` all of this applies to Silex
+as well::
 
-    $container = new Pimple();
+    $container = new Pimple\Container();
 
 or::
 
@@ -107,19 +107,6 @@ And to retrieve the service, use::
 Every time you call ``$app['some_service']``, a new instance of the service is
 created.
 
-Shared services
-~~~~~~~~~~~~~~~
-
-You may want to use the same instance of a service across all of your code. In
-order to do that you can make a *shared* service::
-
-    $app['some_service'] = $app->share(function () {
-        return new Service();
-    });
-
-This will create the service on first invocation, and then return the existing
-instance on any subsequent access.
-
 Access container from closure
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -139,17 +126,13 @@ options. The dependency is only created when ``some_service`` is accessed, and
 it is possible to replace either of the dependencies by simply overriding
 those definitions.
 
-.. note::
-
-    This also works for shared services.
-
 Going back to our initial example, here's how we could use the container
 to manage its dependencies::
 
     $app['user.persist_path'] = '/tmp/users';
-    $app['user.persister'] = $app->share(function ($app) {
+    $app['user.persister'] = function ($app) {
         return new JsonUserPersister($app['user.persist_path']);
-    });
+    };
 
 
 Protected closures
@@ -230,13 +213,6 @@ don't want to mess with most of them.
   the ``MonologServiceProvider`` or define your own ``logger`` service that
   conforms to the PSR logger interface.
 
-  In versions of Silex before 1.1 this must be a
-  ``Symfony\Component\HttpKernel\Log\LoggerInterface``.
-
-.. note::
-
-    All of these Silex core services are shared.
-
 Core parameters
 ---------------
 
@@ -255,11 +231,6 @@ Core parameters
   Defaults to 443.
 
   This parameter can be used by the ``UrlGeneratorProvider``.
-
-* **locale** (optional): The locale of the user. When set before any request
-  handling, it defines the default locale (``en`` by default). When a request
-  is being handled, it is automatically set according to the ``_locale``
-  request attribute of the current route.
 
 * **debug** (optional): Returns whether or not the application is running in
   debug mode.

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Silex;
+namespace Silex\Provider\Routing;
 
 use Symfony\Component\Routing\RequestContext as SymfonyRequestContext;
 use Symfony\Component\Routing\Matcher\UrlMatcherInterface;

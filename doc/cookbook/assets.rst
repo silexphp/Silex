@@ -34,11 +34,11 @@ Using it in a template is as easy as before:
 If you need to implement some logic independently of the asset, define a
 service instead::
 
-    $app['asset_path'] = $app->share(function () {
+    $app['asset_path'] = function () {
         // implement whatever logic you need to determine the asset path
 
         return 'http://assets.examples.com';
-    });
+    };
 
 Usage is exactly the same as before:
 
@@ -49,7 +49,7 @@ Usage is exactly the same as before:
 If the asset location depends on the asset type or path, you will need more
 abstraction; here is one way to do that with a Twig function::
 
-    $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
+    $app->extend('twig', function($twig, $app) {
         $twig->addFunction(new \Twig_SimpleFunction('asset', function ($asset) {
             // implement whatever logic you need to determine the asset path
 
@@ -57,7 +57,7 @@ abstraction; here is one way to do that with a Twig function::
         }));
 
         return $twig;
-    }));
+    });
 
 The ``asset`` function can then be used in your templates:
 

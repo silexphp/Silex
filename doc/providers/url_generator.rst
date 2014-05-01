@@ -64,6 +64,14 @@ Moreover, if you have ``twig-bridge`` in your ``composer.json``, you will have a
     {{ path('hello', {name: 'Fabien'}) }}
     {{ url('hello', {name: 'Fabien'}) }} {# generates the absolute url http://example.org/hello/Fabien #}
 
+.. warning::
+
+    If you try to use the ``url_generator`` service outside the handling of a
+    request, you must explicitly flush routes first::
+
+        $app->flush();
+        $url = $app['url_generator']->generate('homepage');
+
 Traits
 ------
 

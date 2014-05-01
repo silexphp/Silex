@@ -28,9 +28,9 @@ class CallbackServicesTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app['service'] = $app->share(function () {
+        $app['service'] = function () {
             return new self();
-        });
+        };
 
         $app->before('service:beforeApp');
         $app->after('service:afterApp');

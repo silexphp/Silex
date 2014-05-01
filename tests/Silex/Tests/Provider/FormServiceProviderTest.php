@@ -35,11 +35,11 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $app->register(new FormServiceProvider());
 
-        $app['form.type.extensions'] = $app->share($app->extend('form.type.extensions', function($extensions) {
+        $app->extend('form.type.extensions', function($extensions) {
             $extensions[] = new DummyFormTypeExtension();
 
             return $extensions;
-        }));
+        });
 
         $form = $app['form.factory']->createBuilder('form', array())
             ->add('file', 'file', array('image_path' => 'webPath'))
@@ -54,11 +54,11 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $app->register(new FormServiceProvider());
 
-        $app['form.type.guessers'] = $app->share($app->extend('form.type.guessers', function($guessers) {
+        $app->extend('form.type.guessers', function($guessers) {
             $guessers[] = new FormTypeGuesserChain(array());
 
             return $guessers;
-        }));
+        });
 
         $this->assertInstanceOf('Symfony\Component\Form\FormFactory', $app['form.factory']);
     }
@@ -78,9 +78,9 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
         );
         $app['locale'] = 'de';
 
-        $app['form.csrf_provider'] = $app->share(function () {
+        $app['form.csrf_provider'] = function () {
             return new FakeCsrfProvider();
-        });
+        };
 
         $form = $app['form.factory']->createBuilder('form', array())
             ->getForm();
