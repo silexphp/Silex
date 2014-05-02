@@ -15,7 +15,6 @@ use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
 use Silex\Provider\Locale\LocaleListener;
-use Silex\Provider\Routing\LazyUrlMatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -28,14 +27,7 @@ class LocaleServiceProvider implements ServiceProviderInterface, EventListenerPr
     public function register(Container $app)
     {
         $app['locale.listener'] = function ($app) {
-            $urlMatcher = null;
-            if (isset($app['url_matcher'])) {
-                $urlMatcher = new LazyUrlMatcher(function () use ($app) {
-                    return $app['url_matcher'];
-                });
-            }
-
-            return new LocaleListener($app, $urlMatcher, $app['request_stack']);
+            return new LocaleListener($app, $app['locale'], $app['request_stack'], isset($app['request_context']) ? $app['request_context'] : null);
         };
 
         $app['locale'] = 'en';
