@@ -61,7 +61,7 @@ class MonologServiceProvider implements ServiceProviderInterface, BootableProvid
         $app['monolog.handler'] = function () use ($app) {
             $level = MonologServiceProvider::translateLevel($app['monolog.level']);
 
-            return new StreamHandler($app['monolog.logfile'], $level);
+            return new StreamHandler($app['monolog.logfile'], $level, $app['monolog.bubble'], $app['monolog.permission']);
         };
 
         $app['monolog.level'] = function () {
@@ -73,6 +73,8 @@ class MonologServiceProvider implements ServiceProviderInterface, BootableProvid
         };
 
         $app['monolog.name'] = 'myapp';
+        $app['monolog.bubble'] = true;
+        $app['monolog.permission'] = null;
     }
 
     public function boot(Application $app)
