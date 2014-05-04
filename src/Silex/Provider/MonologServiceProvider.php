@@ -52,8 +52,7 @@ class MonologServiceProvider implements ServiceProviderInterface
 
             return $log;
         });
-        $app['monolog.bubble'] = true;
-        $app['monolog.permission'] = null;
+
         $app['monolog.handler'] = function () use ($app) {
             $level = MonologServiceProvider::translateLevel($app['monolog.level']);
 
@@ -69,6 +68,8 @@ class MonologServiceProvider implements ServiceProviderInterface
         });
 
         $app['monolog.name'] = 'myapp';
+        $app['monolog.bubble'] = true;
+        $app['monolog.permission'] = null;
     }
 
     public function boot(Application $app)
