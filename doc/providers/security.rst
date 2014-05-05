@@ -75,7 +75,7 @@ Registering
 .. caution::
 
     If you're using a form to authenticate users, you need to enable
-    ``SessionServiceProvider``.
+    ``SessionServiceProvider`` BEFORE your app has been booted.
 
 Usage
 -----
