@@ -66,16 +66,16 @@ Registering
 
 .. caution::
 
+    If you're using a form to authenticate users, you need to enable
+    ``SessionServiceProvider``.
+
+.. caution::
+
     The security features are only available after the Application has been
     booted. So, if you want to use it outside of the handling of a request,
     don't forget to call ``boot()`` first::
 
         $application->boot();
-
-.. caution::
-
-    If you're using a form to authenticate users, you need to enable
-    ``SessionServiceProvider`` before your app has been booted - like every other Service-Provider.
 
 Usage
 -----
