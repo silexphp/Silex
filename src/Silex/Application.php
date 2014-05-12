@@ -466,11 +466,17 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      * @param ControllerCollection|ControllerProviderInterface $controllers A ControllerCollection or a ControllerProviderInterface instance
      *
      * @return Application
+     *
+     * @throws \LogicException
      */
     public function mount($prefix, $controllers)
     {
         if ($controllers instanceof ControllerProviderInterface) {
             $controllers = $controllers->connect($this);
+
+            if (!$controllers instanceof ControllerCollection) {
+                throw new \LogicException('The "connect" method of the ControllerProviderInterface must return a ControllerCollection.');
+            }
         }
 
         if (!$controllers instanceof ControllerCollection) {
