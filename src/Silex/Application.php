@@ -464,8 +464,10 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      *
      * @param string                                           $prefix      The route prefix
      * @param ControllerCollection|ControllerProviderInterface $controllers A ControllerCollection or a ControllerProviderInterface instance
-     * @throws \LogicException
+     *
      * @return Application
+     *
+     * @throws \UnexpectedValueException
      */
     public function mount($prefix, $controllers)
     {
@@ -473,12 +475,12 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
             $controllers = $controllers->connect($this);
 
             if (!$controllers instanceof ControllerCollection) {
-                throw new \LogicException('The "connect" method of the ControllerProviderInterface must return a ControllerCollection.');
+                throw new \UnexpectedValueException('The "connect" method of the ControllerProviderInterface must return a ControllerCollection.');
             }
         }
 
         if (!$controllers instanceof ControllerCollection) {
-            throw new \LogicException('The "mount" method takes either a ControllerCollection or a ControllerProviderInterface instance.');
+            throw new \UnexpectedValueException('The "mount" method takes either a ControllerCollection or a ControllerProviderInterface instance.');
         }
 
         $this['controllers']->mount($prefix, $controllers);
