@@ -44,7 +44,7 @@
         "doctrine/dbal": "~2.2",
         "swiftmailer/swiftmailer": "5.*",
         "monolog/monolog": "~1.4,>=1.4.1",
-        "phpunit/phpunit": "~3.7"
+        "phpunit/phpunit": "~4.0"
     },
     "suggest": {
         "symfony/browser-kit": ">=2.4,<2.6-dev",
