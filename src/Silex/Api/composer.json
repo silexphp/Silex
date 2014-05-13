@@ -17,7 +17,7 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "pimple/pimple": "~1.0"
+        "pimple/pimple": "~2.1"
     },
     "suggest": {
         "symfony/event-dispatcher": "For EventListenerProviderInterface",
