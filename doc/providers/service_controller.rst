@@ -15,7 +15,7 @@ Why would I want to do this?
 
   Using this method, you can inject the actual dependencies required by your
   controller and gain total inversion of control, while still maintaining the
-  lazy loading of your controllers and it's dependencies. Because your
+  lazy loading of your controllers and its dependencies. Because your
   dependencies are clearly defined, they are easily mocked, allowing you to test
   your controllers in isolation.
 
