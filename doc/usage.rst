@@ -257,10 +257,6 @@ restricted via the ``method`` method::
 
     $app->match('/blog', function () {
         ...
-    });
-
-    $app->match('/blog', function () {
-        ...
     })
     ->method('PATCH');
 
@@ -268,6 +264,10 @@ restricted via the ``method`` method::
         ...
     })
     ->method('PUT|POST');
+
+    $app->match('/blog', function () {
+        ...
+    });
 
 .. note::
 
