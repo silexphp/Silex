@@ -31,7 +31,7 @@ install it:
 
     {
         "require": {
-            "silex/silex": "~1.1"
+            "silex/silex": "~1.2"
         }
     }
 
