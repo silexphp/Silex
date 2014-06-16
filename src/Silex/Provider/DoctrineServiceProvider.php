@@ -89,7 +89,7 @@ class DoctrineServiceProvider implements ServiceProviderInterface
             foreach ($app['dbs.options'] as $name => $options) {
                 $configs[$name] = new Configuration();
 
-                if (isset($app['logger']) && class_exists('Symfony\Bridge\Doctrine\Logger\DbalLogger')) {
+                if (null !== $app['logger'] && class_exists('Symfony\Bridge\Doctrine\Logger\DbalLogger')) {
                     $configs[$name]->setSQLLogger(new DbalLogger($app['logger'], isset($app['stopwatch']) ? $app['stopwatch'] : null));
                 }
             }
