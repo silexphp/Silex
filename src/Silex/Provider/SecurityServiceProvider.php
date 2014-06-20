@@ -200,7 +200,8 @@ class SecurityServiceProvider implements ServiceProviderInterface
                 $users = isset($firewall['users']) ? $firewall['users'] : array();
                 $security = isset($firewall['security']) ? (bool) $firewall['security'] : true;
                 $stateless = isset($firewall['stateless']) ? (bool) $firewall['stateless'] : false;
-                unset($firewall['pattern'], $firewall['users'], $firewall['security'], $firewall['stateless']);
+                $context = isset($firewall['context']) ? $firewall['context'] : $name;
+                unset($firewall['pattern'], $firewall['users'], $firewall['security'], $firewall['stateless'], $firewall['context']);
 
                 $protected = false === $security ? false : count($firewall);
 
@@ -216,7 +217,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
                     }
 
                     if (false === $stateless) {
-                        $listeners[] = 'security.context_listener.'.$name;
+                        $listeners[] = 'security.context_listener.'.$context;
                     }
 
                     $factories = array();
