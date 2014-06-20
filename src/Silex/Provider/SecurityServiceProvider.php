@@ -171,8 +171,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
                 $users = isset($firewall['users']) ? $firewall['users'] : array();
                 $security = isset($firewall['security']) ? (bool) $firewall['security'] : true;
                 $stateless = isset($firewall['stateless']) ? (bool) $firewall['stateless'] : false;
-                $stateless = isset($firewall['stateless']) ? (bool) $firewall['stateless'] : false;
-                $firewall['context'] = isset($firewall['context']) ? $firewall['context'] : $name;
+                $context = isset($firewall['context']) ? $firewall['context'] : $name;
                 unset($firewall['pattern'], $firewall['users'], $firewall['security'], $firewall['stateless'], $firewall['context']);
 
                 $protected = false === $security ? false : count($firewall);
