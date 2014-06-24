@@ -17,7 +17,7 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "pimple/pimple": "~2.1@dev",
+        "pimple/pimple": "~2.1",
         "symfony/event-dispatcher": ">=2.4,<2.6-dev",
         "symfony/http-foundation": ">=2.4,<2.6-dev",
         "symfony/http-kernel": ">=2.4,<2.6-dev",
