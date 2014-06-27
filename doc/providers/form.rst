@@ -64,7 +64,7 @@ Registering
         }
 
     If you are going to use the validation extension with forms, you must also
-    add a dependency to the ``symfony/config`` and ```symfony/translation``
+    add a dependency to the ``symfony/config`` and ``symfony/translation``
     components:
 
     .. code-block:: json
