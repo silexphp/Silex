@@ -75,7 +75,7 @@ class RememberMeServiceProvider implements ServiceProviderInterface, EventListen
                     'remember_me_parameter' => '_remember_me',
                 ), $options);
 
-                return new TokenBasedRememberMeServices(array($app['security.user_provider.'.$providerKey]), $options['key'], $providerKey, $options, isset($app['logger']) ? $app['logger'] : null);
+                return new TokenBasedRememberMeServices(array($app['security.user_provider.'.$providerKey]), $options['key'], $providerKey, $options, $app['logger']);
             };
         });
 
@@ -85,7 +85,7 @@ class RememberMeServiceProvider implements ServiceProviderInterface, EventListen
                     $app['security'],
                     $app['security.remember_me.service.'.$providerKey],
                     $app['security.authentication_manager'],
-                    isset($app['logger']) ? $app['logger'] : null
+                    $app['logger']
                 );
 
                 return $listener;
