@@ -292,7 +292,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
         $app = $this;
 
         $this->on(KernelEvents::REQUEST, function (GetResponseEvent $event) use ($callback, $app) {
-            if (HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
+            if (!$event->isMasterRequest()) {
                 return;
             }
 
@@ -318,7 +318,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
         $app = $this;
 
         $this->on(KernelEvents::RESPONSE, function (FilterResponseEvent $event) use ($callback, $app) {
-            if (HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
+            if (!$event->isMasterRequest()) {
                 return;
             }
 
