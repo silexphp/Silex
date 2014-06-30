@@ -17,9 +17,6 @@ use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Silex\Application;
 use Silex\Api\BootableProviderInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bridge\Monolog\Handler\DebugHandler;
 use Silex\EventListener\LogListener;
 
@@ -69,12 +66,13 @@ class MonologServiceProvider implements ServiceProviderInterface, BootableProvid
         };
 
         $app['monolog.listener'] = function () use ($app) {
-            return new LogListener($app['logger']);
+            return new LogListener($app['logger'], $app['monolog.exception.logger_filter']);
         };
 
         $app['monolog.name'] = 'myapp';
         $app['monolog.bubble'] = true;
         $app['monolog.permission'] = null;
+        $app['monolog.exception.logger_filter'] = null;
     }
 
     public function boot(Application $app)
