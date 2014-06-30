@@ -85,19 +85,19 @@ class DoctrineServiceProviderTest extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped('pdo_sqlite is not available');
         }
 
-        if (!class_exists('Symfony\Bridge\Doctrine\Logger\DbalLogger')){
+        if (!class_exists('Symfony\Bridge\Doctrine\Logger\DbalLogger')) {
             $this->markTestSkipped('Symfony\Bridge\Doctrine\Logger\DbalLogger is not available');
         }
 
         $app = new Application();
         $this->assertTrue(isset($app['logger']));
-        $this->assertTrue($app['logger'] == null);
+        $this->assertNull($app['logger']);
         $app->register(new DoctrineServiceProvider(), array(
-                'dbs.options' => array(
-                        'sqlite1' => array('driver' => 'pdo_sqlite', 'memory' => true)
-                )
+            'dbs.options' => array(
+                'sqlite1' => array('driver' => 'pdo_sqlite', 'memory' => true),
+            ),
         ));
         $this->assertEquals(22, $app['db']->fetchColumn('SELECT 22'));
-        $this->assertTrue($app['db']->getConfiguration()->getSQLLogger() == null);
+        $this->assertNull($app['db']->getConfiguration()->getSQLLogger());
     }
 }

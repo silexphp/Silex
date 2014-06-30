@@ -86,7 +86,7 @@ class DoctrineServiceProvider implements ServiceProviderInterface
             $app['dbs.options.initializer']();
 
             $configs = new Container();
-            $addLogger = (null !== $app['logger'] && class_exists('Symfony\Bridge\Doctrine\Logger\DbalLogger'));
+            $addLogger = null !== $app['logger'] && class_exists('Symfony\Bridge\Doctrine\Logger\DbalLogger');
             foreach ($app['dbs.options'] as $name => $options) {
                 $configs[$name] = new Configuration();
                 if ($addLogger) {
