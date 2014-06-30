@@ -72,7 +72,7 @@ class FormServiceProvider implements ServiceProviderInterface
             if (isset($app['validator'])) {
                 $extensions[] = new FormValidatorExtension($app['validator']);
 
-                if (isset($app['translator'])) {
+                if (isset($app['translator']) && method_exists($app['translator'], 'addResource')) {
                     $r = new \ReflectionClass('Symfony\Component\Form\Form');
                     $app['translator']->addResource('xliff', dirname($r->getFilename()).'/Resources/translations/validators.'.$app['locale'].'.xlf', $app['locale'], 'validators');
                 }
