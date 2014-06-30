@@ -34,7 +34,7 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface
         });
 
         $app['swiftmailer.spooltransport'] = $app->share(function ($app) {
-            return new \Swift_SpoolTransport($app['swiftmailer.spool']);
+            return new \Swift_Transport_SpoolTransport($app['swiftmailer.transport.eventdispatcher'], $app['swiftmailer.spool']);
         });
 
         $app['swiftmailer.spool'] = $app->share(function ($app) {
