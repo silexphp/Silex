@@ -13,6 +13,8 @@ namespace Silex\Tests\Provider;
 
 use Silex\Application;
 use Silex\Provider\FormServiceProvider;
+use Silex\Provider\CsrfServiceProvider;
+use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use Symfony\Component\Form\AbstractType;
@@ -22,8 +24,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
-use Symfony\Component\Security\Csrf\CsrfToken;
-use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
@@ -102,8 +102,8 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
         );
         $app['locale'] = 'de';
 
-        $app['form.csrf_provider'] = function () {
-            return new FakeCsrfProvider();
+        $app['csrf.token_manager'] = function () {
+            return $this->getMock('Symfony\Component\Security\Csrf\CsrfTokenManagerInterface');
         };
 
         $form = $app['form.factory']->createBuilder('form', array())
@@ -143,6 +143,19 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
         } catch (NotFoundResourceException $e) {
             $this->fail('Form factory should not add a translation resource that does not exist');
         }
+    }
+
+    public function testFormCsrf()
+    {
+        $app = new Application();
+        $app->register(new FormServiceProvider());
+        $app->register(new SessionServiceProvider());
+        $app->register(new CsrfServiceProvider());
+        $app['session.test'] = true;
+
+        $form = $app['form.factory']->createBuilder('form', array())->getForm();
+
+        $this->assertTrue(isset($form->createView()['_token']));
     }
 }
 
@@ -186,27 +199,5 @@ if (method_exists('Symfony\Component\Form\AbstractType', 'configureOptions')) {
                 $resolver->setDefined(array('image_path'));
             }
         }
-    }
-}
-
-class FakeCsrfProvider implements CsrfTokenManagerInterface
-{
-    public function getToken($tokenId)
-    {
-        return new CsrfToken($tokenId, '123');
-    }
-
-    public function refreshToken($tokenId)
-    {
-        return new CsrfToken($tokenId, '123');
-    }
-
-    public function removeToken($tokenId)
-    {
-    }
-
-    public function isTokenValid(CsrfToken $token)
-    {
-        return '123' === $token->getValue();
     }
 }

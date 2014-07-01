@@ -4,6 +4,7 @@ Changelog
 2.0.0 (2015-XX-XX)
 ------------------
 
+* [BC BREAK] CSRF has been moved to a standalone provider (``form.secret`` is not available anymore)
 * added support for the Symfony HttpFoundation Twig bridge extension
 * added support for the Symfony Asset Component
 * bumped minimum version of Symfony to 2.7
