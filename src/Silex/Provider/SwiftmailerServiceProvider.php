@@ -38,7 +38,7 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface, EventListe
         };
 
         $app['swiftmailer.spooltransport'] = function ($app) {
-            return new \Swift_SpoolTransport($app['swiftmailer.spool']);
+            return new \Swift_Transport_SpoolTransport($app['swiftmailer.transport.eventdispatcher'], $app['swiftmailer.spool']);
         };
 
         $app['swiftmailer.spool'] = function ($app) {
