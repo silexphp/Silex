@@ -44,7 +44,7 @@ class TwigServiceProvider implements ServiceProviderInterface
                 ), $app['twig.options']
             );
 
-            $twig = new \Twig_Environment($app['twig.loader'], $app['twig.options']);
+            $twig = $app['twig.environment_factory']($app);
             $twig->addGlobal('app', $app);
 
             if (isset($app['debug']) && $app['debug']) {
@@ -105,5 +105,9 @@ class TwigServiceProvider implements ServiceProviderInterface
                 $app['twig.loader.filesystem'],
             ));
         };
+
+        $app['twig.environment_factory'] = $app->protect(function ($app) {
+            return new \Twig_Environment($app['twig.loader'], $app['twig.options']);
+        });
     }
 }
