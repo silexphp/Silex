@@ -135,4 +135,16 @@ class TranslationServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('The german translation', $app['translator']->trans('key1'));
     }
+
+    public function testChangingLocaleViaTranslator()
+    {
+        $app = $this->getPreparedApp();
+
+        $this->assertEquals('The translation', $app['translator']->trans('key1'));
+
+        $app['translator']->setLocale('de');
+
+        $this->assertEquals('The german translation', $app['translator']->trans('key1'));
+        $this->assertEquals('de', $app['locale']);
+    }
 }
