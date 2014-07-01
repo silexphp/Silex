@@ -29,7 +29,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
  */
 class SessionServiceProvider implements ServiceProviderInterface, EventListenerProviderInterface
 {
-    private $app;
+    protected $app;
 
     public function register(Container $app)
     {
