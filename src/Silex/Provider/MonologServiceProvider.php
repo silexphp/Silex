@@ -13,6 +13,7 @@ namespace Silex\Provider;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
+use Monolog\Formatter\LineFormatter;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Silex\Application;
@@ -55,10 +56,17 @@ class MonologServiceProvider implements ServiceProviderInterface, BootableProvid
             return $log;
         };
 
+        $app['monolog.formatter'] = function () {
+            return new LineFormatter();
+        };
+
         $app['monolog.handler'] = function () use ($app) {
             $level = MonologServiceProvider::translateLevel($app['monolog.level']);
 
-            return new StreamHandler($app['monolog.logfile'], $level, $app['monolog.bubble'], $app['monolog.permission']);
+            $handler = new StreamHandler($app['monolog.logfile'], $level, $app['monolog.bubble'], $app['monolog.permission']);
+            $handler->setFormatter($app['monolog.formatter']);
+
+            return $handler;
         };
 
         $app['monolog.level'] = function () {
