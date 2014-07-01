@@ -16,7 +16,7 @@ the disk. Then, require it in your script::
 
     <?php
 
-    require_once __DIR__.'/silex.phar';
+    require_once 'phar://'.__DIR__.'/silex.phar';
 
     $app = new Silex\Application();
 
