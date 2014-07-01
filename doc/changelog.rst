@@ -1,6 +1,13 @@
 Changelog
 =========
 
+1.2.1 (2014-07-01)
+------------------
+
+* added support permissions in the Monolog provider
+* fixed Switfmailer spool where the event dispatcher is different from the other ones
+* fixed locale when changing it on the translator itself
+
 1.2.0 (2014-03-29)
 ------------------
 
