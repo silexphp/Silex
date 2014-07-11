@@ -41,7 +41,7 @@ class ValidatorServiceProvider implements ServiceProviderInterface
         $app['validator.builder'] = $app->share(function() use ($app) {
             $builder = new ValidatorBuilder();
             $builder->setConstraintValidatorFactory($app['validator.validator_factory']);
-            $builder->setTranslator($app['translator']);
+            $builder->setTranslator(isset($app['translator']) ? $app['translator'] : new DefaultTranslator());
             $builder->setTranslationDomain('validators');
             $builder->setMetadataFactory($app['validator.mapping.class_metadata_factory']);
             return $builder;
