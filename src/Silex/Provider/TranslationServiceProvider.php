@@ -13,26 +13,29 @@ namespace Silex\Provider;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use Silex\Provider\Translation\Translator;
+use Symfony\Component\Translation\Translator;
 use Symfony\Component\Translation\MessageSelector;
 use Symfony\Component\Translation\Loader\ArrayLoader;
 use Symfony\Component\Translation\Loader\XliffFileLoader;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Silex\Api\EventListenerProviderInterface;
+use Silex\Provider\Translation\TranslatorListener;
 
 /**
  * Symfony Translation component Provider.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class TranslationServiceProvider implements ServiceProviderInterface
+class TranslationServiceProvider implements ServiceProviderInterface, EventListenerProviderInterface
 {
     public function register(Container $app)
     {
         $app['translator'] = function ($app) {
             if (!isset($app['locale'])) {
-                throw new \LogicException('You must register the LocaleServiceProvider to use the TranslationServiceProvider');
+                throw new \LogicException('You must define \'locale\' parameter or register the LocaleServiceProvider to use the TranslationServiceProvider');
             }
 
-            $translator = new Translator($app, $app['translator.message_selector']);
+            $translator = new Translator($app['locale'], $app['translator.message_selector']);
             $translator->setFallbackLocales($app['locale_fallbacks']);
             $translator->addLoader('array', new ArrayLoader());
             $translator->addLoader('xliff', new XliffFileLoader());
@@ -46,11 +49,21 @@ class TranslationServiceProvider implements ServiceProviderInterface
             return $translator;
         };
 
+        $app['translator.listener'] = function ($app) {
+            return new TranslatorListener($app['translator'], $app['request_stack']);
+        };
+
         $app['translator.message_selector'] = function () {
             return new MessageSelector();
         };
 
         $app['translator.domains'] = array();
         $app['locale_fallbacks'] = array('en');
+    }
+
+
+    public function subscribe(Container $app, EventDispatcherInterface $dispatcher)
+    {
+        $dispatcher->addSubscriber($app['translator.listener']);
     }
 }
