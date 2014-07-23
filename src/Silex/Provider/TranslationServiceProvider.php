@@ -29,7 +29,7 @@ class TranslationServiceProvider implements ServiceProviderInterface
     {
         $app['translator'] = function ($app) {
             if (!isset($app['locale'])) {
-                throw new \LogicException('You must register the LocaleServiceProvider to use the TranslationServiceProvider');
+                throw new \LogicException('You must define \'locale\' parameter or register the LocaleServiceProvider to use the TranslationServiceProvider');
             }
 
             $translator = new Translator($app, $app['translator.message_selector']);
