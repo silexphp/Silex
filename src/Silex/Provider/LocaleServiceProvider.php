@@ -38,7 +38,10 @@ class LocaleServiceProvider implements ServiceProviderInterface, EventListenerPr
             return new LocaleListener($app, $urlMatcher, $app['request_stack']);
         };
 
-        $app['locale'] = 'en';
+        // Default Locale is english
+        if (! isset($app['locale'])) {
+            $app['locale'] = 'en';
+        }
     }
 
     public function subscribe(Container $app, EventDispatcherInterface $dispatcher)
