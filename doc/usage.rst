@@ -517,8 +517,9 @@ To register an error handler, pass a closure to the ``error`` method which
 takes an ``Exception`` argument and returns a response::
 
     use Symfony\Component\HttpFoundation\Response;
+    use Symfony\Component\HttpFoundation\Request;
 
-    $app->error(function (\Exception $e, $code) {
+    $app->error(function (\Exception $e, Request $request, $code) {
         return new Response('We are sorry, but something went terribly wrong.');
     });
 
@@ -526,8 +527,9 @@ You can also check for specific errors by using the ``$code`` argument, and
 handle them differently::
 
     use Symfony\Component\HttpFoundation\Response;
+    use Symfony\Component\HttpFoundation\Request;
 
-    $app->error(function (\Exception $e, $code) {
+    $app->error(function (\Exception $e, Request $request, $code) {
         switch ($code) {
             case 404:
                 $message = 'The requested page could not be found.';
@@ -551,7 +553,9 @@ handle them differently::
 You can restrict an error handler to only handle some Exception classes by
 setting a more specific type hint for the Closure argument::
 
-    $app->error(function (\LogicException $e, $code) {
+    use Symfony\Component\HttpFoundation\Request;
+
+    $app->error(function (\LogicException $e, Request $request, $code) {
         // this handler will only handle \LogicException exceptions
         // and exceptions that extends \LogicException
     });
@@ -574,8 +578,9 @@ once a response is returned, the following handlers are ignored.
     is turned on like this::
 
         use Symfony\Component\HttpFoundation\Response;
+        use Symfony\Component\HttpFoundation\Request;
 
-        $app->error(function (\Exception $e, $code) use ($app) {
+        $app->error(function (\Exception $e, Request $request, $code) use ($app) {
             if ($app['debug']) {
                 return;
             }
