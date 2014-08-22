@@ -445,6 +445,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
         $response = new JsonResponse(null, $status, $headers);
         $response->setEncodingOptions($response->getEncodingOptions() | $encodingOptions);
         $response->setData($data);
+        
         return $response;
     }
 
