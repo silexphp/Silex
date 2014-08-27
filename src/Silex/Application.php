@@ -143,11 +143,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     {
         $this->providers[] = $provider;
 
-        $provider->register($this);
-
-        foreach ($values as $key => $value) {
-            $this[$key] = $value;
-        }
+        parent::register($provider, $values);
 
         return $this;
     }
@@ -160,17 +156,19 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      */
     public function boot()
     {
-        if (!$this->booted) {
-            $this->booted = true;
+        if ($this->booted) {
+            return;
+        }
 
-            foreach ($this->providers as $provider) {
-                if ($provider instanceof EventListenerProviderInterface) {
-                    $provider->subscribe($this, $this['dispatcher']);
-                }
+        $this->booted = true;
 
-                if ($provider instanceof BootableProviderInterface) {
-                    $provider->boot($this);
-                }
+        foreach ($this->providers as $provider) {
+            if ($provider instanceof EventListenerProviderInterface) {
+                $provider->subscribe($this, $this['dispatcher']);
+            }
+
+            if ($provider instanceof BootableProviderInterface) {
+                $provider->boot($this);
             }
         }
     }
