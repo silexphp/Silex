@@ -143,7 +143,9 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     {
         $this->providers[] = $provider;
 
-        return parent::register($provider, $values);
+        parent::register($provider, $values);
+
+        return $this;
     }
 
     /**
