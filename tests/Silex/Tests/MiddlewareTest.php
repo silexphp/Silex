@@ -233,4 +233,61 @@ class MiddlewareTest extends \PHPUnit_Framework_TestCase
         $request = Request::create('/');
         $this->assertEquals('foo---', $app->handle($request)->getContent());
     }
+
+    public function testRouteAndApplicationMiddlewareParameterInjection()
+    {
+        $app = new Application();
+
+        $test = $this;
+
+        $middlewareTarget = array();
+        $applicationBeforeMiddleware = function ($request, $app) use (&$middlewareTarget, $test) {
+            $test->assertInstanceOf('\Symfony\Component\HttpFoundation\Request', $request);
+            $test->assertInstanceOf('\Silex\Application', $app);
+            $middlewareTarget[] = 'application_before_middleware_triggered';
+        };
+
+        $applicationAfterMiddleware = function ($request, $response, $app) use (&$middlewareTarget, $test){
+            $test->assertInstanceOf('\Symfony\Component\HttpFoundation\Request', $request);
+            $test->assertInstanceOf('\Symfony\Component\HttpFoundation\Response', $response);
+            $test->assertInstanceOf('\Silex\Application', $app);
+            $middlewareTarget[] = 'application_after_middleware_triggered';
+        };
+
+        $applicationFinishMiddleware = function ($request, $response, $app) use (&$middlewareTarget, $test){
+            $test->assertInstanceOf('\Symfony\Component\HttpFoundation\Request', $request);
+            $test->assertInstanceOf('\Symfony\Component\HttpFoundation\Response', $response);
+            $test->assertInstanceOf('\Silex\Application', $app);
+            $middlewareTarget[] = 'application_finish_middleware_triggered';
+        };
+
+        $routeBeforeMiddleware = function ($request, $app) use (&$middlewareTarget, $test) {
+            $test->assertInstanceOf('\Symfony\Component\HttpFoundation\Request', $request);
+            $test->assertInstanceOf('\Silex\Application', $app);
+            $middlewareTarget[] = 'route_before_middleware_triggered';
+        };
+
+        $routeAfterMiddleware = function ($request, $response, $app) use (&$middlewareTarget, $test){
+            $test->assertInstanceOf('\Symfony\Component\HttpFoundation\Request', $request);
+            $test->assertInstanceOf('\Symfony\Component\HttpFoundation\Response', $response);
+            $test->assertInstanceOf('\Silex\Application', $app);
+            $middlewareTarget[] = 'route_after_middleware_triggered';
+        };
+
+        $app->before($applicationBeforeMiddleware);
+        $app->after($applicationAfterMiddleware);
+        $app->finish($applicationFinishMiddleware);
+
+        $app->match('/', function () {
+            return new Response('foo');
+        })
+        ->before($routeBeforeMiddleware)
+        ->after($routeAfterMiddleware);
+
+        $request = Request::create('/');
+        $response = $app->handle($request);
+        $app->terminate($request, $response);
+
+        $this->assertSame(array('application_before_middleware_triggered', 'route_before_middleware_triggered', 'route_after_middleware_triggered', 'application_after_middleware_triggered', 'application_finish_middleware_triggered'), $middlewareTarget);
+    }
 }
