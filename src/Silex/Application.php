@@ -294,7 +294,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
                 return;
             }
 
-            $ret = call_user_func($app['callback_resolver']->resolveCallback($callback), $event->getRequest());
+            $ret = call_user_func($app['callback_resolver']->resolveCallback($callback), $event->getRequest(), $app);
 
             if ($ret instanceof Response) {
                 $event->setResponse($ret);
@@ -320,7 +320,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
                 return;
             }
 
-            call_user_func($app['callback_resolver']->resolveCallback($callback), $event->getRequest(), $event->getResponse());
+            call_user_func($app['callback_resolver']->resolveCallback($callback), $event->getRequest(), $event->getResponse(), $app);
         }, $priority);
     }
 
@@ -338,7 +338,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
         $app = $this;
 
         $this->on(KernelEvents::TERMINATE, function (PostResponseEvent $event) use ($callback, $app) {
-            call_user_func($app['callback_resolver']->resolveCallback($callback), $event->getRequest(), $event->getResponse());
+            call_user_func($app['callback_resolver']->resolveCallback($callback), $event->getRequest(), $event->getResponse(), $app);
         }, $priority);
     }
 
