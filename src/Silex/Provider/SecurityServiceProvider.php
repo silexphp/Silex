@@ -315,7 +315,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
         };
 
         $app['security.http_utils'] = function ($app) {
-            return new HttpUtils(isset($app['url_generator']) ? $app['url_generator'] : null, $app['url_matcher']);
+            return new HttpUtils(isset($app['url_generator']) ? $app['url_generator'] : null, $app['request_matcher']);
         };
 
         $app['security.last_error'] = $app->protect(function (Request $request) {

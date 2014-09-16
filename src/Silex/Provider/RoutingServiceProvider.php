@@ -15,7 +15,7 @@ use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
 use Silex\Provider\Routing\RedirectableUrlMatcher;
-use Silex\Provider\Routing\LazyUrlMatcher;
+use Silex\Provider\Routing\LazyRequestMatcher;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\HttpKernel\EventListener\RouterListener;
@@ -34,7 +34,7 @@ class RoutingServiceProvider implements ServiceProviderInterface, EventListenerP
             return new UrlGenerator($app['routes'], $app['request_context']);
         };
 
-        $app['url_matcher'] = function () use ($app) {
+        $app['request_matcher'] = function () use ($app) {
             return new RedirectableUrlMatcher($app['routes'], $app['request_context']);
         };
 
@@ -48,8 +48,8 @@ class RoutingServiceProvider implements ServiceProviderInterface, EventListenerP
         };
 
         $app['routing.listener'] = function () use ($app) {
-            $urlMatcher = new LazyUrlMatcher(function () use ($app) {
-                return $app['url_matcher'];
+            $urlMatcher = new LazyRequestMatcher(function () use ($app) {
+                return $app['request_matcher'];
             });
 
             return new RouterListener($urlMatcher, $app['request_context'], $app['logger'], $app['request_stack']);
