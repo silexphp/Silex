@@ -55,7 +55,7 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $app->register(new FormServiceProvider());
 
-        $app['form.type.extensions'] = $app->share($app->extend('form.type.extensions', function($extensions) {
+        $app['form.type.extensions'] = $app->share($app->extend('form.type.extensions', function ($extensions) {
             $extensions[] = new DummyFormTypeExtension();
 
             return $extensions;
@@ -74,7 +74,7 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $app->register(new FormServiceProvider());
 
-        $app['form.type.guessers'] = $app->share($app->extend('form.type.guessers', function($guessers) {
+        $app['form.type.guessers'] = $app->share($app->extend('form.type.guessers', function ($guessers) {
             $guessers[] = new FormTypeGuesserChain(array());
 
             return $guessers;
@@ -93,8 +93,8 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
             'messages' => array(
                 'de' => array (
                     'The CSRF token is invalid. Please try to resubmit the form.' => 'German translation',
-                )
-            )
+                ),
+            ),
         );
         $app['locale'] = 'de';
 
@@ -106,7 +106,7 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
             ->getForm();
 
         $form->handleRequest($req = Request::create('/', 'POST', array('form' => array(
-            '_token' => 'the wrong token'
+            '_token' => 'the wrong token',
         ))));
 
         $this->assertFalse($form->isValid());

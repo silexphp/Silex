@@ -95,7 +95,7 @@ class FormServiceProvider implements ServiceProviderInterface
                 ->getFormFactory()
             ;
         });
-        
+
         $app['form.resolved_type_factory'] = $app->share(function ($app) {
             return new ResolvedFormTypeFactory();
         });
