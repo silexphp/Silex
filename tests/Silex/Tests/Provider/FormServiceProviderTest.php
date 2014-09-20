@@ -14,6 +14,7 @@ namespace Silex\Tests\Provider;
 use Silex\Application;
 use Silex\Provider\FormServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Csrf\CsrfProvider\CsrfProviderInterface;
 use Symfony\Component\Form\FormTypeGuesserChain;
@@ -27,6 +28,25 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
         $app = new Application();
         $app->register(new FormServiceProvider());
         $this->assertInstanceOf('Symfony\Component\Form\FormFactory', $app['form.factory']);
+    }
+
+    public function testFormServiceProviderWillLoadTypes()
+    {
+        $app = new Application();
+
+        $app->register(new FormServiceProvider());
+
+        $app['form.types'] = $app->share($app->extend('form.types', function ($extensions) {
+            $extensions[] = new DummyFormType();
+
+            return $extensions;
+        }));
+
+        $form = $app['form.factory']->createBuilder('form', array())
+            ->add('dummy', 'dummy')
+            ->getForm();
+
+        $this->assertInstanceOf('Symfony\Component\Form\Form', $form);
     }
 
     public function testFormServiceProviderWillLoadTypeExtensions()
@@ -91,6 +111,17 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($form->isValid());
         $this->assertContains('ERROR: German translation', $form->getErrorsAsString());
+    }
+}
+
+class DummyFormType extends AbstractType
+{
+    /**
+     * @return string The name of this type
+     */
+    public function getName()
+    {
+        return 'dummy';
     }
 }
 
