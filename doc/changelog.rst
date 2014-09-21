@@ -4,7 +4,7 @@ Changelog
 1.2.2 (2014-XX-XX)
 ------------------
 
-* n/a
+* added form.types to the Form provider
 
 1.2.1 (2014-07-01)
 ------------------
