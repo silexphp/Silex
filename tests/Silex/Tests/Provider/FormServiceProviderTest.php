@@ -14,6 +14,7 @@ namespace Silex\Tests\Provider;
 use Silex\Application;
 use Silex\Provider\FormServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Csrf\CsrfProvider\CsrfProviderInterface;
 use Symfony\Component\Form\FormTypeGuesserChain;
@@ -29,13 +30,32 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Symfony\Component\Form\FormFactory', $app['form.factory']);
     }
 
+    public function testFormServiceProviderWillLoadTypes()
+    {
+        $app = new Application();
+
+        $app->register(new FormServiceProvider());
+
+        $app['form.types'] = $app->share($app->extend('form.types', function ($extensions) {
+            $extensions[] = new DummyFormType();
+
+            return $extensions;
+        }));
+
+        $form = $app['form.factory']->createBuilder('form', array())
+            ->add('dummy', 'dummy')
+            ->getForm();
+
+        $this->assertInstanceOf('Symfony\Component\Form\Form', $form);
+    }
+
     public function testFormServiceProviderWillLoadTypeExtensions()
     {
         $app = new Application();
 
         $app->register(new FormServiceProvider());
 
-        $app['form.type.extensions'] = $app->share($app->extend('form.type.extensions', function($extensions) {
+        $app['form.type.extensions'] = $app->share($app->extend('form.type.extensions', function ($extensions) {
             $extensions[] = new DummyFormTypeExtension();
 
             return $extensions;
@@ -54,7 +74,7 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $app->register(new FormServiceProvider());
 
-        $app['form.type.guessers'] = $app->share($app->extend('form.type.guessers', function($guessers) {
+        $app['form.type.guessers'] = $app->share($app->extend('form.type.guessers', function ($guessers) {
             $guessers[] = new FormTypeGuesserChain(array());
 
             return $guessers;
@@ -73,8 +93,8 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
             'messages' => array(
                 'de' => array (
                     'The CSRF token is invalid. Please try to resubmit the form.' => 'German translation',
-                )
-            )
+                ),
+            ),
         );
         $app['locale'] = 'de';
 
@@ -86,11 +106,22 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
             ->getForm();
 
         $form->handleRequest($req = Request::create('/', 'POST', array('form' => array(
-            '_token' => 'the wrong token'
+            '_token' => 'the wrong token',
         ))));
 
         $this->assertFalse($form->isValid());
         $this->assertContains('ERROR: German translation', $form->getErrorsAsString());
+    }
+}
+
+class DummyFormType extends AbstractType
+{
+    /**
+     * @return string The name of this type
+     */
+    public function getName()
+    {
+        return 'dummy';
     }
 }
 
