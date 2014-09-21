@@ -176,10 +176,10 @@ You can register form extensions by extending ``form.extensions``::
 
 You can register form types by extending ``form.types``::
 
-    $app['form.types'] = $app->share($app->extend('form.types', function ($extensions) {
-        $extensions[] = new YourFormType();
+    $app['form.types'] = $app->share($app->extend('form.types', function ($types) {
+        $types[] = new YourFormType();
 
-        return $extensions;
+        return $types;
     }));
 
 You can register form type extensions by extending ``form.type.extensions``::
