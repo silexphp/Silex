@@ -77,11 +77,11 @@ Registering
         "require": {
             "symfony/locale": "~2.3"
         }
-        
+
     The Symfony Security CSRF component is used to protect forms against CSRF attacks:
 
     .. code-block:: json
-    
+
         "require": {
             "symfony/security-csrf": "~2.4"
         }
@@ -174,6 +174,13 @@ You can register form extensions by extending ``form.extensions``::
         return $extensions;
     }));
 
+You can register form types by extending ``form.types``::
+
+    $app['form.types'] = $app->share($app->extend('form.types', function ($extensions) {
+        $extensions[] = new YourFormType();
+
+        return $extensions;
+    }));
 
 You can register form type extensions by extending ``form.type.extensions``::
 
