@@ -172,6 +172,14 @@ form by adding constraints on the fields::
         ))
         ->getForm();
 
+You can register form types by extending ``form.types``::
+
+    $app['form.types'] = $app->share($app->extend('form.types', function ($types) use ($app) {
+        $types[] = new YourFormType();
+
+        return $types;
+    }));
+
 You can register form extensions by extending ``form.extensions``::
 
     $app->extend('form.extensions', function ($extensions) use ($app) {

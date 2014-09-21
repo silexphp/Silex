@@ -26,8 +26,8 @@ Parameters
   * **cookie_secure**: Cookie secure (HTTPS)
   * **cookie_httponly**: Whether the cookie is http only
 
-  However, all of these are optional. Sessions last as long as the browser is
-  open. To override this, set the ``lifetime`` option.
+  However, all of these are optional. Default Sessions life time is 1800
+  seconds (30 minutes). To override this, set the ``lifetime`` option.
 
   For a full list of available options, read the `PHP
   <http://php.net/session.configuration>`_ official documentation.
