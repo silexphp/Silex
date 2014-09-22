@@ -12,6 +12,7 @@
 namespace Silex\Api;
 
 use Silex\Application;
+use Silex\ControllerCollection;
 
 /**
  * Interface for controller providers.
