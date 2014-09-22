@@ -13,6 +13,7 @@ namespace Silex;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -89,6 +90,9 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
 
         $this['dispatcher_class'] = 'Symfony\\Component\\EventDispatcher\\EventDispatcher';
         $this['dispatcher'] = function () use ($app) {
+            /**
+             * @var EventDispatcherInterface $dispatcher
+             */
             $dispatcher = new $app['dispatcher_class']();
 
             if (isset($app['exception_handler'])) {
@@ -269,7 +273,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
             return;
         }
 
-        $this->extend('dispatcher', function ($dispatcher, $app) use ($callback, $priority, $eventName) {
+        $this->extend('dispatcher', function (EventDispatcherInterface $dispatcher, $app) use ($callback, $priority, $eventName) {
             $dispatcher->addListener($eventName, $app['callback_resolver']->resolveCallback($callback), $priority);
 
             return $dispatcher;
