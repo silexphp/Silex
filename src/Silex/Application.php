@@ -11,6 +11,7 @@
 
 namespace Silex;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -88,6 +89,9 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
 
         $this['dispatcher_class'] = 'Symfony\\Component\\EventDispatcher\\EventDispatcher';
         $this['dispatcher'] = $this->share(function () use ($app) {
+            /**
+             * @var EventDispatcherInterface $dispatcher
+             */
             $dispatcher = new $app['dispatcher_class']();
 
             $urlMatcher = new LazyUrlMatcher(function () use ($app) {
@@ -288,7 +292,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
             return;
         }
 
-        $this['dispatcher'] = $this->share($this->extend('dispatcher', function ($dispatcher, $app) use ($callback, $priority, $eventName) {
+        $this['dispatcher'] = $this->share($this->extend('dispatcher', function (EventDispatcherInterface $dispatcher, $app) use ($callback, $priority, $eventName) {
             $dispatcher->addListener($eventName, $app['callback_resolver']->resolveCallback($callback), $priority);
 
             return $dispatcher;
