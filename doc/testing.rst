@@ -54,7 +54,7 @@ page loaded correctly and contains our form::
 
 Here you see some of the available assertions. There is a full list available
 in the `Writing Tests for PHPUnit
-<http://www.phpunit.de/manual/current/en/writing-tests-for-phpunit.html>`_
+<https://phpunit.de/manual/current/en/writing-tests-for-phpunit.html>`_
 section of the PHPUnit documentation.
 
 WebTestCase
