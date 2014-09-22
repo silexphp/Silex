@@ -45,6 +45,7 @@ class ControllerCollection
 
     /**
      * Constructor.
+     * @param Route $defaultRoute
      */
     public function __construct(Route $defaultRoute)
     {
