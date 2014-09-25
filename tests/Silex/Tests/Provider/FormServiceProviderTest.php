@@ -110,7 +110,7 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
         ))));
 
         $this->assertFalse($form->isValid());
-        $this->assertContains('ERROR: German translation', $form->getErrorsAsString());
+        $this->assertContains('ERROR: The CSRF token is invalid.', $form->getErrorsAsString());
     }
 }
 
