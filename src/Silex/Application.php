@@ -42,7 +42,7 @@ use Silex\EventListener\StringToResponseListener;
  */
 class Application extends \Pimple implements HttpKernelInterface, TerminableInterface
 {
-    const VERSION = '1.2.2';
+    const VERSION = '1.2.3-DEV';
 
     const EARLY_EVENT = 512;
     const LATE_EVENT  = -512;
