@@ -141,6 +141,20 @@ class ControllerCollection
     }
 
     /**
+     * Maps a HEAD request to a callable.
+     *
+     * @param string $pattern Matched route pattern
+     * @param mixed  $to      Callback that returns the response when matched
+     *
+     * @return Controller
+     */
+    public function head($pattern, $to = null)
+    {
+        return $this->match($pattern, $to)->method('HEAD');
+    }
+
+    /**
+    /**
      * Maps a PATCH request to a callable.
      *
      * @param string $pattern Matched route pattern
