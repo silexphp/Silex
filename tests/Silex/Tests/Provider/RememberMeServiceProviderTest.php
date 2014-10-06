@@ -29,19 +29,28 @@ class RememberMeServiceProviderTest extends WebTestCase
     {
         $app = $this->createApplication();
 
+        $event = false;
+        $app->on(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, function ($event) use ($app, &$event) {
+            $event = true;
+        });
+
         $client = new Client($app);
 
         $client->request('get', '/');
+        $this->assertFalse($event, 'The interactive login has not been triggered yet');
         $client->request('post', '/login_check', array('_username' => 'fabien', '_password' => 'foo', '_remember_me' => 'true'));
         $client->followRedirect();
         $this->assertEquals('AUTHENTICATED_FULLY', $client->getResponse()->getContent());
+        $this->assertTrue($event, 'The interactive login has been triggered');
 
         $this->assertNotNull($client->getCookiejar()->get('REMEMBERME'), 'The REMEMBERME cookie is set');
+        $event = false;
 
         $client->getCookiejar()->expire('MOCKSESSID');
 
         $client->request('get', '/');
         $this->assertEquals('AUTHENTICATED_REMEMBERED', $client->getResponse()->getContent());
+        $this->assertTrue($event, 'The interactive login has been triggered');
 
         $client->request('get', '/logout');
         $client->followRedirect();
