@@ -85,7 +85,8 @@ class RememberMeServiceProvider implements ServiceProviderInterface, EventListen
                     $app['security'],
                     $app['security.remember_me.service.'.$providerKey],
                     $app['security.authentication_manager'],
-                    $app['logger']
+                    $app['logger'],
+                    $app['dispatcher']
                 );
 
                 return $listener;
