@@ -45,7 +45,6 @@ class RememberMeServiceProviderTest extends WebTestCase
 
         $this->assertNotNull($client->getCookiejar()->get('REMEMBERME'), 'The REMEMBERME cookie is set');
         $event = false;
-        $this->assertFalse($event, 'The interactive login has not been triggered yet');
 
         $client->getCookiejar()->expire('MOCKSESSID');
 
