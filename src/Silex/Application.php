@@ -62,45 +62,44 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     {
         parent::__construct();
 
-        $app = $this;
-
         $this['routes_factory'] = $this->factory(function () {
             return new RouteCollection();
         });
-        $this['routes'] = function () use ($app) {
+
+        $this['routes'] = function ($app) {
             return $app['routes_factory'];
         };
 
-        $this['controllers'] = function () use ($app) {
+        $this['controllers'] = function ($app) {
             return $app['controllers_factory'];
         };
 
-        $this['controllers_factory'] = $this->factory(function () use ($app) {
+        $this['controllers_factory'] = $this->factory(function ($app) {
             return new ControllerCollection($app['route_factory'], $app['routes_factory']);
         });
 
         $this['route_class'] = 'Silex\\Route';
-        $this['route_factory'] = $this->factory(function () use ($app) {
+        $this['route_factory'] = $this->factory(function ($app) {
             return new $app['route_class']();
         });
 
-        $this['exception_handler'] = function () use ($app) {
+        $this['exception_handler'] = function ($app) {
             return new ExceptionHandler($app['debug']);
         };
 
-        $this['callback_resolver'] = function () use ($app) {
+        $this['callback_resolver'] = function ($app) {
             return new CallbackResolver($app);
         };
 
-        $this['resolver'] = function () use ($app) {
+        $this['resolver'] = function ($app) {
             return new ControllerResolver($app, $app['logger']);
         };
 
-        $this['kernel'] = function () use ($app) {
+        $this['kernel'] = function ($app) {
             return new HttpKernel($app['dispatcher'], $app['resolver'], $app['request_stack']);
         };
 
-        $this['request_stack'] = function () use ($app) {
+        $this['request_stack'] = function () {
             return new RequestStack();
         };
 
