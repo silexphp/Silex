@@ -34,11 +34,11 @@ class RoutingServiceProvider implements ServiceProviderInterface, EventListenerP
             return new UrlGenerator($app['routes'], $app['request_context']);
         };
 
-        $app['request_matcher'] = function () use ($app) {
+        $app['request_matcher'] = function ($app) {
             return new RedirectableUrlMatcher($app['routes'], $app['request_context']);
         };
 
-        $app['request_context'] = function () use ($app) {
+        $app['request_context'] = function ($app) {
             $context = new RequestContext();
 
             $context->setHttpPort(isset($app['request.http_port']) ? $app['request.http_port'] : 80);
@@ -47,7 +47,7 @@ class RoutingServiceProvider implements ServiceProviderInterface, EventListenerP
             return $context;
         };
 
-        $app['routing.listener'] = function () use ($app) {
+        $app['routing.listener'] = function ($app) {
             $urlMatcher = new LazyRequestMatcher(function () use ($app) {
                 return $app['request_matcher'];
             });
