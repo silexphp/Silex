@@ -62,12 +62,11 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     {
         parent::__construct();
 
-        $app = $this;
-
         $this['routes_factory'] = $this->factory(function () {
             return new RouteCollection();
         });
-        $this['routes'] = function () use ($app) {
+
+        $this['routes'] = function ($app) {
             return $app['routes_factory'];
         };
 
