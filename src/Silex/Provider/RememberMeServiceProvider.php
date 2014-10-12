@@ -58,7 +58,7 @@ class RememberMeServiceProvider implements ServiceProviderInterface, EventListen
                 'security.authentication_provider.'.$name.'.remember_me',
                 'security.authentication_listener.'.$name.'.remember_me',
                 null, // entry point
-                'remember_me'
+                'remember_me',
             );
         });
 
@@ -85,7 +85,8 @@ class RememberMeServiceProvider implements ServiceProviderInterface, EventListen
                     $app['security'],
                     $app['security.remember_me.service.'.$providerKey],
                     $app['security.authentication_manager'],
-                    $app['logger']
+                    $app['logger'],
+                    $app['dispatcher']
                 );
 
                 return $listener;
