@@ -565,7 +565,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
         return $controllers;
     }
 
-    public function boot(Application $app)
+    public function boot(Container $app)
     {
         $app->mount('/', $this->connect($app));
     }
