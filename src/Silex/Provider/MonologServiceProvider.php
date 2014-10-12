@@ -16,7 +16,6 @@ use Pimple\ServiceProviderInterface;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
-use Silex\Application;
 use Silex\Api\BootableProviderInterface;
 use Symfony\Bridge\Monolog\Handler\DebugHandler;
 use Silex\EventListener\LogListener;
@@ -83,7 +82,7 @@ class MonologServiceProvider implements ServiceProviderInterface, BootableProvid
         $app['monolog.exception.logger_filter'] = null;
     }
 
-    public function boot(Application $app)
+    public function boot(Container $app)
     {
         if (isset($app['monolog.listener'])) {
             $app['dispatcher']->addSubscriber($app['monolog.listener']);
