@@ -79,15 +79,11 @@ use it by making your test extend it::
 .. note::
 
     If you want to use the Symfony2 ``WebTestCase`` class you will need to
-    explicitly install its dependencies for your project. Add the following to
-    your ``composer.json`` file:
+    explicitly install its dependencies for your project:
 
-    .. code-block:: json
+    .. code-block:: bash
 
-        "require-dev": {
-            "symfony/browser-kit": ">=2.3,<2.4-dev",
-            "symfony/css-selector": ">=2.3,<2.4-dev"
-        }
+        composer require --dev symfony/browser-kit symfony/css-selector
 
 For your WebTestCase, you will have to implement a ``createApplication``
 method, which returns your application. It will probably look like this::

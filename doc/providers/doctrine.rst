@@ -67,14 +67,11 @@ Registering
 .. note::
 
     Doctrine DBAL comes with the "fat" Silex archive but not with the regular
-    one. If you are using Composer, add it as a dependency to your
-    ``composer.json`` file:
+    one. If you are using Composer, add it as a dependency:
 
-    .. code-block:: json
+    .. code-block:: bash
 
-        "require": {
-            "doctrine/dbal": "2.2.*",
-         }
+        composer require "doctrine/dbal:~2.2"
 
 Usage
 -----

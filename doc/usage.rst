@@ -18,39 +18,11 @@ it, you should have the following directory structure:
     └── web
         └── index.php
 
-If you want more flexibility, use Composer_ instead. Create a
-``composer.json`` file and put this in it:
-
-.. code-block:: json
-
-    {
-        "require": {
-            "silex/silex": "~1.1"
-        }
-    }
-
-And run Composer to install Silex and all its dependencies:
+If you want more flexibility, use Composer_ instead:
 
 .. code-block:: bash
 
-    $ curl -s http://getcomposer.org/installer | php
-    $ php composer.phar install
-
-.. tip::
-
-    By default, Silex relies on the stable Symfony components. If you want to
-    use their master version instead, add ``"minimum-stability": "dev"`` in
-    your ``composer.json`` file.
-
-Upgrading
----------
-
-Upgrading Silex to the latest version is as easy as running the ``update``
-command:
-
-.. code-block:: bash
-
-    $ php composer.phar update
+    composer require silex/silex:~1.2
 
 Bootstrap
 ---------
