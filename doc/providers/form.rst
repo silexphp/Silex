@@ -74,15 +74,6 @@ Registering
             "symfony/config": "~2.3",
             "symfony/translation": "~2.3"
         }
-
-    The Symfony Form Component relies on the PHP intl extension. If you don't have
-    it, you can install the Symfony Locale Component as a replacement:
-
-    .. code-block:: json
-
-        "require": {
-            "symfony/locale": "~2.3"
-        }
         
     The Symfony Security CSRF component is used to protect forms against CSRF attacks:
 
