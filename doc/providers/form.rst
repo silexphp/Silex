@@ -92,13 +92,15 @@ Registering
             "symfony/security-csrf": "~2.4"
         }
 
-    If you want to use forms in your Twig templates, make sure to install the
-    Symfony Twig Bridge:
+    If you want to use forms in your Twig templates, you can also install the
+    Symfony Twig Bridge. Make sure to install, if you didn't do that already,
+    the Translation component in order for the bridge to work:
 
     .. code-block:: json
 
         "require": {
-            "symfony/twig-bridge": "~2.3"
+            "symfony/twig-bridge": "~2.3",
+            "symfony/translation": "~2.3"
         }
 
 Usage
