@@ -42,7 +42,7 @@ When the route matches, the function is executed and the return value is sent
 back to the client.
 
 Finally, the app is run. Visit ``/hello/world`` to see the result. It's really
-that easy!
+that easy! If you're not seeing the result page, check your :doc:`webserver configuration<web_servers>`.
 
 Installation
 ------------
