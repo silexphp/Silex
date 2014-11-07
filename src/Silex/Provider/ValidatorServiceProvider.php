@@ -26,7 +26,7 @@ class ValidatorServiceProvider implements ServiceProviderInterface
     public function register(Container $app)
     {
         $app['validator.builder'] = function ($app) {
-            $builder = new ValidatorBuilder;
+            $builder = new ValidatorBuilder();
             $builder
                 ->addMethodMapping('loadValidatorMetadata')
                 ->setConstraintValidatorFactory($app['validator.validator_factory'])

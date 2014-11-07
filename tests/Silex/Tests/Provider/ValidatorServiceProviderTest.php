@@ -38,7 +38,7 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app['custom.validator'] = function() {
+        $app['custom.validator'] = function () {
             return new CustomValidator();
         };
 
