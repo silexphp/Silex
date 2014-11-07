@@ -66,7 +66,7 @@ class MonologServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $app->register(new MonologServiceProvider());
         $app['monolog.formatter'] = new JsonFormatter();
-        $app['monolog.logfile'] = null;
+        $app['monolog.logfile'] = "php://memory";
 
         $this->assertInstanceOf('Monolog\Formatter\JsonFormatter', $app['logger']->popHandler()->getFormatter());
     }
