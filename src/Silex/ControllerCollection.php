@@ -61,8 +61,6 @@ class ControllerCollection
      * @param string                                           $prefix      The route prefix
      * @param ControllerCollection|ControllerProviderInterface $controllers A ControllerCollection or a ControllerProviderInterface instance
      *
-     * @return Application
-     *
      * @throws \LogicException
      */
     public function mount($prefix, $controllers)
