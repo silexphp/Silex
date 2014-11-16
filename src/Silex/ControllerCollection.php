@@ -58,11 +58,25 @@ class ControllerCollection
     /**
      * Mounts controllers under the given route prefix.
      *
-     * @param string               $prefix      The route prefix
-     * @param ControllerCollection $controllers A ControllerCollection instance
+     * @param string                                           $prefix      The route prefix
+     * @param ControllerCollection|ControllerProviderInterface $controllers A ControllerCollection or a ControllerProviderInterface instance
+     *
+     * @throws \LogicException
      */
-    public function mount($prefix, ControllerCollection $controllers)
+    public function mount($prefix, $controllers)
     {
+        if ($controllers instanceof ControllerProviderInterface) {
+            $controllers = $controllers->connect($this);
+
+            if (!$controllers instanceof ControllerCollection) {
+                throw new \LogicException('The "connect" method of the ControllerProviderInterface must return a ControllerCollection.');
+            }
+        }
+
+        if (!$controllers instanceof ControllerCollection) {
+            throw new \LogicException('The "mount" method takes either a ControllerCollection or a ControllerProviderInterface instance.');
+        }
+
         $controllers->prefix = $prefix;
 
         $this->controllers[] = $controllers;

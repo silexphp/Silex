@@ -469,18 +469,6 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      */
     public function mount($prefix, $controllers)
     {
-        if ($controllers instanceof ControllerProviderInterface) {
-            $controllers = $controllers->connect($this);
-
-            if (!$controllers instanceof ControllerCollection) {
-                throw new \LogicException('The "connect" method of the ControllerProviderInterface must return a ControllerCollection.');
-            }
-        }
-
-        if (!$controllers instanceof ControllerCollection) {
-            throw new \LogicException('The "mount" method takes either a ControllerCollection or a ControllerProviderInterface instance.');
-        }
-
         $this['controllers']->mount($prefix, $controllers);
 
         return $this;
