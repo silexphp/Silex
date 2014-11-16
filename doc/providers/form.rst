@@ -190,5 +190,11 @@ Traits
 
     $app->form($data);
 
+* **createForm**: Creates a Form instance from the type of the form.
+
+.. code-block:: php
+
+    $app->createForm(new MyCustomType());
+
 For more information, consult the `Symfony2 Forms documentation
 <http://symfony.com/doc/2.3/book/forms.html>`_.
