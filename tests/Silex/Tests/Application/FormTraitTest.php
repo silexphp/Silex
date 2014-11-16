@@ -27,6 +27,11 @@ class FormTraitTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->createApplication()->form());
     }
 
+    public function testCreateForm()
+    {
+        $this->assertInstanceOf('Symfony\Component\Form\Form', $this->createApplication()->createForm('text'));
+    }
+
     public function createApplication()
     {
         $app = new FormApplication();
