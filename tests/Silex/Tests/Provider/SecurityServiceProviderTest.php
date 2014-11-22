@@ -131,7 +131,7 @@ class SecurityServiceProviderTest extends WebTestCase
                     'http' => true,
                     'users' => array(
                         'admin' => array('ROLE_ADMIN', '513aeb0121909'),
-                    )
+                    ),
                 ),
             ),
         ));
@@ -219,13 +219,13 @@ class SecurityServiceProviderTest extends WebTestCase
             ),
         ));
 
-        $app->get('/login', function(Request $request) use ($app) {
+        $app->get('/login', function (Request $request) use ($app) {
             $app['session']->start();
 
             return $app['security.last_error']($request);
         });
 
-        $app->get('/', function() use ($app) {
+        $app->get('/', function () use ($app) {
             $user = $app['security']->getToken()->getUser();
 
             $content = is_object($user) ? $user->getUsername() : 'ANONYMOUS';
@@ -241,7 +241,7 @@ class SecurityServiceProviderTest extends WebTestCase
             return $content;
         });
 
-        $app->get('/admin', function() use ($app) {
+        $app->get('/admin', function () use ($app) {
             return 'admin';
         });
 
@@ -270,7 +270,7 @@ class SecurityServiceProviderTest extends WebTestCase
             ),
         ));
 
-        $app->get('/', function() use ($app) {
+        $app->get('/', function () use ($app) {
             $user = $app['security']->getToken()->getUser();
 
             $content = is_object($user) ? $user->getUsername() : 'ANONYMOUS';
@@ -286,7 +286,7 @@ class SecurityServiceProviderTest extends WebTestCase
             return $content;
         });
 
-        $app->get('/admin', function() use ($app) {
+        $app->get('/admin', function () use ($app) {
             return 'admin';
         });
 

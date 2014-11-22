@@ -156,7 +156,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
                     'security.authentication_provider.'.$name.'.'.$provider,
                     'security.authentication_listener.'.$name.'.'.$type,
                     $entryPoint ? 'security.entry_point.'.$name.'.'.$entryPoint : null,
-                    $type
+                    $type,
                 );
             });
         }

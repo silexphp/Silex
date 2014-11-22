@@ -55,7 +55,7 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $app->register(new FormServiceProvider());
 
-        $app->extend('form.type.extensions', function($extensions) {
+        $app->extend('form.type.extensions', function ($extensions) {
             $extensions[] = new DummyFormTypeExtension();
 
             return $extensions;
@@ -74,7 +74,7 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $app->register(new FormServiceProvider());
 
-        $app->extend('form.type.guessers', function($guessers) {
+        $app->extend('form.type.guessers', function ($guessers) {
             $guessers[] = new FormTypeGuesserChain(array());
 
             return $guessers;
@@ -91,7 +91,7 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
         $app->register(new TranslationServiceProvider());
         $app['translator.domains'] = array(
             'messages' => array(
-                'de' => array (
+                'de' => array(
                     'The CSRF token is invalid. Please try to resubmit the form.' => 'German translation',
                 ),
             ),
