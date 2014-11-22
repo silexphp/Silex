@@ -45,7 +45,7 @@ class ServiceControllerResolverTest extends \PHPUnit_Framework_Testcase
             ->with('some_service:methodName')
             ->will($this->returnValue(array('callback')));
 
-        $this->app['some_service'] = function() { return new \stdClass(); };
+        $this->app['some_service'] = function () { return new \stdClass(); };
 
         $req = Request::create('/');
         $req->attributes->set('_controller', 'some_service:methodName');
@@ -79,6 +79,6 @@ class ServiceControllerResolverTest extends \PHPUnit_Framework_Testcase
             ->with($req)
             ->will($this->returnValue(123));
 
-        $this->assertEquals(123, $this->resolver->getArguments($req, function() {}));
+        $this->assertEquals(123, $this->resolver->getArguments($req, function () {}));
     }
 }

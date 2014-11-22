@@ -31,11 +31,11 @@ trait SecurityTrait
     public function user()
     {
         if (null === $token = $this['security']->getToken()) {
-            return null;
+            return;
         }
 
         if (!is_object($user = $token->getUser())) {
-            return null;
+            return;
         }
 
         return $user;
