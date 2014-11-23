@@ -147,7 +147,7 @@ Short-circuiting the Controller
 -------------------------------
 
 If a before middleware returns a Response object, the Request handling is
-short-circuited (the next middlewares won't be run, neither the route
+short-circuited (the next middlewares won't be run, nor the route
 callback), and the Response is passed to the after middlewares right away::
 
     $app->before(function (Request $request) {
