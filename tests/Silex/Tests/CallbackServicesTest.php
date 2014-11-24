@@ -31,7 +31,7 @@ class CallbackServicesTest extends \PHPUnit_Framework_TestCase
         $app->register(new ServiceControllerServiceProvider());
 
         $app['service'] = $app->share(function () {
-            return new self();
+            return new CallbackServicesTest();
         });
 
         $app->before('service:beforeApp');
