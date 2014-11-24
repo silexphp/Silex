@@ -1,0 +1,43 @@
+---------------------------------------------------------------------------
+
+by ahilles107 at 2014-11-24T08:56:38Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by fabpot at 2014-11-24T09:12:12Z
+
+I'm trying to reduce the build matrix but I don't understand how it works. Anyone?
+
+---------------------------------------------------------------------------
+
+by stof at 2014-11-24T10:05:27Z
+
+@fabpot There is 2 ways to define a simpler build matrix:
+
+- define the build matrix only based on the PHP version (for a single Symfony version), and then include extra jobs in the matrix through the ``include`` config
+- define the build matrix with version+env and then exclude all the jobs we don't want.
+
+The issue is that currently, you are mixing both. You are using env+version and then including extra jobs.
+I suggest using ``include`` to add the config for extra versions. It will require less combinations than excluding all jobs we don't want if we want to keep a single job per extra Symfony version.
+
+See https://github.com/Behat/MinkBrowserKitDriver/blob/master/.travis.yml for the way I did it in other repos
+
+---------------------------------------------------------------------------
+
+by fabpot at 2014-11-24T10:38:35Z
+
+thanks @stof, looks much better now.
+
+---------------------------------------------------------------------------
+
+by stof at 2014-11-24T11:00:41Z
+
+it might be worth fixing the coding standards in Silex to avoid unrelated fabbot failures in future PRs
+
+---------------------------------------------------------------------------
+
+by stof at 2014-11-24T11:01:08Z
+
+:+1:
