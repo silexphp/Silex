@@ -45,7 +45,7 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
         $app->register(new ValidatorServiceProvider(), array(
             'validator.validator_service_ids' => array(
                 'test.custom.validator' => 'custom.validator',
-            )
+            ),
         ));
 
         return $app;
@@ -109,5 +109,4 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
             array('email@sample.com', true, 0, 0),
         );
     }
-
 }

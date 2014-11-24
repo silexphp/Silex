@@ -13,6 +13,7 @@ namespace Silex\Tests\Application;
 
 use Silex\Application;
 use Silex\Provider\RoutingServiceProvider;
+use Silex\Provider\UrlGeneratorServiceProvider;
 
 /**
  * UrlGeneratorTrait test cases.
