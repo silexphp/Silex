@@ -2,11 +2,10 @@ language: php
 
 before_script:
     # symfony/*
-    - sh -c "if [ '$SYMFONY_DEPS_VERSION' = '2.7' ]; then sed -i 's/~2.3/2.7.*@dev/g' composer.json; composer update --dev --prefer-source; fi"
-    - sh -c "if [ '$SYMFONY_DEPS_VERSION' = '' ]; then sed -i 's/~2.3/2.6.*@dev/g' composer.json; composer update --dev --prefer-source; fi"
-    - sh -c "if [ '$SYMFONY_DEPS_VERSION' = '2.5' ]; then sed -i 's/~2.3/2.5.*@dev/g' composer.json; composer update --dev --prefer-source; fi"
-    - sh -c "if [ '$SYMFONY_DEPS_VERSION' = '2.4' ]; then sed -i 's/~2.3/2.4.*@dev/g' composer.json; composer update --dev --prefer-source; fi"
-    - sh -c "if [ '$SYMFONY_DEPS_VERSION' = '2.3' ]; then sed -i 's/~2.3/2.3.*@dev/g' composer.json; composer update --dev --prefer-source; fi"
+    - sh -c "if [ '$SYMFONY_DEPS_VERSION' = '2.7' ]; then sed -i 's/~2.4/2.7.*@dev/g' composer.json; composer update --dev --prefer-source; fi"
+    - sh -c "if [ '$SYMFONY_DEPS_VERSION' = '' ]; then sed -i 's/~2.4/2.6.*@dev/g' composer.json; composer update --dev --prefer-source; fi"
+    - sh -c "if [ '$SYMFONY_DEPS_VERSION' = '2.5' ]; then sed -i 's/~2.4/2.5.*@dev/g' composer.json; composer update --dev --prefer-source; fi"
+    - sh -c "if [ '$SYMFONY_DEPS_VERSION' = '2.4' ]; then sed -i 's/~2.4/2.4.*@dev/g' composer.json; composer update --dev --prefer-source; fi"
     - composer install --dev --prefer-source
 
 script: phpunit
@@ -22,8 +21,6 @@ matrix:
     allow_failures:
         - php: hhvm
     include:
-        - php: 5.6
-          env: SYMFONY_DEPS_VERSION=2.3
         - php: 5.6
           env: SYMFONY_DEPS_VERSION=2.4
         - php: 5.6
