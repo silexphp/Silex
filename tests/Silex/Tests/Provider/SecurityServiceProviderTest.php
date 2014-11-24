@@ -54,7 +54,7 @@ class SecurityServiceProviderTest extends WebTestCase
         $this->assertEquals('ANONYMOUS', $client->getResponse()->getContent());
 
         $client->request('post', '/login_check', array('_username' => 'fabien', '_password' => 'bar'));
-        $this->assertEquals('Bad credentials', $app['security.last_error']($client->getRequest()));
+        $this->assertContains('Bad credentials', $app['security.last_error']($client->getRequest()));
         // hack to re-close the session as the previous assertions re-opens it
         $client->getRequest()->getSession()->save();
 
