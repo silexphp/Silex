@@ -23,7 +23,7 @@ class CallbackResolverTest extends \PHPUnit_Framework_Testcase
 
     public function testShouldResolveCallback()
     {
-        $this->app['some_service'] = function() { return new \stdClass(); };
+        $this->app['some_service'] = function () { return new \stdClass(); };
 
         $this->assertTrue($this->resolver->isValid('some_service:methodName'));
         $this->assertEquals(

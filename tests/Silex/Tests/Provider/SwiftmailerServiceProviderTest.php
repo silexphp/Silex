@@ -38,7 +38,7 @@ class SwiftmailerServiceProviderTest extends \PHPUnit_Framework_TestCase
             return new SpoolStub();
         });
 
-        $app->get('/', function() use ($app) {
+        $app->get('/', function () use ($app) {
             $app['mailer']->send(\Swift_Message::newInstance());
         });
 
@@ -64,7 +64,7 @@ class SwiftmailerServiceProviderTest extends \PHPUnit_Framework_TestCase
             return new SpoolStub();
         });
 
-        $app->get('/', function() use ($app) { });
+        $app->get('/', function () use ($app) { });
 
         $request = Request::create('/');
         $response = $app->handle($request);

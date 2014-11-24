@@ -31,22 +31,22 @@ class TranslationServiceProviderTest extends \PHPUnit_Framework_TestCase
         $app->register(new TranslationServiceProvider());
         $app['translator.domains'] = array(
             'messages' => array(
-                'en' => array (
+                'en' => array(
                     'key1' => 'The translation',
                     'key_only_english' => 'Foo',
                     'key2' => 'One apple|%count% apples',
                     'test' => array(
-                        'key' => 'It works'
-                    )
+                        'key' => 'It works',
+                    ),
                 ),
-                'de' => array (
+                'de' => array(
                     'key1' => 'The german translation',
                     'key2' => 'One german apple|%count% german apples',
                     'test' => array(
-                        'key' => 'It works in german'
-                    )
-                )
-            )
+                        'key' => 'It works in german',
+                    ),
+                ),
+            ),
         );
 
         return $app;

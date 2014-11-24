@@ -168,9 +168,9 @@ class MiddlewareTest extends \PHPUnit_Framework_TestCase
 
         $app->before(function () { return new Response('app before'); });
 
-        $app->get('/', function() {
+        $app->get('/', function () {
             return new Response('test');
-        })->before(function() {
+        })->before(function () {
             return new Response('middleware before');
         });
 
@@ -247,14 +247,14 @@ class MiddlewareTest extends \PHPUnit_Framework_TestCase
             $middlewareTarget[] = 'application_before_middleware_triggered';
         };
 
-        $applicationAfterMiddleware = function ($request, $response, $app) use (&$middlewareTarget, $test){
+        $applicationAfterMiddleware = function ($request, $response, $app) use (&$middlewareTarget, $test) {
             $test->assertInstanceOf('\Symfony\Component\HttpFoundation\Request', $request);
             $test->assertInstanceOf('\Symfony\Component\HttpFoundation\Response', $response);
             $test->assertInstanceOf('\Silex\Application', $app);
             $middlewareTarget[] = 'application_after_middleware_triggered';
         };
 
-        $applicationFinishMiddleware = function ($request, $response, $app) use (&$middlewareTarget, $test){
+        $applicationFinishMiddleware = function ($request, $response, $app) use (&$middlewareTarget, $test) {
             $test->assertInstanceOf('\Symfony\Component\HttpFoundation\Request', $request);
             $test->assertInstanceOf('\Symfony\Component\HttpFoundation\Response', $response);
             $test->assertInstanceOf('\Silex\Application', $app);
@@ -267,7 +267,7 @@ class MiddlewareTest extends \PHPUnit_Framework_TestCase
             $middlewareTarget[] = 'route_before_middleware_triggered';
         };
 
-        $routeAfterMiddleware = function ($request, $response, $app) use (&$middlewareTarget, $test){
+        $routeAfterMiddleware = function ($request, $response, $app) use (&$middlewareTarget, $test) {
             $test->assertInstanceOf('\Symfony\Component\HttpFoundation\Request', $request);
             $test->assertInstanceOf('\Symfony\Component\HttpFoundation\Response', $response);
             $test->assertInstanceOf('\Silex\Application', $app);
