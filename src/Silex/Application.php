@@ -118,6 +118,10 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
             return new RequestStack();
         };
 
+        $this['request'] = function () use ($app) {
+            return $app['request_stack']->getCurrentRequest();
+        };
+
         $this['request.http_port'] = 80;
         $this['request.https_port'] = 443;
         $this['debug'] = false;
