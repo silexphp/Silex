@@ -11,7 +11,11 @@ fi
 cd $DIR/build
 
 if [ ! -f "composer.phar" ]; then
-    curl -s http://getcomposer.org/installer 2>/dev/null | $PHP >/dev/null 2>/dev/null
+    if COMPOSER_PATH=`which composer`; then
+        ln -s $COMPOSER_PATH composer.phar
+    else
+        curl -s http://getcomposer.org/installer 2>/dev/null | $PHP >/dev/null 2>/dev/null
+    fi
 else
     $PHP composer.phar self-update >/dev/null 2>/dev/null
 fi
