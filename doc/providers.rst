@@ -84,9 +84,9 @@ Providers must implement the ``Silex\ServiceProviderInterface``::
 
     interface ServiceProviderInterface
     {
-        function register(Application $app);
+        public function register(Application $app);
 
-        function boot(Application $app);
+        public function boot(Application $app);
     }
 
 This is very straight forward, just create a new class that implements the two
@@ -165,7 +165,7 @@ Providers must implement the ``Silex\ControllerProviderInterface``::
 
     interface ControllerProviderInterface
     {
-        function connect(Application $app);
+        public function connect(Application $app);
     }
 
 Here is an example of such a provider::
