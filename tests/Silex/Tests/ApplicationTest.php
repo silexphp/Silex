@@ -570,9 +570,6 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
         $app->get('/foo', function() { return function() { return 'world'; }; });
-        $app->view(function (callable $view) {
-            return (object) array('name' => $view());
-        });
 
         $app->view(function (\stdClass $view) {
             return array('msg' => 'Hello '.$view->name);
