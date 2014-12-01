@@ -380,15 +380,12 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     /**
      * Registers a view handler.
      *
-     * View handlers are simple callables which take a single
-     * GetResponseForControllerResultEvent as an argument. They care called
-     * when a controller returns a value that is not an instance of Response.
+     * View handlers are simple callables which take a controller result and the 
+     * request as arguments, whenever a controller returns a value that is not 
+     * an instance of Response. When this occurs, all suitable handlers will be 
+     * called, until one returns a Response object.  
      *
-     * Call setResponse() to set the response that will be returned for the
-     * current request. The propagation of this event is stopped as soon as a
-     * response is set.
-     *
-     * @param mixed   $callback View handelr callback
+     * @param mixed   $callback View handler callback
      * @param integer $priority The higher this value, the earlier an event
      *                          listener will be triggered in the chain (defaults to 0)
      */
