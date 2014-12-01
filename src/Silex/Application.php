@@ -394,9 +394,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      */
     public function view($callback, $priority = 0)
     {
-        $this->on(KernelEvents::VIEW, function (GetResponseForControllerResultEvent $event) use ($callback) {
-            call_user_func($callback, $event);
-        }, $priority);
+        $this->on(KernelEvents::VIEW, new ViewListenerWrapper($this, $callback), $priority);
     }
 
     /**
