@@ -514,7 +514,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
         $app->get('/foo', function() { return 123; });
-        $app->view(function ($view) {
+        $app->view(function ($view, Request $request) {
             return new Response($view);
         });
 
