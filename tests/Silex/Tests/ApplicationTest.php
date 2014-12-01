@@ -572,14 +572,25 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('ok', $response->getContent());
     }
 
-    public function testViewListener()
+    public function testViewListenerWithPrimitive()
+    {
+        $app = new Application();
+        $app->get('/foo', function() { return 123; });
+        $app->view(function ($view) {
+            return new Response($view);
+        });
+
+        $response = $app->handle(Request::create('/foo'));
+
+        $this->assertEquals('123', $response->getContent());
+    }
+
+    public function testViewListenerWithArrayTypeHint()
     {
         $app = new Application();
         $app->get('/foo', function() { return array('ok'); });
-        $app->view(function ($event) {
-            $view = $event->getControllerResult();
-
-            $event->setResponse(new Response($view[0]));
+        $app->view(function (array $view) {
+            return new Response($view[0]);
         });
 
         $response = $app->handle(Request::create('/foo'));
@@ -587,43 +598,77 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('ok', $response->getContent());
     }
 
-    public function testDefaultPriorityStringResponseTriggerViewListener()
+    public function testViewListenerWithObjectTypeHint()
     {
         $app = new Application();
-        $app->get('/foo', function() { return 'not ok'; });
-        $app->view(function ($event) {
-            $event->setResponse(new Response('ok'));
+        $app->get('/foo', function() { return (object) array('name' => 'world'); });
+        $app->view(function (\stdClass $view) {
+            return new Response('Hello '.$view->name);
         });
 
         $response = $app->handle(Request::create('/foo'));
 
-        $this->assertEquals('ok', $response->getContent());
+        $this->assertEquals('Hello world', $response->getContent());
     }
 
-    public function testLowPriorityStringResponseDoesNotTriggerViewListener()
+    public function testViewListenerWithCallableTypeHint()
     {
+        if (version_compare(phpversion(), '5.4.0', '<')) {
+            $this->markTestSkipped('Requires PHP >= 5.4.0');
+        }
+
         $app = new Application();
-        $app->get('/foo', function() { return 'ok'; });
-        $app->view(function ($event) {
-            $event->setResponse(new Response('not ok'));
-        }, -100);
-
-        $response = $app->handle(Request::create('/foo'));
-
-        $this->assertEquals('ok', $response->getContent());
-    }
-
-    public function testResponseInstanceResponseDoesNotTriggerViewListener()
-    {
-        $app = new Application();
-        $app->get('/foo', function() { return new Response('ok'); });
-        $app->view(function ($event) {
-            $event->setResponse(new Response('not ok'));
+        $app->get('/foo', function() { return function() { return 'world'; }; });
+        $app->view(function (callable $view) {
+            return new Response('Hello '.$view());
         });
 
         $response = $app->handle(Request::create('/foo'));
 
-        $this->assertEquals('ok', $response->getContent());
+        $this->assertEquals('Hello world', $response->getContent());
+    }
+
+    public function testViewListenersCanBeChained()
+    {
+        $app = new Application();
+        $app->get('/foo', function() { return function() { return 'world'; }; });
+        $app->view(function (callable $view) {
+            return (object) array('name' => $view());
+        });
+
+        $app->view(function (\stdClass $view) {
+            return array('msg' => 'Hello '.$view->name);
+        });
+
+        $app->view(function (array $view) {
+            return $view['msg'];
+        });
+
+        $response = $app->handle(Request::create('/foo'));
+
+        $this->assertEquals('Hello world', $response->getContent());
+    }
+
+    public function testViewListenersAreIgnoredIfNotSuitable()
+    {
+        $app = new Application();
+        $app->get('/foo', function() { return 'Hello world'; });
+
+        $app->view(function (callable $view) {
+            throw new \Exception("View listener was called");
+        });
+
+        $app->view(function (\stdClass $view) {
+            throw new \Exception("View listener was called");
+        });
+
+        $app->view(function (array $view) {
+            throw new \Exception("View listener was called");
+        });
+
+        $response = $app->handle(Request::create('/foo'));
+
+        $this->assertEquals('Hello world', $response->getContent());
     }
 }
 
