@@ -27,6 +27,22 @@ class SwiftmailerServiceProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Swift_Mailer', $app['mailer']);
     }
 
+    public function testSwiftMailerIgnoresSpoolIfDisabled()
+    {
+        $app = new Application();
+
+        $app->register(new SwiftmailerServiceProvider());
+        $app->boot();
+
+        $app['swiftmailer.use_spool'] = false;
+
+        $app['swiftmailer.spooltransport'] = function () {
+            throw new \Exception("Should not be instantiated");
+        };
+
+        $this->assertInstanceOf('Swift_Mailer', $app['mailer']);
+    }
+
     public function testSwiftMailerSendsMailsOnFinish()
     {
         $app = new Application();

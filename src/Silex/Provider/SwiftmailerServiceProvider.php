@@ -24,13 +24,15 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface
     public function register(Application $app)
     {
         $app['swiftmailer.options'] = array();
+        $app['swiftmailer.use_spool'] = true;
 
         $app['mailer.initialized'] = false;
 
         $app['mailer'] = $app->share(function ($app) {
             $app['mailer.initialized'] = true;
+            $transport = $app['swiftmailer.use_spool'] ? $app['swiftmailer.spooltransport'] : $app['swiftmailer.transport'];
 
-            return new \Swift_Mailer($app['swiftmailer.spooltransport']);
+            return new \Swift_Mailer($transport);
         });
 
         $app['swiftmailer.spooltransport'] = $app->share(function ($app) {
