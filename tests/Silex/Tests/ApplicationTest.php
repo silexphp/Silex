@@ -631,7 +631,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testViewListenersCanBeChained()
     {
         $app = new Application();
-        $app->get('/foo', function() { return function() { return 'world'; }; });
+        $app->get('/foo', function() { return (object) array('name' => 'world'); });
 
         $app->view(function (\stdClass $view) {
             return array('msg' => 'Hello '.$view->name);
