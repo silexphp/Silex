@@ -4,7 +4,7 @@ Changelog
 2.0.0 (2014-XX-XX)
 ------------------
 
-* Updated Pimple to 2.1
+* Updated Pimple to 3.0
 * Updated session listeners to extends HttpKernel ones
 * [BC BREAK] Locale management has been moved to LocaleServiceProvider which must be registered
   if you want Silex to manage your locale (must also be registered for the translation service provider)
