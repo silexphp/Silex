@@ -651,10 +651,6 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $app = new Application();
         $app->get('/foo', function() { return 'Hello world'; });
 
-        $app->view(function (callable $view) {
-            throw new \Exception("View listener was called");
-        });
-
         $app->view(function (\stdClass $view) {
             throw new \Exception("View listener was called");
         });
