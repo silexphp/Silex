@@ -23,17 +23,11 @@ Silex works with PHP 5.3.3 or later.
 Installation
 ------------
 
-The recommended way to install Silex is through `Composer`_. Just create a
-``composer.json`` file and run the ``php composer.phar install`` command to
-install it:
+The recommended way to install Silex is through `Composer`_:
 
-.. code-block:: json
+.. code-block:: bash
 
-    {
-        "require": {
-            "silex/silex": "~1.2"
-        }
-    }
+    php composer.phar require silex/silex "~2.0@dev"
 
 Alternatively, you can download the `silex.zip`_ file and extract it.
 
