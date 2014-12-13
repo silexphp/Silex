@@ -54,14 +54,11 @@ Registering
 .. note::
 
     Monolog comes with the "fat" Silex archive but not with the regular one.
-    If you are using Composer, add it as a dependency to your
-    ``composer.json`` file:
+    If you are using Composer, add it as a dependency:
 
-    .. code-block:: json
+    .. code-block:: bash
 
-        "require": {
-            "monolog/monolog": ">=1.0.0"
-        }
+        composer require monolog/monolog
 
 Usage
 -----

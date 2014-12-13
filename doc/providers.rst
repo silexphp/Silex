@@ -84,7 +84,7 @@ Providers must implement the ``Pimple\ServiceProviderInterface``::
 
     interface ServiceProviderInterface
     {
-        function register(Container $container);
+        public function register(Container $container);
     }
 
 This is very straight forward, just create a new class that implements the
@@ -201,7 +201,7 @@ Providers must implement the ``Silex\Api\ControllerProviderInterface``::
 
     interface ControllerProviderInterface
     {
-        function connect(Application $app);
+        public function connect(Application $app);
     }
 
 Here is an example of such a provider::

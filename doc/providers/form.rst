@@ -52,54 +52,34 @@ Registering
 .. note::
 
     The Symfony Form Component and all its dependencies (optional or not) comes
-    with the "fat" Silex archive but not with the regular one.
+    with the "fat" Silex archive but not with the regular one. If you are using
+    Composer, add it as a dependency:
 
-    If you are using Composer, add it as a dependency to your
-    ``composer.json`` file:
+    .. code-block:: bash
 
-    .. code-block:: json
-
-        "require": {
-            "symfony/form": "~2.3"
-        }
+        composer require symfony/form
 
     If you are going to use the validation extension with forms, you must also
     add a dependency to the ``symfony/config`` and ``symfony/translation``
     components:
 
-    .. code-block:: json
+    .. code-block:: bash
 
-        "require": {
-            "symfony/validator": "~2.3",
-            "symfony/config": "~2.3",
-            "symfony/translation": "~2.3"
-        }
-
-    The Symfony Form Component relies on the PHP intl extension. If you don't have
-    it, you can install the Symfony Locale Component as a replacement:
-
-    .. code-block:: json
-
-        "require": {
-            "symfony/locale": "~2.3"
-        }
+        composer require symfony/validator symfony/config symfony/translation
         
     The Symfony Security CSRF component is used to protect forms against CSRF attacks:
 
-    .. code-block:: json
+    .. code-block:: bash
     
-        "require": {
-            "symfony/security-csrf": "~2.4"
-        }
+        composer require symfony/security-csrf
 
-    If you want to use forms in your Twig templates, make sure to install the
-    Symfony Twig Bridge:
+    If you want to use forms in your Twig templates, you can also install the
+    Symfony Twig Bridge. Make sure to install, if you didn't do that already,
+    the Translation component in order for the bridge to work:
 
-    .. code-block:: json
+    .. code-block:: bash
 
-        "require": {
-            "symfony/twig-bridge": "~2.3"
-        }
+        composer require symfony/twig-bridge symfony/translation
 
 Usage
 -----

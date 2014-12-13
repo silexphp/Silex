@@ -54,8 +54,8 @@ When using Twig, the service can be used like this:
 
     {{ app.url_generator.generate('homepage') }}
 
-Moreover, if you have ``twig-bridge`` in your ``composer.json``, you will have access to the ``path()`` and
-``url()`` functions:
+Moreover, if you have ``twig-bridge`` as a Composer dep, you will have access
+to the ``path()`` and ``url()`` functions:
 
 .. code-block:: jinja
 

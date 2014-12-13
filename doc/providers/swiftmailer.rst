@@ -71,14 +71,11 @@ Registering
 .. note::
 
     SwiftMailer comes with the "fat" Silex archive but not with the regular
-    one. If you are using Composer, add it as a dependency to your
-    ``composer.json`` file:
+    one. If you are using Composer, add it as a dependency:
 
-    .. code-block:: json
+    .. code-block:: bash
 
-        "require": {
-            "swiftmailer/swiftmailer": ">=4.1.2,<4.2-dev"
-        }
+        composer require swiftmailer/swiftmailer
 
 Usage
 -----
