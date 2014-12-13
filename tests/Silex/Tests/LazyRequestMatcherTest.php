@@ -45,7 +45,7 @@ class LazyRequestMatcherTest extends \PHPUnit_Framework_TestCase
      * @expectedException LogicException
      * @expectedExceptionMessage Factory supplied to LazyRequestMatcher must return implementation of Symfony\Component\Routing\RequestMatcherInterface.
      */
-    public function testThatCanInjectResquestMatcherOnly()
+    public function testThatCanInjectRequestMatcherOnly()
     {
         $matcher = new LazyRequestMatcher(function () {
             return 'someMatcher';
