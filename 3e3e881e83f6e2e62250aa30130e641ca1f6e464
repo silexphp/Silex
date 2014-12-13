@@ -1,0 +1,33 @@
+---------------------------------------------------------------------------
+
+by dominikzogg at 2014-12-02T10:33:05Z
+
++1
+
+---------------------------------------------------------------------------
+
+by alcohol at 2014-12-02T11:04:32Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by GromNaN at 2014-12-02T11:51:44Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by fabpot at 2014-12-02T14:00:45Z
+
+Note to myself: should be merged into 1.2.
+
+@davedevelopment Can you update the docs as well?
+
+---------------------------------------------------------------------------
+
+by davedevelopment at 2014-12-02T16:42:09Z
+
+Added some docs.
+
+Is it worth putting an additional conditional in to the `KernelEvents::TERMINATE` listener to skip flushing the spool if it's not been used?
