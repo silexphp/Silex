@@ -36,14 +36,11 @@ Registering
     The *SerializerServiceProvider* relies on Symfony's `Serializer Component
     <http://symfony.com/doc/current/components/serializer.html>`_, 
     which comes with the "fat" Silex archive but not with the regular
-    one. If you are using Composer, add it as a dependency to your
-    ``composer.json`` file:
+    one. If you are using Composer, add it as a dependency:
 
-    .. code-block:: json
+    .. code-block:: bash
 
-        "require": {
-            "symfony/serializer": ">=2.3,<2.5-dev",
-         }
+        composer require symfony/serializer
 
 Usage
 -----

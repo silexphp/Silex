@@ -38,14 +38,11 @@ Registering
 .. note::
 
     The Symfony Validator Component comes with the "fat" Silex archive but not
-    with the regular one. If you are using Composer, add it as a dependency to
-    your ``composer.json`` file:
+    with the regular one. If you are using Composer, add it as a dependency:
 
-    .. code-block:: json
+    .. code-block:: bash
 
-        "require": {
-            "symfony/validator": "~2.3"
-        }
+        composer require symfony/validator
 
 Usage
 -----
