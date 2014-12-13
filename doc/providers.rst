@@ -80,31 +80,59 @@ You are encouraged to share yours.
 Creating a provider
 ~~~~~~~~~~~~~~~~~~~
 
-Providers must implement the ``Silex\Api\ServiceProviderInterface``::
+Providers must implement the ``Pimple\ServiceProviderInterface``::
 
     interface ServiceProviderInterface
     {
-        function register(Application $app);
+        function register(Container $container);
+    }
 
+This is very straight forward, just create a new class that implements the
+register method. In the ``register()`` method, you can define services on the
+application which then may make use of other services and parameters. 
+
+.. tip::
+
+    The ``Pimple\ServiceProviderInterface`` belongs to the Pimple package, so
+    take care to only use the API of ``Pimple\Container`` within your
+    ``register`` method. Not only is this a good practice due to the way Pimple
+    and Silex work, but may allow your provider to be used outside of Silex.
+
+Optionally, your service provider can implement the
+``Silex\Api\BootableServiceProviderInterface``. A BootableServiceProvider must
+implement the ``boot()`` method, with which you can configure the application, just
+before it handles a request::
+
+    interface BootableServiceProviderInterface
+    {
         function boot(Application $app);
     }
 
-This is very straight forward, just create a new class that implements the two
-methods. In the ``register()`` method, you can define services on the
-application which then may make use of other services and parameters. In the
-``boot()`` method, you can configure the application, just before it handles a
-request.
+Another optional interface, is the ``Silex\Api\EventListenerProviderInterface``.
+This interface contains the `subscribe` method, which allows your provider to
+subscribe event listener with Silex's EventDispatcher, just before it handles a
+request::
+
+    interface EventListenerProviderInterface
+    {
+        function subscribe(Container $app, EventDispatcherInterface $dispatcher);
+    }
 
 Here is an example of such a provider::
 
     namespace Acme;
 
+    use Pimple\Container;
+    use Pimple\ServiceProviderInterface;
     use Silex\Application;
-    use Silex\Api\ServiceProviderInterface;
+    use Silex\Api\BootableProviderInterface;
+    use Silex\Api\EventListenerProviderInterface;
+    use Symfony\Component\HttpKernel\KernelEvents;
+    use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 
-    class HelloServiceProvider implements ServiceProviderInterface
+    class HelloServiceProvider implements ServiceProviderInterface, BootableServiceProviderInterface, EventListenerProviderInterface
     {
-        public function register(Application $app)
+        public function register(Container $app)
         {
             $app['hello'] = $app->protect(function ($name) use ($app) {
                 $default = $app['hello.default_name'] ? $app['hello.default_name'] : '';
@@ -116,6 +144,14 @@ Here is an example of such a provider::
 
         public function boot(Application $app)
         {
+            // do something 
+        }
+
+        public function subscribe(Container $app, EventDispatcherInterface $dispatcher)
+        {
+            $dispatcher->addListener(KernelEvents::REQUEST, function(FilterResponseEvent $event) use ($app) {
+                // do something 
+            });
         }
     }
 
