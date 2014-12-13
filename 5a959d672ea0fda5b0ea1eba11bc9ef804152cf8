@@ -1,0 +1,59 @@
+---------------------------------------------------------------------------
+
+by davedevelopment at 2014-12-05T11:07:24Z
+
+P.S. Sorry for all the PRs, silex is my chosen target for the 24 pull requests thing this week :)
+
+---------------------------------------------------------------------------
+
+by fabpot at 2014-12-05T11:11:30Z
+
+@davedevelopment That's great! No worries.
+
+---------------------------------------------------------------------------
+
+by fabpot at 2014-12-05T11:11:51Z
+
+By the way, 1.2 is still maintained, so I think most of your PRs should target 1.2 instead of master.
+
+---------------------------------------------------------------------------
+
+by stof at 2014-12-05T11:22:12Z
+
+However, for the 1.2 branch, it will need to say ``composer require silex/silex "~1.2"`` explicitly (so that it does not install 2.0)
+
+---------------------------------------------------------------------------
+
+by dominikzogg at 2014-12-05T11:28:30Z
+
+@davedevelopment after the change @stof suggests i give a +1
+
+---------------------------------------------------------------------------
+
+by davedevelopment at 2014-12-05T12:01:59Z
+
+Hmm, I don't really know what's best. The purpose of the README in a master branch that is unstable is unclear to me. Should it be relevant to the latest stable release (because it's the first thing people see when they see the repo), or should it be relevant to the branch. My preference would be for the branch.
+
+---------------------------------------------------------------------------
+
+by fabpot at 2014-12-05T12:03:15Z
+
+I've just changed the default branch to 1.2 on Github.
+
+---------------------------------------------------------------------------
+
+by davedevelopment at 2014-12-05T12:09:46Z
+
+So if I push a commit to this PR to specify "~2.0@dev", then create another PR that targets the 1.2 branch with
+
+``` bash
+php composer.phar require silex/silex "~1.2"
+```
+
+That will cover everything and be simple enough, right?
+
+---------------------------------------------------------------------------
+
+by henrikbjorn at 2014-12-05T12:55:57Z
+
+@davedevelopment i would thing so.
