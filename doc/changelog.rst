@@ -1,13 +1,21 @@
 Changelog
 =========
 
-2.0.0 (2013-XX-XX)
+2.0.0 (2014-XX-XX)
 ------------------
 
-* Updated Pimple to 2.1
+* Updated Pimple to 3.0
 * Updated session listeners to extends HttpKernel ones
 * [BC BREAK] Locale management has been moved to LocaleServiceProvider which must be registered
   if you want Silex to manage your locale (must also be registered for the translation service provider)
+* [BC BREAK] Provider interfaces moved to Silex\Api namespace, published as
+  separate package via subtree split
+* [BC BREAK] ServiceProviderInterface split in to EventListenerProviderInterface
+  and BootableProviderInterface
+* [BC BREAK] Service Provider support files moved under Silex\Provider
+  namespace, allowing publishing as separate package via sub-tree split
+* ``monolog.exception.logger_filter`` option added to Monolog service provider
+* [BC BREAK] ``$app['request']`` service removed, use ``$app['request_stack']`` instead
 
 1.2.2 (2014-09-26)
 ------------------
