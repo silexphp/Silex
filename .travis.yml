@@ -9,7 +9,8 @@ before_script:
     - sh -c "if [ '$SYMFONY_DEPS_VERSION' = '2.3' ]; then sed -i 's/~2.3/2.3.*@dev/g' composer.json; composer update --dev --prefer-source; fi"
     - composer install --dev --prefer-source
 
-script: phpunit
+script:
+    - vendor/bin/phpunit
 
 php:
   - 5.3
