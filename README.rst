@@ -1,3 +1,6 @@
+.. image:: https://travis-ci.org/silexphp/Silex.svg?branch=1.2
+:target: https://travis-ci.org/silexphp/Silex
+
 Silex, a simple Web Framework
 =============================
 
