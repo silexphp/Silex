@@ -24,14 +24,14 @@ use Symfony\Component\HttpFoundation\Request;
  * __call() forwards method-calls to Route, but returns instance of ControllerCollection
  * listing Route's methods below, so that IDEs know they are valid
  *
- * @method \Silex\ControllerCollection assert(string $variable, string $regexp)
- * @method \Silex\ControllerCollection value(string $variable, mixed $default)
- * @method \Silex\ControllerCollection convert(string $variable, mixed $callback)
- * @method \Silex\ControllerCollection method(string $method)
- * @method \Silex\ControllerCollection requireHttp()
- * @method \Silex\ControllerCollection requireHttps()
- * @method \Silex\ControllerCollection before(mixed $callback)
- * @method \Silex\ControllerCollection after(mixed $callback)
+ * @method ControllerCollection assert(string $variable, string $regexp)
+ * @method ControllerCollection value(string $variable, mixed $default)
+ * @method ControllerCollection convert(string $variable, mixed $callback)
+ * @method ControllerCollection method(string $method)
+ * @method ControllerCollection requireHttp()
+ * @method ControllerCollection requireHttps()
+ * @method ControllerCollection before(mixed $callback)
+ * @method ControllerCollection after(mixed $callback)
  *
  * @author Igor Wiedler <igor@wiedler.ch>
  * @author Fabien Potencier <fabien@symfony.com>
