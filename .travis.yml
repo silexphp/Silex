@@ -2,6 +2,10 @@ language: php
 
 sudo: false
 
+cache:
+    directories:
+      - $HOME/.composer/cache
+
 before_script:
     # symfony/*
     - sh -c "if [ '$SYMFONY_DEPS_VERSION' = '2.7' ]; then sed -i 's/~2.3/2.7.*@dev/g' composer.json; composer update --dev --prefer-source; fi"
