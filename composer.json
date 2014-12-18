@@ -24,6 +24,7 @@
         "symfony/routing": "~2.3"
     },
     "require-dev": {
+        "squizlabs/php_codesniffer": "~2.0.0",
         "symfony/security": "~2.3",
         "symfony/config": "~2.3",
         "symfony/locale": "~2.3",
