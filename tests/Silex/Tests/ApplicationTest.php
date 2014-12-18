@@ -30,8 +30,7 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class ApplicationTest extends \PHPUnit_Framework_TestCase
 {
-    public function testMatchReturnValue()
-    {
+    public function testMatchReturnValue() {
         $app = new Application();
 
         $returnValue = $app->match('/foo', function () {});
