@@ -42,6 +42,7 @@ class ControllerCollection
     protected $defaultRoute;
     protected $defaultController;
     protected $prefix;
+    protected $calls = array();
 
     /**
      * Constructor.
@@ -63,6 +64,11 @@ class ControllerCollection
     public function mount($prefix, ControllerCollection $controllers)
     {
         $controllers->prefix = $prefix;
+
+        foreach ($this->calls as $call) {
+            list($method, $arguments) = $call;
+            call_user_func_array(array($controllers, $method), $arguments);
+        }
 
         $this->controllers[] = $controllers;
     }
@@ -161,10 +167,10 @@ class ControllerCollection
         call_user_func_array(array($this->defaultRoute, $method), $arguments);
 
         foreach ($this->controllers as $controller) {
-            if ($controller instanceof Controller) {
-                call_user_func_array(array($controller, $method), $arguments);
-            }
+            call_user_func_array(array($controller, $method), $arguments);
         }
+
+        $this->calls[] = array($method, $arguments);
 
         return $this;
     }

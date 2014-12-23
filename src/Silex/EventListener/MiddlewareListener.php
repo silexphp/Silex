@@ -50,7 +50,7 @@ class MiddlewareListener implements EventSubscriberInterface
             return;
         }
 
-        foreach ((array) $route->getOption('_before_middlewares') as $callback) {
+        foreach (clone ($route->getOption('_before_middlewares') ?: new \SplPriorityQueue()) as $callback) {
             $ret = call_user_func($this->app['callback_resolver']->resolveCallback($callback), $request, $this->app);
             if ($ret instanceof Response) {
                 $event->setResponse($ret);
@@ -75,7 +75,7 @@ class MiddlewareListener implements EventSubscriberInterface
             return;
         }
 
-        foreach ((array) $route->getOption('_after_middlewares') as $callback) {
+        foreach (clone ($route->getOption('_after_middlewares') ?: new \SplPriorityQueue()) as $callback) {
             $response = call_user_func($this->app['callback_resolver']->resolveCallback($callback), $request, $event->getResponse(), $this->app);
             if ($response instanceof Response) {
                 $event->setResponse($response);
