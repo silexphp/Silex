@@ -48,6 +48,39 @@ class SecurityTraitTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==', $app->encodePassword($user, 'foo'));
     }
 
+    /**
+     * @expectedException \Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException
+     */
+    public function testIsGrantedWithoutTokenThrowsException()
+    {
+        $app = $this->createApplication();
+        $app->get('/', function () { return 'foo'; });
+        $app->handle(Request::create('/'));
+        $app->isGranted('ROLE_ADMIN');
+    }
+
+    public function testIsGranted()
+    {
+        $request = Request::create('/');
+
+        $app = $this->createApplication();
+        $app->get('/', function () { return 'foo'; });
+
+        // User is Monique (ROLE_USER)
+        $request->headers->set('PHP_AUTH_USER', 'monique');
+        $request->headers->set('PHP_AUTH_PW', 'foo');
+        $app->handle($request);
+        $this->assertTrue($app->isGranted('ROLE_USER'));
+        $this->assertFalse($app->isGranted('ROLE_ADMIN'));
+
+        // User is Fabien (ROLE_ADMIN)
+        $request->headers->set('PHP_AUTH_USER', 'fabien');
+        $request->headers->set('PHP_AUTH_PW', 'foo');
+        $app->handle($request);
+        $this->assertFalse($app->isGranted('ROLE_USER'));
+        $this->assertTrue($app->isGranted('ROLE_ADMIN'));
+    }
+
     public function createApplication()
     {
         $app = new SecurityApplication();
@@ -56,7 +89,8 @@ class SecurityTraitTest extends \PHPUnit_Framework_TestCase
                 'default' => array(
                     'http' => true,
                     'users' => array(
-                        'fabien' => array('ROLE_ADMIN', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg=='),
+                        'fabien'  => array('ROLE_ADMIN', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg=='),
+                        'monique' => array('ROLE_USER' , '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg=='),
                     ),
                 ),
             ),
