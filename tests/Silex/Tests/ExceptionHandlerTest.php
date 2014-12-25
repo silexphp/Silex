@@ -136,7 +136,7 @@ class ExceptionHandlerTest extends \PHPUnit_Framework_TestCase
 
         $app->get('/405', function () { return 'foo'; });
 
-        $app->error(function ($e, $code) {
+        $app->error(function ($e) {
             return new Response('foo exception handler');
         });
 

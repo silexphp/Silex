@@ -156,7 +156,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
             return new Response($request->getRequestUri());
         });
 
-        $app->error(function ($e, Request $request, $code) use ($app) {
+        $app->error(function ($e, Request $request, $app, $code) {
             return new Response($request->getRequestUri());
         });
 
