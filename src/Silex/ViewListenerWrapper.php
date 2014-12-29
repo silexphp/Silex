@@ -21,8 +21,8 @@ use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
  */
 class ViewListenerWrapper
 {
-    protected $app;
-    protected $callback;
+    private $app;
+    private $callback;
 
     /**
      * Constructor.
@@ -54,7 +54,7 @@ class ViewListenerWrapper
         }
     }
 
-    protected function shouldRun($callback, $controllerResult)
+    private function shouldRun($callback, $controllerResult)
     {
         if (is_array($callback)) {
             $callbackReflection = new \ReflectionMethod($callback[0], $callback[1]);
