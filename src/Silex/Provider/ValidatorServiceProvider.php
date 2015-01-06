@@ -28,6 +28,8 @@ class ValidatorServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
+        $app['validator.translation_domain'] = 'validators';
+
         $app['validator'] = $app->share(function ($app) {
             if (isset($app['translator'])) {
                 $r = new \ReflectionClass('Symfony\Component\Validator\Validator');
@@ -38,7 +40,7 @@ class ValidatorServiceProvider implements ServiceProviderInterface
                 $app['validator.mapping.class_metadata_factory'],
                 $app['validator.validator_factory'],
                 isset($app['translator']) ? $app['translator'] : new DefaultTranslator(),
-                'validators',
+                $app['validator.translation_domain'],
                 $app['validator.object_initializers']
             );
         });
