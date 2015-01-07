@@ -339,7 +339,12 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
                 return;
             }
 
-            call_user_func($app['callback_resolver']->resolveCallback($callback), $event->getRequest(), $event->getResponse(), $app);
+            $response = call_user_func($app['callback_resolver']->resolveCallback($callback), $event->getRequest(), $event->getResponse(), $app);
+            if ($response instanceof Response) {
+                $event->setResponse($response);
+            } elseif (null !== $response) {
+                throw new \RuntimeException('An after middleware returned an invalid response value. Must return null or an instance of Response.');
+            }
         }, $priority);
     }
 
