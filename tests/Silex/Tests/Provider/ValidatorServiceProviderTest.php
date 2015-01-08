@@ -98,7 +98,7 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
             ->getForm()
         ;
 
-        $form->bind(array('email' => $email));
+        $form->submit(array('email' => $email));
 
         $this->assertEquals($isValid, $form->isValid());
         $this->assertEquals($nbGlobalError, count($form->getErrors()));
