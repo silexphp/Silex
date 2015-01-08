@@ -59,7 +59,7 @@ class TranslationServiceProvider implements ServiceProviderInterface
         });
 
         $app['translator.cache_dir'] = null;
-        $app['translator.debug'] = function() use ($app) {
+        $app['translator.debug'] = function($app) {
             return $app['debug'];
         };
         $app['translator.domains'] = array();
