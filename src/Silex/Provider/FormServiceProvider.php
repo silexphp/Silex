@@ -20,6 +20,9 @@ use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationExtension;
 use Symfony\Component\Form\Extension\Validator\ValidatorExtension as FormValidatorExtension;
 use Symfony\Component\Form\Forms;
 use Symfony\Component\Form\ResolvedFormTypeFactory;
+use Symfony\Component\Security\Csrf\CsrfTokenManager;
+use Symfony\Component\Security\Csrf\TokenStorage\NativeSessionTokenStorage;
+use Symfony\Component\Security\Csrf\TokenStorage\SessionTokenStorage;
 
 /**
  * Symfony Form component Provider.
@@ -104,11 +107,19 @@ class FormServiceProvider implements ServiceProviderInterface
         });
 
         $app['form.csrf_provider'] = $app->share(function ($app) {
-            if (isset($app['session'])) {
-                return new SessionCsrfProvider($app['session'], $app['form.secret']);
-            }
+            if (!class_exists('Symfony\Component\Form\Extension\DataCollector\DataCollectorExtension')) {
+                // Symfony 2.3
+                if (isset($app['session'])) {
+                    return new SessionCsrfProvider($app['session'], $app['form.secret']);
+                }
 
-            return new DefaultCsrfProvider($app['form.secret']);
+                return new DefaultCsrfProvider($app['form.secret']);
+            } else {
+                // Symfony 2.4+
+                $storage = isset($app['session']) ? new SessionTokenStorage($app['session']) : new NativeSessionTokenStorage();
+
+                return new CsrfTokenManager(null, $storage);
+            }
         });
     }
 
