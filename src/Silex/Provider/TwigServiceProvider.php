@@ -60,8 +60,8 @@ class TwigServiceProvider implements ServiceProviderInterface
                     $twig->addExtension(new TranslationExtension($app['translator']));
                 }
 
-                if (isset($app['security'])) {
-                    $twig->addExtension(new SecurityExtension($app['security']));
+                if (isset($app['security.authorization_checker'])) {
+                    $twig->addExtension(new SecurityExtension($app['security.authorization_checker']));
                 }
 
                 if (isset($app['fragment.handler'])) {
