@@ -76,7 +76,7 @@ class RememberMeServiceProvider implements ServiceProviderInterface
         $app['security.authentication_listener.remember_me._proto'] = $app->protect(function ($providerKey) use ($app) {
             return $app->share(function () use ($app, $providerKey) {
                 $listener = new RememberMeListener(
-                    $app['security'],
+                    $app['security.token_storage'],
                     $app['security.remember_me.service.'.$providerKey],
                     $app['security.authentication_manager'],
                     $app['logger'],

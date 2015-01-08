@@ -30,7 +30,7 @@ trait SecurityTrait
      */
     public function user()
     {
-        if (null === $token = $this['security']->getToken()) {
+        if (null === $token = $this['security.token_storage']->getToken()) {
             return;
         }
 

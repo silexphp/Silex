@@ -13,6 +13,7 @@ namespace Silex\Tests\Application;
 
 use Silex\Provider\SecurityServiceProvider;
 use Symfony\Component\Security\Core\User\User;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -28,7 +29,9 @@ class SecurityTraitTest extends \PHPUnit_Framework_TestCase
     {
         $request = Request::create('/');
 
-        $app = $this->createApplication();
+        $app = $this->createApplication(array(
+            'fabien' => array('ROLE_ADMIN', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg=='),
+        ));
         $app->get('/', function () { return 'foo'; });
         $app->handle($request);
         $this->assertNull($app->user());
@@ -44,15 +47,7 @@ class SecurityTraitTest extends \PHPUnit_Framework_TestCase
     {
         $request = Request::create('/');
 
-        $app = new SecurityApplication();
-        $app['security'] = $this->getMockBuilder('Symfony\Component\Security\Core\SecurityContext')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $app['security']->expects($this->any())
-            ->method('getToken')
-            ->will($this->returnValue(null));
-
+        $app = $this->createApplication();
         $app->get('/', function () { return 'foo'; });
         $app->handle($request);
         $this->assertNull($app->user());
@@ -62,22 +57,9 @@ class SecurityTraitTest extends \PHPUnit_Framework_TestCase
     {
         $request = Request::create('/');
 
-        $app = new SecurityApplication();
-        $app['security'] = $this->getMockBuilder('Symfony\Component\Security\Core\SecurityContext')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $token = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $token->expects($this->once())
-            ->method('getUser')
-            ->will($this->returnValue(array()));
-
-        $app['security']->expects($this->any())
-            ->method('getToken')
-            ->will($this->returnValue($token));
+        $app = $this->createApplication();
+        $app->boot();
+        $app['security.token_storage']->setToken(new UsernamePasswordToken('foo', 'foo', 'foo'));
 
         $app->get('/', function () { return 'foo'; });
         $app->handle($request);
@@ -86,22 +68,22 @@ class SecurityTraitTest extends \PHPUnit_Framework_TestCase
 
     public function testEncodePassword()
     {
-        $app = $this->createApplication();
+        $app = $this->createApplication(array(
+            'fabien' => array('ROLE_ADMIN', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg=='),
+        ));
 
         $user = new User('foo', 'bar');
         $this->assertEquals('5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==', $app->encodePassword($user, 'foo'));
     }
 
-    public function createApplication()
+    public function createApplication($users = array())
     {
         $app = new SecurityApplication();
         $app->register(new SecurityServiceProvider(), array(
             'security.firewalls' => array(
                 'default' => array(
                     'http' => true,
-                    'users' => array(
-                        'fabien' => array('ROLE_ADMIN', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg=='),
-                    ),
+                    'users' => $users,
                 ),
             ),
         ));
