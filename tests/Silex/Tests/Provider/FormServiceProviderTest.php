@@ -131,7 +131,7 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
         $translator = $app['translator'];
 
         try {
-            $translator->getMessages();
+            $translator->trans('test');
         } catch (NotFoundResourceException $e) {
             $this->fail('Form factory should not add a translation resource that does not exist');
         }
