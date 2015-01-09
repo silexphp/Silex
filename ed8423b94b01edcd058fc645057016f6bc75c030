@@ -1,0 +1,41 @@
+---------------------------------------------------------------------------
+
+by hkdobrev at 2015-01-06T23:05:49Z
+
+I'm not really sure, but I think this would fix another problem I had with the Translation service provider. I didn't have `symfony/config` in my project and I didn't want to use Xliff files. But perhaps because of that it tried to always add a Xliff resource which resulted in that the XML reader was not available. Requiring `symfony/config` fixed the problem, but it was not needed otherwise.
+
+---------------------------------------------------------------------------
+
+by CarsonF at 2015-01-06T23:15:17Z
+
+That's weird...the files it wants should be with the component. Did you override the translator closure and not add xliff loader? I wonder if that should be checked too before adding the resource, although we don't have access to the loaders at that point.
+
+---------------------------------------------------------------------------
+
+by fabpot at 2015-01-07T07:43:05Z
+
+Looks good to me. Can you add a test?
+
+---------------------------------------------------------------------------
+
+by CarsonF at 2015-01-07T16:02:00Z
+
+How are these?
+
+---------------------------------------------------------------------------
+
+by fabpot at 2015-01-09T16:33:28Z
+
+Tests do not pass according to Travis and it seems related to your changes.
+
+---------------------------------------------------------------------------
+
+by CarsonF at 2015-01-09T16:48:24Z
+
+Oh I didn't think about other versions of the translation component
+
+---------------------------------------------------------------------------
+
+by CarsonF at 2015-01-09T16:58:17Z
+
+That fixed it. Looks like there's just deprecation warnings on 2.7 build.
