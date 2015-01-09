@@ -12,8 +12,10 @@
 namespace Silex\Tests\Provider;
 
 use Silex\Application;
+use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use Silex\Provider\FormServiceProvider;
+use Symfony\Component\Translation\Exception\NotFoundResourceException;
 use Symfony\Component\Validator\Constraints as Assert;
 use Silex\Tests\Provider\ValidatorServiceProviderTest\Constraint\Custom;
 use Silex\Tests\Provider\ValidatorServiceProviderTest\Constraint\CustomValidator;
@@ -101,6 +103,27 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($isValid, $form->isValid());
         $this->assertEquals($nbGlobalError, count($form->getErrors()));
         $this->assertEquals($nbEmailError, count($form->offsetGet('email')->getErrors()));
+    }
+
+    public function testValidatorWillNotAddNonexistentTranslationFiles()
+    {
+        $app = new Application(array(
+            'locale' => 'nonexistent',
+        ));
+
+        $app->register(new ValidatorServiceProvider());
+        $app->register(new TranslationServiceProvider(), array(
+            'locale_fallbacks' => array(),
+        ));
+
+        $app['validator'];
+        $translator = $app['translator'];
+
+        try {
+            $translator->trans('test');
+        } catch (NotFoundResourceException $e) {
+            $this->fail('Validator should not add a translation resource that does not exist');
+        }
     }
 
     public function testValidatorConstraintProvider()
