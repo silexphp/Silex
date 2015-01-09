@@ -40,7 +40,9 @@ class MonologServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($app['monolog.handler']->hasInfo('> GET /foo'));
         $this->assertTrue($app['monolog.handler']->hasInfo('< 200'));
-        $this->assertTrue($app['monolog.handler']->hasInfo('Matched route "GET_foo" (parameters: "_controller": "{}", "_route": "GET_foo")'));
+
+        $records = $app['monolog.handler']->getRecords();
+        $this->assertContains('Matched route "GET_foo"', $records[0]['message']);
     }
 
     public function testManualLogging()
