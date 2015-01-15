@@ -40,6 +40,50 @@ class SecurityTraitTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('fabien', $app->user()->getUsername());
     }
 
+    public function testUserWithNoToken()
+    {
+        $request = Request::create('/');
+
+        $app = new SecurityApplication();
+        $app['security'] = $this->getMockBuilder('Symfony\Component\Security\Core\SecurityContext')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $app['security']->expects($this->any())
+            ->method('getToken')
+            ->will($this->returnValue(null));
+
+        $app->get('/', function () { return 'foo'; });
+        $app->handle($request);
+        $this->assertNull($app->user());
+    }
+
+    public function testUserWithInvalidUser()
+    {
+        $request = Request::create('/');
+
+        $app = new SecurityApplication();
+        $app['security'] = $this->getMockBuilder('Symfony\Component\Security\Core\SecurityContext')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $token = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $token->expects($this->once())
+            ->method('getUser')
+            ->will($this->returnValue(array()));
+
+        $app['security']->expects($this->any())
+            ->method('getToken')
+            ->will($this->returnValue($token));
+
+        $app->get('/', function () { return 'foo'; });
+        $app->handle($request);
+        $this->assertNull($app->user());
+    }
+
     public function testEncodePassword()
     {
         $app = $this->createApplication();
