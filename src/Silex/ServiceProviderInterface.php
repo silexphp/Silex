@@ -34,6 +34,8 @@ interface ServiceProviderInterface
      * This method is called after all services are registered
      * and should be used for "dynamic" configuration (whenever
      * a service must be requested).
+     *
+     * @param Application $app An Application instance
      */
     public function boot(Application $app);
 }
