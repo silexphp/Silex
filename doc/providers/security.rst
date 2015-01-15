@@ -335,7 +335,7 @@ You can check roles in Twig templates too:
 
 .. code-block:: jinja
 
-    {% if is_granted('ROLE_ADMIN') %}
+    {% if app.security.token is not null and is_granted('ROLE_ADMIN') %}
         <a href="/secured?_switch_user=fabien">Switch to Fabien</a>
     {% endif %}
 
@@ -344,7 +344,7 @@ instance) with the special ``IS_AUTHENTICATED_FULLY`` role:
 
 .. code-block:: jinja
 
-    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    {% if app.security.token is not null and is_granted('IS_AUTHENTICATED_FULLY') %}
         <a href="{{ path('logout') }}">Logout</a>
     {% else %}
         <a href="{{ path('login') }}">Login</a>
@@ -381,7 +381,7 @@ parameter to any URL when logged in as a user who has the
 
 .. code-block:: jinja
 
-    {% if is_granted('ROLE_ALLOWED_TO_SWITCH') %}
+    {% if app.security.token is not null and is_granted('ROLE_ALLOWED_TO_SWITCH') %}
         <a href="?_switch_user=fabien">Switch to user Fabien</a>
     {% endif %}
 
@@ -391,7 +391,7 @@ switch back to their primary account:
 
 .. code-block:: jinja
 
-    {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+    {% if app.security.token is not null and is_granted('ROLE_PREVIOUS_ADMIN') %}
         You are an admin but you've switched to another user,
         <a href="?_switch_user=_exit"> exit</a> the switch.
     {% endif %}
