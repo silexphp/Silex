@@ -23,8 +23,6 @@ interface ServiceProviderInterface
      *
      * This method should only be used to configure services and parameters.
      * It should not get services.
-     *
-     * @param Application $app An Application instance
      */
     public function register(Application $app);
 
