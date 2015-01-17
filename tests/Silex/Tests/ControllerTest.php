@@ -91,8 +91,8 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
     public function provideRouteAndExpectedRouteName()
     {
         return array(
-            array(new Route('/Invalid%Symbols#Stripped', array(), array('_method' => 'POST')), 'POST_InvalidSymbolsStripped'),
-            array(new Route('/post/{id}', array(), array('_method' => 'GET')), 'GET_post_id'),
+            array(new Route('/Invalid%Symbols#Stripped', array(), array(), array(), '', array(), array('POST')), 'POST_InvalidSymbolsStripped'),
+            array(new Route('/post/{id}', array(), array(), array(), '', array(), array('GET')), 'GET_post_id'),
             array(new Route('/colon:pipe|dashes-escaped'), '_colon_pipe_dashes_escaped'),
             array(new Route('/underscores_and.periods'), '_underscores_and.periods'),
         );
