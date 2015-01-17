@@ -4,7 +4,7 @@ Changelog
 1.3.0 (2015-XX-XX)
 ------------------
 
-* n/a
+* bumped minimum version of PHP to 5.3.9
 
 1.2.3 (2015-01-20)
 ------------------

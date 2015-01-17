@@ -22,7 +22,7 @@ If you want more flexibility, use Composer_ instead:
 
 .. code-block:: bash
 
-    composer require silex/silex:~1.2
+    composer require silex/silex:~1.3
 
 Bootstrap
 ---------
