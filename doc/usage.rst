@@ -322,7 +322,7 @@ The converter callback also receives the ``Request`` as its second argument::
 A converter can also be defined as a service. For example, here is a user
 converter based on Doctrine ObjectManager::
 
-    use Doctrine\Common\Persistence\ObjectManager
+    use Doctrine\Common\Persistence\ObjectManager;
     use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
     class UserConverter
