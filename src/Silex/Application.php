@@ -20,7 +20,6 @@ use Symfony\Component\HttpKernel\TerminableInterface;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
-use Symfony\Component\HttpKernel\EventListener\ResponseListener;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,10 +32,8 @@ use Symfony\Component\Routing\RouteCollection;
 use Silex\Api\BootableProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
 use Silex\Api\ControllerProviderInterface;
-use Silex\EventListener\MiddlewareListener;
-use Silex\EventListener\ConverterListener;
-use Silex\EventListener\StringToResponseListener;
 use Silex\Provider\RoutingServiceProvider;
+use Silex\Provider\KernelServiceProvider;
 
 /**
  * The Silex framework class.
@@ -87,20 +84,6 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
             return new ExceptionHandler($app['debug']);
         };
 
-        $this['dispatcher_class'] = 'Symfony\\Component\\EventDispatcher\\EventDispatcher';
-        $this['dispatcher'] = function () use ($app) {
-            $dispatcher = new $app['dispatcher_class']();
-
-            if (isset($app['exception_handler'])) {
-                $dispatcher->addSubscriber($app['exception_handler']);
-            }
-            $dispatcher->addSubscriber(new ResponseListener($app['charset']));
-            $dispatcher->addSubscriber(new MiddlewareListener($app));
-            $dispatcher->addSubscriber(new ConverterListener($app['routes'], $app['callback_resolver']));
-            $dispatcher->addSubscriber(new StringToResponseListener());
-
-            return $dispatcher;
-        };
 
         $this['callback_resolver'] = function () use ($app) {
             return new CallbackResolver($app);
@@ -124,6 +107,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
         $this['charset'] = 'UTF-8';
         $this['logger'] = null;
 
+        $this->register(new KernelServiceProvider());
         $this->register(new RoutingServiceProvider());
 
         foreach ($values as $key => $value) {
