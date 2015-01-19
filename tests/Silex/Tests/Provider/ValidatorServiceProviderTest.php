@@ -38,7 +38,7 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app['custom.validator'] = function() {
+        $app['custom.validator'] = function () {
             return new CustomValidator();
         };
 
@@ -67,7 +67,7 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testValidatorServiceIsAValidator($app)
     {
-        $this->assertInstanceOf('Symfony\Component\Validator\Validator', $app['validator']);
+        $this->assertInstanceOf('Symfony\Component\Validator\ValidatorInterface', $app['validator']);
     }
 
     /**

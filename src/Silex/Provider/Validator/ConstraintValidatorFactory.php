@@ -66,9 +66,7 @@ class ConstraintValidatorFactory implements ConstraintValidatorFactoryInterface
             return $this->validators[$name];
         }
 
-        $this->validators[$name] = $this->createValidator($name);
-
-        return $this->validators[$name];
+        return $this->validators[$name] = $this->createValidator($name);
     }
 
     /**

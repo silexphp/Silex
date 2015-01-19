@@ -43,6 +43,12 @@ class TranslationServiceProvider implements ServiceProviderInterface
                 }
             }
 
+            if (class_exists('Symfony\Component\Validator\Validator')) {
+                $r = new \ReflectionClass('Symfony\Component\Validator\Validator');
+
+                $translator->addResource('xliff', dirname($r->getFilename()).'/Resources/translations/validators.'.$app['locale'].'.xlf', $app['locale'], 'validators');
+            }
+
             return $translator;
         };
 
