@@ -663,6 +663,24 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('Hello world', $response->getContent());
     }
+
+    public function testViewListenersResponsesAreNotUsedIfNull()
+    {
+        $app = new Application();
+        $app->get('/foo', function() { return 'Hello world'; });
+
+        $app->view(function ($view) {
+            return 'Hello view listener';
+        });
+
+        $app->view(function ($view) {
+            return null;
+        });
+
+        $response = $app->handle(Request::create('/foo'));
+
+        $this->assertEquals('Hello view listener', $response->getContent());
+    }
 }
 
 class FooController
