@@ -14,7 +14,7 @@ namespace Silex\Provider;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Silex\Provider\Validator\ConstraintValidatorFactory;
-use Symfony\Component\Validator\Validator;
+use Symfony\Component\Validator\ValidatorBuilder;
 use Symfony\Component\Validator\DefaultTranslator;
 use Symfony\Component\Validator\Mapping\ClassMetadataFactory;
 use Symfony\Component\Validator\Mapping\Loader\StaticMethodLoader;
@@ -35,14 +35,18 @@ class ValidatorServiceProvider implements ServiceProviderInterface
                 $app['translator']->addResource('xliff', dirname($r->getFilename()).'/Resources/translations/validators.'.$app['locale'].'.xlf', $app['locale'], 'validators');
             }
 
-            return new Validator(
-                $app['validator.mapping.class_metadata_factory'],
-                $app['validator.validator_factory'],
-                isset($app['translator']) ? $app['translator'] : new DefaultTranslator(),
-                'validators',
-                $app['validator.object_initializers']
-            );
+            return $app['validator.builder']->getValidator();
         };
+
+        $app['validator.builder'] = $app->share(function () use ($app) {
+            $builder = new ValidatorBuilder();
+            $builder->setConstraintValidatorFactory($app['validator.validator_factory']);
+            $builder->setTranslator(isset($app['translator']) ? $app['translator'] : new DefaultTranslator());
+            $builder->setTranslationDomain('validators');
+            $builder->setMetadataFactory($app['validator.mapping.class_metadata_factory']);
+
+            return $builder;
+        });
 
         $app['validator.mapping.class_metadata_factory'] = function ($app) {
             return new ClassMetadataFactory(new StaticMethodLoader());
