@@ -14,12 +14,14 @@ namespace Silex\Tests\Provider;
 use Silex\Application;
 use Silex\Provider\FormServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
+use Silex\Provider\ValidatorServiceProvider;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Csrf\CsrfProvider\CsrfProviderInterface;
 use Symfony\Component\Form\FormTypeGuesserChain;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
@@ -111,6 +113,28 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($form->isValid());
         $this->assertContains('ERROR: German translation', $form->getErrorsAsString());
+    }
+
+    public function testFormServiceProviderWillNotAddNonexistentTranslationFiles()
+    {
+        $app = new Application(array(
+            'locale' => 'nonexistent',
+        ));
+
+        $app->register(new FormServiceProvider());
+        $app->register(new ValidatorServiceProvider());
+        $app->register(new TranslationServiceProvider(), array(
+            'locale_fallbacks' => array(),
+        ));
+
+        $app['form.factory'];
+        $translator = $app['translator'];
+
+        try {
+            $translator->trans('test');
+        } catch (NotFoundResourceException $e) {
+            $this->fail('Form factory should not add a translation resource that does not exist');
+        }
     }
 }
 
