@@ -49,7 +49,7 @@ class ViewListenerWrapper
 
         if ($response instanceof Response) {
             $event->setResponse($response);
-        } else {
+        } else if (null !== $response) {
             $event->setControllerResult($response);
         }
     }
