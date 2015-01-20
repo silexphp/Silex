@@ -161,8 +161,8 @@ class SecurityServiceProvider implements ServiceProviderInterface
                 $entryPoint = null;
                 $pattern = isset($firewall['pattern']) ? $firewall['pattern'] : null;
                 $users = isset($firewall['users']) ? $firewall['users'] : array();
-                $security = isset($firewall['security']) ? (Boolean) $firewall['security'] : true;
-                $stateless = isset($firewall['stateless']) ? (Boolean) $firewall['stateless'] : false;
+                $security = isset($firewall['security']) ? (bool) $firewall['security'] : true;
+                $stateless = isset($firewall['stateless']) ? (bool) $firewall['stateless'] : false;
                 unset($firewall['pattern'], $firewall['users'], $firewall['security'], $firewall['stateless']);
 
                 $protected = false === $security ? false : count($firewall);
