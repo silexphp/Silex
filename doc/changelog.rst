@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.2.3 (2014-XX-XX)
+1.2.3 (2015-01-20)
 ------------------
 
 * fixed remember me listener
