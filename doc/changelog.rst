@@ -4,7 +4,9 @@ Changelog
 1.2.3 (2014-XX-XX)
 ------------------
 
-* n/a
+* fixed remember me listener
+* fixed translation files loading when they do not exist
+* allowed global after middlewares to return responses like route specific ones
 
 1.2.2 (2014-09-26)
 ------------------
