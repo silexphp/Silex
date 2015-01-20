@@ -129,11 +129,11 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
         $controllers->requireHttp();
         $controller = $controllers->match('/{id}/{name}/{extra}', function () {})->requireHttps();
 
-        $this->assertEquals('https', $controller->getRoute()->getRequirement('_scheme'));
+        $this->assertEquals(array('https'), $controller->getRoute()->getSchemes());
 
         $controllers->requireHttp();
 
-        $this->assertEquals('http', $controller->getRoute()->getRequirement('_scheme'));
+        $this->assertEquals(array('http'), $controller->getRoute()->getSchemes());
     }
 
     public function testBefore()

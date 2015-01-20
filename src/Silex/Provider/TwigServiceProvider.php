@@ -60,17 +60,14 @@ class TwigServiceProvider implements ServiceProviderInterface
                     $twig->addExtension(new TranslationExtension($app['translator']));
                 }
 
-                if (isset($app['security'])) {
-                    $twig->addExtension(new SecurityExtension($app['security']));
+                if (isset($app['security.authorization_checker'])) {
+                    $twig->addExtension(new SecurityExtension($app['security.authorization_checker']));
                 }
 
                 if (isset($app['fragment.handler'])) {
                     $app['fragment.renderer.hinclude']->setTemplating($twig);
 
                     $twig->addExtension(new HttpKernelExtension($app['fragment.handler']));
-                } else {
-                    // fallback for BC, to be removed in 1.3
-                    $twig->addExtension(new TwigCoreExtension());
                 }
 
                 if (isset($app['form.factory'])) {
