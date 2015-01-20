@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.3.0 (2015-XX-XX)
+------------------
+
+* removed deprecated TwigCoreExtension class (register the new HttpFragmentServiceProvider instead)
+* bumped minimum version of PHP to 5.3.9
+
 1.2.3 (2014-XX-XX)
 ------------------
 

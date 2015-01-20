@@ -27,7 +27,7 @@ The recommended way to install Silex is through `Composer`_:
 
 .. code-block:: bash
 
-    php composer.phar require silex/silex "~1.2"
+    composer require silex/silex "~1.3"
 
 Alternatively, you can download the `silex.zip`_ file and extract it.
 

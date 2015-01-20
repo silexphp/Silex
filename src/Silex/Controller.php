@@ -106,10 +106,9 @@ class Controller
 
     public function generateRouteName($prefix)
     {
-        $requirements = $this->route->getRequirements();
-        $method = isset($requirements['_method']) ? $requirements['_method'] : '';
+        $methods = implode('_', $this->route->getMethods());
 
-        $routeName = $prefix.$method.$this->route->getPath();
+        $routeName = $prefix.$methods.$this->route->getPath();
         $routeName = str_replace(array('/', ':', '|', '-'), '_', $routeName);
         $routeName = preg_replace('/[^a-z0-9A-Z_.]+/', '', $routeName);
 
