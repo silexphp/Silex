@@ -152,8 +152,8 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-    * @dataProvider escapeProvider
-    */
+     * @dataProvider escapeProvider
+     */
     public function testEscape($expected, $text)
     {
         $app = new Application();
