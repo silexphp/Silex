@@ -285,7 +285,7 @@ You can also ask for the current Request and Application objects::
         });
 
 Route Variable Converters
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Before injecting the route variables into the controller, you can apply some
 converters::
