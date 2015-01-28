@@ -323,7 +323,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
         });
 
         $app['security.session_strategy'] = $app->share(function ($app) {
-            return new SessionAuthenticationStrategy('migrate');
+            return new SessionAuthenticationStrategy(SessionAuthenticationStrategy::MIGRATE);
         });
 
         $app['security.http_utils'] = $app->share(function ($app) {
