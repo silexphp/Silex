@@ -311,7 +311,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
         };
 
         $app['security.session_strategy'] = function ($app) {
-            return new SessionAuthenticationStrategy('migrate');
+            return new SessionAuthenticationStrategy(SessionAuthenticationStrategy::MIGRATE);
         };
 
         $app['security.http_utils'] = function ($app) {
