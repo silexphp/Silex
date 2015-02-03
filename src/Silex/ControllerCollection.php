@@ -42,6 +42,7 @@ class ControllerCollection
     protected $defaultRoute;
     protected $defaultController;
     protected $prefix;
+    protected $routes;
 
     /**
      * Constructor.
@@ -55,6 +56,14 @@ class ControllerCollection
     }
 
     /**
+     * 
+     * @param RouteCollection $routes
+     */
+    public function shareRoutes(RouteCollection $routes) {
+        $this->routes = $routes;
+    }
+
+    /**
      * Mounts controllers under the given route prefix.
      *
      * @param string               $prefix      The route prefix
@@ -62,6 +71,10 @@ class ControllerCollection
      */
     public function mount($prefix, ControllerCollection $controllers)
     {
+        if (!($this->routes instanceof RouteCollection)) {
+            $this->routes = new RouteCollection;
+        }
+        $controllers->shareRoutes($this->routes);
         $controllers->prefix = $prefix;
 
         $this->controllers[] = $controllers;
@@ -178,12 +191,17 @@ class ControllerCollection
      */
     public function flush($prefix = '')
     {
-        $routes = new RouteCollection();
+        if ($prefix !== '') {
+            $prefix = '/'.trim(trim($prefix), '/');
+        }
+
+        $routes = $this->routes ? : new RouteCollection();
 
         foreach ($this->controllers as $controller) {
             if ($controller instanceof Controller) {
+                $controller->getRoute()->setPath($prefix.$controller->getRoute()->getPath());
                 if (!$name = $controller->getRouteName()) {
-                    $name = $controller->generateRouteName($prefix);
+                    $name = $controller->generateRouteName('');
                     while ($routes->get($name)) {
                         $name .= '_';
                     }
@@ -192,11 +210,9 @@ class ControllerCollection
                 $routes->add($name, $controller->getRoute());
                 $controller->freeze();
             } else {
-                $routes->addCollection($controller->flush($controller->prefix));
+                $routes->addCollection($controller->flush($prefix.$controller->prefix));
             }
         }
-
-        $routes->addPrefix($prefix);
 
         $this->controllers = array();
 
