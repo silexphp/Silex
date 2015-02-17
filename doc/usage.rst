@@ -151,6 +151,17 @@ When the post does not exist, you are using ``abort()`` to stop the request
 early. It actually throws an exception, which you will see how to handle later
 on.
 
+You can also use regular expressions to control how variable parts of a route
+definition are matched:
+
+    $app->get('/blog/{id}', function (Silex\Application $app, $id) use ($blogPosts) {
+        // process blog post
+    })
+    ->assert('id', '[0-9]+');
+
+The above route will only match requests where ``{id}`` consists of one or more
+digits.
+
 Example POST Route
 ~~~~~~~~~~~~~~~~~~
 
