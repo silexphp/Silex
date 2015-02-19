@@ -152,7 +152,7 @@ early. It actually throws an exception, which you will see how to handle later
 on.
 
 You can also use regular expressions to control how variable parts of a route
-definition are matched:
+definition are matched::
 
     $app->get('/blog/{id}', function (Silex\Application $app, $id) use ($blogPosts) {
         // process blog post
