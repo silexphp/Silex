@@ -1,0 +1,23 @@
+---------------------------------------------------------------------------
+
+by indeyets at 2015-02-26T16:00:35Z
+
+values, which are not `null` should be in quotes
+
+---------------------------------------------------------------------------
+
+by pscheit at 2015-02-27T00:23:52Z
+
+well sorry, if this litte thing is such an act to get it to be merged, just to improve a really small part of the documentation - Then I will think twice about the next pull request
+
+---------------------------------------------------------------------------
+
+by pscheit at 2015-02-27T00:25:30Z
+
+I can't imagine how difficult it has to be to send an actual pull request that CHANGES something
+
+---------------------------------------------------------------------------
+
+by indeyets at 2015-02-27T08:33:26Z
+
+@pscheit thank you for your contribution. merges to large projects take time. fabien is a busy person and we just try to make sure, that this fix wouldn't require more fixes at later stage. you did excellent job and this patch can be merged now as soon as @fabpot reaches silex's pr-queue
