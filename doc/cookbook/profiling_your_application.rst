@@ -1,5 +1,5 @@
-WebProfilerServiceProvider
-=======================
+Profiling Your Applications
+===========================
 
 The Silex Web Profiler service provider allows you to use the wonderful Symfony
 web debug toolbar and the Symfony profiler in your Silex application.
@@ -76,7 +76,7 @@ Before registering this service provider, you must register *ServiceControllerSe
 
     Make sure to register all other required or used service providers before *WebProfilerServiceProvider*
 
-Usage
+Using the Stopwatch
 -----
 
 Profile task with the stopwatch service.
