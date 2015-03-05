@@ -46,6 +46,7 @@
         "monolog/monolog": "~1.4,>=1.4.1"
     },
     "suggest": {
+        "silex/web-profiler": "~1.0",
         "symfony/browser-kit": "~2.3",
         "symfony/css-selector": "~2.3",
         "symfony/dom-crawler": "~2.3",
