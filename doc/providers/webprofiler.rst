@@ -78,3 +78,93 @@ Before registering this service provider, you must register *ServiceControllerSe
 
 Usage
 -----
+
+Profile task with the stopwatch service.
+
+.. code-block:: php
+
+    $stopwatch = $app['stopwatch'];
+    $stopwatch->start('query');
+    // ...
+    $event = $stopwatch->stop('query');
+
+You can add a category argument to color code it.
+
+.. code-block:: php
+
+    $stopwatch = $app['stopwatch'];
+    $stopwatch->start('query', 'doctrine');
+    // ...
+    $event = $stopwatch->stop('query');
+
+.. tip::
+
+    The WebProfilerServiceProvider comes with six categories.
+    * default
+    * section
+    * event_listener
+    * event_listener_loading
+    * template
+    * doctrine
+    * propel
+    * child_sections
+    **Any other category will use the same color as default.**
+
+.. tip::
+    
+    Add more colors by defining your own templates in **data_collector.templates**.
+
+Sections
+--------
+
+Sections are a way to logically split the timeline into groups. 
+You can see how Symfony uses sections to nicely visualize the framework lifecycle in the Profiler tool. 
+Here is a basic usage example using sections:
+
+.. code-block:: php
+
+    $stopwatch = new Stopwatch();
+
+    $stopwatch->openSection();
+    $stopwatch->start('parsing_config_file', 'filesystem_operations');
+    $stopwatch->stopSection('routing');
+
+You can reopen a closed section by calling the openSection method and specifying the id of the section to be reopened:
+
+.. code-block:: php
+
+    $stopwatch->openSection('routing');
+    $stopwatch->start('building_config_tree');
+    $stopwatch->stopSection('routing');
+
+Periods
+-------
+
+As you know from the real world, all stopwatches come with two buttons: 
+one to start and stop the stopwatch, and another to measure the lap time. 
+This is exactly what the lap() method does:
+
+.. code-block:: php
+
+    // Start event named 'foo'
+    $stopwatch->start('foo');
+    // ... some code goes here
+    $stopwatch->lap('foo');
+    // ... some code goes here
+    $stopwatch->lap('foo');
+    // ... some other code goes here
+    $event = $stopwatch->stop('foo');
+
+Retrieving Data
+---------------
+
+.. code-block:: php
+
+    $event->getPeriods();    // Returns an array of the periods
+    $event->getCategory();   // Returns the category the event was started in
+    $event->getOrigin();     // Returns the event start time in milliseconds
+    $event->ensureStopped(); // Stops all periods not already stopped
+    $event->getStartTime();  // Returns the start time of the very first period
+    $event->getEndTime();    // Returns the end time of the very last period
+    $event->getDuration();   // Returns the event duration, including all periods
+    $event->getMemory();     // Returns the max memory usage of all periods
