@@ -9,10 +9,10 @@ Parameters
 
 * **profiler.cache_dir**: Path to the directory for caching.
 * **profiler.mount_prefix**: Mount prefix for the router. Defaults to */_profiler*.
-* **code.file_link_format**: ?
-* **profiler.request_matcher**: ? 
-* **profiler.only_exceptions**: ?
-* **profiler.only_master_requests**: ?
+.. * **code.file_link_format**: ?
+.. * **profiler.request_matcher**: ? 
+.. * **profiler.only_exceptions**: ?
+.. * **profiler.only_master_requests**: ?
 * **web_profiler.debug_toolbar.enable**: Enable or disable the toolbar. Defaults to *true*.
 * **web_profiler.debug_toolbar.position**: Position of the toolbar. Defaults to *bottom*.
 * **web_profiler.debug_toolbar.intercept_redirects**: ?
@@ -21,13 +21,13 @@ Services
 --------
 
 * **stopwatch**: A stopwatch that can be used to track time and memory usage.
-* **profiler**: ?
-* **profiler.listener**: ?
-* **profiler.storage**: ?
-* **web_profiler.toolbar.listener**: ?
-* **web_profiler.controller.profiler**: ?
-* **web_profiler.controller.router**: ?
-* **web_profiler.controller.exception**: ?
+.. * **profiler**: ?
+.. * **profiler.listener**: ?
+.. * **profiler.storage**: ?
+.. * **web_profiler.toolbar.listener**: ?
+.. * **web_profiler.controller.profiler**: ?
+.. * **web_profiler.controller.router**: ?
+.. * **web_profiler.controller.exception**: ?
 * **data_collectors**: An associative array of datacollectors.
 * **data_collector.templates**: An associative array of twig template paths for the data collectors.
 * **data_collectors.form.extractor**: Used to extract data from the forms.
