@@ -135,7 +135,7 @@ class ControllerCollection
     {
         return $this->match($pattern, $to)->method('DELETE');
     }
-    
+
     /**
      * Maps an OPTIONS request to a callable.
      *
