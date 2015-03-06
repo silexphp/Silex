@@ -84,7 +84,6 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
             return new ExceptionHandler($app['debug']);
         };
 
-
         $this['callback_resolver'] = function () use ($app) {
             return new CallbackResolver($app);
         };
