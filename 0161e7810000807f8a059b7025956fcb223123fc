@@ -1,0 +1,17 @@
+---------------------------------------------------------------------------
+
+by henrikbjorn at 2014-12-15T15:00:47Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by GromNaN at 2015-01-16T21:06:40Z
+
+I've remove the `php`[...]`.phar` from the readme to reflect the best practice of installing these tools globally.
+
+---------------------------------------------------------------------------
+
+by GromNaN at 2015-03-05T23:03:10Z
+
+Rebased and squashed commits.
