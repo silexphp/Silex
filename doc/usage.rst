@@ -535,7 +535,7 @@ once a response is returned, the following handlers are ignored.
 .. note::
 
     Silex ships with a provider for Monolog_ which handles logging of errors.
-    Check out the *Providers* chapter for details.
+    Check out the *Providers* :doc:`chapter <providers/monolog>` for details.
 
 .. tip::
 
