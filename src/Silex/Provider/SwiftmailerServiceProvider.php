@@ -99,9 +99,9 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface, EventListe
                 $app['swiftmailer.spooltransport']->getSpool()->flushQueue($app['swiftmailer.transport']);
             }
         };
-        
+
         $dispatcher->addListener(KernelEvents::TERMINATE, $onTerminate);
-        
+
         if (class_exists('Symfony\Component\Console\ConsoleEvents')) {
             $dispatcher->addListener(ConsoleEvents::TERMINATE, $onTerminate);
         }
