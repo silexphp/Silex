@@ -92,12 +92,18 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface, EventListe
 
     public function subscribe(Container $app, EventDispatcherInterface $dispatcher)
     {
-        $dispatcher->addListener(KernelEvents::TERMINATE, function (PostResponseEvent $event) use ($app) {
+        $onTerminate = function (PostResponseEvent $event) use ($app) {
             // To speed things up (by avoiding Swift Mailer initialization), flush
             // messages only if our mailer has been created (potentially used)
             if ($app['mailer.initialized']) {
                 $app['swiftmailer.spooltransport']->getSpool()->flushQueue($app['swiftmailer.transport']);
             }
-        });
+        };
+        
+        $dispatcher->addListener(KernelEvents::TERMINATE, $onTerminate);
+        
+        if (class_exists('Symfony\Component\Console\ConsoleEvents')) {
+            $dispatcher->addListener(ConsoleEvents::TERMINATE, $onTerminate);
+        }
     }
 }
