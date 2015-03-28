@@ -490,7 +490,7 @@ takes an ``Exception`` argument and returns a response::
 
     use Symfony\Component\HttpFoundation\Response;
 
-    $app->error(function (\Exception $e, $request, $code) {
+    $app->error(function (\Exception $e, $request, $app, $code) {
         return new Response('We are sorry, but something went terribly wrong.');
     });
 
@@ -499,7 +499,7 @@ handle them differently::
 
     use Symfony\Component\HttpFoundation\Response;
 
-    $app->error(function (\Exception $e, $request, $code) {
+    $app->error(function (\Exception $e, $request, $app, $code) {
         switch ($code) {
             case 404:
                 $message = 'The requested page could not be found.';
@@ -523,7 +523,7 @@ handle them differently::
 You can restrict an error handler to only handle some Exception classes by
 setting a more specific type hint for the Closure argument::
 
-    $app->error(function (\LogicException $e, $request, $code) {
+    $app->error(function (\LogicException $e, $request, $app, $code) {
         // this handler will only handle \LogicException exceptions
         // and exceptions that extends \LogicException
     });
@@ -547,7 +547,7 @@ once a response is returned, the following handlers are ignored.
 
         use Symfony\Component\HttpFoundation\Response;
 
-        $app->error(function (\Exception $e, $request, $code) use ($app) {
+        $app->error(function (\Exception $e, $request, $app, $code) {
             if ($app['debug']) {
                 return;
             }
