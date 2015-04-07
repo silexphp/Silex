@@ -494,11 +494,15 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
     public function mount($prefix, $controllers)
     {
         if ($controllers instanceof ControllerProviderInterface) {
-            $controllers = $controllers->connect($this);
-        }
+            $connectedControllers = $controllers->connect($this);
 
-        if (!$controllers instanceof ControllerCollection) {
-            throw new \LogicException('The "mount" method takes either a ControllerCollection or a ControllerProviderInterface instance.');
+            if (!$connectedControllers instanceof ControllerCollection) {
+                throw new \LogicException(sprintf('The method "%s::connect" must return a "ControllerCollection" instance. Got: "%s"', get_class($controllers), is_object($connectedControllers) ? get_class($connectedControllers) : gettype($connectedControllers)));
+            }
+
+            $controllers = $connectedControllers;
+        } elseif (!$controllers instanceof ControllerCollection) {
+            throw new \LogicException('The "mount" method takes either a "ControllerCollection" or a "ControllerProviderInterface" instance.');
         }
 
         $this['controllers']->mount($prefix, $controllers);
