@@ -500,8 +500,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
                 throw new \LogicException(sprintf('The method "%s::connect" must return a "ControllerCollection" instance. Got: "%s', get_class($controllers), is_object($connectedControllers) ? get_class($connectedControllers) : gettype($connectedControllers)));
             }
 
-			$controllers = $connectedControllers;
-
+            $controllers = $connectedControllers;
         } elseif (!$controllers instanceof ControllerCollection) {
             throw new \LogicException('The "mount" method takes either a "ControllerCollection" or a "ControllerProviderInterface" instance.');
         }
