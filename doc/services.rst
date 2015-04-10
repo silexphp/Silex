@@ -104,8 +104,19 @@ And to retrieve the service, use::
 
     $service = $app['some_service'];
 
-Every time you call ``$app['some_service']``, a new instance of the service is
-created.
+As objects are only created when you get them, the order of the definitions does not matter.
+
+Defining Factory Services
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+By default, each time you get a service, returns the same instance of it.
+If you want a different instance to be returned for all calls, wrap your
+anonymous function with the factory() method::
+
+    $app['some_service'] = $app->factory(function () {
+        return new Service();
+    });
+
+Now, each call to ``$app['some_service']`` returns a new instance of the session.
 
 Access container from closure
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
