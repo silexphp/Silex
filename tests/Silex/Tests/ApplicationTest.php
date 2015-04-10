@@ -152,8 +152,8 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-    * @dataProvider escapeProvider
-    */
+     * @dataProvider escapeProvider
+     */
     public function testEscape($expected, $text)
     {
         $app = new Application();
@@ -475,7 +475,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException        \LogicException
-     * @expectedExceptionMessage The "homepage" route must have code to run when it matches.
+     * @expectedExceptionMessageRegExp (The "homepage" route must have code to run when it matches.|No listeners of the "kernel.exception" event set a Response)
      */
     public function testGetRouteCollectionWithRouteWithoutController()
     {
@@ -501,9 +501,9 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testBeforeFilterOnMountedControllerGroupIsolatedToGroup()
     {
         $app = new Application();
-        $app->match('/', function() { return new Response('ok'); });
+        $app->match('/', function () { return new Response('ok'); });
         $mounted = $app['controllers_factory'];
-        $mounted->before(function() { return new Response('not ok'); });
+        $mounted->before(function () { return new Response('not ok'); });
         $app->mount('/group', $mounted);
 
         $response = $app->handle(Request::create('/'));
