@@ -61,7 +61,7 @@ final class PimpleAwareEventDispatcher extends EventDispatcher
             foreach ($this->listener_ids[$event_name] as $i => $args) {
                 list($service_id, $method) = $args;
 
-                $key = $service_id . "." . $method;
+                $key = $service_id.".".$method;
 
                 if (isset($this->listeners[$event_name][$key]) && $listener === [
                         $this->listeners[$event_name][$key],
@@ -92,7 +92,7 @@ final class PimpleAwareEventDispatcher extends EventDispatcher
     public function hasListeners($event_name = null)
     {
         if ($event_name === null) {
-            return (bool)count($this->listener_ids) || (bool)count($this->listeners);
+            return (bool) count($this->listener_ids) || (bool) count($this->listeners);
         }
 
         if (isset($this->listener_ids[$event_name])) {
@@ -134,7 +134,7 @@ final class PimpleAwareEventDispatcher extends EventDispatcher
                     $this->listener_ids[$event_name][] = [
                         $service_id,
                         $listener[0],
-                        isset($listener[1]) ? $listener[1] : 0
+                        isset($listener[1]) ? $listener[1] : 0,
                     ];
                 }
             }
@@ -162,7 +162,7 @@ final class PimpleAwareEventDispatcher extends EventDispatcher
 
                 $listener = $this->container->offsetGet($service_id);
 
-                $key = $service_id . "." . $method;
+                $key = $service_id.".".$method;
 
                 if (! isset($this->listeners[$event_name][$key])) {
                     $this->addListener($event_name, [$listener, $method], $priority);
