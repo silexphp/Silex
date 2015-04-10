@@ -95,8 +95,9 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-    * @expectedException \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-    */
+     * @expectedException \Exception
+     * @expectedExceptionMessageRegExp (The "homepage" route must have code to run when it matches.|No listeners of the "kernel.exception" event set a Response)
+     */
     public function testMissingRoute()
     {
         $app = new Application();
