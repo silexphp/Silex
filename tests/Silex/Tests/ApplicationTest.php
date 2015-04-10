@@ -475,7 +475,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException        \LogicException
-     * @expectedExceptionMessage The "homepage" route must have code to run when it matches.
+     * @expectedExceptionMessageRegExp (The "homepage" route must have code to run when it matches.|No listeners of the "kernel.exception" event set a Response)
      */
     public function testGetRouteCollectionWithRouteWithoutController()
     {
