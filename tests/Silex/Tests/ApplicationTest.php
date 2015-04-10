@@ -577,6 +577,6 @@ class IncorrectControllerCollection implements ControllerProviderInterface
 {
     public function connect(Application $app)
     {
-        return null;
+        return;
     }
 }
