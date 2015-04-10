@@ -8,7 +8,7 @@ use Silex\Api\EventListenerProviderInterface;
 use Silex\EventListener\ConverterListener;
 use Silex\EventListener\MiddlewareListener;
 use Silex\EventListener\StringToResponseListener;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Silex\PimpleAwareEventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpKernel\EventListener\ResponseListener;
 
@@ -19,8 +19,8 @@ class KernelServiceProvider implements ServiceProviderInterface, EventListenerPr
      */
     public function register(Container $pimple)
     {
-        $pimple['dispatcher'] = function () {
-            return new EventDispatcher();
+        $pimple['dispatcher'] = function () use ($pimple) {
+            return new PimpleAwareEventDispatcher($pimple);
         };
     }
 
