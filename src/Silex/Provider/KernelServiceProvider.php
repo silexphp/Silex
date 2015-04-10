@@ -15,7 +15,7 @@ use Symfony\Component\HttpKernel\EventListener\ResponseListener;
 class KernelServiceProvider implements ServiceProviderInterface, EventListenerProviderInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function register(Container $pimple)
     {
@@ -25,7 +25,7 @@ class KernelServiceProvider implements ServiceProviderInterface, EventListenerPr
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function subscribe(Container $app, EventDispatcherInterface $dispatcher)
     {
