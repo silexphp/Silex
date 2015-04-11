@@ -525,7 +525,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testGetRouteCollectionWithRouteWithoutController()
     {
         $app = new Application();
-        $app['exception_handler']->disable();
+        unset($app['exception_handler']);
         $app->match('/')->bind('homepage');
         $app->handle(Request::create('/'));
     }
