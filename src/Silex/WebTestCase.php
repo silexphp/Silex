@@ -21,6 +21,11 @@ use Symfony\Component\HttpKernel\HttpKernel;
  */
 abstract class WebTestCase extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * Application instance.
+     *
+     * @var Application
+     */
     protected $app;
 
     /**

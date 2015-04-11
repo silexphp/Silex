@@ -262,7 +262,7 @@ closure arguments match the names of the variable parts::
         // ...
     });
 
-While it's not recommend, you could also do this (note the switched
+While it's not recommended, you could also do this (note the switched
 arguments)::
 
     $app->get('/blog/{postId}/{commentId}', function ($commentId, $postId) {
@@ -284,8 +284,8 @@ You can also ask for the current Request and Application objects::
             // ...
         });
 
-Route Variables Converters
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Route Variable Converters
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Before injecting the route variables into the controller, you can apply some
 converters::
