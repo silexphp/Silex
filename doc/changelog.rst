@@ -4,6 +4,7 @@ Changelog
 2.0.0 (2014-XX-XX)
 ------------------
 
+* bumped minimum version of PHP to 5.5.0
 * Updated Pimple to 3.0
 * Updated session listeners to extends HttpKernel ones
 * [BC BREAK] Locale management has been moved to LocaleServiceProvider which must be registered
