@@ -13,6 +13,7 @@ namespace Silex;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -83,7 +84,6 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
         $this['exception_handler'] = function () use ($app) {
             return new ExceptionHandler($app['debug']);
         };
-
 
         $this['callback_resolver'] = function () use ($app) {
             return new CallbackResolver($app);
@@ -253,7 +253,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
             return;
         }
 
-        $this->extend('dispatcher', function ($dispatcher, $app) use ($callback, $priority, $eventName) {
+        $this->extend('dispatcher', function (EventDispatcherInterface $dispatcher, $app) use ($callback, $priority, $eventName) {
             $dispatcher->addListener($eventName, $app['callback_resolver']->resolveCallback($callback), $priority);
 
             return $dispatcher;
@@ -304,7 +304,12 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
                 return;
             }
 
-            call_user_func($app['callback_resolver']->resolveCallback($callback), $event->getRequest(), $event->getResponse(), $app);
+            $response = call_user_func($app['callback_resolver']->resolveCallback($callback), $event->getRequest(), $event->getResponse(), $app);
+            if ($response instanceof Response) {
+                $event->setResponse($response);
+            } elseif (null !== $response) {
+                throw new \RuntimeException('An after middleware returned an invalid response value. Must return null or an instance of Response.');
+            }
         }, $priority);
     }
 
@@ -454,15 +459,15 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     public function mount($prefix, $controllers)
     {
         if ($controllers instanceof ControllerProviderInterface) {
-            $controllers = $controllers->connect($this);
+            $connectedControllers = $controllers->connect($this);
 
-            if (!$controllers instanceof ControllerCollection) {
-                throw new \LogicException('The "connect" method of the ControllerProviderInterface must return a ControllerCollection.');
+            if (!$connectedControllers instanceof ControllerCollection) {
+                throw new \LogicException(sprintf('The method "%s::connect" must return a "ControllerCollection" instance. Got: "%s"', get_class($controllers), is_object($connectedControllers) ? get_class($connectedControllers) : gettype($connectedControllers)));
             }
-        }
 
-        if (!$controllers instanceof ControllerCollection) {
-            throw new \LogicException('The "mount" method takes either a ControllerCollection or a ControllerProviderInterface instance.');
+            $controllers = $connectedControllers;
+        } elseif (!$controllers instanceof ControllerCollection) {
+            throw new \LogicException('The "mount" method takes either a "ControllerCollection" or a "ControllerProviderInterface" instance.');
         }
 
         $this['controllers']->mount($prefix, $controllers);

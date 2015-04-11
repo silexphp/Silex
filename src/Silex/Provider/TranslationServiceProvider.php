@@ -32,6 +32,13 @@ class TranslationServiceProvider implements ServiceProviderInterface
                 throw new \LogicException('You must register the LocaleServiceProvider to use the TranslationServiceProvider');
             }
 
+            $translator = new Translator($app, $app['translator.message_selector'], $app['translator.cache_dir'], $app['debug']);
+
+            // Handle deprecated 'locale_fallback'
+            if (isset($app['locale_fallback'])) {
+                $app['locale_fallbacks'] = (array) $app['locale_fallback'];
+            }
+
             $translator = new Translator($app, $app['translator.message_selector']);
             $translator->setFallbackLocales($app['locale_fallbacks']);
             $translator->addLoader('array', new ArrayLoader());
@@ -52,5 +59,6 @@ class TranslationServiceProvider implements ServiceProviderInterface
 
         $app['translator.domains'] = array();
         $app['locale_fallbacks'] = array('en');
+        $app['translator.cache_dir'] = null;
     }
 }

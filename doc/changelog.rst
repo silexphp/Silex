@@ -17,6 +17,22 @@ Changelog
 * ``monolog.exception.logger_filter`` option added to Monolog service provider
 * [BC BREAK] ``$app['request']`` service removed, use ``$app['request_stack']`` instead
 
+1.3.0 (2015-XX-XX)
+------------------
+
+* added caching for the Translator provider
+* deprecated `$app['exception_handler']->disable()` in favor of `unset($app['exception_handler'])`
+* made Silex compatible with Symfony 2.7 (and keep compatibility with Symfony 2.3, 2.5, and 2.6)
+* removed deprecated TwigCoreExtension class (register the new HttpFragmentServiceProvider instead)
+* bumped minimum version of PHP to 5.3.9
+
+1.2.3 (2015-01-20)
+------------------
+
+* fixed remember me listener
+* fixed translation files loading when they do not exist
+* allowed global after middlewares to return responses like route specific ones
+
 1.2.2 (2014-09-26)
 ------------------
 

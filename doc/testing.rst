@@ -73,11 +73,6 @@ use it by making your test extend it::
 
 .. note::
 
-    To make your application testable, you need to make sure you follow "Reusing
-    applications" instructions from :doc:`usage`.
-
-.. note::
-
     If you want to use the Symfony2 ``WebTestCase`` class you will need to
     explicitly install its dependencies for your project:
 
@@ -108,7 +103,7 @@ executed before every test.
         {
             $app = require __DIR__.'/path/to/app.php';
             $app['debug'] = true;
-            $app['exception_handler']->disable();
+            unset($app['exception_handler']);
 
             return $app;
         }

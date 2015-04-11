@@ -12,6 +12,7 @@
 namespace Silex\Application;
 
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -30,7 +31,7 @@ trait SecurityTrait
      */
     public function user()
     {
-        if (null === $token = $this['security']->getToken()) {
+        if (null === $token = $this['security.token_storage']->getToken()) {
             return;
         }
 
@@ -54,5 +55,20 @@ trait SecurityTrait
     public function encodePassword(UserInterface $user, $password)
     {
         return $this['security.encoder_factory']->getEncoder($user)->encodePassword($password, $user->getSalt());
+    }
+
+    /**
+     * Checks if the attributes are granted against the current authentication token and optionally supplied object.
+     *
+     * @param mixed $attributes
+     * @param mixed $object
+     *
+     * @return bool
+     *
+     * @throws AuthenticationCredentialsNotFoundException when the token storage has no authentication token.
+     */
+    public function isGranted($attributes, $object = null)
+    {
+        return $this['security.authorization_checker']->isGranted($attributes, $object);
     }
 }

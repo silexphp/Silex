@@ -234,6 +234,20 @@ class MiddlewareTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('foo---', $app->handle($request)->getContent());
     }
 
+    public function testAfterFilterCanReturnResponse()
+    {
+        $app = new Application();
+
+        $app->after(function (Request $request, Response $response) {
+            return new Response('bar');
+        });
+
+        $app->match('/', function () { return new Response('foo'); });
+
+        $request = Request::create('/');
+        $this->assertEquals('bar', $app->handle($request)->getContent());
+    }
+
     public function testRouteAndApplicationMiddlewareParameterInjection()
     {
         $app = new Application();

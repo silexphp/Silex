@@ -226,15 +226,15 @@ class SecurityServiceProviderTest extends WebTestCase
         });
 
         $app->get('/', function () use ($app) {
-            $user = $app['security']->getToken()->getUser();
+            $user = $app['security.token_storage']->getToken()->getUser();
 
             $content = is_object($user) ? $user->getUsername() : 'ANONYMOUS';
 
-            if ($app['security']->isGranted('IS_AUTHENTICATED_FULLY')) {
+            if ($app['security.authorization_checker']->isGranted('IS_AUTHENTICATED_FULLY')) {
                 $content .= 'AUTHENTICATED';
             }
 
-            if ($app['security']->isGranted('ROLE_ADMIN')) {
+            if ($app['security.authorization_checker']->isGranted('ROLE_ADMIN')) {
                 $content .= 'ADMIN';
             }
 
@@ -271,15 +271,14 @@ class SecurityServiceProviderTest extends WebTestCase
         ));
 
         $app->get('/', function () use ($app) {
-            $user = $app['security']->getToken()->getUser();
-
+            $user = $app['security.token_storage']->getToken()->getUser();
             $content = is_object($user) ? $user->getUsername() : 'ANONYMOUS';
 
-            if ($app['security']->isGranted('IS_AUTHENTICATED_FULLY')) {
+            if ($app['security.authorization_checker']->isGranted('IS_AUTHENTICATED_FULLY')) {
                 $content .= 'AUTHENTICATED';
             }
 
-            if ($app['security']->isGranted('ROLE_ADMIN')) {
+            if ($app['security.authorization_checker']->isGranted('ROLE_ADMIN')) {
                 $content .= 'ADMIN';
             }
 

@@ -262,7 +262,7 @@ closure arguments match the names of the variable parts::
         // ...
     });
 
-While it's not recommend, you could also do this (note the switched
+While it's not recommended, you could also do this (note the switched
 arguments)::
 
     $app->get('/blog/{postId}/{commentId}', function ($commentId, $postId) {
@@ -284,8 +284,8 @@ You can also ask for the current Request and Application objects::
             // ...
         });
 
-Route Variables Converters
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Route Variable Converters
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Before injecting the route variables into the controller, you can apply some
 converters::
@@ -322,7 +322,7 @@ The converter callback also receives the ``Request`` as its second argument::
 A converter can also be defined as a service. For example, here is a user
 converter based on Doctrine ObjectManager::
 
-    use Doctrine\Common\Persistence\ObjectManager
+    use Doctrine\Common\Persistence\ObjectManager;
     use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
     class UserConverter
@@ -539,7 +539,7 @@ once a response is returned, the following handlers are ignored.
 .. note::
 
     Silex ships with a provider for Monolog_ which handles logging of errors.
-    Check out the *Providers* chapter for details.
+    Check out the *Providers* :doc:`chapter <providers/monolog>` for details.
 
 .. tip::
 

@@ -27,7 +27,7 @@ The recommended way to install Silex is through `Composer`_:
 
 .. code-block:: bash
 
-    php composer.phar require silex/silex "~2.0@dev"
+    composer require silex/silex "~2.0@dev"
 
 Alternatively, you can download the `silex.zip`_ file and extract it.
 
@@ -39,12 +39,12 @@ Read the `documentation`_ for more information.
 Tests
 -----
 
-To run the test suite, you need `Composer`_:
+To run the test suite, you need `Composer`_ and `PHPUnit`_:
 
 .. code-block:: bash
 
-    $ php composer.phar install --dev
-    $ vendor/bin/phpunit
+    $ composer install
+    $ phpunit
 
 Community
 ---------
@@ -58,5 +58,6 @@ Silex is licensed under the MIT license.
 
 .. _Symfony2 components: http://symfony.com
 .. _Composer:            http://getcomposer.org
+.. _PHPUnit:             https://phpunit.de
 .. _silex.zip:           http://silex.sensiolabs.org/download
 .. _documentation:       http://silex.sensiolabs.org/documentation

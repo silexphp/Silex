@@ -95,12 +95,12 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-    * @expectedException \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-    */
+     * @expectedException \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
     public function testMissingRoute()
     {
         $app = new Application();
-        $app['exception_handler']->disable();
+        unset($app['exception_handler']);
 
         $request = Request::create('/baz');
         $app->handle($request);

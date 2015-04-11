@@ -13,6 +13,7 @@ namespace Silex\Tests;
 
 use Silex\Application;
 use Silex\ControllerCollection;
+use Silex\Api\ControllerProviderInterface;
 use Silex\Route;
 use Silex\Provider\MonologServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
@@ -152,8 +153,8 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-    * @dataProvider escapeProvider
-    */
+     * @dataProvider escapeProvider
+     */
     public function testEscape($expected, $text)
     {
         $app = new Application();
@@ -460,6 +461,26 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array('first', 'second', 'third'), array_keys(iterator_to_array($app['routes'])));
     }
 
+    /**
+     * @expectedException        \LogicException
+     * @expectedExceptionMessage The "mount" method takes either a "ControllerCollection" or a "ControllerProviderInterface" instance.
+     */
+    public function testMountNullException()
+    {
+        $app = new Application();
+        $app->mount('/exception', null);
+    }
+
+    /**
+     * @expectedException        \LogicException
+     * @expectedExceptionMessage The method "Silex\Tests\IncorrectControllerCollection::connect" must return a "ControllerCollection" instance. Got: "NULL"
+     */
+    public function testMountWrongConnectReturnValueException()
+    {
+        $app = new Application();
+        $app->mount('/exception', new IncorrectControllerCollection());
+    }
+
     public function testSendFile()
     {
         $app = new Application();
@@ -480,7 +501,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testGetRouteCollectionWithRouteWithoutController()
     {
         $app = new Application();
-        $app['exception_handler']->disable();
+        unset($app['exception_handler']);
         $app->match('/')->bind('homepage');
         $app->handle(Request::create('/'));
     }
@@ -516,5 +537,13 @@ class FooController
     public function barAction(Application $app, $name)
     {
         return 'Hello '.$app->escape($name);
+    }
+}
+
+class IncorrectControllerCollection implements ControllerProviderInterface
+{
+    public function connect(Application $app)
+    {
+        return;
     }
 }

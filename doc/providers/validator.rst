@@ -14,7 +14,7 @@ Services
 --------
 
 * **validator**: An instance of `Validator
-  <http://api.symfony.com/master/Symfony/Component/Validator/Validator.html>`_.
+  <http://api.symfony.com/master/Symfony/Component/Validator/ValidatorInterface.html>`_.
 
 * **validator.mapping.class_metadata_factory**: Factory for metadata loaders,
   which can read validation constraint information from classes. Defaults to

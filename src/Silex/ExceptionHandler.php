@@ -32,6 +32,9 @@ class ExceptionHandler implements EventSubscriberInterface
         $this->enabled = true;
     }
 
+    /**
+     * @deprecated since 1.3, to be removed in 2.0
+     */
     public function disable()
     {
         $this->enabled = false;

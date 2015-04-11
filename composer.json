@@ -16,7 +16,7 @@
         }
     ],
     "require": {
-        "php": ">=5.3.3",
+        "php": ">=5.3.9",
         "pimple/pimple": "~3.0",
         "symfony/event-dispatcher": "~2.4",
         "symfony/http-foundation": "~2.4",
@@ -57,7 +57,10 @@
         "silex/providers": "self.version"
     },
     "autoload": {
-        "psr-0": { "Silex": "src/" }
+        "psr-4": { "Silex\\": "src/Silex" }
+    },
+    "autoload-dev" : {
+        "psr-4": { "Silex\\Tests\\" : "tests/Silex/Tests" }
     },
     "extra": {
         "branch-alias": {

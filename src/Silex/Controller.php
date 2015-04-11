@@ -19,14 +19,14 @@ use Silex\Exception\ControllerFrozenException;
  * __call() forwards method-calls to Route, but returns instance of Controller
  * listing Route's methods below, so that IDEs know they are valid
  *
- * @method \Silex\Controller assert(string $variable, string $regexp)
- * @method \Silex\Controller value(string $variable, mixed $default)
- * @method \Silex\Controller convert(string $variable, mixed $callback)
- * @method \Silex\Controller method(string $method)
- * @method \Silex\Controller requireHttp()
- * @method \Silex\Controller requireHttps()
- * @method \Silex\Controller before(mixed $callback)
- * @method \Silex\Controller after(mixed $callback)
+ * @method Controller assert(string $variable, string $regexp)
+ * @method Controller value(string $variable, mixed $default)
+ * @method Controller convert(string $variable, mixed $callback)
+ * @method Controller method(string $method)
+ * @method Controller requireHttp()
+ * @method Controller requireHttps()
+ * @method Controller before(mixed $callback)
+ * @method Controller after(mixed $callback)
  * @author Igor Wiedler <igor@wiedler.ch>
  */
 class Controller
@@ -106,10 +106,9 @@ class Controller
 
     public function generateRouteName($prefix)
     {
-        $requirements = $this->route->getRequirements();
-        $method = isset($requirements['_method']) ? $requirements['_method'] : '';
+        $methods = implode('_', $this->route->getMethods());
 
-        $routeName = $prefix.$method.$this->route->getPath();
+        $routeName = $prefix.$methods.$this->route->getPath();
         $routeName = str_replace(array('/', ':', '|', '-'), '_', $routeName);
         $routeName = preg_replace('/[^a-z0-9A-Z_.]+/', '', $routeName);
 
