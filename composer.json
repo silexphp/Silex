@@ -52,7 +52,10 @@
         "symfony/form": "~2.3"
     },
     "autoload": {
-        "psr-0": { "Silex": "src/" }
+        "psr-4": { "Silex\\": "src/Silex" }
+    },
+    "autoload-dev" : {
+        "psr-4": { "Silex\\Tests\\" : "tests/Silex/Tests" }
     },
     "extra": {
         "branch-alias": {
