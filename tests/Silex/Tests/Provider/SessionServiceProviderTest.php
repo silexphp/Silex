@@ -26,7 +26,7 @@ class SessionServiceProviderTest extends WebTestCase
 {
     public function testRegister()
     {
-        /**
+        /*
          * Smoke test
          */
         $defaultStorage = $this->app['session.storage.native'];

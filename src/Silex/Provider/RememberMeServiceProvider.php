@@ -21,7 +21,7 @@ use Symfony\Component\Security\Http\RememberMe\TokenBasedRememberMeServices;
 use Symfony\Component\Security\Http\RememberMe\ResponseListener;
 
 /**
- * Remember-me authentication for the SecurityServiceProvider
+ * Remember-me authentication for the SecurityServiceProvider.
  *
  * @author Jérôme Tamarelle <jerome@tamarelle.net>
  */

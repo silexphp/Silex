@@ -21,7 +21,7 @@ use Symfony\Component\Form\FormBuilder;
 trait FormTrait
 {
     /**
-     * Creates and returns a form builder instance
+     * Creates and returns a form builder instance.
      *
      * @param mixed $data    The initial data for the form
      * @param array $options Options for the form

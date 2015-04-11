@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\Client;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * SecurityServiceProvider
+ * SecurityServiceProvider.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
