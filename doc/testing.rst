@@ -108,7 +108,7 @@ executed before every test.
         {
             $app = require __DIR__.'/path/to/app.php';
             $app['debug'] = true;
-            $app['exception_handler']->disable();
+            unset($app['exception_handler']);
 
             return $app;
         }

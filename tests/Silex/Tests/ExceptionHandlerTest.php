@@ -107,7 +107,7 @@ class ExceptionHandlerTest extends \PHPUnit_Framework_TestCase
     public function testNoExceptionHandler()
     {
         $app = new Application();
-        $app['exception_handler']->disable();
+        unset($app['exception_handler']);
 
         $app->match('/foo', function () {
             throw new \RuntimeException('foo exception');
@@ -207,6 +207,8 @@ class ExceptionHandlerTest extends \PHPUnit_Framework_TestCase
             $this->fail('->handle() should not catch exceptions where an empty error handler was supplied');
         } catch (\RuntimeException $e) {
             $this->assertEquals('foo exception', $e->getMessage());
+        } catch (\LogicException $e) {
+            $this->assertEquals('foo exception', $e->getPrevious()->getMessage());
         }
 
         $this->assertEquals(1, $errors, 'should execute the error handler');
@@ -261,7 +263,7 @@ class ExceptionHandlerTest extends \PHPUnit_Framework_TestCase
             // just making sure the dispatcher gets created
         });
 
-        $app['exception_handler']->disable();
+        unset($app['exception_handler']);
 
         try {
             $request = Request::create('/foo');
