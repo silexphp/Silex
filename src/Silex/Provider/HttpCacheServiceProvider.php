@@ -18,7 +18,6 @@ use Silex\Api\EventListenerProviderInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpKernel\HttpCache\Esi;
 use Symfony\Component\HttpKernel\HttpCache\Store;
-use Symfony\Component\HttpKernel\EventListener\EsiListener;
 use Symfony\Component\HttpKernel\EventListener\SurrogateListener;
 
 /**
@@ -49,11 +48,7 @@ class HttpCacheServiceProvider implements ServiceProviderInterface, EventListene
         };
 
         $app['http_cache.esi_listener'] = function ($app) {
-            if (class_exists('Symfony\Component\HttpKernel\EventListener\SurrogateListener')) {
-                return new SurrogateListener($app['http_cache.esi']);
-            }
-
-            return new EsiListener($app['http_cache.esi']);
+            return new SurrogateListener($app['http_cache.esi']);
         };
 
         $app['http_cache.options'] = array();
