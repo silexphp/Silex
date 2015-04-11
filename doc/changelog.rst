@@ -10,6 +10,12 @@ Changelog
 * removed deprecated TwigCoreExtension class (register the new HttpFragmentServiceProvider instead)
 * bumped minimum version of PHP to 5.3.9
 
+1.2.4 (2015-04-11)
+------------------
+
+* fixed the exception message when mounting a collection that doesn't return a ControllerCollection
+* fixed Symfony dependencies (Silex 1.2 is not compatible with Symfony 2.7)
+
 1.2.3 (2015-01-20)
 ------------------
 
