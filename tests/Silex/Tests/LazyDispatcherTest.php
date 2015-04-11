@@ -44,7 +44,7 @@ class LazyDispatcherTest extends \PHPUnit_Framework_TestCase
         $app = new Application();
 
         $fired = false;
-        $app->get("/", function () use ($app, &$fired) {
+        $app->get('/', function () use ($app, &$fired) {
             $app->finish(function () use (&$fired) {
                 $fired = true;
             });

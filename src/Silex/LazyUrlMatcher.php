@@ -37,7 +37,7 @@ class LazyUrlMatcher implements UrlMatcherInterface
     {
         $urlMatcher = call_user_func($this->factory);
         if (!$urlMatcher instanceof UrlMatcherInterface) {
-            throw new \LogicException("Factory supplied to LazyUrlMatcher must return implementation of UrlMatcherInterface.");
+            throw new \LogicException('Factory supplied to LazyUrlMatcher must return implementation of UrlMatcherInterface.');
         }
 
         return $urlMatcher;

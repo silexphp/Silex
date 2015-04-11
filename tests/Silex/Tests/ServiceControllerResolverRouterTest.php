@@ -16,7 +16,7 @@ use Silex\Provider\ServiceControllerServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Router test cases, using the ServiceControllerResolver
+ * Router test cases, using the ServiceControllerResolver.
  */
 class ServiceControllerResolverRouterTest extends RouterTest
 {

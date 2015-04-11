@@ -19,7 +19,7 @@ use Silex\Provider\SessionServiceProvider;
 use Symfony\Component\HttpKernel\Client;
 
 /**
- * SecurityServiceProvider
+ * SecurityServiceProvider.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

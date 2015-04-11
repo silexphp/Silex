@@ -39,7 +39,7 @@ class ConstraintValidatorFactory implements ConstraintValidatorFactoryInterface
     protected $validators;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param \Pimple $container    DI container
      * @param array   $serviceNames Validator service names
@@ -54,7 +54,8 @@ class ConstraintValidatorFactory implements ConstraintValidatorFactoryInterface
     /**
      * Returns the validator for the supplied constraint.
      *
-     * @param  Constraint          $constraint A constraint
+     * @param Constraint $constraint A constraint
+     *
      * @return ConstraintValidator A validator for the supplied constraint
      */
     public function getInstance(Constraint $constraint)
@@ -71,9 +72,10 @@ class ConstraintValidatorFactory implements ConstraintValidatorFactoryInterface
     }
 
     /**
-     * Returns the validator instance
+     * Returns the validator instance.
      *
-     * @param  string              $name
+     * @param string $name
+     *
      * @return ConstraintValidator
      */
     private function createValidator($name)

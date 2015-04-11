@@ -284,7 +284,7 @@ class ExceptionHandlerTest extends \PHPUnit_Framework_TestCase
         });
 
         $app->error(function (\Exception $e) {
-            return new Response("Exception thrown", 500);
+            return new Response('Exception thrown', 500);
         });
 
         $request = Request::create('/foo');
@@ -308,10 +308,10 @@ class ExceptionHandlerTest extends \PHPUnit_Framework_TestCase
         // the second error handler should fire
         $app->error(function (\LogicException $e) { // Extends \Exception
 
-            return "Caught LogicException";
+            return 'Caught LogicException';
         });
         $app->error(function (\Exception $e) {
-            return "Caught Exception";
+            return 'Caught Exception';
         });
 
         $request = Request::create('/foo');
@@ -334,10 +334,10 @@ class ExceptionHandlerTest extends \PHPUnit_Framework_TestCase
         // the first error handler should fire
         $app->error(function (\LogicException $e) { // Extends \Exception
 
-            return "Caught LogicException";
+            return 'Caught LogicException';
         });
         $app->error(function (\Exception $e) {
-            return "Caught Exception";
+            return 'Caught Exception';
         });
 
         $request = Request::create('/foo');
@@ -361,11 +361,11 @@ class ExceptionHandlerTest extends \PHPUnit_Framework_TestCase
         // the \Exception error handler is registered first and also
         // captures all exceptions that extend it
         $app->error(function (\Exception $e) {
-            return "Caught Exception";
+            return 'Caught Exception';
         });
         $app->error(function (\LogicException $e) { // Extends \Exception
 
-            return "Caught LogicException";
+            return 'Caught LogicException';
         });
 
         $request = Request::create('/foo');

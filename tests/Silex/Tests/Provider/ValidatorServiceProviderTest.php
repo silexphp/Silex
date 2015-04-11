@@ -21,7 +21,7 @@ use Silex\Tests\Provider\ValidatorServiceProviderTest\Constraint\Custom;
 use Silex\Tests\Provider\ValidatorServiceProviderTest\Constraint\CustomValidator;
 
 /**
- * ValidatorServiceProvider
+ * ValidatorServiceProvider.
  *
  * Javier Lopez <f12loalf@gmail.com>
  */

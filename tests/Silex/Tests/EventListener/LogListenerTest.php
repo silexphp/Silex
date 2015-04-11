@@ -23,7 +23,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
- * LogListener
+ * LogListener.
  *
  * @author Jérôme Tamarelle <jerome@tamarelle.net>
  */
