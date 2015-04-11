@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Silex;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -37,11 +36,11 @@ final class PimpleAwareEventDispatcher extends EventDispatcher
     }
 
     /**
-     * @param $event_name
-     * @param $callback
+     * @param string $event_name
+     * @param array $callback
      * @param int $priority
      */
-    public function addListenerService($event_name, $callback, $priority = 0)
+    public function addListenerService($event_name, array $callback, $priority = 0)
     {
         if (!is_array($callback) || count($callback) !== 2) {
             throw new \InvalidArgumentException("Expected an array('service', 'method') argument");
@@ -119,8 +118,8 @@ final class PimpleAwareEventDispatcher extends EventDispatcher
     }
 
     /**
-     * @param $service_id
-     * @param $class
+     * @param string $service_id
+     * @param string $class
      */
     public function addSubscriberService($service_id, $class)
     {
@@ -152,7 +151,7 @@ final class PimpleAwareEventDispatcher extends EventDispatcher
     }
 
     /**
-     * @param $event_name
+     * @param string $event_name
      */
     private function lazyLoad($event_name)
     {
