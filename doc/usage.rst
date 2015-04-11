@@ -215,8 +215,7 @@ methods on your application: ``get``, ``post``, ``put``, ``delete``::
             <input type="hidden" id="_method" name="_method" value="PUT" />
         </form>
 
-    If you are using Symfony Components 2.2+, you will need to explicitly
-    enable this method override::
+    You need to explicitly enable this method override::
 
         use Symfony\Component\HttpFoundation\Request;
 
@@ -685,18 +684,10 @@ To further customize the response before returning it, check the API doc for
         ->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, 'pic.jpg')
     ;
 
-.. note::
-
-    HttpFoundation 2.2 or greater is required for this feature to be available.
-
 Traits
 ------
 
 Silex comes with PHP traits that define shortcut methods.
-
-.. caution::
-
-    You need to use PHP 5.4 or later to benefit from this feature.
 
 Almost all built-in service providers have some corresponding PHP traits. To
 use them, define your own Application class and include the traits you want::

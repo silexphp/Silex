@@ -82,29 +82,13 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
 
         $r = new \ReflectionMethod('Symfony\Component\Security\Http\Firewall\ContextListener', '__construct');
         $params = $r->getParameters();
-        if ('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface' === $params[0]->getClass()->getName()) {
-            $app['security.authorization_checker'] = function ($app) {
-                return new AuthorizationChecker($app['security.token_storage'], $app['security.authentication_manager'], $app['security.access_manager']);
-            };
+        $app['security.authorization_checker'] = function ($app) {
+            return new AuthorizationChecker($app['security.token_storage'], $app['security.authentication_manager'], $app['security.access_manager']);
+        };
 
-            $app['security.token_storage'] = function ($app) {
-                return new TokenStorage();
-            };
-
-            $app['security'] = function ($app) {
-                // Deprecated, to be removed in 2.0
-                return new SecurityContext($app['security.token_storage'], $app['security.authorization_checker']);
-            };
-        } else {
-            $app['security.token_storage'] = $app['security.authorization_checker'] = function ($app) {
-                return $app['security'];
-            };
-
-            $app['security'] = function ($app) {
-                // Deprecated, to be removed in 2.0
-                return new SecurityContext($app['security.authentication_manager'], $app['security.access_manager']);
-            };
-        }
+        $app['security.token_storage'] = function ($app) {
+            return new TokenStorage();
+        };
 
         $app['security.authentication_manager'] = function ($app) {
             $manager = new AuthenticationProviderManager($app['security.authentication_providers']);

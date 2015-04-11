@@ -26,22 +26,6 @@ please join us on the `mailing list
     Any code you contribute must be licensed under the MIT
     License.
 
-Target branch
-=============
-
-Before you create a pull request for Silex, you need to determine which branch
-to submit it to. Read this section carefully first.
-
-Silex has two active branches: `1.0` and `master` (`1.1`).
-
-* **1.0**: Bugfixes and documentation fixes go into the 1.0 branch. 1.0 is
-  periodically merged into master. The 1.0 branch targets versions 2.1, 2.2 and
-  2.3 of Symfony2.
-
-* **1.1**: All new features go into the 1.1 branch. Changes cannot break
-  backward compatibility. The 1.1 branch targets the 2.3 version of Symfony2.
-
-
 Writing Documentation
 =====================
 

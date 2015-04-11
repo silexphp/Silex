@@ -32,20 +32,8 @@ class ExceptionHandler implements EventSubscriberInterface
         $this->enabled = true;
     }
 
-    /**
-     * @deprecated since 1.3, to be removed in 2.0
-     */
-    public function disable()
-    {
-        $this->enabled = false;
-    }
-
     public function onSilexError(GetResponseForExceptionEvent $event)
     {
-        if (!$this->enabled) {
-            return;
-        }
-
         $handler = new DebugExceptionHandler($this->debug);
 
         $event->setResponse($handler->createResponse($event->getException()));

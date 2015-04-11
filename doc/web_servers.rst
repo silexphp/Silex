@@ -120,13 +120,12 @@ point:
 
 .. _FallbackResource directive: http://www.adayinthelifeof.nl/2012/01/21/apaches-fallbackresource-your-new-htaccess-command/
 
-PHP 5.4
--------
+PHP
+---
 
-PHP 5.4 ships with a built-in webserver for development. This server allows
-you to run silex without any configuration. However, in order to serve static
-files, you'll have to make sure your front controller returns false in that
-case::
+PHP ships with a built-in webserver for development. This server allows you to
+run silex without any configuration. However, in order to serve static files,
+you'll have to make sure your front controller returns false in that case::
 
     // web/index.php
 

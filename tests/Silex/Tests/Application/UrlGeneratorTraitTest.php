@@ -19,8 +19,6 @@ use Silex\Provider\UrlGeneratorServiceProvider;
  * UrlGeneratorTrait test cases.
  *
  * @author Fabien Potencier <fabien@symfony.com>
- *
- * @requires PHP 5.4
  */
 class UrlGeneratorTraitTest extends \PHPUnit_Framework_TestCase
 {

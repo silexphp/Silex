@@ -30,7 +30,7 @@ class RememberMeServiceProvider implements ServiceProviderInterface, EventListen
     public function register(Container $app)
     {
         $app['security.remember_me.response_listener'] = function ($app) {
-            if (!isset($app['security'])) {
+            if (!isset($app['security.token_storage'])) {
                 throw new \LogicException('You must register the SecurityServiceProvider to use the RememberMeServiceProvider');
             }
 
