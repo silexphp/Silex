@@ -107,19 +107,9 @@ class FormServiceProvider implements ServiceProviderInterface
         };
 
         $app['form.csrf_provider'] = function ($app) {
-            if (!class_exists('Symfony\Component\Form\Extension\DataCollector\DataCollectorExtension')) {
-                // Symfony 2.3
-                if (isset($app['session'])) {
-                    return new SessionCsrfProvider($app['session'], $app['form.secret']);
-                }
+            $storage = isset($app['session']) ? new SessionTokenStorage($app['session']) : new NativeSessionTokenStorage();
 
-                return new DefaultCsrfProvider($app['form.secret']);
-            } else {
-                // Symfony 2.4+
-                $storage = isset($app['session']) ? new SessionTokenStorage($app['session']) : new NativeSessionTokenStorage();
-
-                return new CsrfTokenManager(null, $storage);
-            }
+            return new CsrfTokenManager(null, $storage);
         };
     }
 }

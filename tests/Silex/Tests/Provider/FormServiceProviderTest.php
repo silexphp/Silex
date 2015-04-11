@@ -17,7 +17,6 @@ use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\AbstractTypeExtension;
-use Symfony\Component\Form\Extension\Csrf\CsrfProvider\CsrfProviderInterface;
 use Symfony\Component\Form\FormTypeGuesserChain;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -190,40 +189,24 @@ if (method_exists('Symfony\Component\Form\AbstractType', 'configureOptions')) {
     }
 }
 
-if (!class_exists('Symfony\Component\Form\Extension\DataCollector\DataCollectorExtension')) {
-    // Symfony 2.3 only
-    class FakeCsrfProvider implements CsrfProviderInterface
+class FakeCsrfProvider implements CsrfTokenManagerInterface
+{
+    public function getToken($tokenId)
     {
-        public function generateCsrfToken($intention)
-        {
-            return $intention.'123';
-        }
-
-        public function isCsrfTokenValid($intention, $token)
-        {
-            return $token === $this->generateCsrfToken($intention);
-        }
+        return new CsrfToken($tokenId, '123');
     }
-} else {
-    class FakeCsrfProvider implements CsrfTokenManagerInterface
+
+    public function refreshToken($tokenId)
     {
-        public function getToken($tokenId)
-        {
-            return new CsrfToken($tokenId, '123');
-        }
+        return new CsrfToken($tokenId, '123');
+    }
 
-        public function refreshToken($tokenId)
-        {
-            return new CsrfToken($tokenId, '123');
-        }
+    public function removeToken($tokenId)
+    {
+    }
 
-        public function removeToken($tokenId)
-        {
-        }
-
-        public function isTokenValid(CsrfToken $token)
-        {
-            return '123' === $token->getValue();
-        }
+    public function isTokenValid(CsrfToken $token)
+    {
+        return '123' === $token->getValue();
     }
 }

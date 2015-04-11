@@ -20,9 +20,7 @@ Services
   that is used for build a form.
 
 * **form.csrf_provider**: An instance of an implementation of
-  `CsrfProviderInterface
-  <http://api.symfony.com/2.3/Symfony/Component/Form/Extension/Csrf/CsrfProvider/CsrfProviderInterface.html>`_ for Symfony 2.3 or
-  `CsrfTokenManagerInterface <http://api.symfony.com/2.7/Symfony/Component/Security/Csrf/CsrfTokenManagerInterface.html>`_ for Symfony 2.4+.
+  `CsrfTokenManagerInterface <http://api.symfony.com/2.7/Symfony/Component/Security/Csrf/CsrfTokenManagerInterface.html>`_.
 
 Registering
 -----------
@@ -67,7 +65,7 @@ Registering
         composer require symfony/validator symfony/config symfony/translation
         
     The Symfony Security CSRF component is used to protect forms against CSRF
-    attacks (as of Symfony 2.4+):
+    attacks:
 
     .. code-block:: bash
     
