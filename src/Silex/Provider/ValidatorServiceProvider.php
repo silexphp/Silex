@@ -54,7 +54,11 @@ class ValidatorServiceProvider implements ServiceProviderInterface
         });
 
         $app['validator.mapping.class_metadata_factory'] = $app->share(function ($app) {
-            return new LazyLoadingMetadataFactory(new StaticMethodLoader());
+            if (class_exists('Symfony\Component\Validator\Mapping\Factory\LazyLoadingMetadataFactory')) {
+                return new LazyLoadingMetadataFactory(new StaticMethodLoader());
+            }
+
+            return new ClassMetadataFactory(new StaticMethodLoader());
         });
 
         $app['validator.validator_factory'] = $app->share(function () use ($app) {
