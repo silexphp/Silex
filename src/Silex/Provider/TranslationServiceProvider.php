@@ -18,8 +18,8 @@ use Symfony\Component\Translation\MessageSelector;
 use Symfony\Component\Translation\Loader\ArrayLoader;
 use Symfony\Component\Translation\Loader\XliffFileLoader;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpKernel\EventListener\TranslatorListener;
 use Silex\Api\EventListenerProviderInterface;
-use Silex\Provider\Translation\TranslatorListener;
 
 /**
  * Symfony Translation component Provider.

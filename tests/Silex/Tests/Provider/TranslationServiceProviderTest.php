@@ -167,7 +167,7 @@ class TranslationServiceProviderTest extends \PHPUnit_Framework_TestCase
     public function testLocaleWithBefore()
     {
         $app = $this->getPreparedApp();
-        $app->before(function (Request $request) { $request->setLocale('fr'); });
+        $app->before(function (Request $request) { $request->setLocale('fr'); }, Application::EARLY_EVENT);
         $app->get('/embed', function () use ($app) { return $app['translator']->getLocale(); });
         $app->get('/', function () use ($app) {
             return $app['translator']->getLocale().
