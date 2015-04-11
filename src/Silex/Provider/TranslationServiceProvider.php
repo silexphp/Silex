@@ -13,33 +13,35 @@ namespace Silex\Provider;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use Silex\Provider\Translation\Translator;
+use Symfony\Component\Translation\Translator;
 use Symfony\Component\Translation\MessageSelector;
 use Symfony\Component\Translation\Loader\ArrayLoader;
 use Symfony\Component\Translation\Loader\XliffFileLoader;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Silex\Api\EventListenerProviderInterface;
+use Silex\Provider\Translation\TranslatorListener;
 
 /**
  * Symfony Translation component Provider.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class TranslationServiceProvider implements ServiceProviderInterface
+class TranslationServiceProvider implements ServiceProviderInterface, EventListenerProviderInterface
 {
     public function register(Container $app)
     {
         $app['translator'] = function ($app) {
             if (!isset($app['locale'])) {
-                throw new \LogicException('You must register the LocaleServiceProvider to use the TranslationServiceProvider');
+                throw new \LogicException('You must define \'locale\' parameter or register the LocaleServiceProvider to use the TranslationServiceProvider');
             }
 
-            $translator = new Translator($app, $app['translator.message_selector'], $app['translator.cache_dir'], $app['debug']);
+            $translator = new Translator($app['locale'], $app['translator.message_selector'], $app['translator.cache_dir'], $app['debug']);
 
             // Handle deprecated 'locale_fallback'
             if (isset($app['locale_fallback'])) {
                 $app['locale_fallbacks'] = (array) $app['locale_fallback'];
             }
 
-            $translator = new Translator($app, $app['translator.message_selector']);
             $translator->setFallbackLocales($app['locale_fallbacks']);
             $translator->addLoader('array', new ArrayLoader());
             $translator->addLoader('xliff', new XliffFileLoader());
@@ -53,6 +55,10 @@ class TranslationServiceProvider implements ServiceProviderInterface
             return $translator;
         };
 
+        $app['translator.listener'] = function ($app) {
+            return new TranslatorListener($app['translator'], $app['request_stack']);
+        };
+
         $app['translator.message_selector'] = function () {
             return new MessageSelector();
         };
@@ -60,5 +66,11 @@ class TranslationServiceProvider implements ServiceProviderInterface
         $app['translator.domains'] = array();
         $app['locale_fallbacks'] = array('en');
         $app['translator.cache_dir'] = null;
+    }
+
+
+    public function subscribe(Container $app, EventDispatcherInterface $dispatcher)
+    {
+        $dispatcher->addSubscriber($app['translator.listener']);
     }
 }
