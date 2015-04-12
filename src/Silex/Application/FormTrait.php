@@ -32,4 +32,18 @@ trait FormTrait
     {
         return $this['form.factory']->createBuilder('form', $data, $options);
     }
+
+    /**
+     * Creates and returns a Form instance from the type of the form.
+     *
+     * @param string|FormTypeInterface $type    The built type of the form
+     * @param mixed                    $data    The initial data for the form
+     * @param array                    $options Options for the form
+     *
+     * @return Form
+     */
+    public function createForm($type, $data = null, array $options = array())
+    {
+        return $this['form.factory']->create($type, $data, $options);
+    }
 }
