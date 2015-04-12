@@ -73,9 +73,10 @@ A route pattern consists of:
   pattern can include variable parts and you are able to set RegExp
   requirements for them.
 
-* *Method*: One of the following HTTP methods: ``GET``, ``POST``, ``PUT`` or
-  ``DELETE``. This describes the interaction with the resource. Commonly only
-  ``GET`` and ``POST`` are used, but it is possible to use the others as well.
+* *Method*: One of the following HTTP methods: ``GET``, ``POST``, ``PUT``,
+  ``DELETE`` or ``PATCH``. This describes the interaction with the resource.
+  Commonly only ``GET`` and ``POST`` are used, but it is possible to use the
+  others as well.
 
 The controller is defined using a closure like this::
 
@@ -198,6 +199,10 @@ methods on your application: ``get``, ``post``, ``put``, ``delete``::
     });
 
     $app->delete('/blog/{id}', function ($id) {
+        // ...
+    });
+
+    $app->patch('/blog/{id}', function ($id) {
         // ...
     });
 
