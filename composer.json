@@ -24,7 +24,7 @@
         "symfony/routing": "~2.6"
     },
     "require-dev": {
-        "symfony/security": "~2.6",
+        "symfony/security": "~2.7",
         "symfony/config": "~2.6",
         "symfony/locale": "~2.6",
         "symfony/form": "~2.6",
