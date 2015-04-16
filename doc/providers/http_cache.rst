@@ -1,7 +1,7 @@
 HttpCacheServiceProvider
 ========================
 
-The *HttpCacheServiceProvider* provides support for the Symfony2 Reverse
+The *HttpCacheServiceProvider* provides support for the Symfony Reverse
 Proxy.
 
 Parameters
@@ -67,8 +67,8 @@ setting Response HTTP cache headers::
         Request::setTrustedProxies(array('127.0.0.1', '::1'));
         $app->run();
 
-This provider allows you to use the Symfony2 reverse proxy natively with
-Silex applications by using the ``http_cache`` service. The Symfony2 reverse proxy
+This provider allows you to use the Symfony reverse proxy natively with
+Silex applications by using the ``http_cache`` service. The Symfony reverse proxy
 acts much like any other proxy would, so you will want to whitelist it:
 
 .. code-block:: php
@@ -128,5 +128,5 @@ overall performance::
 
     Finally, check that your Web server does not override your caching strategy.
 
-For more information, consult the `Symfony2 HTTP Cache documentation
+For more information, consult the `Symfony HTTP Cache documentation
 <http://symfony.com/doc/current/book/http_cache.html>`_.

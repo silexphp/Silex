@@ -34,9 +34,8 @@ early event::
         // ...
     }, Application::EARLY_EVENT);
 
-Of course, in this case, the routing and the security won't have been
-executed, and so you won't have access to the locale, the current route, or
-the security user.
+In this case, the routing and the security won't have been executed, and so you
+won't have access to the locale, the current route, or the security user.
 
 .. note::
 
@@ -159,5 +158,5 @@ callback), and the Response is passed to the after middlewares right away::
 
 .. note::
 
-    If a before middleware does not return a Response or ``null``, a
-    ``RuntimeException`` is thrown.
+    A ``RuntimeException`` is thrown if a before middleware does not return a
+    Response or ``null``.
