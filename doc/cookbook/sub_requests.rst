@@ -33,7 +33,7 @@ By calling ``handle``, you can make a sub-request manually. Here's an example::
 
 There's some more things that you need to keep in mind though. In most cases
 you will want to forward some parts of the current master request to the
-sub-request. That includes: Cookies, server information, session.
+sub-request like cookies, server information, or the session.
 
 Here is a more advanced example that forwards said information (``$request``
 holds the master request)::
@@ -122,12 +122,8 @@ constructing a request::
 
 This is something to be aware of when making sub-requests by hand.
 
-Lack of container scopes
-------------------------
-
-While the sub-requests available in Silex are quite powerful, they have their
-limits. The major limitation/danger that you will run into is the lack of
-scopes on the Pimple container.
+Services depending on the Request
+---------------------------------
 
 The container is a concept that is global to a Silex application, since the
 application object **is** the container. Any request that is run against an
@@ -137,41 +133,5 @@ Any services depending on the ``request`` service will store the first request
 that they get (could be master or sub-request), and keep using it, even if
 that request is already over.
 
-For example::
-
-    use Symfony\Component\HttpFoundation\Request;
-
-    class ContentFormatNegotiator
-    {
-        private $request;
-
-        public function __construct(Request $request)
-        {
-            $this->request = $request;
-        }
-
-        public function negotiateFormat(array $serverTypes)
-        {
-            $clientAcceptType = $this->request->headers->get('Accept');
-
-            ...
-
-            return $format;
-        }
-    }
-
-This example looks harmless, but it might blow up. You have no way of knowing
-what ``$request->headers->get()`` will return, because ``$request`` could be
-either the master request or a sub-request. The answer in this case is to pass
-the request as an argument to ``negotiateFormat``. Then you can pass it in
-from a location where you have safe access to the current request: a listener
-or a controller.
-
-Here are a few general approaches to working around this issue:
-
-* Use ESI with Varnish.
-
-* Do not inject the request, ever. Use listeners instead, as they can access
-  the request without storing it.
-
-* Inject the Silex Application and fetch the request from it.
+Instead of injecting the ``request`` service, you should always inject the
+``request_stack`` one instead.

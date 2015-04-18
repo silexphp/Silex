@@ -118,7 +118,7 @@ YAML-based language files
 Having your translations in PHP files can be inconvenient. This recipe will
 show you how to load translations from external YAML files.
 
-First, add the Symfony2 ``Config`` and ``Yaml`` components as dependencies:
+First, add the Symfony ``Config`` and ``Yaml`` components as dependencies:
 
 .. code-block:: bash
 
@@ -151,7 +151,7 @@ XLIFF-based language files
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Just as you would do with YAML translation files, you first need to add the
-Symfony2 ``Config`` component as a dependency (see above for details).
+Symfony ``Config`` component as a dependency (see above for details).
 
 Then, similarly, create XLIFF files in your locales directory and add them to
 the translator::

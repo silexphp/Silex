@@ -217,5 +217,5 @@ provider and register the messages under the ``validators`` domain::
         ),
     );
 
-For more information, consult the `Symfony2 Validation documentation
+For more information, consult the `Symfony Validation documentation
 <http://symfony.com/doc/master/book/validation.html>`_.
