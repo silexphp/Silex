@@ -107,11 +107,17 @@ class Controller
     public function generateRouteName($prefix)
     {
         $requirements = $this->route->getRequirements();
-        $method = isset($requirements['_method']) ? $requirements['_method'] : '';
 
-        $routeName = $prefix.$method.$this->route->getPath();
+        // The trailing underscore is required to separate the method from the
+        // prefix, if one is set.
+        $method = isset($requirements['_method']) ? $requirements['_method'].'_' : '';
+
+        $routeName = $method.$prefix.$this->route->getPath();
         $routeName = str_replace(array('/', ':', '|', '-'), '_', $routeName);
         $routeName = preg_replace('/[^a-z0-9A-Z_.]+/', '', $routeName);
+
+        // Collapse consecutive underscores down into a single underscore.
+        $routeName = preg_replace('/_{2,}/', '_', $routeName);
 
         return $routeName;
     }
