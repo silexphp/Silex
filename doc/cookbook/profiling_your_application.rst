@@ -55,7 +55,7 @@ Before registering this service provider, you must register *ServiceControllerSe
 
 .. note::
 
-    The WebProfilerServiceProvider and some its dependencies (optional or not) comes
+    The WebProfilerServiceProvider and some of its dependencies (optional or not) come
     with the "fat" Silex archive but not with the regular one. If you are using
     Composer, add them as a dependency:
 
