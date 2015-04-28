@@ -51,6 +51,6 @@ class ControllerResolverTest extends \PHPUnit_Framework_TestCase
 }
 
 /**
- * Dummy class
+ * Dummy class.
  */
 class Foo {}
