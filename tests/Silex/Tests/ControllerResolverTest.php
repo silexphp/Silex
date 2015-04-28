@@ -52,9 +52,5 @@ class ControllerResolverTest extends \PHPUnit_Framework_TestCase
 
 /**
  * Dummy class
- * Class Foo
- * @package Silex\Tests
  */
-class Foo {
-
-}
+class Foo {}
