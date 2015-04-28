@@ -44,6 +44,10 @@ class ControllerResolver extends BaseControllerResolver
                 $request->attributes->set($param->getName(), $this->app);
 
                 break;
+            } elseif ($param->getClass() && isset($this->app[$param->getClass()->getName()])) {
+                $request->attributes->set($param->getName(), $this->app[$param->getClass()->getName()]);
+
+                break;
             }
         }
 
