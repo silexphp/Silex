@@ -32,4 +32,29 @@ class ControllerResolverTest extends \PHPUnit_Framework_TestCase
         $args = $resolver->getArguments(Request::create('/'), $controller);
         $this->assertSame($app, $args[0]);
     }
+
+    public function testAutoInjectArguments()
+    {
+        $app = new Application();
+        $resolver = new ControllerResolver($app);
+
+        $app[Foo::class] = function () {
+            return new Foo();
+        };
+
+        $controller = function (Foo $foo) {};
+
+        $args = $resolver->getArguments(Request::create('/'), $controller);
+
+        $this->assertSame($app[Foo::class], $args[0]);
+    }
+}
+
+/**
+ * Dummy class
+ * Class Foo
+ * @package Silex\Tests
+ */
+class Foo {
+
 }
