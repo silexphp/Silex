@@ -107,7 +107,7 @@ before it handles a request::
     }
 
 Another optional interface, is the ``Silex\Api\EventListenerProviderInterface``.
-This interface contains the `subscribe` method, which allows your provider to
+This interface contains the ``subscribe()`` method, which allows your provider to
 subscribe event listener with Silex's EventDispatcher, just before it handles a
 request::
 
