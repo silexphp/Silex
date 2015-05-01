@@ -2,7 +2,7 @@ FormServiceProvider
 ===================
 
 The *FormServiceProvider* provides a service for building forms in
-your application with the Symfony2 Form component.
+your application with the Symfony Form component.
 
 Parameters
 ----------
@@ -194,5 +194,5 @@ Traits
 
     $app->form($data);
 
-For more information, consult the `Symfony2 Forms documentation
+For more information, consult the `Symfony Forms documentation
 <http://symfony.com/doc/2.3/book/forms.html>`_.

@@ -1,7 +1,7 @@
 Using multiple Monolog Loggers
 ==============================
 
-Having separate instances of `Monolog` for different parts of your system is
+Having separate instances of Monolog for different parts of your system is
 often desirable and allows you to configure them independently, allowing for fine
 grained control of where your logging goes and in what detail.
 

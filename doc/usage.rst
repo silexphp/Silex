@@ -1,8 +1,6 @@
 Usage
 =====
 
-This chapter describes how to use Silex.
-
 Installation
 ------------
 
@@ -65,34 +63,20 @@ Routing
 -------
 
 In Silex you define a route and the controller that is called when that
-route is matched.
-
-A route pattern consists of:
+route is matched. A route pattern consists of:
 
 * *Pattern*: The route pattern defines a path that points to a resource. The
   pattern can include variable parts and you are able to set RegExp
   requirements for them.
 
 * *Method*: One of the following HTTP methods: ``GET``, ``POST``, ``PUT`` or
-  ``DELETE``. This describes the interaction with the resource. Commonly only
-  ``GET`` and ``POST`` are used, but it is possible to use the others as well.
+  ``DELETE`` or ``PATCH``. This describes the interaction with the resource.
 
 The controller is defined using a closure like this::
 
     function () {
         // ... do something
     }
-
-Closures are anonymous functions that may import state from outside of their
-definition. This is different from globals, because the outer state does not
-have to be global. For instance, you could define a closure in a function and
-import local variables of that function.
-
-.. note::
-
-    Closures that do not import scope are referred to as lambdas. Because all
-    anonymous functions are instances of the ``Closure`` class in PHP, the
-    documentation will not make a distinction here.
 
 The return value of the closure becomes the content of the page.
 
@@ -122,8 +106,8 @@ Here is an example definition of a ``GET`` route::
 
 Visiting ``/blog`` will return a list of blog post titles. The ``use``
 statement means something different in this context. It tells the closure to
-import the ``$blogPosts`` variable from the outer scope. This allows you to
-use it from within the closure.
+import the ``$blogPosts`` variable from the outer scope. This allows you to use
+it from within the closure.
 
 Dynamic Routing
 ~~~~~~~~~~~~~~~
@@ -185,7 +169,7 @@ This allows setting an HTTP status code, in this case it is set to
 .. note::
 
     Silex always uses a ``Response`` internally, it converts strings to
-    responses with status code ``200 Ok``.
+    responses with status code ``200``.
 
 Other methods
 ~~~~~~~~~~~~~
@@ -198,6 +182,10 @@ methods on your application: ``get``, ``post``, ``put``, ``delete``::
     });
 
     $app->delete('/blog/{id}', function ($id) {
+        // ...
+    });
+
+    $app->patch('/blog/{id}', function ($id) {
         // ...
     });
 
@@ -354,10 +342,6 @@ convert method will be used as converter::
         // ...
     })->convert('user', 'converter.user:convert');
 
-.. warning::
-
-    Please note that the ability to use a service method (with the `a:b` notation) will be in version 1.2
-
 Requirements
 ~~~~~~~~~~~~
 
@@ -398,10 +382,9 @@ have the value ``index``.
 Named Routes
 ~~~~~~~~~~~~
 
-Some providers (such as ``UrlGeneratorProvider``) can make use of named
-routes. By default Silex will generate a route name for you, that cannot
-really be used. You can give a route a name by calling ``bind`` on the
-``Controller`` object that is returned by the routing methods::
+Some providers (such as ``UrlGeneratorProvider``) can make use of named routes.
+By default Silex will generate an internal route name for you but you can give
+an explicit route name by calling ``bind``::
 
     $app->get('/', function () {
         // ...
@@ -413,17 +396,12 @@ really be used. You can give a route a name by calling ``bind`` on the
     })
     ->bind('blog_post');
 
-.. note::
-
-    It only makes sense to name routes if you use providers that make use of
-    the ``RouteCollection``.
-
-Controllers in Classes
+Controllers as Classes
 ~~~~~~~~~~~~~~~~~~~~~~
 
-If you don't want to use anonymous functions, you can also define your
-controllers as methods. By using the ``ControllerClass::methodName`` syntax,
-you can tell Silex to lazily create the controller object for you::
+Instead of anonymous functions, you can also define your controllers as
+methods. By using the ``ControllerClass::methodName`` syntax, you can tell
+Silex to lazily create the controller object for you::
 
     $app->get('/', 'Acme\\Foo::bar');
 
@@ -445,14 +423,14 @@ This will load the ``Acme\Foo`` class on demand, create an instance and call
 the ``bar`` method to get the response. You can use ``Request`` and
 ``Silex\Application`` type hints to get ``$request`` and ``$app`` injected.
 
-For an even stronger separation between Silex and your controllers, you can
-:doc:`define your controllers as services <providers/service_controller>`.
+It is also possible to :doc:`define your controllers as services
+<providers/service_controller>`.
 
 Global Configuration
 --------------------
 
-If a controller setting must be applied to all controllers (a converter, a
-middleware, a requirement, or a default value), you can configure it on
+If a controller setting must be applied to **all** controllers (a converter, a
+middleware, a requirement, or a default value), configure it on
 ``$app['controllers']``, which holds all application controllers::
 
     $app['controllers']
@@ -473,16 +451,12 @@ the defaults for new controllers.
     mount as they have their own global configuration (read the
     :doc:`dedicated chapter<organizing_controllers>` for more information).
 
-.. warning::
-
-    The converters are run for **all** registered controllers.
-
 Error Handlers
 --------------
 
-If some part of your code throws an exception you will want to display some
-kind of error page to the user. This is what error handlers do. You can also
-use them to do additional things, such as logging.
+When an exception is thrown, error handlers allows you to display a custom
+error page to the user. They can also be used to do additional things, such as
+logging.
 
 To register an error handler, pass a closure to the ``error`` method which
 takes an ``Exception`` argument and returns a response::
@@ -512,15 +486,6 @@ handle them differently::
         return new Response($message);
     });
 
-.. note::
-
-    As Silex ensures that the Response status code is set to the most
-    appropriate one depending on the exception, setting the status on the
-    response won't work. If you want to overwrite the status code (which you
-    should not without a good reason), set the ``X-Status-Code`` header::
-
-        return new Response('Error', 404 /* ignored */, array('X-Status-Code' => 200));
-
 You can restrict an error handler to only handle some Exception classes by
 setting a more specific type hint for the Closure argument::
 
@@ -531,9 +496,18 @@ setting a more specific type hint for the Closure argument::
         // and exceptions that extends \LogicException
     });
 
-If you want to set up logging you can use a separate error handler for that.
-Just make sure you register it before the response error handlers, because
-once a response is returned, the following handlers are ignored.
+.. note::
+
+    As Silex ensures that the Response status code is set to the most
+    appropriate one depending on the exception, setting the status on the
+    response won't work. If you want to overwrite the status code, set the
+    ``X-Status-Code`` header::
+
+        return new Response('Error', 404 /* ignored */, array('X-Status-Code' => 200));
+
+If you want to use a separate error handler for logging, make sure you register
+it before the response error handlers, because once a response is returned, the
+following handlers are ignored.
 
 .. note::
 
@@ -631,8 +605,8 @@ response for you::
 Streaming
 ---------
 
-It's possible to create a streaming response, which is important in cases when
-you cannot buffer the data being sent::
+It's possible to stream a response, which is important in cases when you don't
+want to buffer the data being sent::
 
     $app->get('/images/{file}', function ($file) use ($app) {
         if (!file_exists(__DIR__.'/images/'.$file)) {
@@ -665,7 +639,7 @@ Sending a file
 If you want to return a file, you can use the ``sendFile`` helper method.
 It eases returning files that would otherwise not be publicly available. Simply
 pass it your file path, status code, headers and the content disposition and it
-will create a ``BinaryFileResponse`` based response for you::
+will create a ``BinaryFileResponse`` response for you::
 
     $app->get('/files/{path}', function ($path) use ($app) {
         if (!file_exists('/base/path/' . $path)) {
@@ -729,9 +703,8 @@ Make sure to protect your application against attacks.
 Escaping
 ~~~~~~~~
 
-When outputting any user input (either route variables GET/POST variables
-obtained from the request), you will have to make sure to escape it correctly,
-to prevent Cross-Site-Scripting attacks.
+When outputting any user input, make sure to escape it correctly to prevent
+Cross-Site-Scripting attacks.
 
 * **Escaping HTML**: PHP provides the ``htmlspecialchars`` function for this.
   Silex provides a shortcut ``escape`` method::
@@ -741,7 +714,7 @@ to prevent Cross-Site-Scripting attacks.
           return "You provided the name {$app->escape($name)}.";
       });
 
-  If you use the Twig template engine you should use its escaping or even
+  If you use the Twig template engine, you should use its escaping or even
   auto-escaping mechanisms.
 
 * **Escaping JSON**: If you want to provide data in JSON format you should

@@ -1,9 +1,9 @@
 Services
 ========
 
-Silex is not only a microframework. It is also a micro service container. It
-does this by extending `Pimple <http://pimple.sensiolabs.org>`_ which provides
-service goodness in just 44 NCLOC.
+Silex is not only a framework, it is also a service container. It does this by
+extending `Pimple <http://pimple.sensiolabs.org>`_ which provides service
+goodness in just 44 NCLOC.
 
 Dependency Injection
 --------------------
@@ -43,24 +43,14 @@ passed to the constructor. This means you can create several independent
 instances with different base paths. Of course dependencies do not have to be
 simple strings. More often they are in fact other services.
 
-Container
-~~~~~~~~~
-
-A DIC or service container is responsible for creating and storing services.
-It can recursively create dependencies of the requested services and inject
-them. It does so lazily, which means a service is only created when you
-actually need it.
-
-Most containers are quite complex and are configured through XML or YAML
-files.
-
-Pimple is different.
+A service container is responsible for creating and storing services. It can
+recursively create dependencies of the requested services and inject them. It
+does so lazily, which means a service is only created when you actually need it.
 
 Pimple
 ------
 
-Pimple is probably the simplest service container out there. It makes strong
-use of closures and implements the ArrayAccess interface.
+Pimple makes strong use of closures and implements the ArrayAccess interface.
 
 We will start off by creating a new instance of Pimple -- and because
 ``Silex\Application`` extends ``Pimple\Container`` all of this applies to Silex
@@ -162,8 +152,7 @@ Note that protected closures do not get access to the container.
 Core services
 -------------
 
-Silex defines a range of services which can be used or replaced. You probably
-don't want to mess with most of them.
+Silex defines a range of services.
 
 * **request**: Contains the current request object, which is an instance of
   `Request
@@ -174,7 +163,7 @@ don't want to mess with most of them.
 
     $id = $app['request']->get('id');
 
-  This is only available when a request is being served, you can only access
+  This is only available when a request is being served; you can only access
   it from within a controller, an application before/after middlewares, or an
   error handler.
 
@@ -187,7 +176,7 @@ don't want to mess with most of them.
 
 * **dispatcher**: The `EventDispatcher
   <http://api.symfony.com/master/Symfony/Component/EventDispatcher/EventDispatcher.html>`_
-  that is used internally. It is the core of the Symfony2 system and is used
+  that is used internally. It is the core of the Symfony system and is used
   quite a bit by Silex.
 
 * **resolver**: The `ControllerResolver
@@ -197,7 +186,7 @@ don't want to mess with most of them.
 
 * **kernel**: The `HttpKernel
   <http://api.symfony.com/master/Symfony/Component/HttpKernel/HttpKernel.html>`_
-  that is used internally. The HttpKernel is the heart of Symfony2, it takes a
+  that is used internally. The HttpKernel is the heart of Symfony, it takes a
   Request as input and returns a Response as output.
 
 * **request_context**: The request context is a simplified representation of

@@ -1,21 +1,20 @@
 Contributing
 ============
 
-We are open to contributions to the Silex code. If you find
-a bug or want to contribute a provider, just follow these
-steps.
+We are open to contributions to the Silex code. If you find a bug or want to
+contribute a provider, just follow these steps:
 
-* Fork `the Silex repository <https://github.com/silexphp/Silex>`_
-  on github.
+* Fork `the Silex repository <https://github.com/silexphp/Silex>`_;
 
-* Make your feature addition or bug fix.
+* Make your feature addition or bug fix;
 
-* Add tests for it. This is important so we don't break it in a future version unintentionally.
+* Add tests for it;
 
-* Optionally, add some technical documentation.
+* Optionally, add some documentation;
 
-* `Send a pull request <https://help.github.com/articles/creating-a-pull-request>`_, to the correct `target branch`_. 
-  Bonus points for topic branches.
+* `Send a pull request
+  <https://help.github.com/articles/creating-a-pull-request>`_, to the correct
+  `target branch`_.
 
 If you have a big change or would like to discuss something,
 please join us on the `mailing list

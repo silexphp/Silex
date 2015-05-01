@@ -2,11 +2,8 @@ DoctrineServiceProvider
 =======================
 
 The *DoctrineServiceProvider* provides integration with the `Doctrine DBAL
-<http://www.doctrine-project.org/projects/dbal>`_ for easy database access.
-
-.. note::
-
-    There is only a Doctrine DBAL. An ORM service is **not** supplied.
+<http://www.doctrine-project.org/projects/dbal>`_ for easy database access
+(Doctrine ORM integration is **not** supplied).
 
 Parameters
 ----------
