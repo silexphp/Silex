@@ -70,7 +70,7 @@ route is matched. A route pattern consists of:
   requirements for them.
 
 * *Method*: One of the following HTTP methods: ``GET``, ``POST``, ``PUT`` or
-  ``DELETE``. This describes the interaction with the resource.
+  ``DELETE`` or ``PATCH``. This describes the interaction with the resource.
 
 The controller is defined using a closure like this::
 
@@ -182,6 +182,10 @@ methods on your application: ``get``, ``post``, ``put``, ``delete``::
     });
 
     $app->delete('/blog/{id}', function ($id) {
+        // ...
+    });
+
+    $app->patch('/blog/{id}', function ($id) {
         // ...
     });
 
