@@ -107,11 +107,14 @@ class Controller
 
     public function generateRouteName($prefix)
     {
-        $methods = implode('_', $this->route->getMethods());
+        $methods = implode('_', $this->route->getMethods()).'_';
 
-        $routeName = $prefix.$methods.$this->route->getPath();
+        $routeName = $methods.$prefix.$this->route->getPath();
         $routeName = str_replace(array('/', ':', '|', '-'), '_', $routeName);
         $routeName = preg_replace('/[^a-z0-9A-Z_.]+/', '', $routeName);
+
+        // Collapse consecutive underscores down into a single underscore.
+        $routeName = preg_replace('/_+/', '_', $routeName);
 
         return $routeName;
     }

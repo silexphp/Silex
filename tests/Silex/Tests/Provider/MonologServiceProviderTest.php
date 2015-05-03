@@ -159,7 +159,7 @@ class MonologServiceProviderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage Provided logging level 'foo' does not exist. Must be a valid monolog logging level.
      */
     public function testNonExistentStringErrorLevel()
