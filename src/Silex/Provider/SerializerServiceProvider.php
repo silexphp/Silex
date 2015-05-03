@@ -28,12 +28,12 @@ use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 class SerializerServiceProvider implements ServiceProviderInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * This method registers a serializer service. {@link http://api.symfony.com/master/Symfony/Component/Serializer/Serializer.html
      * The service is provided by the Symfony Serializer component}.
      *
-     * @param Silex\Application $app
+     * @param Application $app
      */
     public function register(Application $app)
     {
@@ -51,11 +51,11 @@ class SerializerServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * This provider does not execute any code when booting.
      *
-     * @param Silex\Application $app
+     * @param Application $app
      */
     public function boot(Application $app)
     {

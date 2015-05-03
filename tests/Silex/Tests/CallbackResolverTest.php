@@ -39,7 +39,7 @@ class CallbackResolverTest extends \PHPUnit_Framework_Testcase
     }
 
     /**
-     * @expectedException          InvalidArgumentException
+     * @expectedException          \InvalidArgumentException
      * @expectedExceptionMessage   Service "some_service" does not exist.
      */
     public function testShouldThrowAnExceptionIfServiceIsMissing()

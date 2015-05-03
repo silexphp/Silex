@@ -40,7 +40,7 @@ class LazyUrlMatcherTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException LogicException
+     * @expectedException \LogicException
      * @expectedExceptionMessage Factory supplied to LazyUrlMatcher must return implementation of UrlMatcherInterface.
      */
     public function testThatCanInjectUrlMatcherOnly()

@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
- * Log request, response and exceptions
+ * Log request, response and exceptions.
  */
 class LogListener implements EventSubscriberInterface
 {
@@ -36,7 +36,7 @@ class LogListener implements EventSubscriberInterface
     }
 
     /**
-     * Logs master requests on event KernelEvents::REQUEST
+     * Logs master requests on event KernelEvents::REQUEST.
      *
      * @param GetResponseEvent $event
      */
@@ -50,7 +50,7 @@ class LogListener implements EventSubscriberInterface
     }
 
     /**
-     * Logs master response on event KernelEvents::RESPONSE
+     * Logs master response on event KernelEvents::RESPONSE.
      *
      * @param FilterResponseEvent $event
      */
@@ -64,7 +64,7 @@ class LogListener implements EventSubscriberInterface
     }
 
     /**
-     * Logs uncaught exceptions on event KernelEvents::EXCEPTION
+     * Logs uncaught exceptions on event KernelEvents::EXCEPTION.
      *
      * @param GetResponseForExceptionEvent $event
      */
@@ -74,7 +74,7 @@ class LogListener implements EventSubscriberInterface
     }
 
     /**
-     * Logs a request
+     * Logs a request.
      *
      * @param Request $request
      */
@@ -84,7 +84,7 @@ class LogListener implements EventSubscriberInterface
     }
 
     /**
-     * Logs a response
+     * Logs a response.
      *
      * @param Response $response
      */
@@ -98,9 +98,9 @@ class LogListener implements EventSubscriberInterface
     }
 
     /**
-     * Logs an exception
+     * Logs an exception.
      *
-     * @param Exception $e
+     * @param \Exception $e
      */
     protected function logException(\Exception $e)
     {

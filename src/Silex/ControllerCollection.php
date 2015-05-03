@@ -43,9 +43,6 @@ class ControllerCollection
     protected $defaultController;
     protected $prefix;
 
-    /**
-     * Constructor.
-     */
     public function __construct(Route $defaultRoute)
     {
         $this->defaultRoute = $defaultRoute;
