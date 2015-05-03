@@ -1,0 +1,12 @@
+---------------------------------------------------------------------------
+
+by fabpot at 2015-05-01T13:07:01Z
+
+Looks good to me apart from the 2 comments I've just made. Also, can you rebase the PR? (rebasing will remove the merge commit that we don't want when merging). Thanks.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-05-03T11:21:27Z
+
+Sure thing :)
+I've removed the two lines from the PR, rebased and commits squash'ed.
