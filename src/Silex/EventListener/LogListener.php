@@ -100,7 +100,7 @@ class LogListener implements EventSubscriberInterface
     /**
      * Logs an exception.
      *
-     * @param Exception $e
+     * @param \Exception $e
      */
     protected function logException(\Exception $e)
     {

@@ -64,7 +64,7 @@ class CallbackServicesTest extends \PHPUnit_Framework_TestCase
 
     public function controller(Application $app)
     {
-        return $app->abort(404);
+        $app->abort(404);
     }
 
     public function before()

@@ -30,7 +30,8 @@ class ExceptionListenerWrapper
     /**
      * Constructor.
      *
-     * @param Application $app An Application instance
+     * @param Application $app      An Application instance
+     * @param callable    $callback
      */
     public function __construct(Application $app, $callback)
     {
