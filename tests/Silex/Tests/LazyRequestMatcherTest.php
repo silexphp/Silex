@@ -22,7 +22,7 @@ use Silex\Provider\Routing\LazyRequestMatcher;
 class LazyRequestMatcherTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers Silex\LazyRequestMatcher::getResquestMatcher
+     * @covers Silex\LazyRequestMatcher::getRequestMatcher
      */
     public function testUserMatcherIsCreatedLazily()
     {
