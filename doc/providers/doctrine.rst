@@ -103,7 +103,7 @@ and values are options::
                 'dbname'    => 'my_database',
                 'user'      => 'my_username',
                 'password'  => 'my_password',
-                'charset'   => 'utf8',
+                'charset'   => 'utf8mb4',
             ),
             'mysql_write' => array(
                 'driver'    => 'pdo_mysql',
@@ -111,7 +111,7 @@ and values are options::
                 'dbname'    => 'my_database',
                 'user'      => 'my_username',
                 'password'  => 'my_password',
-                'charset'   => 'utf8',
+                'charset'   => 'utf8mb4',
             ),
         ),
     ));
