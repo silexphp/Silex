@@ -412,9 +412,9 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      * an instance of Response. When this occurs, all suitable handlers will be
      * called, until one returns a Response object.
      *
-     * @param callable $callback View handler callback
-     * @param int      $priority The higher this value, the earlier an event
-     *                           listener will be triggered in the chain (defaults to 0)
+     * @param mixed $callback View handler callback
+     * @param int   $priority The higher this value, the earlier an event
+     *                        listener will be triggered in the chain (defaults to 0)
      */
     public function view($callback, $priority = 0)
     {
