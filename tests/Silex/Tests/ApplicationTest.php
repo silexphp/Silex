@@ -652,11 +652,11 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $app->get('/foo', function () { return 'Hello world'; });
 
         $app->view(function (\stdClass $view) {
-            throw new \Exception("View listener was called");
+            throw new \Exception('View listener was called');
         });
 
         $app->view(function (array $view) {
-            throw new \Exception("View listener was called");
+            throw new \Exception('View listener was called');
         });
 
         $response = $app->handle(Request::create('/foo'));
@@ -674,7 +674,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         });
 
         $app->view(function ($view) {
-            return null;
+            return;
         });
 
         $response = $app->handle(Request::create('/foo'));

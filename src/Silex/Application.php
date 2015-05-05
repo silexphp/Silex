@@ -89,7 +89,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
 
         $this['dispatcher_class'] = 'Symfony\\Component\\EventDispatcher\\EventDispatcher';
         $this['dispatcher'] = $this->share(function () use ($app) {
-            /**
+            /*
              * @var EventDispatcherInterface
              */
             $dispatcher = new $app['dispatcher_class']();
@@ -413,7 +413,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      * called, until one returns a Response object.
      *
      * @param callable $callback View handler callback
-     * @param integer  $priority The higher this value, the earlier an event
+     * @param int      $priority The higher this value, the earlier an event
      *                           listener will be triggered in the chain (defaults to 0)
      */
     public function view($callback, $priority = 0)
