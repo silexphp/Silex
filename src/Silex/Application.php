@@ -89,8 +89,8 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
 
         $this['dispatcher_class'] = 'Symfony\\Component\\EventDispatcher\\EventDispatcher';
         $this['dispatcher'] = $this->share(function () use ($app) {
-            /*
-             * @var EventDispatcherInterface
+            /**
+             * @var EventDispatcherInterface $dispatcher
              */
             $dispatcher = new $app['dispatcher_class']();
 
