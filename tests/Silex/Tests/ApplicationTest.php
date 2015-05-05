@@ -611,12 +611,11 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Hello world', $response->getContent());
     }
 
+    /**
+     * @requires PHP 5.4
+     */
     public function testViewListenerWithCallableTypeHint()
     {
-        if (version_compare(phpversion(), '5.4.0', '<')) {
-            $this->markTestSkipped('Requires PHP >= 5.4.0');
-        }
-
         $app = new Application();
         $app->get('/foo', function () { return function () { return 'world'; }; });
         $app->view(function (callable $view) {
