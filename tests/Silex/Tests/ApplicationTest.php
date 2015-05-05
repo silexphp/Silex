@@ -563,9 +563,9 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testBeforeFilterOnMountedControllerGroupIsolatedToGroup()
     {
         $app = new Application();
-        $app->match('/', function() { return new Response('ok'); });
+        $app->match('/', function () { return new Response('ok'); });
         $mounted = $app['controllers_factory'];
-        $mounted->before(function() { return new Response('not ok'); });
+        $mounted->before(function () { return new Response('not ok'); });
         $app->mount('/group', $mounted);
 
         $response = $app->handle(Request::create('/'));
@@ -575,7 +575,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testViewListenerWithPrimitive()
     {
         $app = new Application();
-        $app->get('/foo', function() { return 123; });
+        $app->get('/foo', function () { return 123; });
         $app->view(function ($view, Request $request) {
             return new Response($view);
         });
@@ -588,7 +588,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testViewListenerWithArrayTypeHint()
     {
         $app = new Application();
-        $app->get('/foo', function() { return array('ok'); });
+        $app->get('/foo', function () { return array('ok'); });
         $app->view(function (array $view) {
             return new Response($view[0]);
         });
@@ -601,7 +601,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testViewListenerWithObjectTypeHint()
     {
         $app = new Application();
-        $app->get('/foo', function() { return (object) array('name' => 'world'); });
+        $app->get('/foo', function () { return (object) array('name' => 'world'); });
         $app->view(function (\stdClass $view) {
             return new Response('Hello '.$view->name);
         });
@@ -618,7 +618,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         }
 
         $app = new Application();
-        $app->get('/foo', function() { return function() { return 'world'; }; });
+        $app->get('/foo', function () { return function () { return 'world'; }; });
         $app->view(function (callable $view) {
             return new Response('Hello '.$view());
         });
@@ -631,7 +631,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testViewListenersCanBeChained()
     {
         $app = new Application();
-        $app->get('/foo', function() { return (object) array('name' => 'world'); });
+        $app->get('/foo', function () { return (object) array('name' => 'world'); });
 
         $app->view(function (\stdClass $view) {
             return array('msg' => 'Hello '.$view->name);
@@ -649,7 +649,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testViewListenersAreIgnoredIfNotSuitable()
     {
         $app = new Application();
-        $app->get('/foo', function() { return 'Hello world'; });
+        $app->get('/foo', function () { return 'Hello world'; });
 
         $app->view(function (\stdClass $view) {
             throw new \Exception("View listener was called");
@@ -667,7 +667,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testViewListenersResponsesAreNotUsedIfNull()
     {
         $app = new Application();
-        $app->get('/foo', function() { return 'Hello world'; });
+        $app->get('/foo', function () { return 'Hello world'; });
 
         $app->view(function ($view) {
             return 'Hello view listener';
