@@ -20,6 +20,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\TerminableInterface;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -363,6 +364,23 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     public function error($callback, $priority = -8)
     {
         $this->on(KernelEvents::EXCEPTION, new ExceptionListenerWrapper($this, $callback), $priority);
+    }
+
+    /**
+     * Registers a view handler.
+     *
+     * View handlers are simple callables which take a controller result and the 
+     * request as arguments, whenever a controller returns a value that is not 
+     * an instance of Response. When this occurs, all suitable handlers will be 
+     * called, until one returns a Response object.  
+     *
+     * @param callable   $callback View handler callback
+     * @param integer $priority The higher this value, the earlier an event
+     *                          listener will be triggered in the chain (defaults to 0)
+     */
+    public function view($callback, $priority = 0)
+    {
+        $this->on(KernelEvents::VIEW, new ViewListenerWrapper($this, $callback), $priority);
     }
 
     /**
