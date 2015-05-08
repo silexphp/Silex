@@ -1,0 +1,39 @@
+---------------------------------------------------------------------------
+
+by jimdoescode at 2015-03-06T17:17:47Z
+
+I'm not sure what standards this is failing. @fabpot is there some kind of weird whitespace rule? I double checked and there are no extra spaces on those blank lines.
+
+---------------------------------------------------------------------------
+
+by jimdoescode at 2015-03-06T17:36:55Z
+
+Strange. I don't know how that whitespace got added I never touched those lines. My keyboard must have a mind of its own.
+
+---------------------------------------------------------------------------
+
+by GromNaN at 2015-03-06T17:46:32Z
+
+`OPTIONS` has a very specific use-case. You can use [stack-cors](https://github.com/asm89/stack-cors) to handle this method properly.
+
+---------------------------------------------------------------------------
+
+by jimdoescode at 2015-03-06T18:12:18Z
+
+Right, it has a very specific use case but not as specific a response structure. I'd rather manually handle OPTIONS requests because then I can add any optional headers, or even a response, based on the specific route requested. Middleware (like stack-cors) wouldn't give as much flexibility as defining independent routes would.
+
+---------------------------------------------------------------------------
+
+by fabpot at 2015-05-08T14:51:16Z
+
+Not sure if we want to add this to core. I mean, usage is not that widespread and you can easily do the same with the current code easily.
+
+---------------------------------------------------------------------------
+
+by jimdoescode at 2015-05-08T15:15:54Z
+
+It surprises me that usage wouldn't be that widespread considering the surge in JavaScript web apps over the past few years. Some browsers like Chrome wont even complete an AJAX request until an OPTIONS request is successfully handled.
+
+But I guess it's not too hard to implement separately and if someone does want the ability to do that they can extend Application or switch to [Slim Framework for it.](http://docs.slimframework.com/routing/options/)
+
+Should I close this @fabpot?
