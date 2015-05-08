@@ -17,7 +17,7 @@ Services
 
 * **form.factory**: An instance of `FormFactory
   <http://api.symfony.com/master/Symfony/Component/Form/FormFactory.html>`_,
-  that is used for build a form.
+  that is used to build a form.
 
 * **form.csrf_provider**: An instance of an implementation of the
   `CsrfProviderInterface
