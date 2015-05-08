@@ -116,7 +116,7 @@ anonymous function with the factory() method::
         return new Service();
     });
 
-Now, each call to ``$app['some_service']`` returns a new instance of the session.
+Now, each call to ``$app['some_service']`` returns a new instance of the service.
 
 Access container from closure
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
