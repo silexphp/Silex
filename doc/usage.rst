@@ -22,6 +22,12 @@ If you want more flexibility, use Composer_ instead:
 
     composer require silex/silex:~2.0
 
+Web Server
+----------
+
+All examples in the documentation relies on a well-configured web server; read
+the :doc:`webserver documentation<web_servers>` to check yours.
+
 Bootstrap
 ---------
 
