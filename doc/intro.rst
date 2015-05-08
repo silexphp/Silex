@@ -49,13 +49,19 @@ that easy!
 Installation
 ------------
 
-Installing Silex is as easy as it can get. The recommend method is using
-Composer_ and requiring `silex/silex`_.  Another way is to `download`_ the
-archive file and extract it.
+Installing Silex is as easy as it can get: 
+
+.. code-block:: bash
+
+    composer require silex/silex
+
+Another way is to `download`_ the archive file and extract it.
+
+All examples in the documentation relies on a well-configured web server; read
+the :doc:`webserver documentation<web_servers>` to check yours.
 
 .. _Symfony2: http://symfony.com/
 .. _Pimple: http://pimple.sensiolabs.org/
 .. _Sinatra: http://www.sinatrarb.com/
 .. _Composer: http://getcomposer.org/
 .. _`download`: http://silex.sensiolabs.org/download
-.. _`silex/silex`: https://packagist.org/packages/silex/silex
