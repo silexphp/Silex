@@ -542,49 +542,39 @@ early::
 View Handlers
 -------------
 
-View Handlers allow you to intercept a controller result and transform it before
-it gets returned to the kernel.
+View Handlers allow you to intercept a controller result that is not a
+``Response`` and transform it before it gets returned to the kernel.
 
 To register a view handler, pass a callable (or string that can be resolved to a
 callable) to the view method. The callable should accept some sort of result
 from the controller::
 
-    $app->view(function (Response $response) {
-
-        $response->setContent('Set by view handler');
-
-        return $response;
+    $app->view(function (array $controllerResult) use ($app) {
+        return $app->json($controllerResult);
     });
 
-View Handlers also receive the ``Request`` as its second argument,
+View Handlers also receive the ``Request`` as their second argument,
 making them a good candidate for basic content negotiation::
 
-    $app->view(function (array $data, Request $request) use ($app) {
-
+    $app->view(function (array $controllerResult, Request $request) use ($app) {
         $acceptHeader = $request->headers->get('Accept');
         $bestFormat = $app['negotiator']->getBestFormat($acceptHeader, array('json', 'xml'));
 
         if ('json' === $bestFormat) {
-            return new JsonResponse($data);
+            return new JsonResponse($controllerResult);
         }
 
         if ('xml' === $bestFormat) {
-            return $app['serializer.xml']->renderResponse($data);
+            return $app['serializer.xml']->renderResponse($controllerResult);
         }
 
-        return $data;
+        return $controllerResult;
     });
 
 View Handlers will be examined in the order they are added to the application
 and Silex will use type hints to determine if a view handler should be used for
 the current result, continously using the return value of the last view handler
-as the input for the next::
-
-    $app->view(function (JsonResponse $response) use ($app) {
-        $response = $app['response_signer']->sign($response);
-
-        return $response;
-    });
+as the input for the next.
 
 .. note::
 
