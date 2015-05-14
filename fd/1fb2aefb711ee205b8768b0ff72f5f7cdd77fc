@@ -1,0 +1,57 @@
+---------------------------------------------------------------------------
+
+by davedevelopment at 2015-05-05T09:18:14Z
+
+Also worth mentioning @fabpot [disliked the typehinting aspect](https://github.com/silexphp/Silex/pull/1062#issuecomment-70408305). Happy to take it out, just need a final confirmation.
+
+---------------------------------------------------------------------------
+
+by fabpot at 2015-05-05T15:40:43Z
+
+I'm fine with the typehinting if people like it.
+
+---------------------------------------------------------------------------
+
+by Crell at 2015-05-05T21:56:56Z
+
+The type hinting is quite useful, IMO. It makes it very easy to return multiple object types from controllers and have the right corresponding view listener "just work".
+
+The branch looks good to me visually, although IMO it could stand some more comments, particularly in shouldRun(). :smile:  The fabbot disagrees though.
+
+---------------------------------------------------------------------------
+
+by henrikbjorn at 2015-05-07T07:24:53Z
+
+:-1: on the typehinting magick. Using a guard isnt that difficult to understand or explain. The magic typehinting is hard to explain and understand.
+
+---------------------------------------------------------------------------
+
+by anlutro at 2015-05-07T07:59:32Z
+
+I like typehinting magic, but Silex doesn't really do it much elsewhere, so for the sake of consistency I'd be inclined to leave it out.
+
+---------------------------------------------------------------------------
+
+by mediamonks-robert at 2015-05-07T08:06:32Z
+
+I +1 the typehinting since it's basically the same as the error handler and it's not hard to understand at all.
+
+---------------------------------------------------------------------------
+
+by Crell at 2015-05-08T05:27:18Z
+
+As Robert said, it's the same logic and largely the same code structure as exception handling already uses.  If it's not confusing for exceptions it shouldn't be confusing for view(), either.
+
+---------------------------------------------------------------------------
+
+by davedevelopment at 2015-05-08T12:48:28Z
+
+I don't really mind about having the type hinting per se, but I do think in it's present state, this PR is consistent with the existing error handler behaviour, which is itself a kind of special case of view handling.
+
+I've added some docs, comments on those appreciated as well.
+
+---------------------------------------------------------------------------
+
+by davedevelopment at 2015-05-11T08:50:56Z
+
+Replaced the ridiculously incorrect example, fixed the grammar and totally removed the last example, as I couldn't think of anything that wasn't a foobar type thing. Thanks @fabpot @GromNaN
