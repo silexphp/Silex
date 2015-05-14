@@ -90,7 +90,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
         $this['dispatcher_class'] = 'Symfony\\Component\\EventDispatcher\\EventDispatcher';
         $this['dispatcher'] = $this->share(function () use ($app) {
             /**
-             * @var EventDispatcherInterface
+             * @var EventDispatcherInterface $dispatcher
              */
             $dispatcher = new $app['dispatcher_class']();
 
@@ -415,6 +415,23 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
     public function error($callback, $priority = -8)
     {
         $this->on(KernelEvents::EXCEPTION, new ExceptionListenerWrapper($this, $callback), $priority);
+    }
+
+    /**
+     * Registers a view handler.
+     *
+     * View handlers are simple callables which take a controller result and the
+     * request as arguments, whenever a controller returns a value that is not
+     * an instance of Response. When this occurs, all suitable handlers will be
+     * called, until one returns a Response object.
+     *
+     * @param mixed $callback View handler callback
+     * @param int   $priority The higher this value, the earlier an event
+     *                        listener will be triggered in the chain (defaults to 0)
+     */
+    public function view($callback, $priority = 0)
+    {
+        $this->on(KernelEvents::VIEW, new ViewListenerWrapper($this, $callback), $priority);
     }
 
     /**

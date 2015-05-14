@@ -546,6 +546,48 @@ early::
         return new Response(...);
     });
 
+View Handlers
+-------------
+
+View Handlers allow you to intercept a controller result that is not a
+``Response`` and transform it before it gets returned to the kernel.
+
+To register a view handler, pass a callable (or string that can be resolved to a
+callable) to the view method. The callable should accept some sort of result
+from the controller::
+
+    $app->view(function (array $controllerResult) use ($app) {
+        return $app->json($controllerResult);
+    });
+
+View Handlers also receive the ``Request`` as their second argument,
+making them a good candidate for basic content negotiation::
+
+    $app->view(function (array $controllerResult, Request $request) use ($app) {
+        $acceptHeader = $request->headers->get('Accept');
+        $bestFormat = $app['negotiator']->getBestFormat($acceptHeader, array('json', 'xml'));
+
+        if ('json' === $bestFormat) {
+            return new JsonResponse($controllerResult);
+        }
+
+        if ('xml' === $bestFormat) {
+            return $app['serializer.xml']->renderResponse($controllerResult);
+        }
+
+        return $controllerResult;
+    });
+
+View Handlers will be examined in the order they are added to the application
+and Silex will use type hints to determine if a view handler should be used for
+the current result, continously using the return value of the last view handler
+as the input for the next.
+
+.. note::
+
+    You must ensure that Silex receives a ``Response`` or a string as the result of
+    the last view handler (or controller) to be run.
+
 Redirects
 ---------
 
