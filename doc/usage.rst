@@ -580,7 +580,7 @@ making them a good candidate for basic content negotiation::
 
 View Handlers will be examined in the order they are added to the application
 and Silex will use type hints to determine if a view handler should be used for
-the current result, continously using the return value of the last view handler
+the current result, continuously using the return value of the last view handler
 as the input for the next.
 
 .. note::

@@ -4,6 +4,7 @@ Changelog
 1.3.0 (2015-XX-XX)
 ------------------
 
+* added view handlers
 * added support for the OPTIONS HTTP method
 * added caching for the Translator provider
 * deprecated `$app['exception_handler']->disable()` in favor of `unset($app['exception_handler'])`
