@@ -61,7 +61,11 @@ resources to ``index.php``:
         }
 
         location @site {
-            fastcgi_pass   unix:/var/run/php-fpm/www.sock;
+            # the ubuntu default
+            fastcgi_pass   unix:/var/run/php5-fpm.sock;
+            # for running on centos
+            #fastcgi_pass   unix:/var/run/php-fpm/www.sock;
+            
             include fastcgi_params;
             fastcgi_param  SCRIPT_FILENAME $document_root/index.php;
             #uncomment when running via https
