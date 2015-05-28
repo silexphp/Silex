@@ -23,7 +23,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 trait SecurityTrait
 {
     /**
-     * Gets a user from the Security Context.
+     * Gets a user from the Security context.
      *
      * @return mixed
      *
@@ -31,15 +31,7 @@ trait SecurityTrait
      */
     public function user()
     {
-        if (null === $token = $this['security.token_storage']->getToken()) {
-            return;
-        }
-
-        if (!is_object($user = $token->getUser())) {
-            return;
-        }
-
-        return $user;
+        return $this['user'];
     }
 
     /**
