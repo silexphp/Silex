@@ -4,6 +4,7 @@ Changelog
 1.3.0 (2015-XX-XX)
 ------------------
 
+* added a `$app['user']` to get the current user (security provider)
 * added view handlers
 * added support for the OPTIONS HTTP method
 * added caching for the Translator provider
