@@ -23,26 +23,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 trait SecurityTrait
 {
     /**
-     * Gets a user from the Security Context.
-     *
-     * @return mixed
-     *
-     * @see TokenInterface::getUser()
-     */
-    public function user()
-    {
-        if (null === $token = $this['security.token_storage']->getToken()) {
-            return;
-        }
-
-        if (!is_object($user = $token->getUser())) {
-            return;
-        }
-
-        return $user;
-    }
-
-    /**
      * Encodes the raw password.
      *
      * @param UserInterface $user     A UserInterface instance

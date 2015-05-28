@@ -43,6 +43,8 @@ Services
 
 * **security.encoder.digest**: The encoder to use by default for all users.
 
+* **user**: Returns the current user
+
 .. note::
 
     The service provider defines many other services that are used internally
@@ -638,8 +640,6 @@ Traits
 ------
 
 ``Silex\Application\SecurityTrait`` adds the following shortcuts:
-
-* **user**: Returns the current user.
 
 * **encodePassword**: Encode a given password.
 

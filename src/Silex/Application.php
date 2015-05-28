@@ -225,6 +225,19 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     }
 
     /**
+     * Maps an OPTIONS request to a callable.
+     *
+     * @param string $pattern Matched route pattern
+     * @param mixed  $to      Callback that returns the response when matched
+     *
+     * @return Controller
+     */
+    public function options($pattern, $to = null)
+    {
+        return $this['controllers']->options($pattern, $to);
+    }
+
+    /**
      * Maps a PATCH request to a callable.
      *
      * @param string $pattern Matched route pattern
@@ -363,6 +376,23 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     public function error($callback, $priority = -8)
     {
         $this->on(KernelEvents::EXCEPTION, new ExceptionListenerWrapper($this, $callback), $priority);
+    }
+
+    /**
+     * Registers a view handler.
+     *
+     * View handlers are simple callables which take a controller result and the
+     * request as arguments, whenever a controller returns a value that is not
+     * an instance of Response. When this occurs, all suitable handlers will be
+     * called, until one returns a Response object.
+     *
+     * @param mixed $callback View handler callback
+     * @param int   $priority The higher this value, the earlier an event
+     *                        listener will be triggered in the chain (defaults to 0)
+     */
+    public function view($callback, $priority = 0)
+    {
+        $this->on(KernelEvents::VIEW, new ViewListenerWrapper($this, $callback), $priority);
     }
 
     /**

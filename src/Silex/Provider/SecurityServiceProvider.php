@@ -105,6 +105,18 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
             };
         }
 
+        $app['user'] = $app->factory(function ($app) {
+            if (null === $token = $app['security.token_storage']->getToken()) {
+                return;
+            }
+
+            if (!is_object($user = $token->getUser())) {
+                return;
+            }
+
+            return $user;
+        });
+
         $app['security.authentication_manager'] = function ($app) {
             $manager = new AuthenticationProviderManager($app['security.authentication_providers']);
             $manager->setEventDispatcher($app['dispatcher']);
