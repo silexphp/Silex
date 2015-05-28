@@ -1,0 +1,16 @@
+---------------------------------------------------------------------------
+
+by J7mbo at 2015-05-26T09:13:31Z
+
+I thought using `$app['security.token_storage']` was deprecated, and would throw out some `E_DEPRECATED`s... or am I mistaken?
+
+---------------------------------------------------------------------------
+
+by Kilte at 2015-05-26T14:57:07Z
+
+@J7mbo
+>or am I mistaken?
+
+This.
+
+`security_context` was deprecated.
