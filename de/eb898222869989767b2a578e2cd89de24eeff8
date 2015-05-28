@@ -1,0 +1,17 @@
+---------------------------------------------------------------------------
+
+by fabpot at 2015-05-20T07:47:43Z
+
+But then, what about other versions? I think we should keep both paths and add a comment about which distrib is using what.
+
+---------------------------------------------------------------------------
+
+by victorhaggqvist at 2015-05-20T16:29:41Z
+
+That is likely a good idea. From what I could catch online the one present atm,  `unix:/var/run/php-fpm/www.sock`, would be the CentOS default, right?
+
+---------------------------------------------------------------------------
+
+by victorhaggqvist at 2015-05-27T18:39:36Z
+
+Maybe something like that. Don't know which one would be better as the default uncommented, but did set it as ubuntu now.
