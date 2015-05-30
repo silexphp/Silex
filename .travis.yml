@@ -2,7 +2,7 @@ language: php
 
 before_script:
     # symfony/*
-    - sh -c "if [ '$SYMFONY_DEPS_VERSION' = '2.8' ]; then sed -i 's/~2.7/2.8.*@dev/g' composer.json; composer update --dev --prefer-source; fi"
+    - sh -c "if [ '$SYMFONY_DEPS_VERSION' = '2.8' ]; then sed -i 's/~2.6/2.8.*@dev/g' composer.json; composer update --dev --prefer-source; fi"
     - sh -c "if [ '$SYMFONY_DEPS_VERSION' = '2.7' ]; then sed -i 's/~2.6/2.7.*@dev/g' composer.json; composer update --dev --prefer-source; fi"
     - composer install --dev --prefer-source
 
