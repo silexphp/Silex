@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.3.0 (2015-XX-XX)
+1.3.0 (2015-06-05)
 ------------------
 
 * added a `$app['user']` to get the current user (security provider)
