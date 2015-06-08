@@ -36,8 +36,7 @@ class LocaleListener extends BaseLocaleListener
     public function onKernelRequest(GetResponseEvent $event)
     {
         parent::onKernelRequest($event);
-        if($this->app['locale'] === null)
-        {
+        if($this->app['locale'] === null){
           $this->app['locale'] = $event->getRequest()->getLocale();
         }
     }
