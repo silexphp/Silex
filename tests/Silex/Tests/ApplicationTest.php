@@ -352,6 +352,25 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(array('route_triggered', 'middleware_triggered', 'after_triggered'), $middlewareTarget);
     }
 
+    public function testRoutesMiddlewaresMultipleRequests()
+    {
+        $actualCalls = array('get' => 0, 'before' => 0);
+        $expectedCalls = array('get' => 5, 'before' => 5);
+
+        $app = new Application();
+
+        $app->get('/', function () use ($app, &$actualCalls) {
+            $actualCalls['get']++;
+        })->before(function () use ($app, &$actualCalls) {
+            $actualCalls['before']++;
+        });
+
+        for ($i = 0; $i < 5; $i++) {
+            $app->handle(Request::create('/'));
+        }
+        $this->assertEquals($expectedCalls, $actualCalls);
+    }
+
     public function testFinishFilter()
     {
         $containerTarget = array();

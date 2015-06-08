@@ -11,6 +11,7 @@
 
 namespace Silex\Tests;
 
+use Silex\Application;
 use Silex\Controller;
 use Silex\ControllerCollection;
 use Silex\Exception\ControllerFrozenException;
@@ -143,7 +144,10 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
         $controller = $controllers->match('/{id}/{name}/{extra}', function () {})->before('mid2');
         $controllers->before('mid3');
 
-        $this->assertEquals(array('mid1', 'mid2', 'mid3'), $controller->getRoute()->getOption('_before_middlewares'));
+        $this->assertEquals(
+            array('mid1', 'mid2', 'mid3'),
+            array_values(iterator_to_array($controller->getRoute()->getOption('_before_middlewares')))
+        );
     }
 
     public function testAfter()
@@ -153,7 +157,44 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
         $controller = $controllers->match('/{id}/{name}/{extra}', function () {})->after('mid2');
         $controllers->after('mid3');
 
-        $this->assertEquals(array('mid1', 'mid2', 'mid3'), $controller->getRoute()->getOption('_after_middlewares'));
+        $this->assertEquals(
+            array('mid1', 'mid2', 'mid3'),
+            array_values(iterator_to_array($controller->getRoute()->getOption('_after_middlewares')))
+        );
+    }
+
+    public function testBeforeMount()
+    {
+        $container = new ControllerCollection(new Route());
+        $container->before('mid1', Application::EARLY_EVENT);
+        $controllers = new ControllerCollection(new Route());
+        $controllers->before('mid2');
+        $controller = $controllers->match('/{id}/{name}/{extra}', function () {})->before('mid3');
+        $controllers->before('mid4');
+        $container->mount('/prefix', $controllers);
+        $container->before('mid5');
+
+        $this->assertEquals(
+            array('mid1', 'mid2', 'mid3', 'mid4', 'mid5'),
+            array_values(iterator_to_array($controller->getRoute()->getOption('_before_middlewares')))
+        );
+    }
+
+    public function testAfterMount()
+    {
+        $container = new ControllerCollection(new Route());
+        $container->after('mid5', Application::LATE_EVENT);
+        $controllers = new ControllerCollection(new Route());
+        $controllers->after('mid1');
+        $controller = $controllers->match('/{id}/{name}/{extra}', function () {})->after('mid2');
+        $controllers->after('mid3');
+        $container->mount('/prefix', $controllers);
+        $container->after('mid4');
+
+        $this->assertEquals(
+            array('mid1', 'mid2', 'mid3', 'mid4', 'mid5'),
+            array_values(iterator_to_array($controller->getRoute()->getOption('_after_middlewares')))
+        );
     }
 
     public function testRouteExtension()

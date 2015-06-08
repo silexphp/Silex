@@ -158,13 +158,15 @@ class Route extends BaseRoute
      * Sets a callback to handle before triggering the route callback.
      *
      * @param mixed $callback A PHP callback to be triggered when the Route is matched, just before the route callback
+     * @param int     $priority The higher this value, the earlier an event
+     *                          listener will be triggered in the chain (defaults to 0)
      *
      * @return Route $this The current Route instance
      */
-    public function before($callback)
+    public function before($callback, $priority = 0)
     {
-        $callbacks = $this->getOption('_before_middlewares');
-        $callbacks[] = $callback;
+        $callbacks = $this->getOption('_before_middlewares') ?: new \SplPriorityQueue();
+        $callbacks->insert($callback, array($priority, -$callbacks->count()));
         $this->setOption('_before_middlewares', $callbacks);
 
         return $this;
@@ -174,15 +176,32 @@ class Route extends BaseRoute
      * Sets a callback to handle after the route callback.
      *
      * @param mixed $callback A PHP callback to be triggered after the route callback
+     * @param int     $priority The higher this value, the earlier an event
+     *                          listener will be triggered in the chain (defaults to 0)
      *
      * @return Route $this The current Route instance
      */
-    public function after($callback)
+    public function after($callback, $priority = 0)
     {
-        $callbacks = $this->getOption('_after_middlewares');
-        $callbacks[] = $callback;
+        $callbacks = $this->getOption('_after_middlewares') ?: new \SplPriorityQueue();
+        $callbacks->insert($callback, array($priority, -$callbacks->count()));
         $this->setOption('_after_middlewares', $callbacks);
 
         return $this;
+    }
+
+    public function __clone()
+    {
+        $this->cloneOptions(array('_before_middlewares', '_after_middlewares'));
+    }
+
+    private function cloneOptions($options)
+    {
+        foreach ($options as $option) {
+            $value = $this->getOption($option);
+            if (isset($value)) {
+                $this->setOption($option, clone $value);
+            }
+        }
     }
 }
