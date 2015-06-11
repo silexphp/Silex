@@ -29,7 +29,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RequestContext;
 use Silex\EventListener\LocaleListener;
 use Silex\EventListener\MiddlewareListener;
@@ -66,8 +65,12 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
 
         $this['logger'] = null;
 
-        $this['routes'] = $this->share(function () {
-            return new RouteCollection();
+        $this['routes_class'] = 'Symfony\\Component\\Routing\\RouteCollection';
+        $this['routes_factory'] = function () use ($app) {
+            return new $app['routes_class']();
+        };
+        $this['routes'] = $this->share(function () use ($app) {
+            return $app['routes_factory'];
         });
 
         $this['controllers'] = $this->share(function () use ($app) {
@@ -75,7 +78,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
         });
 
         $this['controllers_factory'] = function () use ($app) {
-            return new ControllerCollection($app['route_factory']);
+            return new ControllerCollection($app, $app['route_factory']);
         };
 
         $this['route_class'] = 'Silex\\Route';

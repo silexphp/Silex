@@ -486,7 +486,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testMountShouldReturnSelf()
     {
         $app = new Application();
-        $mounted = new ControllerCollection(new Route());
+        $mounted = new ControllerCollection($app, new Route());
         $mounted->get('/{name}', function ($name) { return new Response($name); });
 
         $this->assertSame($app, $app->mount('/hello', $mounted));
@@ -495,7 +495,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testMountPreservesOrder()
     {
         $app = new Application();
-        $mounted = new ControllerCollection(new Route());
+        $mounted = new ControllerCollection($app, new Route());
         $mounted->get('/mounted')->bind('second');
 
         $app->get('/before')->bind('first');
