@@ -70,6 +70,11 @@ use it by making your test extend it::
         ...
     }
 
+.. caution::
+
+    If you need to override the ``setUp()`` method, don't forget to call the
+    parent (``parent::setUp()``) to call the Silex default setup.
+
 .. note::
 
     If you want to use the Symfony ``WebTestCase`` class you will need to
@@ -80,10 +85,11 @@ use it by making your test extend it::
         composer require --dev symfony/browser-kit symfony/css-selector
 
 For your WebTestCase, you will have to implement a ``createApplication``
-method, which returns your application. It will probably look like this::
+method, which returns your application instance::
 
         public function createApplication()
         {
+            // app.php must return an Application instance
             return require __DIR__.'/path/to/app.php';
         }
 
