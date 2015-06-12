@@ -38,15 +38,15 @@ class SessionServiceProvider implements ServiceProviderInterface, EventListenerP
         $app['session.test'] = false;
 
         $app['session'] = function ($app) {
-            if (!isset($app['session.storage'])) {
-                if ($app['session.test']) {
-                    $app['session.storage'] = $app['session.storage.test'];
-                } else {
-                    $app['session.storage'] = $app['session.storage.native'];
-                }
+            return new Session($app['session.storage']);
+        };
+
+        $app['session.storage'] = function ($app) {
+            if ($app['session.test']) {
+                return $app['session.storage.test'];
             }
 
-            return new Session($app['session.storage']);
+            return $app['session.storage.native'];
         };
 
         $app['session.storage.handler'] = function ($app) {
@@ -61,7 +61,7 @@ class SessionServiceProvider implements ServiceProviderInterface, EventListenerP
         };
 
         $app['session.listener'] = function ($app) {
-            return new SessionListener($app);
+            return new SessionListener($app, $app['session.attribute_bag'], $app['session.flash_bag']);
         };
 
         $app['session.storage.test'] = function () {
@@ -75,6 +75,8 @@ class SessionServiceProvider implements ServiceProviderInterface, EventListenerP
         $app['session.storage.options'] = array();
         $app['session.default_locale'] = 'en';
         $app['session.storage.save_path'] = null;
+        $app['session.attribute_bag'] = null;
+        $app['session.flash_bag'] = null;
     }
 
     public function subscribe(Container $app, EventDispatcherInterface $dispatcher)
