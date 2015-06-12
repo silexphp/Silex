@@ -30,8 +30,8 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
     public function testRegister()
     {
         $app = new Application();
-
         $app->register(new ValidatorServiceProvider());
+        $app->register(new FormServiceProvider());
 
         return $app;
     }
@@ -40,9 +40,9 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app['custom.validator'] = $app->share(function () {
+        $app['custom.validator'] = function() {
             return new CustomValidator();
-        });
+        };
 
         $app->register(new ValidatorServiceProvider(), array(
             'validator.validator_service_ids' => array(
@@ -58,7 +58,7 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstraintValidatorFactory($app)
     {
-        $this->assertInstanceOf('Silex\ConstraintValidatorFactory', $app['validator.validator_factory']);
+        $this->assertInstanceOf('Silex\Provider\Validator\ConstraintValidatorFactory', $app['validator.validator_factory']);
 
         $validator = $app['validator.validator_factory']->getInstance(new Custom());
         $this->assertInstanceOf('Silex\Tests\Provider\ValidatorServiceProviderTest\Constraint\CustomValidator', $validator);
@@ -78,9 +78,6 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testValidatorConstraint($email, $isValid, $nbGlobalError, $nbEmailError, $app)
     {
-        $app->register(new ValidatorServiceProvider());
-        $app->register(new FormServiceProvider());
-
         $constraints = new Assert\Collection(array(
             'email' => array(
                 new Assert\NotBlank(),

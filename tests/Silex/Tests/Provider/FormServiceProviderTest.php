@@ -17,7 +17,6 @@ use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\AbstractTypeExtension;
-use Symfony\Component\Form\Extension\Csrf\CsrfProvider\CsrfProviderInterface;
 use Symfony\Component\Form\FormTypeGuesserChain;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -41,11 +40,11 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $app->register(new FormServiceProvider());
 
-        $app['form.types'] = $app->share($app->extend('form.types', function ($extensions) {
+        $app->extend('form.types', function ($extensions) {
             $extensions[] = new DummyFormType();
 
             return $extensions;
-        }));
+        });
 
         $form = $app['form.factory']->createBuilder('form', array())
             ->add('dummy', 'dummy')
@@ -60,11 +59,11 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $app->register(new FormServiceProvider());
 
-        $app['form.type.extensions'] = $app->share($app->extend('form.type.extensions', function ($extensions) {
+        $app->extend('form.type.extensions', function($extensions) {
             $extensions[] = new DummyFormTypeExtension();
 
             return $extensions;
-        }));
+        });
 
         $form = $app['form.factory']->createBuilder('form', array())
             ->add('file', 'file', array('image_path' => 'webPath'))
@@ -79,11 +78,11 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $app->register(new FormServiceProvider());
 
-        $app['form.type.guessers'] = $app->share($app->extend('form.type.guessers', function ($guessers) {
+        $app->extend('form.type.guessers', function($guessers) {
             $guessers[] = new FormTypeGuesserChain(array());
 
             return $guessers;
-        }));
+        });
 
         $this->assertInstanceOf('Symfony\Component\Form\FormFactory', $app['form.factory']);
     }
@@ -103,9 +102,9 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
         );
         $app['locale'] = 'de';
 
-        $app['form.csrf_provider'] = $app->share(function () {
+        $app['form.csrf_provider'] = function () {
             return new FakeCsrfProvider();
-        });
+        };
 
         $form = $app['form.factory']->createBuilder('form', array())
             ->getForm();
@@ -190,40 +189,24 @@ if (method_exists('Symfony\Component\Form\AbstractType', 'configureOptions')) {
     }
 }
 
-if (!class_exists('Symfony\Component\Form\Extension\DataCollector\DataCollectorExtension')) {
-    // Symfony 2.3 only
-    class FakeCsrfProvider implements CsrfProviderInterface
+class FakeCsrfProvider implements CsrfTokenManagerInterface
+{
+    public function getToken($tokenId)
     {
-        public function generateCsrfToken($intention)
-        {
-            return $intention.'123';
-        }
-
-        public function isCsrfTokenValid($intention, $token)
-        {
-            return $token === $this->generateCsrfToken($intention);
-        }
+        return new CsrfToken($tokenId, '123');
     }
-} else {
-    class FakeCsrfProvider implements CsrfTokenManagerInterface
+
+    public function refreshToken($tokenId)
     {
-        public function getToken($tokenId)
-        {
-            return new CsrfToken($tokenId, '123');
-        }
+        return new CsrfToken($tokenId, '123');
+    }
 
-        public function refreshToken($tokenId)
-        {
-            return new CsrfToken($tokenId, '123');
-        }
+    public function removeToken($tokenId)
+    {
+    }
 
-        public function removeToken($tokenId)
-        {
-        }
-
-        public function isTokenValid(CsrfToken $token)
-        {
-            return '123' === $token->getValue();
-        }
+    public function isTokenValid(CsrfToken $token)
+    {
+        return '123' === $token->getValue();
     }
 }

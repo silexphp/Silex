@@ -1,12 +1,24 @@
 Changelog
 =========
 
-1.3.1 (2015-XX-XX)
+2.0.0 (2014-XX-XX)
 ------------------
 
-* n/a
+* bumped minimum version of PHP to 5.5.0
+* Updated Pimple to 3.0
+* Updated session listeners to extends HttpKernel ones
+* [BC BREAK] Locale management has been moved to LocaleServiceProvider which must be registered
+  if you want Silex to manage your locale (must also be registered for the translation service provider)
+* [BC BREAK] Provider interfaces moved to Silex\Api namespace, published as
+  separate package via subtree split
+* [BC BREAK] ServiceProviderInterface split in to EventListenerProviderInterface
+  and BootableProviderInterface
+* [BC BREAK] Service Provider support files moved under Silex\Provider
+  namespace, allowing publishing as separate package via sub-tree split
+* ``monolog.exception.logger_filter`` option added to Monolog service provider
+* [BC BREAK] ``$app['request']`` service removed, use ``$app['request_stack']`` instead
 
-1.3.0 (2015-06-05)
+1.3.0 (2015-XX-XX)
 ------------------
 
 * added a `$app['user']` to get the current user (security provider)
@@ -14,14 +26,9 @@ Changelog
 * added support for the OPTIONS HTTP method
 * added caching for the Translator provider
 * deprecated `$app['exception_handler']->disable()` in favor of `unset($app['exception_handler'])`
-* made Silex compatible with Symfony 2.7 an 2.8 (and keep compatibility with Symfony 2.3, 2.5, and 2.6)
+* made Silex compatible with Symfony 2.7 (and keep compatibility with Symfony 2.3, 2.5, and 2.6)
 * removed deprecated TwigCoreExtension class (register the new HttpFragmentServiceProvider instead)
 * bumped minimum version of PHP to 5.3.9
-
-1.2.5 (2015-06-04)
-------------------
-
-* no code changes (last version of the 1.2 branch)
 
 1.2.4 (2015-04-11)
 ------------------

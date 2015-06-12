@@ -9,7 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Silex;
+namespace Silex\Api;
+
+use Silex\Application;
+use Silex\ControllerCollection;
 
 /**
  * Interface for controller providers.
