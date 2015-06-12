@@ -176,6 +176,24 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
         $controller = new ControllerCollection($route);
         $controller->bar();
     }
+
+    public function testNestedCollectionRouteCallbacks()
+    {
+        $cl1 = new ControllerCollection(new MyRoute1());
+        $cl2 = new ControllerCollection(new MyRoute1());
+
+        $c1 = $cl2->match('/c1', function () {});
+        $cl1->mount('/foo', $cl2);
+        $c2 = $cl2->match('/c2', function () {});
+        $cl1->before('before');
+        $c3 = $cl2->match('/c3', function () {});
+
+        $cl1->flush();
+
+        $this->assertEquals(array('before'), $c1->getRoute()->getOption('_before_middlewares'));
+        $this->assertEquals(array('before'), $c2->getRoute()->getOption('_before_middlewares'));
+        $this->assertEquals(array('before'), $c3->getRoute()->getOption('_before_middlewares'));
+    }
 }
 
 class MyRoute1 extends Route

@@ -171,9 +171,7 @@ class ControllerCollection
         call_user_func_array(array($this->defaultRoute, $method), $arguments);
 
         foreach ($this->controllers as $controller) {
-            if ($controller instanceof Controller) {
-                call_user_func_array(array($controller, $method), $arguments);
-            }
+            call_user_func_array(array($controller, $method), $arguments);
         }
 
         return $this;
