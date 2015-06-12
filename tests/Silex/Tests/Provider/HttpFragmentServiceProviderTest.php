@@ -21,10 +21,6 @@ class HttpFragmentServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
     public function testRenderFunction()
     {
-        if (!class_exists('Symfony\Component\HttpFoundation\RequestStack')) {
-            $this->markTestSkipped('HttpFragmentServiceProvider is not available on Symfony <2.4');
-        }
-
         $app = new Application();
 
         $app->register(new HttpFragmentServiceProvider());
