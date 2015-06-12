@@ -50,7 +50,7 @@ class ExceptionListenerWrapper
 
         $code = $exception instanceof HttpExceptionInterface ? $exception->getStatusCode() : 500;
 
-        $response = call_user_func($this->callback, $exception, $code);
+        $response = call_user_func($this->callback, $exception, $event->getRequest(), $code);
 
         $this->ensureResponse($response, $event);
     }

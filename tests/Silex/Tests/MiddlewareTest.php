@@ -191,8 +191,8 @@ class MiddlewareTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->before(function () use ($app) {
-            $app['project'] = $app['request']->get('project');
+        $app->before(function (Request $request) use ($app) {
+            $app['project'] = $request->get('project');
         });
 
         $app->match('/foo/{project}', function () use ($app) {

@@ -18,9 +18,9 @@ using the bundled handler, but each with a different channel.
     });
 
     foreach (array('auth', 'payments', 'stats') as $channel) {
-        $app['monolog.'.$channel] = $app->share(function ($app) use ($channel) {
+        $app['monolog.'.$channel] = function ($app) use ($channel) {
             return $app['monolog.factory']($channel);
-        });
+        };
     }
 
 As your application grows, or your logging needs for certain areas of the
@@ -31,13 +31,13 @@ particular service separately, including your customizations.
 
     use Monolog\Handler\StreamHandler;
 
-    $app['monolog.payments'] = $app->share(function ($app) {
+    $app['monolog.payments'] = function ($app) {
         $log = new $app['monolog.logger.class']('payments');
         $handler = new StreamHandler($app['monolog.payments.logfile'], $app['monolog.payment.level']);
         $log->pushHandler($handler);
 
         return $log;
-    });
+    };
 
 Alternatively, you could attempt to make the factory more complicated, and rely
 on some conventions, such as checking for an array of handlers registered with
@@ -62,8 +62,8 @@ the container with the channel name, defaulting to the bundled handler.
         return $log;
     });
 
-    $app['monolog.payments.handlers'] = $app->share(function ($app) {
+    $app['monolog.payments.handlers'] = function ($app) {
         return array(
             new StreamHandler(__DIR__.'/../payments.log', Logger::DEBUG),
         );
-    });
+    };
