@@ -42,10 +42,12 @@ class ControllerCollection
     protected $defaultRoute;
     protected $defaultController;
     protected $prefix;
+    protected $routesFactory;
 
-    public function __construct(Route $defaultRoute)
+    public function __construct(Route $defaultRoute, $routesFactory = null)
     {
         $this->defaultRoute = $defaultRoute;
+        $this->routesFactory = $routesFactory;
         $this->defaultController = function (Request $request) {
             throw new \LogicException(sprintf('The "%s" route must have code to run when it matches.', $request->attributes->get('_route')));
         };
@@ -186,7 +188,11 @@ class ControllerCollection
      */
     public function flush($prefix = '')
     {
-        $routes = new RouteCollection();
+        if (null === $this->routesFactory) {
+            $routes = new RouteCollection();
+        } else {
+            $routes = $this->routesFactory;
+        }
 
         foreach ($this->controllers as $controller) {
             if ($controller instanceof Controller) {

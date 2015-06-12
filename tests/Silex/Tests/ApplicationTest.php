@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\Routing\RouteCollection;
 
 /**
  * Application test cases.
@@ -635,6 +636,21 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('Hello view listener', $response->getContent());
     }
+
+    public function testDefaultRoutesFactory()
+    {
+        $app = new Application();
+        $this->assertInstanceOf('Symfony\Component\Routing\RouteCollection', $app['routes']);
+    }
+
+    public function testOverriddenRoutesFactory()
+    {
+        $app = new Application();
+        $app['routes_factory'] = $app->factory(function () {
+            return new RouteCollectionSubClass();
+        });
+        $this->assertInstanceOf('Silex\Tests\RouteCollectionSubClass', $app['routes']);
+    }
 }
 
 class FooController
@@ -651,4 +667,8 @@ class IncorrectControllerCollection implements ControllerProviderInterface
     {
         return;
     }
+}
+
+class RouteCollectionSubClass extends RouteCollection
+{
 }

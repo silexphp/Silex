@@ -64,8 +64,11 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
 
         $app = $this;
 
-        $this['routes'] = function () {
+        $this['routes_factory'] = $this->factory(function () {
             return new RouteCollection();
+        });
+        $this['routes'] = function () use ($app) {
+            return $app['routes_factory'];
         };
 
         $this['controllers'] = function () use ($app) {
@@ -73,7 +76,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
         };
 
         $this['controllers_factory'] = $this->factory(function () use ($app) {
-            return new ControllerCollection($app['route_factory']);
+            return new ControllerCollection($app['route_factory'], $app['routes_factory']);
         });
 
         $this['route_class'] = 'Silex\\Route';
