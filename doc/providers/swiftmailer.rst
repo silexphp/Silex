@@ -12,8 +12,12 @@ Parameters
 
 * **swiftmailer.use_spool**: A boolean to specify whether or not to use the
   memory spool, defaults to true. 
+
 * **swiftmailer.options**: An array of options for the default SMTP-based
   configuration.
+
+* **swiftmailer.sender_address**: If set, all messages will be delivered with
+  this address as the "return path" address.
 
   The following options can be set:
 
