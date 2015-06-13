@@ -24,9 +24,8 @@
         "silex/silex": "For BootableProviderInterface and ControllerProviderInterface"
     },
     "autoload": {
-        "psr-0": { "Silex\\Api": "" }
+        "psr-4": { "Silex\\Api\\": "" }
     },
-    "target-dir": "Silex/Api",
     "extra": {
         "branch-alias": {
             "dev-master": "2.0.x-dev"
