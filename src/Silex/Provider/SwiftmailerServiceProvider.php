@@ -56,12 +56,12 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface, EventListe
             );
 
             $options = $app['swiftmailer.options'] = array_replace(array(
-                'host'       => 'localhost',
-                'port'       => 25,
-                'username'   => '',
-                'password'   => '',
+                'host' => 'localhost',
+                'port' => 25,
+                'username' => '',
+                'password' => '',
                 'encryption' => null,
-                'auth_mode'  => null,
+                'auth_mode' => null,
             ), $app['swiftmailer.options']);
 
             $transport->setHost($options['host']);
@@ -70,6 +70,10 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface, EventListe
             $transport->setUsername($options['username']);
             $transport->setPassword($options['password']);
             $transport->setAuthMode($options['auth_mode']);
+
+            if (null !== $app['swiftmailer.sender_address']) {
+                $transport->registerPlugin(new \Swift_Plugins_ImpersonatePlugin($app['swiftmailer.sender_address']));
+            }
 
             return $transport;
         };
@@ -89,6 +93,8 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface, EventListe
         $app['swiftmailer.transport.eventdispatcher'] = function () {
             return new \Swift_Events_SimpleEventDispatcher();
         };
+
+        $app['swiftmailer.sender_address'] = null;
     }
 
     public function subscribe(Container $app, EventDispatcherInterface $dispatcher)
