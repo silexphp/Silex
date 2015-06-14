@@ -13,13 +13,10 @@ Parameters
 Services
 --------
 
-* **security**: The main entry point for the security provider. Use it to get
-  the current user token (only for Symfony up to 2.5).
-
-* **security.token_storage**: Gives access to the user token (Symfony 2.6+).
+* **security.token_storage**: Gives access to the user token.
 
 * **security.authorization_checker**: Allows to check authorizations for the
-  users (Symfony 2.6+).
+  users.
 
 * **security.authentication_manager**: An instance of
   `AuthenticationProviderManager
@@ -102,11 +99,7 @@ Accessing the current User
 The current user information is stored in a token that is accessible via the
 ``security`` service::
 
-    // Symfony 2.6+
     $token = $app['security.token_storage']->getToken();
-
-    // Symfony 2.3/2.5
-    $token = $app['security']->getToken();
 
 If there is no information about the user, the token is ``null``. If the user
 is known, you can get it with a call to ``getUser()``::
@@ -338,13 +331,7 @@ Checking User Roles
 To check if a user is granted some role, use the ``isGranted()`` method on the
 security context::
 
-    // Symfony 2.6+
     if ($app['security.authorization_checker']->isGranted('ROLE_ADMIN')) {
-        // ...
-    }
-
-    // Symfony 2.3/2.5
-    if ($app['security']->isGranted('ROLE_ADMIN')) {
         // ...
     }
 
@@ -583,7 +570,6 @@ use in your configuration::
 
         // define the authentication listener object
         $app['security.authentication_listener.'.$name.'.wsse'] = function () use ($app) {
-            // use 'security' instead of 'security.token_storage' on Symfony <2.6
             return new WsseListener($app['security.token_storage'], $app['security.authentication_manager']);
         };
 
