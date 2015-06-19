@@ -182,7 +182,7 @@ Other methods
 ~~~~~~~~~~~~~
 
 You can create controllers for most HTTP methods. Just call one of these
-methods on your application: ``get``, ``post``, ``put``, ``delete``::
+methods on your application: ``get``, ``post``, ``put``, ``delete``, ``patch``, ``options``::
 
     $app->put('/blog/{id}', function ($id) {
         // ...
@@ -509,8 +509,8 @@ setting a more specific type hint for the Closure argument::
         return new Response('Error', 404 /* ignored */, array('X-Status-Code' => 200));
 
 If you want to use a separate error handler for logging, make sure you register
-it before the response error handlers, because once a response is returned, the
-following handlers are ignored.
+it with a higher priority then response error handlers, because once a response
+is returned, the following handlers are ignored.
 
 .. note::
 
@@ -545,6 +545,8 @@ early::
 
         return new Response(...);
     });
+
+You can convert errors to ``Exceptions``, check out the cookbook :doc:`chapter <cookbook/error_handler>` for details.
 
 View Handlers
 -------------
@@ -763,7 +765,7 @@ Cross-Site-Scripting attacks.
       });
 
   If you use the Twig template engine, you should use its escaping or even
-  auto-escaping mechanisms.
+  auto-escaping mechanisms. Check out the *Providers* :doc:`chapter <providers/twig>` for details.
 
 * **Escaping JSON**: If you want to provide data in JSON format you should
   use the Silex ``json`` function::
