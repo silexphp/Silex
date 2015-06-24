@@ -16,10 +16,6 @@ contribute a provider, just follow these steps:
   <https://help.github.com/articles/creating-a-pull-request>`_, to the correct
   `target branch`_.
 
-If you have a big change or would like to discuss something,
-please join us on the `mailing list
-<http://groups.google.com/group/silex-php>`_.
-
 .. note::
 
     Any code you contribute must be licensed under the MIT
