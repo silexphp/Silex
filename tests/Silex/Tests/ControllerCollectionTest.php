@@ -11,10 +11,12 @@
 
 namespace Silex\Tests;
 
+use Silex\Application;
 use Silex\Controller;
 use Silex\ControllerCollection;
 use Silex\Exception\ControllerFrozenException;
 use Silex\Route;
+use Symfony\Component\Routing\RouteCollection;
 
 /**
  * ControllerCollection test cases.
@@ -194,6 +196,25 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array('before'), $c2->getRoute()->getOption('_before_middlewares'));
         $this->assertEquals(array('before'), $c3->getRoute()->getOption('_before_middlewares'));
     }
+
+    public function testRoutesFactoryOmitted()
+    {
+        $controllers = new ControllerCollection(new Route());
+        $routes = $controllers->flush();
+        $this->assertInstanceOf('Symfony\Component\Routing\RouteCollection', $routes);
+    }
+
+    public function testRoutesFactoryInConstructor()
+    {
+        $app = new Application();
+        $app['routes_factory'] = $app->factory(function () {
+            return new RouteCollectionSubClass2();
+        });
+
+        $controllers = new ControllerCollection(new Route(), $app['routes_factory']);
+        $routes = $controllers->flush();
+        $this->assertInstanceOf('Silex\Tests\RouteCollectionSubClass2', $routes);
+    }
 }
 
 class MyRoute1 extends Route
@@ -204,4 +225,8 @@ class MyRoute1 extends Route
     {
         $this->foo = $value;
     }
+}
+
+class RouteCollectionSubClass2 extends RouteCollection
+{
 }
