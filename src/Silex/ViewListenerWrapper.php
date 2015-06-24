@@ -84,5 +84,4 @@ class ViewListenerWrapper
 
         return true;
     }
-
 }
