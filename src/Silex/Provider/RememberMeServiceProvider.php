@@ -59,13 +59,13 @@ class RememberMeServiceProvider implements ServiceProviderInterface
         $app['security.remember_me.service._proto'] = $app->protect(function ($providerKey, $options) use ($app) {
             return $app->share(function () use ($providerKey, $options, $app) {
                 $options = array_replace(array(
-                    'name'                  => 'REMEMBERME',
-                    'lifetime'              => 31536000,
-                    'path'                  => '/',
-                    'domain'                => null,
-                    'secure'                => false,
-                    'httponly'              => true,
-                    'always_remember_me'    => false,
+                    'name' => 'REMEMBERME',
+                    'lifetime' => 31536000,
+                    'path' => '/',
+                    'domain' => null,
+                    'secure' => false,
+                    'httponly' => true,
+                    'always_remember_me' => false,
                     'remember_me_parameter' => '_remember_me',
                 ), $options);
 

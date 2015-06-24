@@ -51,12 +51,12 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface
             );
 
             $options = $app['swiftmailer.options'] = array_replace(array(
-                'host'       => 'localhost',
-                'port'       => 25,
-                'username'   => '',
-                'password'   => '',
+                'host' => 'localhost',
+                'port' => 25,
+                'username' => '',
+                'password' => '',
                 'encryption' => null,
-                'auth_mode'  => null,
+                'auth_mode' => null,
             ), $app['swiftmailer.options']);
 
             $transport->setHost($options['host']);

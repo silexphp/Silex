@@ -28,7 +28,6 @@ trait SecurityTrait
      * @return mixed
      *
      * @see TokenInterface::getUser()
-     *
      * @deprecated since 1.3, to be removed in 3.0
      */
     public function user()

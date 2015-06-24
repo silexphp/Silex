@@ -46,7 +46,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
     const VERSION = '1.3.1-DEV';
 
     const EARLY_EVENT = 512;
-    const LATE_EVENT  = -512;
+    const LATE_EVENT = -512;
 
     protected $providers = array();
     protected $booted = false;
@@ -90,7 +90,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
         $this['dispatcher_class'] = 'Symfony\\Component\\EventDispatcher\\EventDispatcher';
         $this['dispatcher'] = $this->share(function () use ($app) {
             /**
-             * @var EventDispatcherInterface $dispatcher
+             * @var EventDispatcherInterface
              */
             $dispatcher = new $app['dispatcher_class']();
 
