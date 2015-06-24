@@ -1,0 +1,19 @@
+---------------------------------------------------------------------------
+
+by lschricke at 2015-06-15T03:41:48Z
+
+I updated the code and added some tests to cover this new feature as you suggested @fabpot. Do you think the tests provide enough coverage?
+
+@stof, this PR does not solve my use case directly, but using it to have `Silex` use a subclass of Symfony's `RouteCollection` like [this one](https://github.com/lschricke/symfony-strict-route-collection) seems to work in my tests. Am I missing something?
+
+---------------------------------------------------------------------------
+
+by lschricke at 2015-06-15T03:56:46Z
+
+@fabpot PR updated.
+
+---------------------------------------------------------------------------
+
+by lschricke at 2015-06-16T02:11:36Z
+
+I squashed my commits and rebased the PR.
