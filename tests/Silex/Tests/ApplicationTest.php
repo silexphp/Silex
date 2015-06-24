@@ -519,9 +519,9 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testBeforeFilterOnMountedControllerGroupIsolatedToGroup()
     {
         $app = new Application();
-        $app->match('/', function() { return new Response('ok'); });
+        $app->match('/', function () { return new Response('ok'); });
         $mounted = $app['controllers_factory'];
-        $mounted->before(function() { return new Response('not ok'); });
+        $mounted->before(function () { return new Response('not ok'); });
         $app->mount('/group', $mounted);
 
         $response = $app->handle(Request::create('/'));
