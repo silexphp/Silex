@@ -70,6 +70,11 @@ The **minimum configuration** to get your application running under Nginx is:
             # Enable the internal directive to disable URIs like this
             # internal;
         }
+
+        #return 404 for all php files as we do have a front controller
+        location ~ \.php$ {
+            return 404;
+        }
     
         error_log /var/log/nginx/project_error.log;
         access_log /var/log/nginx/project_access.log;
