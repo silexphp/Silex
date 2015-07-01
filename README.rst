@@ -34,7 +34,8 @@ Alternatively, you can download the `silex.zip`_ file and extract it.
 More Information
 ----------------
 
-Read the `documentation`_ for more information and `changelog`_ for upgrading information.
+Read the `documentation`_ for more information and `changelog
+<doc/changelog.rst>`_ for upgrading information.
 
 Tests
 -----
@@ -61,4 +62,3 @@ Silex is licensed under the MIT license.
 .. _PHPUnit:             https://phpunit.de
 .. _silex.zip:           http://silex.sensiolabs.org/download
 .. _documentation:       http://silex.sensiolabs.org/documentation
-.. _changelog:           doc/changelog.rst
