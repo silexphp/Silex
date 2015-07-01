@@ -34,7 +34,8 @@ Alternatively, you can download the `silex.zip`_ file and extract it.
 More Information
 ----------------
 
-Read the `documentation`_ for more information.
+Read the `documentation`_ for more information and `changelog
+<doc/changelog.rst>`_ for upgrading information.
 
 Tests
 -----
