@@ -1,0 +1,17 @@
+---------------------------------------------------------------------------
+
+by henrikbjorn at 2014-10-09T09:15:50Z
+
+I dont get why it thinks there is merge conflicts.
+
+---------------------------------------------------------------------------
+
+by henrikbjorn at 2014-11-07T09:04:26Z
+
+Fixed merge conflict.
+
+---------------------------------------------------------------------------
+
+by henrikbjorn at 2015-07-07T07:01:35Z
+
+Rebase and reverted the initializer change.
