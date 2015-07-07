@@ -35,7 +35,7 @@ class DoctrineServiceProvider implements ServiceProviderInterface
             'password' => null,
         );
 
-        $app['dbs.options.initializer'] = $app->protect(function ($app) {
+        $app['dbs.options.initializer'] = $app->protect(function () use ($app) {
             static $initialized = false;
 
             if ($initialized) {
@@ -60,7 +60,7 @@ class DoctrineServiceProvider implements ServiceProviderInterface
         });
 
         $app['dbs'] = function ($app) {
-            $app['dbs.options.initializer']($app);
+            $app['dbs.options.initializer']();
 
             $dbs = new Container();
             foreach ($app['dbs.options'] as $name => $options) {
@@ -82,7 +82,7 @@ class DoctrineServiceProvider implements ServiceProviderInterface
         };
 
         $app['dbs.config'] = function ($app) {
-            $app['dbs.options.initializer']($app);
+            $app['dbs.options.initializer']();
 
             $configs = new Container();
             $addLogger = isset($app['logger']) && null !== $app['logger'] && class_exists('Symfony\Bridge\Doctrine\Logger\DbalLogger');
@@ -97,7 +97,7 @@ class DoctrineServiceProvider implements ServiceProviderInterface
         };
 
         $app['dbs.event_manager'] = function ($app) {
-            $app['dbs.options.initializer']($app);
+            $app['dbs.options.initializer']();
 
             $managers = new Container();
             foreach ($app['dbs.options'] as $name => $options) {
