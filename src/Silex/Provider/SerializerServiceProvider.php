@@ -35,7 +35,7 @@ class SerializerServiceProvider implements ServiceProviderInterface
      */
     public function register(Container $app)
     {
-        $app['serializer'] = function () use ($app) {
+        $app['serializer'] = function ($app) {
             return new Serializer($app['serializer.normalizers'], $app['serializer.encoders']);
         };
 
