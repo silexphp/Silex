@@ -488,7 +488,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
                 );
             });
         });
-        
+
         $app['security.authentication.logout_clear_data_handler._proto'] = $app->protect(function ($name, $options) use ($app) {
             return $app->share(function () use ($name, $options, $app) {
                 return new SessionLogoutHandler();
@@ -506,7 +506,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
                 if (!isset($app['security.authentication.logout_handler.'.$name])) {
                     $app['security.authentication.logout_handler.'.$name] = $app['security.authentication.logout_handler._proto']($name, $options);
                 }
-                
+
                 if (!isset($app['security.authentication.logout_clear_data_handler.'.$name])) {
                     $app['security.authentication.logout_clear_data_handler.'.$name] = $app['security.authentication.logout_clear_data_handler._proto']($name, $options);
                 }
