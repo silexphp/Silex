@@ -12,7 +12,6 @@
 namespace Silex;
 
 use Symfony\Component\HttpKernel\Client;
-use Symfony\Component\HttpKernel\HttpKernel;
 
 /**
  * WebTestCase is the base class for functional tests.
@@ -42,14 +41,14 @@ abstract class WebTestCase extends \PHPUnit_Framework_TestCase
     /**
      * Creates the application.
      *
-     * @return HttpKernel
+     * @return Application
      */
     abstract public function createApplication();
 
     /**
      * Creates a Client.
      *
-     * @param array $server An array of server parameters
+     * @param array $server Server parameters
      *
      * @return Client A Client instance
      */
