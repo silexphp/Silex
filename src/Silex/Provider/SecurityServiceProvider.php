@@ -504,7 +504,10 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
                     isset($options['with_csrf']) && $options['with_csrf'] && isset($app['form.csrf_provider']) ? $app['form.csrf_provider'] : null
                 );
 
-                $listener->addHandler(new SessionLogoutHandler());
+                $invalidateSession = isset($options['invalidate_session']) ? $options['invalidate_session'] : true;
+                if (true === $invalidateSession) {
+                    $listener->addHandler(new SessionLogoutHandler());
+                }
 
                 return $listener;
             };
