@@ -645,4 +645,23 @@ Traits
         // do something but only for admins
     })->secure('ROLE_ADMIN');
 
+.. caution::
+
+    The ``Silex\Route\SecurityTrait`` must be used with a user defined
+    ``Route`` class, not the application.
+
+    .. code-block:: php
+
+        use Silex\Route;
+
+        class MyRoute extends Route
+        {
+            use Route\SecurityTrait;
+        }
+
+    .. code-block:: php
+
+        $app['route_class'] = 'MyRoute';
+
+
 .. _cookbook: http://symfony.com/doc/current/cookbook/security/custom_authentication_provider.html

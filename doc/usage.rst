@@ -513,7 +513,7 @@ setting a more specific type hint for the Closure argument::
         return new Response('Error', 404 /* ignored */, array('X-Status-Code' => 200));
 
 If you want to use a separate error handler for logging, make sure you register
-it with a higher priority then response error handlers, because once a response
+it with a higher priority than response error handlers, because once a response
 is returned, the following handlers are ignored.
 
 .. note::
