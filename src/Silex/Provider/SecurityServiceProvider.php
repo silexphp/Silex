@@ -21,7 +21,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RequestMatcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
-use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Core\User\UserChecker;
 use Symfony\Component\Security\Core\User\InMemoryUserProvider;
@@ -484,6 +483,12 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
             };
         });
 
+        $app['security.authentication.logout_clear_data_handler._proto'] = $app->protect(function ($name, $options) use ($app) {
+            return function () use ($name, $options, $app) {
+                return new SessionLogoutHandler();
+            };
+        });
+
         $app['security.authentication_listener.logout._proto'] = $app->protect(function ($name, $options) use ($app, $that) {
             return function () use ($app, $name, $options, $that) {
                 $that->addFakeRoute(
@@ -496,6 +501,10 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
                     $app['security.authentication.logout_handler.'.$name] = $app['security.authentication.logout_handler._proto']($name, $options);
                 }
 
+                if (!isset($app['security.authentication.logout_clear_data_handler.'.$name])) {
+                    $app['security.authentication.logout_clear_data_handler.'.$name] = $app['security.authentication.logout_clear_data_handler._proto']($name, $options);
+                }
+
                 $listener = new LogoutListener(
                     $app['security.token_storage'],
                     $app['security.http_utils'],
@@ -504,7 +513,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
                     isset($options['with_csrf']) && $options['with_csrf'] && isset($app['form.csrf_provider']) ? $app['form.csrf_provider'] : null
                 );
 
-                $listener->addHandler(new SessionLogoutHandler());
+                $listener->addHandler($app['security.authentication.logout_clear_data_handler.'.$name]);
 
                 return $listener;
             };
