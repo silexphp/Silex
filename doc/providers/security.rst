@@ -661,7 +661,8 @@ Traits
 
 .. caution::
 
-    The ``Silex\Route\SecurityTrait`` is used with a user defined route class, not the application.
+    The ``Silex\Route\SecurityTrait`` must be used with a user defined
+    ``Route`` class, not the application.
 
     .. code-block:: php
 
