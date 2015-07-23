@@ -4,7 +4,7 @@ Changelog
 1.3.1 (2015-XX-XX)
 ------------------
 
-* n/a
+* fixed session logout handler when a firewall is stateless
 
 1.3.0 (2015-06-05)
 ------------------
