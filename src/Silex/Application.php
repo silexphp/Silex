@@ -162,7 +162,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      * Registers a service provider.
      *
      * @param ServiceProviderInterface $provider A ServiceProviderInterface instance
-     * @param array|Traversible        $values   An array or a Traversible of values that customizes the provider
+     * @param array|Traversable        $values   An array or a Traversable of values that customizes the provider
      *
      * @return Application
      */
