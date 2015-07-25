@@ -200,7 +200,8 @@ class SecurityServiceProvider implements ServiceProviderInterface
                 $users = isset($firewall['users']) ? $firewall['users'] : array();
                 $security = isset($firewall['security']) ? (bool) $firewall['security'] : true;
                 $stateless = isset($firewall['stateless']) ? (bool) $firewall['stateless'] : false;
-                unset($firewall['pattern'], $firewall['users'], $firewall['security'], $firewall['stateless']);
+                $context = isset($firewall['context']) ? $firewall['context'] : $name;
+                unset($firewall['pattern'], $firewall['users'], $firewall['security'], $firewall['stateless'], $firewall['context']);
 
                 $protected = false === $security ? false : count($firewall);
 
@@ -216,7 +217,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
                     }
 
                     if (false === $stateless) {
-                        $listeners[] = 'security.context_listener.'.$name;
+                        $listeners[] = 'security.context_listener.'.$context;
                     }
 
                     $factories = array();
@@ -241,6 +242,8 @@ class SecurityServiceProvider implements ServiceProviderInterface
                         if (!isset($app['security.authentication_listener.factory.'.$type])) {
                             throw new \LogicException(sprintf('The "%s" authentication entry is not registered.', $type));
                         }
+
+                        $options['stateless'] = $stateless;
 
                         list($providerId, $listenerId, $entryPointId, $position) = $app['security.authentication_listener.factory.'.$type]($name, $options);
 
@@ -509,7 +512,10 @@ class SecurityServiceProvider implements ServiceProviderInterface
                     isset($options['with_csrf']) && $options['with_csrf'] && isset($app['form.csrf_provider']) ? $app['form.csrf_provider'] : null
                 );
 
-                $listener->addHandler(new SessionLogoutHandler());
+                $invalidateSession = isset($options['invalidate_session']) ? $options['invalidate_session'] : true;
+                if (true === $invalidateSession && false === $options['stateless']) {
+                    $listener->addHandler(new SessionLogoutHandler());
+                }
 
                 return $listener;
             });
