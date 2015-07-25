@@ -293,7 +293,7 @@ pattern::
         'secured' => array(
             'pattern' => '^/admin/',
             'form' => array('login_path' => '/login', 'check_path' => '/admin/login_check'),
-            'logout' => array('logout_path' => '/admin/logout'),
+            'logout' => array('logout_path' => '/admin/logout', 'invalidate_session' => true),
 
             // ...
         ),
