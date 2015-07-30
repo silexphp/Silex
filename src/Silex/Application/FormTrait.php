@@ -23,9 +23,9 @@ trait FormTrait
     /**
      * Creates and returns a form builder instance.
      *
-     * @param mixed $data    The initial data for the form
-     * @param array $options Options for the form
-     * @param mixed $type    Type of the form
+     * @param mixed  $data    The initial data for the form
+     * @param array  $options Options for the form
+     * @param string $type    Type of the form
      *
      * @return FormBuilder
      */
