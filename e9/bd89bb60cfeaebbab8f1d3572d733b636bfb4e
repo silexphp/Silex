@@ -1,0 +1,23 @@
+---------------------------------------------------------------------------
+
+by mTorres at 2015-06-24T08:58:28Z
+
+I'm really a newbe in using and configuring Nginx (I just copied and adapted the [Symfony's config](http://symfony.com/doc/current/cookbook/configuration/web_server_configuration.html#nginx)) so if anyone has some tips feel free to share.
+
+---------------------------------------------------------------------------
+
+by mTorres at 2015-06-25T14:24:12Z
+
+Good point @stof. I've added the 404 redirection for PHP files other than the front controller file name.
+
+---------------------------------------------------------------------------
+
+by fabpot at 2015-07-06T07:41:58Z
+
+I'm no nginx expert, so I need validation from other devs.
+
+---------------------------------------------------------------------------
+
+by mayeco at 2015-07-31T05:48:19Z
+
+@fabpot the config looks good
