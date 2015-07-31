@@ -1,0 +1,23 @@
+---------------------------------------------------------------------------
+
+by fabpot at 2015-07-30T16:12:11Z
+
+That can only be merged in the master branch.
+
+---------------------------------------------------------------------------
+
+by lokhman at 2015-07-30T16:54:43Z
+
+Yes, that's my bad. Shall I close this request and open the new one for master commit then?
+
+---------------------------------------------------------------------------
+
+by fabpot at 2015-07-30T16:57:03Z
+
+@lokhman No, I can merge this PR directly into master.
+
+---------------------------------------------------------------------------
+
+by lokhman at 2015-07-30T17:01:20Z
+
+@fabpot Brilliant, thanks! Will it be possible to make `$type` argument coming first at some point in the future release? I personally find it rather important when extending `form.types` with own forms.
