@@ -182,11 +182,9 @@ class ControllerCollection
     /**
      * Persists and freezes staged controllers.
      *
-     * @param string $prefix
-     *
      * @return RouteCollection A RouteCollection instance
      */
-    public function flush($prefix = '')
+    public function flush()
     {
         if (null === $this->routesFactory) {
             $routes = new RouteCollection();
@@ -194,7 +192,7 @@ class ControllerCollection
             $routes = $this->routesFactory;
         }
 
-        return $this->doFlush($prefix, $routes);
+        return $this->doFlush('', $routes);
     }
 
     private function doFlush($prefix, RouteCollection $routes)
