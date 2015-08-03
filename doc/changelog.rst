@@ -22,6 +22,7 @@ Changelog
 1.3.1 (2015-XX-XX)
 ------------------
 
+* fixed sub-mounts with same name clash
 * fixed session logout handler when a firewall is stateless
 
 1.3.0 (2015-06-05)
