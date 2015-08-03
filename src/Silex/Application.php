@@ -121,11 +121,11 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      * Registers a service provider.
      *
      * @param ServiceProviderInterface $provider A ServiceProviderInterface instance
-     * @param array                    $values   An array of values that customizes the provider
+     * @param array|Traversable        $values   An array or a Traversable of values that customizes the provider
      *
      * @return Application
      */
-    public function register(ServiceProviderInterface $provider, array $values = array())
+    public function register(ServiceProviderInterface $provider, $values = array())
     {
         $this->providers[] = $provider;
 
