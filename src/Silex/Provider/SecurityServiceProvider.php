@@ -233,8 +233,6 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
                             throw new \LogicException(sprintf('The "%s" authentication entry is not registered.', $type));
                         }
 
-                        $options['stateless'] = $stateless;
-
                         list($providerId, $listenerId, $entryPointId, $position) = $app['security.authentication_listener.factory.'.$type]($name, $options);
 
                         if (null !== $entryPointId) {
@@ -506,10 +504,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
                     isset($options['with_csrf']) && $options['with_csrf'] && isset($app['form.csrf_provider']) ? $app['form.csrf_provider'] : null
                 );
 
-                $invalidateSession = isset($options['invalidate_session']) ? $options['invalidate_session'] : true;
-                if (true === $invalidateSession && false === $options['stateless']) {
-                    $listener->addHandler(new SessionLogoutHandler());
-                }
+                $listener->addHandler(new SessionLogoutHandler());
 
                 return $listener;
             };
