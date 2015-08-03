@@ -399,12 +399,10 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
 
     /**
      * Flushes the controller collection.
-     *
-     * @param string $prefix The route prefix
      */
-    public function flush($prefix = '')
+    public function flush()
     {
-        $this['routes']->addCollection($this['controllers']->flush($prefix));
+        $this['routes']->addCollection($this['controllers']->flush());
     }
 
     /**
