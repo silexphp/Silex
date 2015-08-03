@@ -186,14 +186,15 @@ class ControllerCollection
      *
      * @return RouteCollection A RouteCollection instance
      */
-    public function flush($prefix = '', $routes = null)
+    public function flush($prefix = '')
+    {
+        return $this->doFlush($prefix, new RouteCollection());
+    }
+
+    private function doFlush($prefix, RouteCollection $routes)
     {
         if ($prefix !== '') {
             $prefix = '/'.trim(trim($prefix), '/');
-        }
-
-        if (null === $routes) {
-            $routes = new RouteCollection(); 
         }
 
         foreach ($this->controllers as $controller) {
@@ -209,7 +210,7 @@ class ControllerCollection
                 $routes->add($name, $controller->getRoute());
                 $controller->freeze();
             } else {
-                $routes->addCollection($controller->flush($prefix.$controller->prefix, $routes));
+                $routes->addCollection($controller->doFlush($prefix.$controller->prefix, $routes));
             }
         }
 
