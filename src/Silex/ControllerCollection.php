@@ -206,8 +206,9 @@ class ControllerCollection
                 $controller->getRoute()->setPath($prefix.$controller->getRoute()->getPath());
                 if (!$name = $controller->getRouteName()) {
                     $name = $controller->generateRouteName('');
+                    $i = 0;
                     while ($routes->get($name)) {
-                        $name .= '_';
+                        $name = $controller->generateRouteName('').'_'.++$i;
                     }
                     $controller->bind($name);
                 }

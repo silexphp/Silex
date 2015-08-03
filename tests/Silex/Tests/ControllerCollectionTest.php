@@ -71,7 +71,7 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
         $mountedRootController = $controllers->match('/', function () {});
 
         $mainRootController = new Controller(new Route('/'));
-        $mainRootController->bind($mainRootController->generateRouteName('main_'));
+        $mainRootController->bind($mainRootController->generateRouteName('main_1'));
 
         $controllers->flush();
 
@@ -84,11 +84,12 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
 
         $controllers->match('/a-a', function () {});
         $controllers->match('/a_a', function () {});
+        $controllers->match('/a/a', function () {});
 
         $routes = $controllers->flush();
 
-        $this->assertCount(2, $routes->all());
-        $this->assertEquals(array('_a_a', '_a_a_'), array_keys($routes->all()));
+        $this->assertCount(3, $routes->all());
+        $this->assertEquals(array('_a_a', '_a_a_1', '_a_a_2'), array_keys($routes->all()));
     }
 
     public function testUniqueGeneratedRouteNamesAmongMounts()
@@ -104,7 +105,7 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
         $routes = $controllers->flush();
 
         $this->assertCount(2, $routes->all());
-        $this->assertEquals(array('_root_a_leaf', '_root_a_leaf_'), array_keys($routes->all()));
+        $this->assertEquals(array('_root_a_leaf', '_root_a_leaf_1'), array_keys($routes->all()));
     }
 
     public function testUniqueGeneratedRouteNamesAmongNestedMounts()
@@ -123,7 +124,7 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
         $routes = $controllers->flush();
 
         $this->assertCount(2, $routes->all());
-        $this->assertEquals(array('_root_a_tree_leaf', '_root_a_tree_leaf_'), array_keys($routes->all()));
+        $this->assertEquals(array('_root_a_tree_leaf', '_root_a_tree_leaf_1'), array_keys($routes->all()));
     }
 
     public function testAssert()
