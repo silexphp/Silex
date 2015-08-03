@@ -39,38 +39,45 @@ Alternatively, if you use Apache 2.2.16 or higher, you can use the
 nginx
 -----
 
-If you are using nginx, configure your vhost to forward non-existent
-resources to ``index.php``:
+The **minimum configuration** to get your application running under Nginx is:
 
 .. code-block:: nginx
 
     server {
-        #site root is redirected to the app boot script
-        location = / {
-            try_files @site @site;
-        }
-
-        #all other locations try other files first and go to our front controller if none of them exists
+        server_name domain.tld www.domain.tld;
+        root /var/www/project/web;
+    
         location / {
-            try_files $uri $uri/ @site;
+            # try to serve file directly, fallback to front controller
+            try_files $uri /index.php$is_args$args;
+        }
+    
+        # If you have 2 front controllers for dev|prod use the following line instead
+        # location ~ ^/(index|index_dev)\.php(/|$) {
+        location ~ ^/index\.php(/|$) {
+            # the ubuntu default
+            fastcgi_pass   unix:/var/run/php5-fpm.sock;
+            # for running on centos
+            #fastcgi_pass   unix:/var/run/php-fpm/www.sock;
+    
+            fastcgi_split_path_info ^(.+\.php)(/.*)$;
+            include fastcgi_params;
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            fastcgi_param HTTPS off;
+        
+            # Prevents URIs that include the front controller. This will 404:
+            # http://domain.tld/index.php/some-path
+            # Enable the internal directive to disable URIs like this
+            # internal;
         }
 
         #return 404 for all php files as we do have a front controller
         location ~ \.php$ {
             return 404;
         }
-
-        location @site {
-            # the ubuntu default
-            fastcgi_pass   unix:/var/run/php5-fpm.sock;
-            # for running on centos
-            #fastcgi_pass   unix:/var/run/php-fpm/www.sock;
-            
-            include fastcgi_params;
-            fastcgi_param  SCRIPT_FILENAME $document_root/index.php;
-            #uncomment when running via https
-            #fastcgi_param HTTPS on;
-        }
+    
+        error_log /var/log/nginx/project_error.log;
+        access_log /var/log/nginx/project_access.log;
     }
 
 IIS
