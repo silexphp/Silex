@@ -1,0 +1,23 @@
+---------------------------------------------------------------------------
+
+by mivanov93 at 2015-07-25T13:25:04Z
+
+Thanks, fixed the typo. But what about the error about the Coding standards.
+
+$this['dispatcher'] = $this->share(function () use ($app) {
+-            /**
++            /*
+
+I haven't touched this, strange..
+
+---------------------------------------------------------------------------
+
+by fabpot at 2015-07-26T18:17:08Z
+
+Can you rebase this PR (that will remove the merge commit that you have here)?
+
+---------------------------------------------------------------------------
+
+by fabpot at 2015-07-26T18:17:43Z
+
+As the method signature changed, it can only be merged in master.
