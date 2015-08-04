@@ -135,4 +135,42 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
             array('email@sample.com', true, 0, 0),
         );
     }
+
+    public function testAddResource()
+    {
+        $app = new Application();
+        $app['locale'] = 'fr';
+
+        $app->register(new ValidatorServiceProvider());
+        $app->register(new TranslationServiceProvider());
+        $app['translator'] = $app->share($app->extend('translator', function ($translator, $app) {
+            $translator->addResource('array', array('This value should not be blank.' => 'Pas vide'), 'fr', 'validators');
+
+            return $translator;
+        }));
+
+        $app['validator'];
+
+        $this->assertEquals('Pas vide', $app['translator']->trans('This value should not be blank.', array(), 'validators', 'fr'));
+    }
+
+    public function testAddResourceAlternate()
+    {
+        $app = new Application();
+        $app['locale'] = 'fr';
+
+        $app->register(new ValidatorServiceProvider());
+        $app->register(new TranslationServiceProvider());
+        $app->extend('translator.resources', function ($resources, $app) {
+            $resources = array_merge($resources, array(
+                array('array', array('This value should not be blank.' => 'Pas vide'), 'fr', 'validators'),
+            ));
+
+            return $resources;
+        });
+
+        $app['validator'];
+
+        $this->assertEquals('Pas vide', $app['translator']->trans('This value should not be blank.', array(), 'validators', 'fr'));
+    }
 }
