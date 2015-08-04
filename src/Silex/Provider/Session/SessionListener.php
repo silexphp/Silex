@@ -31,7 +31,7 @@ class SessionListener extends BaseSessionListener
     protected function getSession()
     {
         if (!isset($this->app['session'])) {
-            return null;
+            return;
         }
 
         return $this->app['session'];

@@ -71,7 +71,6 @@ class TranslationServiceProvider implements ServiceProviderInterface, EventListe
         $app['translator.cache_dir'] = null;
     }
 
-
     public function subscribe(Container $app, EventDispatcherInterface $dispatcher)
     {
         $dispatcher->addSubscriber($app['translator.listener']);

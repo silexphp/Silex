@@ -30,7 +30,7 @@ class LazyRequestMatcherTest extends \PHPUnit_Framework_TestCase
         $requestMatcher = $this->getMock('Symfony\Component\Routing\Matcher\RequestMatcherInterface');
 
         $matcher = new LazyRequestMatcher(function () use ($requestMatcher, &$callCounter) {
-            $callCounter++;
+            ++$callCounter;
 
             return $requestMatcher;
         });
