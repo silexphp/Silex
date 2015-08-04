@@ -1,7 +1,7 @@
 Silex, a simple Web Framework
 =============================
 
-Silex is a PHP micro-framework to develop websites based on `Symfony2
+Silex is a PHP micro-framework to develop websites based on `Symfony
 components`_:
 
 .. code-block:: php
@@ -57,8 +57,8 @@ License
 
 Silex is licensed under the MIT license.
 
-.. _Symfony2 components: http://symfony.com
-.. _Composer:            http://getcomposer.org
-.. _PHPUnit:             https://phpunit.de
-.. _silex.zip:           http://silex.sensiolabs.org/download
-.. _documentation:       http://silex.sensiolabs.org/documentation
+.. _Symfony components: http://symfony.com
+.. _Composer:           http://getcomposer.org
+.. _PHPUnit:            https://phpunit.de
+.. _silex.zip:          http://silex.sensiolabs.org/download
+.. _documentation:      http://silex.sensiolabs.org/documentation

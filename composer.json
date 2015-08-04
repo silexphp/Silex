@@ -1,7 +1,7 @@
 {
     "minimum-stability": "dev",
     "name": "silex/silex",
-    "description": "The PHP micro-framework based on the Symfony2 Components",
+    "description": "The PHP micro-framework based on the Symfony Components",
     "keywords": ["microframework"],
     "homepage": "http://silex.sensiolabs.org",
     "license": "MIT",
