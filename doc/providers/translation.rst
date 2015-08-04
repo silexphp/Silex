@@ -93,6 +93,22 @@ The above example will result in following routes:
 
 * ``/it/hello/igor`` will return ``Hello igor`` (because of the fallback).
 
+Using Resources
+---------------
+
+When translations are stored in a file, you can load them as follows::
+
+    $app = new Application();
+    
+    $app->register(new TranslationServiceProvider());
+    $app->extend('translator.resources', function ($resources, $app) {
+        $resources = array_merge($resources, array(
+            array('array', array('This value should be a valid number.' => 'Cette valeur doit être un nombre.'), 'fr', 'validators'),
+        ));
+
+        return $resources;
+    });
+
 Traits
 ------
 
