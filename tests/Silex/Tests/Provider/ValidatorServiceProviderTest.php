@@ -67,6 +67,20 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
     /**
      * @depends testRegister
      */
+    public function testConstraintValidatorFactoryWithExpression($app)
+    {
+        if (!class_exists('Symfony\Component\Validator\Constraints\Expression')) {
+            $this->markTestSkipped('Expression are not supported by this version of Symfony');
+        }
+
+        $constraint = new Assert\Expression('true');
+        $validator = $app['validator.validator_factory']->getInstance($constraint);
+        $this->assertInstanceOf('Symfony\Component\Validator\Constraints\ExpressionValidator', $validator);
+    }
+
+    /**
+     * @depends testRegister
+     */
     public function testValidatorServiceIsAValidator($app)
     {
         $this->assertInstanceOf('Symfony\Component\Validator\ValidatorInterface', $app['validator']);
