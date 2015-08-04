@@ -13,8 +13,7 @@ namespace Silex\Provider\Validator;
 
 use Pimple\Container;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\ConstraintValidatorFactoryInterface;
-use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\ConstraintValidatorFactory as BaseConstraintValidatorFactory;
 
 /**
  * Uses a service container to create constraint validators with dependencies.
@@ -22,7 +21,7 @@ use Symfony\Component\Validator\ConstraintValidator;
  * @author Kris Wallsmith <kris@symfony.com>
  * @author Alex Kalyvitis <alex.kalyvitis@gmail.com>
  */
-class ConstraintValidatorFactory implements ConstraintValidatorFactoryInterface
+class ConstraintValidatorFactory extends BaseConstraintValidatorFactory
 {
     /**
      * @var Container
@@ -35,56 +34,30 @@ class ConstraintValidatorFactory implements ConstraintValidatorFactoryInterface
     protected $serviceNames;
 
     /**
-     * @var array
-     */
-    protected $validators;
-
-    /**
      * Constructor.
      *
      * @param Container $container    DI container
      * @param array     $serviceNames Validator service names
      */
-    public function __construct(Container $container, array $serviceNames = array())
+    public function __construct(Container $container, array $serviceNames = array(), $propertyAccessor = null)
     {
+        parent::__construct($propertyAccessor);
+
         $this->container = $container;
         $this->serviceNames = $serviceNames;
-        $this->validators = array();
     }
 
     /**
-     * Returns the validator for the supplied constraint.
-     *
-     * @param Constraint $constraint A constraint
-     *
-     * @return ConstraintValidator A validator for the supplied constraint
+     * {@inheritdoc}
      */
     public function getInstance(Constraint $constraint)
     {
         $name = $constraint->validatedBy();
 
-        if (isset($this->validators[$name])) {
-            return $this->validators[$name];
-        }
-
-        $this->validators[$name] = $this->createValidator($name);
-
-        return $this->validators[$name];
-    }
-
-    /**
-     * Returns the validator instance.
-     *
-     * @param string $name
-     *
-     * @return ConstraintValidator
-     */
-    private function createValidator($name)
-    {
         if (isset($this->serviceNames[$name])) {
             return $this->container[$this->serviceNames[$name]];
         }
 
-        return new $name();
+        return parent::getInstance($constraint);
     }
 }
