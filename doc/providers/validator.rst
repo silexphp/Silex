@@ -8,7 +8,8 @@ standalone.
 Parameters
 ----------
 
-none
+* **validator.validator_service_ids**: An array of service names representing
+  validators.
 
 Services
 --------
@@ -23,10 +24,6 @@ Services
   This means you can define a static ``loadValidatorMetadata`` method on your
   data class, which takes a ClassMetadata argument. Then you can set
   constraints on this ClassMetadata instance.
-
-* **validator.validator_factory**: Factory for ConstraintValidators. Defaults
-  to a standard ``ConstraintValidatorFactory``. Mostly used internally by the
-  Validator.
 
 Registering
 -----------
