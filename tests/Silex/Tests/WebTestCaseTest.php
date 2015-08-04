@@ -68,7 +68,7 @@ class WebTestCaseTest extends WebTestCase
 
         $client = $this->createClient(array(
             'PHP_AUTH_USER' => $user,
-            'PHP_AUTH_PW'   => $pass,
+            'PHP_AUTH_PW' => $pass,
         ));
 
         $crawler = $client->request('GET', '/server');

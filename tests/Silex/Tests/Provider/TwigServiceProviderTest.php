@@ -28,7 +28,7 @@ class TwigServiceProviderTest extends \PHPUnit_Framework_TestCase
         $app = new Application();
 
         $app->register(new TwigServiceProvider(), array(
-            'twig.templates'    => array('hello' => 'Hello {{ name }}!'),
+            'twig.templates' => array('hello' => 'Hello {{ name }}!'),
         ));
 
         $app->get('/hello/{name}', function ($name) use ($app) {
@@ -50,9 +50,9 @@ class TwigServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $app->register(new HttpFragmentServiceProvider());
         $app->register(new TwigServiceProvider(), array(
-            'twig.templates'    => array(
+            'twig.templates' => array(
                 'hello' => '{{ render("/foo") }}',
-                'foo'   => 'foo',
+                'foo' => 'foo',
             ),
         ));
 
@@ -73,7 +73,7 @@ class TwigServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
         $app->register(new TwigServiceProvider(), array(
-            'twig.templates'    => array('foo' => 'foo'),
+            'twig.templates' => array('foo' => 'foo'),
         ));
         $loader = $this->getMock('\Twig_LoaderInterface');
         $loader->expects($this->never())->method('getSource');

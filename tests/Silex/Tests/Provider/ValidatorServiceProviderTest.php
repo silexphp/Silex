@@ -89,7 +89,7 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
         ));
 
         $builder = $app['form.factory']->createBuilder('form', array(), array(
-            'constraints'     => $constraints,
+            'constraints' => $constraints,
             'csrf_protection' => false,
         ));
 

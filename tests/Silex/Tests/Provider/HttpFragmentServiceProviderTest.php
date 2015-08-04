@@ -32,7 +32,7 @@ class HttpFragmentServiceProviderTest extends \PHPUnit_Framework_TestCase
         $app->register(new TwigServiceProvider(), array(
             'twig.templates' => array(
                 'hello' => '{{ render("/foo") }}{{ render_esi("/foo") }}{{ render_hinclude("/foo") }}',
-                'foo'   => 'foo',
+                'foo' => 'foo',
             ),
         ));
 
