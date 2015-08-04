@@ -162,22 +162,22 @@ class ExceptionHandlerTest extends \PHPUnit_Framework_TestCase
         $errors = 0;
 
         $app->error(function ($e) use (&$errors) {
-            $errors++;
+            ++$errors;
         });
 
         $app->error(function ($e) use (&$errors) {
-            $errors++;
+            ++$errors;
         });
 
         $app->error(function ($e) use (&$errors) {
-            $errors++;
+            ++$errors;
 
             return new Response('foo exception handler');
         });
 
         $app->error(function ($e) use (&$errors) {
             // should not execute
-            $errors++;
+            ++$errors;
         });
 
         $request = Request::create('/foo');
@@ -198,7 +198,7 @@ class ExceptionHandlerTest extends \PHPUnit_Framework_TestCase
         $errors = 0;
 
         $app->error(function ($e) use (&$errors) {
-            $errors++;
+            ++$errors;
         });
 
         try {

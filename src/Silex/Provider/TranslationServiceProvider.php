@@ -40,6 +40,11 @@ class TranslationServiceProvider implements ServiceProviderInterface, EventListe
             $translator->addLoader('array', new ArrayLoader());
             $translator->addLoader('xliff', new XliffFileLoader());
 
+            // Register default resources
+            foreach ($app['translator.resources'] as $resource) {
+                $translator->addResource($resource[0], $resource[1], $resource[2], $resource[3]);
+            }
+
             foreach ($app['translator.domains'] as $domain => $data) {
                 foreach ($data as $locale => $messages) {
                     $translator->addResource('array', $messages, $locale, $domain);
@@ -55,6 +60,10 @@ class TranslationServiceProvider implements ServiceProviderInterface, EventListe
 
         $app['translator.message_selector'] = function () {
             return new MessageSelector();
+        };
+
+        $app['translator.resources'] = function ($app) {
+            return array();
         };
 
         $app['translator.domains'] = array();

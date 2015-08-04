@@ -129,10 +129,24 @@ under ``/admin/``::
         ),
     );
 
-The ``pattern`` is a regular expression (it can also be a `RequestMatcher
+The ``pattern`` is a regular expression on the URL path; the ``http`` setting
+tells the security layer to use HTTP basic authentication and the ``users``
+entry defines valid users.
+
+If you want to restrict the firewall by more than the URL pattern (like the
+HTTP method, the client IP, the hostname, or any Request attributes), use an
+instance of a `RequestMatcher
 <http://api.symfony.com/master/Symfony/Component/HttpFoundation/RequestMatcher.html>`_
-instance); the ``http`` setting tells the security layer to use HTTP basic
-authentication and the ``users`` entry defines valid users.
+for the ``pattern`` option::
+
+    use Symfony/Component/HttpFoundation/RequestMatcher;
+
+    $app['security.firewalls'] = array(
+        'admin' => array(
+            'pattern' => new RequestMatcher('^/admin', 'example.com', 'POST'),
+            // ...
+        ),
+    );
 
 Each user is defined with the following information:
 

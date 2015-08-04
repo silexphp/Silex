@@ -36,7 +36,13 @@ class ValidatorServiceProvider implements ServiceProviderInterface
                 $r = new \ReflectionClass('Symfony\Component\Validator\Validation');
                 $file = dirname($r->getFilename()).'/Resources/translations/validators.'.$app['locale'].'.xlf';
                 if (file_exists($file)) {
-                    $app['translator']->addResource('xliff', $file, $app['locale'], 'validators');
+                    $app->extend('translator.resources', function ($resources, $app) use ($file) {
+                        $resources = array_merge(array(
+                            array('xliff', $file, $app['locale'], 'validators'),
+                        ), $resources);
+
+                        return $resources;
+                    });
                 }
             }
 

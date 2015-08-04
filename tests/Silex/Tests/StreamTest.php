@@ -35,7 +35,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase
         $i = 0;
 
         $stream = function () use (&$i) {
-            $i++;
+            ++$i;
         };
 
         $app = new Application();

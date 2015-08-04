@@ -43,7 +43,7 @@ class TwigServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
         $app->register(new TwigServiceProvider(), array(
-            'twig.templates'    => array('foo' => 'foo'),
+            'twig.templates' => array('foo' => 'foo'),
         ));
         $loader = $this->getMock('\Twig_LoaderInterface');
         $loader->expects($this->never())->method('getSource');

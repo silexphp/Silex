@@ -31,17 +31,17 @@ class MiddlewareTest extends \PHPUnit_Framework_TestCase
 
         $app->before(function () use (&$i, $test) {
             $test->assertEquals(0, $i);
-            $i++;
+            ++$i;
         });
 
         $app->match('/foo', function () use (&$i, $test) {
             $test->assertEquals(1, $i);
-            $i++;
+            ++$i;
         });
 
         $app->after(function () use (&$i, $test) {
             $test->assertEquals(2, $i);
-            $i++;
+            ++$i;
         });
 
         $request = Request::create('/foo');
@@ -57,13 +57,13 @@ class MiddlewareTest extends \PHPUnit_Framework_TestCase
         $app = new Application();
 
         $app->match('/foo', function () use (&$i) {
-            $i++;
+            ++$i;
 
             return new Response('foo');
         });
 
         $app->after(function () use (&$i) {
-            $i++;
+            ++$i;
         });
 
         $request = Request::create('/foo');
@@ -81,27 +81,27 @@ class MiddlewareTest extends \PHPUnit_Framework_TestCase
 
         $app->before(function () use (&$i, $test) {
             $test->assertEquals(0, $i);
-            $i++;
+            ++$i;
         });
 
         $app->before(function () use (&$i, $test) {
             $test->assertEquals(1, $i);
-            $i++;
+            ++$i;
         });
 
         $app->match('/foo', function () use (&$i, $test) {
             $test->assertEquals(2, $i);
-            $i++;
+            ++$i;
         });
 
         $app->after(function () use (&$i, $test) {
             $test->assertEquals(3, $i);
-            $i++;
+            ++$i;
         });
 
         $app->after(function () use (&$i, $test) {
             $test->assertEquals(4, $i);
-            $i++;
+            ++$i;
         });
 
         $request = Request::create('/foo');
@@ -117,7 +117,7 @@ class MiddlewareTest extends \PHPUnit_Framework_TestCase
         $app = new Application();
 
         $app->before(function () use (&$i) {
-            $i++;
+            ++$i;
         });
 
         $app->match('/foo', function () {
@@ -125,7 +125,7 @@ class MiddlewareTest extends \PHPUnit_Framework_TestCase
         });
 
         $app->after(function () use (&$i) {
-            $i++;
+            ++$i;
         });
 
         $app->error(function () {
@@ -145,11 +145,11 @@ class MiddlewareTest extends \PHPUnit_Framework_TestCase
         $app = new Application();
 
         $app->before(function () use (&$i) {
-            $i++;
+            ++$i;
         }, Application::EARLY_EVENT);
 
         $app->after(function () use (&$i) {
-            $i++;
+            ++$i;
         });
 
         $app->error(function () {
