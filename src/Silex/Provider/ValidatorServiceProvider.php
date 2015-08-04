@@ -62,14 +62,14 @@ class ValidatorServiceProvider implements ServiceProviderInterface
         });
 
         $app['validator.validator_factory'] = $app->share(function () use ($app) {
-            $validators = isset($app['validator.validator_service_ids']) ? $app['validator.validator_service_ids'] : array();
-
-            return new ConstraintValidatorFactory($app, $validators);
+            return new ConstraintValidatorFactory($app, $app['validator.validator_service_ids']);
         });
 
         $app['validator.object_initializers'] = $app->share(function ($app) {
             return array();
         });
+
+        $app['validator.validator_service_ids'] = array();
     }
 
     public function boot(Application $app)

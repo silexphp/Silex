@@ -575,10 +575,6 @@ class SecurityServiceProvider implements ServiceProviderInterface
                 return new UserPasswordValidator($app['security.token_storage'], $app['security.encoder_factory']);
             });
 
-            if (!isset($app['validator.validator_service_ids'])) {
-                $app['validator.validator_service_ids'] = array();
-            }
-
             $app['validator.validator_service_ids'] = array_merge($app['validator.validator_service_ids'], array('security.validator.user_password' => 'security.validator.user_password_validator'));
         }
     }
