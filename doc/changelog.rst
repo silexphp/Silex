@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0.0 (2014-XX-XX)
+2.0.0 (2015-XX-XX)
 ------------------
 
 * bumped minimum version of Symfony to 2.7
