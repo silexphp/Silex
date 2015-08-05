@@ -62,9 +62,9 @@ class TranslationServiceProvider implements ServiceProviderInterface, EventListe
             return new MessageSelector();
         };
 
-        $app['translator.resources'] = function ($app) {
+        $app['translator.resources'] = $app->protect(function ($app) {
             return array();
-        };
+        });
 
         $app['translator.domains'] = array();
         $app['locale_fallbacks'] = array('en');
