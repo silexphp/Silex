@@ -17,14 +17,13 @@ use Symfony\Component\HttpFoundation\Request;
 
 class SwiftmailerServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
-
     public function defaultOptions()
     {
         return array(
             array(
                 array(
-                    'host' => 'justchanginghost'
-                )
+                    'host' => 'justchanginghost',
+                ),
             ),
             array(
                 array(
@@ -33,8 +32,8 @@ class SwiftmailerServiceProviderTest extends \PHPUnit_Framework_TestCase
                     'username' => 'some-user',
                     'password' => 'P@SS',
                     'encryption' => 'tls',
-                    'auth_mode' => 'login'
-                )
+                    'auth_mode' => 'login',
+                ),
             ),
             array(
                 array(
@@ -43,9 +42,9 @@ class SwiftmailerServiceProviderTest extends \PHPUnit_Framework_TestCase
                     'username' => 'some user name that has spaces for some reason',
                     'password' => '123456789123456789123456789123456789',
                     'encryption' => 'tls',
-                    'auth_mode' => null
-                )
-            )
+                    'auth_mode' => null,
+                ),
+            ),
         );
     }
 
