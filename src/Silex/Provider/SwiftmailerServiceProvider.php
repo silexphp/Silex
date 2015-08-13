@@ -23,7 +23,15 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
-        $app['swiftmailer.options'] = isset($app['swiftmailer.options']) ? $app['swiftmailer.options'] : array();
+        $app['swiftmailer.default_options'] = array(
+            'host' => 'localhost',
+            'port' => 25,
+            'username' => '',
+            'password' => '',
+            'encryption' => null,
+            'auth_mode' => null,
+        );
+
         $app['swiftmailer.use_spool'] = true;
 
         $app['mailer.initialized'] = false;
@@ -50,14 +58,10 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface
                 $app['swiftmailer.transport.eventdispatcher']
             );
 
-            $options = $app['swiftmailer.options'] = array_replace(array(
-                'host' => 'localhost',
-                'port' => 25,
-                'username' => '',
-                'password' => '',
-                'encryption' => null,
-                'auth_mode' => null,
-            ), $app['swiftmailer.options']);
+            $options = array_replace(
+                $app['swiftmailer.default_options'],
+                isset($app['swiftmailer.options']) ? $app['swiftmailer.options'] : array()
+            );
 
             $transport->setHost($options['host']);
             $transport->setPort($options['port']);
