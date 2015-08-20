@@ -11,10 +11,13 @@
 
 namespace Silex\Provider;
 
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
+use Monolog\Formatter\LineFormatter;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Silex\Application;
-use Silex\ServiceProviderInterface;
+use Silex\Api\BootableProviderInterface;
 use Symfony\Bridge\Monolog\Handler\DebugHandler;
 use Silex\EventListener\LogListener;
 
@@ -23,9 +26,9 @@ use Silex\EventListener\LogListener;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class MonologServiceProvider implements ServiceProviderInterface
+class MonologServiceProvider implements ServiceProviderInterface, BootableProviderInterface
 {
-    public function register(Application $app)
+    public function register(Container $app)
     {
         $app['logger'] = function () use ($app) {
             return $app['monolog'];
@@ -41,35 +44,43 @@ class MonologServiceProvider implements ServiceProviderInterface
 
         $app['monolog.logger.class'] = $bridge ? 'Symfony\Bridge\Monolog\Logger' : 'Monolog\Logger';
 
-        $app['monolog'] = $app->share(function ($app) {
+        $app['monolog'] = function ($app) {
             $log = new $app['monolog.logger.class']($app['monolog.name']);
 
             $log->pushHandler($app['monolog.handler']);
 
-            if ($app['debug'] && isset($app['monolog.handler.debug'])) {
+            if (isset($app['debug']) && $app['debug'] && isset($app['monolog.handler.debug'])) {
                 $log->pushHandler($app['monolog.handler.debug']);
             }
 
             return $log;
-        });
+        };
+
+        $app['monolog.formatter'] = function () {
+            return new LineFormatter();
+        };
 
         $app['monolog.handler'] = function () use ($app) {
             $level = MonologServiceProvider::translateLevel($app['monolog.level']);
 
-            return new StreamHandler($app['monolog.logfile'], $level, $app['monolog.bubble'], $app['monolog.permission']);
+            $handler = new StreamHandler($app['monolog.logfile'], $level, $app['monolog.bubble'], $app['monolog.permission']);
+            $handler->setFormatter($app['monolog.formatter']);
+
+            return $handler;
         };
 
         $app['monolog.level'] = function () {
             return Logger::DEBUG;
         };
 
-        $app['monolog.listener'] = $app->share(function () use ($app) {
-            return new LogListener($app['logger']);
-        });
+        $app['monolog.listener'] = function () use ($app) {
+            return new LogListener($app['logger'], $app['monolog.exception.logger_filter']);
+        };
 
         $app['monolog.name'] = 'myapp';
         $app['monolog.bubble'] = true;
         $app['monolog.permission'] = null;
+        $app['monolog.exception.logger_filter'] = null;
     }
 
     public function boot(Application $app)

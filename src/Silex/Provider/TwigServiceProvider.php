@@ -11,8 +11,8 @@
 
 namespace Silex\Provider;
 
-use Silex\Application;
-use Silex\ServiceProviderInterface;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Bridge\Twig\Extension\FormExtension;
@@ -28,26 +28,26 @@ use Symfony\Bridge\Twig\Form\TwigRenderer;
  */
 class TwigServiceProvider implements ServiceProviderInterface
 {
-    public function register(Application $app)
+    public function register(Container $app)
     {
         $app['twig.options'] = array();
         $app['twig.form.templates'] = array('form_div_layout.html.twig');
         $app['twig.path'] = array();
         $app['twig.templates'] = array();
 
-        $app['twig'] = $app->share(function ($app) {
+        $app['twig'] = function ($app) {
             $app['twig.options'] = array_replace(
                 array(
-                    'charset' => $app['charset'],
-                    'debug' => $app['debug'],
-                    'strict_variables' => $app['debug'],
+                    'charset' => isset($app['charset']) ? $app['charset'] : 'UTF-8',
+                    'debug' => isset($app['debug']) ? $app['debug'] : false,
+                    'strict_variables' => isset($app['debug']) ? $app['debug'] : false,
                 ), $app['twig.options']
             );
 
-            $twig = new \Twig_Environment($app['twig.loader'], $app['twig.options']);
+            $twig = $app['twig.environment_factory']($app);
             $twig->addGlobal('app', $app);
 
-            if ($app['debug']) {
+            if (isset($app['debug']) && $app['debug']) {
                 $twig->addExtension(new \Twig_Extension_Debug());
             }
 
@@ -71,13 +71,13 @@ class TwigServiceProvider implements ServiceProviderInterface
                 }
 
                 if (isset($app['form.factory'])) {
-                    $app['twig.form.engine'] = $app->share(function ($app) {
+                    $app['twig.form.engine'] = function ($app) {
                         return new TwigRendererEngine($app['twig.form.templates']);
-                    });
+                    };
 
-                    $app['twig.form.renderer'] = $app->share(function ($app) {
+                    $app['twig.form.renderer'] = function ($app) {
                         return new TwigRenderer($app['twig.form.engine'], $app['form.csrf_provider']);
-                    });
+                    };
 
                     $twig->addExtension(new FormExtension($app['twig.form.renderer']));
 
@@ -89,25 +89,25 @@ class TwigServiceProvider implements ServiceProviderInterface
             }
 
             return $twig;
-        });
+        };
 
-        $app['twig.loader.filesystem'] = $app->share(function ($app) {
+        $app['twig.loader.filesystem'] = function ($app) {
             return new \Twig_Loader_Filesystem($app['twig.path']);
-        });
+        };
 
-        $app['twig.loader.array'] = $app->share(function ($app) {
+        $app['twig.loader.array'] = function ($app) {
             return new \Twig_Loader_Array($app['twig.templates']);
-        });
+        };
 
-        $app['twig.loader'] = $app->share(function ($app) {
+        $app['twig.loader'] = function ($app) {
             return new \Twig_Loader_Chain(array(
                 $app['twig.loader.array'],
                 $app['twig.loader.filesystem'],
             ));
-        });
-    }
+        };
 
-    public function boot(Application $app)
-    {
+        $app['twig.environment_factory'] = $app->protect(function ($app) {
+            return new \Twig_Environment($app['twig.loader'], $app['twig.options']);
+        });
     }
 }

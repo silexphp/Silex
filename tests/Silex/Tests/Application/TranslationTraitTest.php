@@ -17,8 +17,6 @@ use Silex\Provider\TranslationServiceProvider;
  * TranslationTrait test cases.
  *
  * @author Fabien Potencier <fabien@symfony.com>
- *
- * @requires PHP 5.4
  */
 class TranslationTraitTest extends \PHPUnit_Framework_TestCase
 {
