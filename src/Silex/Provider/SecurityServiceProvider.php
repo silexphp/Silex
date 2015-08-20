@@ -196,6 +196,10 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
 
                 $listeners = array('security.channel_listener');
 
+                if (is_string($users)) {
+                    $users = $app->raw($users);
+                }
+
                 if ($protected) {
                     if (!isset($app['security.context_listener.'.$name])) {
                         if (!isset($app['security.user_provider.'.$name])) {
