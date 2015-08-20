@@ -278,6 +278,35 @@ class SecurityServiceProviderTest extends WebTestCase
         $this->assertEquals('fabien', $app['user']->getUsername());
     }
 
+    public function testUserAsServiceString()
+    {
+        $users = array(
+            'fabien' => array('ROLE_ADMIN', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg=='),
+        );
+
+        $app = new Application();
+        $app->register(new SecurityServiceProvider(), array(
+            'security.firewalls' => array(
+                'default' => array(
+                    'http' => true,
+                    'users' => 'my_user_provider',
+                ),
+            ),
+        ));
+        $app['my_user_provider'] = $app['security.user_provider.inmemory._proto']($users);
+        $app->get('/', function () { return 'foo'; });
+
+        $request = Request::create('/');
+        $app->handle($request);
+        $this->assertNull($app['user']);
+
+        $request->headers->set('PHP_AUTH_USER', 'fabien');
+        $request->headers->set('PHP_AUTH_PW', 'foo');
+        $app->handle($request);
+        $this->assertInstanceOf('Symfony\Component\Security\Core\User\UserInterface', $app['user']);
+        $this->assertEquals('fabien', $app['user']->getUsername());
+    }
+
     public function testUserWithNoToken()
     {
         $app = new Application();
