@@ -10,6 +10,7 @@ Silex
     swiftmailer
     translation
     twig
+    asset
     url_generator
     validator
     form

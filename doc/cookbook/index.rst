@@ -15,7 +15,6 @@ The cookbook section contains recipes for solving specific problems.
     sub_requests
     error_handler
     multiple_loggers
-    assets
 
 Recipes
 -------
