@@ -61,11 +61,16 @@ some Symfony components and Twig. Add it as a dependency:
 When present, the ``TwigServiceProvider`` will provide you with the following
 additional capabilities:
 
-* **UrlGeneratorServiceProvider**: If you are using the
-  ``UrlGeneratorServiceProvider``, you will have access to the ``path()`` and
-  ``url()`` functions. You can find more information in the `Symfony Routing
-  documentation
-  <http://symfony.com/doc/current/book/routing.html#generating-urls-from-a-template>`_.
+* Access to the ``path()`` and ``url()`` functions. You can find more
+  information in the `Symfony Routing documentation
+  <http://symfony.com/doc/current/book/routing.html#generating-urls-from-a-template>`_:
+
+  .. code-block:: jinja
+  
+      {{ path('homepage') }}
+      {{ url('homepage') }} {# generates the absolute url http://example.org/ #}
+      {{ path('hello', {name: 'Fabien'}) }}
+      {{ url('hello', {name: 'Fabien'}) }} {# generates the absolute url http://example.org/hello/Fabien #}
 
 * **TranslationServiceProvider**: If you are using the
   ``TranslationServiceProvider``, you will get the ``trans()`` and

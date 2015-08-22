@@ -184,6 +184,14 @@ Silex defines a range of services.
   <http://api.symfony.com/master/Symfony/Component/Routing/RouteCollection.html>`_
   that is used internally. You can add, modify, read routes.
 
+* **url_generator**: An instance of `UrlGenerator
+  <http://api.symfony.com/master/Symfony/Component/Routing/Generator/UrlGenerator.html>`_,
+  using the `RouteCollection
+  <http://api.symfony.com/master/Symfony/Component/Routing/RouteCollection.html>`_
+  that is provided through the ``routes`` service. It has a ``generate``
+  method, which takes the route name as an argument, followed by an array of
+  route parameters.
+
 * **controllers**: The ``Silex\ControllerCollection`` that is used internally.
   Check the *Internals* chapter for more information.
 
@@ -214,6 +222,20 @@ Silex defines a range of services.
   disabled as the value is set to ``null``. To enable logging you can either use
   the ``MonologServiceProvider`` or define your own ``logger`` service that
   conforms to the PSR logger interface.
+
+Core traits
+-----------
+
+* ``Silex\Application\UrlGeneratorTrait`` adds the following shortcuts:
+
+  * **path**: Generates a path.
+
+  * **url**: Generates an absolute URL.
+
+  .. code-block:: php
+
+      $app->path('homepage');
+      $app->url('homepage');
 
 Core parameters
 ---------------

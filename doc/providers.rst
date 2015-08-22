@@ -58,7 +58,6 @@ the ``Silex\Provider`` namespace:
 * :doc:`SwiftmailerServiceProvider <providers/swiftmailer>`
 * :doc:`TwigServiceProvider <providers/twig>`
 * :doc:`TranslationServiceProvider <providers/translation>`
-* :doc:`UrlGeneratorServiceProvider <providers/url_generator>`
 * :doc:`ValidatorServiceProvider <providers/validator>`
 * :doc:`HttpCacheServiceProvider <providers/http_cache>`
 * :doc:`FormServiceProvider <providers/form>`
