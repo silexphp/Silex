@@ -61,6 +61,8 @@ some Symfony components and Twig. Add it as a dependency:
 When present, the ``TwigServiceProvider`` will provide you with the following
 additional capabilities:
 
+* **absolute_url()** and **relative_path()** Twig functions.
+
 * **UrlGeneratorServiceProvider**: If you are using the
   ``UrlGeneratorServiceProvider``, you will have access to the ``path()`` and
   ``url()`` functions. You can find more information in the `Symfony Routing

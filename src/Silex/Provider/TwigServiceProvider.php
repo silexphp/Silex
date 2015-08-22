@@ -17,6 +17,7 @@ use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Bridge\Twig\Extension\SecurityExtension;
+use Symfony\Bridge\Twig\Extension\HttpFoundationExtension;
 use Symfony\Bridge\Twig\Extension\HttpKernelExtension;
 use Symfony\Bridge\Twig\Form\TwigRendererEngine;
 use Symfony\Bridge\Twig\Form\TwigRenderer;
@@ -52,6 +53,8 @@ class TwigServiceProvider implements ServiceProviderInterface
             }
 
             if (class_exists('Symfony\Bridge\Twig\Extension\RoutingExtension')) {
+                $twig->addExtension(new HttpFoundationExtension($app['request_stack']));
+
                 if (isset($app['url_generator'])) {
                     $twig->addExtension(new RoutingExtension($app['url_generator']));
                 }
