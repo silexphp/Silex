@@ -13,8 +13,13 @@ namespace Silex;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
+use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpKernel\Controller\ArgumentResolverManager;
+use Symfony\Component\HttpKernel\Controller\ArgumentResolver\PsrServerRequestArgumentResolver;
+use Symfony\Component\HttpKernel\Controller\ArgumentResolver\RequestArgumentResolver;
+use Symfony\Component\HttpKernel\Controller\ArgumentResolver\RequestAttributesArgumentResolver;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\TerminableInterface;
@@ -33,6 +38,7 @@ use Symfony\Component\Routing\RouteCollection;
 use Silex\Api\BootableProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
 use Silex\Api\ControllerProviderInterface;
+use Silex\ArgumentResolver\ApplicationArgumentResolver;
 use Silex\Provider\RoutingServiceProvider;
 use Silex\Provider\KernelServiceProvider;
 
@@ -88,7 +94,31 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
         };
 
         $this['callback_resolver'] = function ($app) {
-            return new CallbackResolver($app);
+            return new CallbackResolver($app, $app['logger']);
+        };
+
+        $this['argument_resolvers'] = function ($app) {
+            $resolvers = [
+                new RequestArgumentResolver(),
+                new RequestAttributesArgumentResolver(),
+                new ApplicationArgumentResolver($app),
+            ];
+
+            if (interface_exists('Symfony\Bridge\PsrHttpMessage\HttpMessageFactoryInterface')) {
+                $resolvers[] = new PsrServerRequestArgumentResolver(
+                    new DiactorosFactory()
+                );
+            }
+
+            return $resolvers;
+        };
+
+        $this['argument_resolver_manager'] = function ($app) {
+            if (!class_exists('Symfony\Component\HttpKernel\Controller\ArgumentResolverManager')) {
+                return;
+            }
+
+            return new ArgumentResolverManager($app['argument_resolvers']);
         };
 
         $this['resolver'] = function ($app) {
@@ -96,7 +126,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
         };
 
         $this['kernel'] = function ($app) {
-            return new HttpKernel($app['dispatcher'], $app['resolver'], $app['request_stack']);
+            return new HttpKernel($app['dispatcher'], $app['resolver'], $app['request_stack'], $app['argument_resolver_manager']);
         };
 
         $this['request_stack'] = function () {

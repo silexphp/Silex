@@ -177,6 +177,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testControllersAsMethods()
     {
         $app = new Application();
+        $app['debug'] = true;
 
         $app->get('/{name}', 'Silex\Tests\FooController::barAction');
 

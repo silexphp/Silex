@@ -17,6 +17,7 @@ use Silex\Application;
 use Silex\Api\BootableProviderInterface;
 use Silex\Api\ControllerProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
+use Symfony\Bundle\SecurityBundle\ArgumentResolver\UserArgumentResolver;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RequestMatcher;
 use Symfony\Component\HttpFoundation\Request;
@@ -569,6 +570,14 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
             };
 
             $app['validator.validator_service_ids'] = array_merge($app['validator.validator_service_ids'], array('security.validator.user_password' => 'security.validator.user_password_validator'));
+        }
+
+        if (class_exists('Symfony\Bundle\SecurityBundle\ArgumentResolver\UserArgumentResolver')) {
+            $app->extend('argument_resolvers', function ($resolvers, $app) {
+                $resolvers[] = new UserArgumentResolver($app['security.token_storage']);
+
+                return $resolvers;
+            });
         }
     }
 

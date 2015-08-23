@@ -15,6 +15,9 @@
             "email": "igor@wiedler.ch"
         }
     ],
+    "repositories" : [
+        { "type" : "vcs", "url" : "http://github.com/WouterJ/symfony" }
+    ],
     "require": {
         "php": ">=5.5.9",
         "pimple/pimple": "~3.0",
@@ -45,7 +48,9 @@
         "twig/twig": ">=1.8.0,<2.0-dev",
         "doctrine/dbal": "~2.2",
         "swiftmailer/swiftmailer": "5.*",
-        "monolog/monolog": "~1.4,>=1.4.1"
+        "monolog/monolog": "~1.4,>=1.4.1",
+        "symfony/symfony" : "dev-pr_11457 as 2.8.0"
+
     },
     "suggest": {
         "symfony/browser-kit": "~2.7",
