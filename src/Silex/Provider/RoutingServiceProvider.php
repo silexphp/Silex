@@ -6,7 +6,7 @@
  * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * file that was distributed with app source code.
  */
 
 namespace Silex\Provider;
@@ -16,6 +16,7 @@ use Pimple\ServiceProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
 use Silex\Provider\Routing\RedirectableUrlMatcher;
 use Silex\Provider\Routing\LazyRequestMatcher;
+use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\HttpKernel\EventListener\RouterListener;
@@ -30,6 +31,18 @@ class RoutingServiceProvider implements ServiceProviderInterface, EventListenerP
 {
     public function register(Container $app)
     {
+        $app['route_class'] = 'Silex\\Route';
+        $app['route_factory'] = $app->factory(function ($app) {
+            return new $app['route_class']();
+        });
+
+        $app['routes_factory'] = $app->factory(function () {
+            return new RouteCollection();
+        });
+
+        $app['routes'] = function ($app) {
+            return $app['routes_factory'];
+        };
         $app['url_generator'] = function ($app) {
             return new UrlGenerator($app['routes'], $app['request_context']);
         };
