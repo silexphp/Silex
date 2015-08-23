@@ -210,7 +210,7 @@ class ControllerCollection
                 $routes->add($name, $controller->getRoute());
                 $controller->freeze();
             } else {
-                $routes->addCollection($controller->doFlush($prefix.$controller->prefix, $routes));
+                $controller->doFlush($prefix.$controller->prefix, $routes);
             }
         }
 
