@@ -6,13 +6,14 @@
  * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
- * file that was distributed with app source code.
+ * file that was distributed with this source code.
  */
 
 namespace Silex\Provider;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
+use Silex\ControllerCollection;
 use Silex\Api\EventListenerProviderInterface;
 use Silex\Provider\Routing\RedirectableUrlMatcher;
 use Silex\Provider\Routing\LazyRequestMatcher;
@@ -59,6 +60,15 @@ class RoutingServiceProvider implements ServiceProviderInterface, EventListenerP
 
             return $context;
         };
+
+        $app['controllers'] = function ($app) {
+            return $app['controllers_factory'];
+        };
+
+        $app['controllers_factory'] = $app->factory(function ($app) {
+            return new ControllerCollection($app['route_factory'], $app['routes_factory']);
+        });
+
 
         $app['routing.listener'] = function ($app) {
             $urlMatcher = new LazyRequestMatcher(function () use ($app) {

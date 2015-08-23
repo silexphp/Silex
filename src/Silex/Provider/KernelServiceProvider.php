@@ -6,7 +6,6 @@ use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
 use Silex\CallbackResolver;
-use Silex\ControllerCollection;
 use Silex\ControllerResolver;
 use Silex\EventListener\ConverterListener;
 use Silex\EventListener\MiddlewareListener;
@@ -25,14 +24,6 @@ class KernelServiceProvider implements ServiceProviderInterface, EventListenerPr
      */
     public function register(Container $app)
     {
-        $app['controllers'] = function ($app) {
-            return $app['controllers_factory'];
-        };
-
-        $app['controllers_factory'] = $app->factory(function ($app) {
-            return new ControllerCollection($app['route_factory'], $app['routes_factory']);
-        });
-
         $app['exception_handler'] = function ($app) {
             return new ExceptionHandler($app['debug']);
         };
