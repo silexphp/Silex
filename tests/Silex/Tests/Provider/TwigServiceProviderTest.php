@@ -52,4 +52,19 @@ class TwigServiceProviderTest extends \PHPUnit_Framework_TestCase
         };
         $this->assertEquals('foo', $app['twig.loader']->getSource('foo'));
     }
+
+    public function testHttpFoundationIntegration()
+    {
+        $app = new Application();
+        $app['request_stack']->push(Request::create('/dir1/dir2/file'));
+        $app->register(new TwigServiceProvider(), array(
+            'twig.templates' => array(
+                'absolute' => '{{ absolute_url("foo.css") }}',
+                'relative' => '{{ relative_path("/dir1/foo.css") }}',
+            ),
+        ));
+
+        $this->assertEquals('http://localhost/dir1/dir2/foo.css', $app['twig']->render('absolute'));
+        $this->assertEquals('../foo.css', $app['twig']->render('relative'));
+    }
 }

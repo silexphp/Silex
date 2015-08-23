@@ -72,6 +72,15 @@ additional capabilities:
       {{ path('hello', {name: 'Fabien'}) }}
       {{ url('hello', {name: 'Fabien'}) }} {# generates the absolute url http://example.org/hello/Fabien #}
 
+* Access to the ``absolute_url()`` and ``relative_path()`` Twig functions.
+
+* **UrlGeneratorServiceProvider**: If you are using the
+  ``UrlGeneratorServiceProvider``, you will have access to the ``path()`` and
+  ``url()`` functions. You can find more information in the `Symfony Routing
+  documentation
+  <http://symfony.com/doc/current/book/routing.html#generating-urls-from-a-template>`_.
+>>>>>>> pull/1220
+
 * **TranslationServiceProvider**: If you are using the
   ``TranslationServiceProvider``, you will get the ``trans()`` and
   ``transchoice()`` functions for translation in Twig templates. You can find
