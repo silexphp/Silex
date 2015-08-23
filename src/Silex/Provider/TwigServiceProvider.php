@@ -13,6 +13,7 @@ namespace Silex\Provider;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
+use Symfony\Bridge\Twig\Extension\AssetExtension;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Bridge\Twig\Extension\FormExtension;
@@ -71,6 +72,10 @@ class TwigServiceProvider implements ServiceProviderInterface
                     $app['fragment.renderer.hinclude']->setTemplating($twig);
 
                     $twig->addExtension(new HttpKernelExtension($app['fragment.handler']));
+                }
+
+                if (isset($app['assets.packages'])) {
+                    $twig->addExtension(new AssetExtension($app['assets.packages']));
                 }
 
                 if (isset($app['form.factory'])) {

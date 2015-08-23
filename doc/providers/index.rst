@@ -10,6 +10,7 @@ Silex
     swiftmailer
     translation
     twig
+    asset
     validator
     form
     http_cache

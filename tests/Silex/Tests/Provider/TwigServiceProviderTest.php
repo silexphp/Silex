@@ -13,6 +13,7 @@ namespace Silex\Tests\Provider;
 
 use Silex\Application;
 use Silex\Provider\TwigServiceProvider;
+use Silex\Provider\AssetServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -66,5 +67,18 @@ class TwigServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('http://localhost/dir1/dir2/foo.css', $app['twig']->render('absolute'));
         $this->assertEquals('../foo.css', $app['twig']->render('relative'));
+    }
+
+    public function testAssetIntegration()
+    {
+        $app = new Application();
+        $app->register(new TwigServiceProvider(), array(
+            'twig.templates' => array('hello' => '{{ asset("/foo.css") }}'),
+        ));
+        $app->register(new AssetServiceProvider(), array(
+            'assets.version' => 1,
+        ));
+
+        $this->assertEquals('/foo.css?1', $app['twig']->render('hello'));
     }
 }
