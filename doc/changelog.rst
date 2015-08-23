@@ -4,6 +4,8 @@ Changelog
 2.0.0 (2015-XX-XX)
 ------------------
 
+* added support for the Symfony HttpFoundation Twig bridge extension
+* added support for the Symfony Asset Component
 * bumped minimum version of Symfony to 2.7
 * bumped minimum version of PHP to 5.5.0
 * Updated Pimple to 3.0
