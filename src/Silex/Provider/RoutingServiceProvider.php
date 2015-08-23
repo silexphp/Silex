@@ -33,6 +33,7 @@ class RoutingServiceProvider implements ServiceProviderInterface, EventListenerP
     public function register(Container $app)
     {
         $app['route_class'] = 'Silex\\Route';
+
         $app['route_factory'] = $app->factory(function ($app) {
             return new $app['route_class']();
         });
@@ -68,7 +69,6 @@ class RoutingServiceProvider implements ServiceProviderInterface, EventListenerP
         $app['controllers_factory'] = $app->factory(function ($app) {
             return new ControllerCollection($app['route_factory'], $app['routes_factory']);
         });
-
 
         $app['routing.listener'] = function ($app) {
             $urlMatcher = new LazyRequestMatcher(function () use ($app) {
