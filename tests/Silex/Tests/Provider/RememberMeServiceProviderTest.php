@@ -17,6 +17,7 @@ use Silex\Provider\RememberMeServiceProvider;
 use Silex\Provider\SecurityServiceProvider;
 use Silex\Provider\SessionServiceProvider;
 use Symfony\Component\HttpKernel\Client;
+use Symfony\Component\Security\Http\SecurityEvents;
 
 /**
  * SecurityServiceProvider.
@@ -29,19 +30,17 @@ class RememberMeServiceProviderTest extends WebTestCase
     {
         $app = $this->createApplication();
 
-        $event = false;
-        $app->on(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, function ($event) use ($app, &$event) {
-            $event = true;
-        });
+        $interactiveLogin = new InteractiveLoginTriggered();
+        $app->on(SecurityEvents::INTERACTIVE_LOGIN, array($interactiveLogin, 'onInteractiveLogin'));
 
         $client = new Client($app);
 
         $client->request('get', '/');
-        $this->assertFalse($event, 'The interactive login has not been triggered yet');
+        $this->assertFalse($interactiveLogin->triggered, 'The interactive login has not been triggered yet');
         $client->request('post', '/login_check', array('_username' => 'fabien', '_password' => 'foo', '_remember_me' => 'true'));
         $client->followRedirect();
         $this->assertEquals('AUTHENTICATED_FULLY', $client->getResponse()->getContent());
-        $this->assertTrue($event, 'The interactive login has been triggered');
+        $this->assertTrue($interactiveLogin->triggered, 'The interactive login has been triggered');
 
         $this->assertNotNull($client->getCookiejar()->get('REMEMBERME'), 'The REMEMBERME cookie is set');
         $event = false;
@@ -50,7 +49,7 @@ class RememberMeServiceProviderTest extends WebTestCase
 
         $client->request('get', '/');
         $this->assertEquals('AUTHENTICATED_REMEMBERED', $client->getResponse()->getContent());
-        $this->assertTrue($event, 'The interactive login has been triggered');
+        $this->assertTrue($interactiveLogin->triggered, 'The interactive login has been triggered');
 
         $client->request('get', '/logout');
         $client->followRedirect();
@@ -94,5 +93,15 @@ class RememberMeServiceProviderTest extends WebTestCase
         });
 
         return $app;
+    }
+}
+
+class InteractiveLoginTriggered
+{
+    public $triggered = false;
+
+    public function onInteractiveLogin()
+    {
+        $this->triggered = true;
     }
 }
