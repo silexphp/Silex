@@ -1,5 +1,11 @@
 language: php
 
+sudo: false
+
+cache:
+    directories:
+      - $HOME/.composer/cache
+
 before_script:
     # symfony/*
     - sh -c "if [ '$SYMFONY_DEPS_VERSION' = '2.8' ]; then sed -i 's/~2.3/2.8.*@dev/g' composer.json; composer update --dev --prefer-source; fi"
@@ -10,21 +16,16 @@ before_script:
 
 script: phpunit
 
-php:
-  - 5.3
-  - 5.4
-  - 5.5
-  - 5.6
-  - 7.0
-  - hhvm
-
 matrix:
-    allow_failures:
-        - php: hhvm
     include:
+        - php: 5.3
+        - php: 5.4
+        - php: 5.5
         - php: 5.6
           env: SYMFONY_DEPS_VERSION=2.3
         - php: 5.6
           env: SYMFONY_DEPS_VERSION=2.7
         - php: 5.6
           env: SYMFONY_DEPS_VERSION=2.8
+        - php: 7.0
+        - php: hhvm
