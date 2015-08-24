@@ -96,7 +96,8 @@ class RememberMeServiceProviderTest extends WebTestCase
     }
 }
 
-class InteractiveLoginTriggered {
+class InteractiveLoginTriggered
+{
     public $triggered = false;
 
     public function onInteractiveLogin()
