@@ -2,26 +2,52 @@
 
 namespace Silex\Provider;
 
-use Pimple\ServiceProviderInterface;
 use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
+use Silex\CallbackResolver;
+use Silex\ControllerResolver;
 use Silex\EventListener\ConverterListener;
 use Silex\EventListener\MiddlewareListener;
 use Silex\EventListener\StringToResponseListener;
+use Silex\ExceptionHandler;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\EventListener\ResponseListener;
+use Symfony\Component\HttpKernel\HttpKernel;
 
 class KernelServiceProvider implements ServiceProviderInterface, EventListenerProviderInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function register(Container $pimple)
+    public function register(Container $app)
     {
-        $pimple['dispatcher'] = function () {
+        $app['exception_handler'] = function ($app) {
+            return new ExceptionHandler($app['debug']);
+        };
+
+        $app['resolver'] = function ($app) {
+            return new ControllerResolver($app, $app['logger']);
+        };
+
+        $app['kernel'] = function ($app) {
+            return new HttpKernel($app['dispatcher'], $app['resolver'], $app['request_stack']);
+        };
+
+        $app['request_stack'] = function () {
+            return new RequestStack();
+        };
+
+        $app['dispatcher'] = function () {
             return new EventDispatcher();
         };
+
+        $app['callback_resolver'] = function ($app) {
+            return new CallbackResolver($app);
+        };
+
     }
 
     /**
