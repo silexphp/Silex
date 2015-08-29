@@ -31,7 +31,7 @@ use Silex\Api\BootableProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
 use Silex\Api\ControllerProviderInterface;
 use Silex\Provider\RoutingServiceProvider;
-use Silex\Provider\KernelServiceProvider;
+use Silex\Provider\HttpKernelServiceProvider;
 
 /**
  * The Silex framework class.
@@ -65,7 +65,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
         $this['charset'] = 'UTF-8';
         $this['logger'] = null;
 
-        $this->register(new KernelServiceProvider());
+        $this->register(new HttpKernelServiceProvider());
         $this->register(new RoutingServiceProvider());
 
         foreach ($values as $key => $value) {

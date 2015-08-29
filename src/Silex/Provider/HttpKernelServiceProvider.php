@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\EventListener\ResponseListener;
 use Symfony\Component\HttpKernel\HttpKernel;
 
-class KernelServiceProvider implements ServiceProviderInterface, EventListenerProviderInterface
+class HttpKernelServiceProvider implements ServiceProviderInterface, EventListenerProviderInterface
 {
     /**
      * {@inheritdoc}
