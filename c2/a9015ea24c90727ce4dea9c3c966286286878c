@@ -1,0 +1,17 @@
+---------------------------------------------------------------------------
+
+by desarrolla2 at 2015-08-24T09:13:28Z
+
+can you elaborate on what needs to be done?
+
+---------------------------------------------------------------------------
+
+by stof at 2015-08-24T09:19:51Z
+
+The upgrade path must document the need to register the Csrf provider when you were using forms, and the doc for the FormProvider should recommend registering the Csrf provider too. Otherwise your forms are not protected against CSRF.
+
+---------------------------------------------------------------------------
+
+by fabpot at 2015-08-29T17:13:30Z
+
+PR updated, everything should be ok now.
