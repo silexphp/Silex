@@ -39,6 +39,7 @@ class MonologTraitTest extends \PHPUnit_Framework_TestCase
             'monolog.handler' => function () use ($app) {
                 return new TestHandler($app['monolog.level']);
             },
+            'monolog.logfile' => 'php://memory',
         ));
 
         return $app;
