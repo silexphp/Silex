@@ -81,4 +81,16 @@ class TwigServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('/foo.css?1', $app['twig']->render('hello'));
     }
+
+    public function testAppVariable()
+    {
+        $app = new Application();
+        $app['request_stack']->push(Request::create('/?name=Fabien'));
+
+        $app->register(new TwigServiceProvider(), array(
+            'twig.templates' => array('hello' => '{{ app.request.get("name") }}'),
+        ));
+
+        $this->assertEquals('Fabien', $app['twig']->render('hello'));
+    }
 }

@@ -111,13 +111,23 @@ The Twig provider provides a ``twig`` service::
 
 This will render a file named ``views/hello.twig``.
 
-In any Twig template, the ``app`` variable refers to the Application object.
-So you can access any service from within your view. For example to access
-``$app['request']->getHost()``, just put this in your template:
+In any Twig template, the ``app`` variable refers to an instance of
+`AppVariable <http://api.symfony.com/master/Symfony/Bridge/Twig/AppVariable.html >`_.
+It gives access to the following methods:
 
 .. code-block:: jinja
 
-    {{ app.request.host }}
+    {# The current Request #}
+    {{ app.request }}
+
+    {# The current User (when security is enabled) #}
+    {{ app.user }}
+
+    {# The current Session #}
+    {{ app.session }}
+
+    {# The debug flag #}
+    {{ app.debug }}
 
 A ``render`` function is also registered to help you render another controller
 from a template:

@@ -13,6 +13,7 @@ namespace Silex\Provider;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
+use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bridge\Twig\Extension\AssetExtension;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
@@ -37,6 +38,17 @@ class TwigServiceProvider implements ServiceProviderInterface
         $app['twig.path'] = array();
         $app['twig.templates'] = array();
 
+        $app['twig.app_variable'] = function ($app) {
+            $var = new AppVariable();
+            if (isset($app['security.token_storage'])) {
+                $var->setTokenStorage($app['security.token_storage']);
+            }
+            $var->setRequestStack($app['request_stack']);
+            $var->setDebug($app['debug']);
+
+            return $var;
+        };
+
         $app['twig'] = function ($app) {
             $app['twig.options'] = array_replace(
                 array(
@@ -47,7 +59,7 @@ class TwigServiceProvider implements ServiceProviderInterface
             );
 
             $twig = $app['twig.environment_factory']($app);
-            $twig->addGlobal('app', $app);
+            $twig->addGlobal('app', $app['twig.app_variable']);
 
             if (isset($app['debug']) && $app['debug']) {
                 $twig->addExtension(new \Twig_Extension_Debug());
