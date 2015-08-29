@@ -760,8 +760,11 @@ Cross-Site-Scripting attacks.
 * **Escaping HTML**: PHP provides the ``htmlspecialchars`` function for this.
   Silex provides a shortcut ``escape`` method::
 
-      $app->get('/name', function (Silex\Application $app) {
-          $name = $app['request']->get('name');
+      use Symfony\Component\HttpFoundation\Request;
+
+      $app->get('/name', function (Request $request, Silex\Application $app) {
+          $name = $request->get('name');
+
           return "You provided the name {$app->escape($name)}.";
       });
 
@@ -771,8 +774,11 @@ Cross-Site-Scripting attacks.
 * **Escaping JSON**: If you want to provide data in JSON format you should
   use the Silex ``json`` function::
 
-      $app->get('/name.json', function (Silex\Application $app) {
-          $name = $app['request']->get('name');
+      use Symfony\Component\HttpFoundation\Request;
+
+      $app->get('/name.json', function (Request $request, Silex\Application $app) {
+          $name = $request->get('name');
+
           return $app->json(array('name' => $name));
       });
 

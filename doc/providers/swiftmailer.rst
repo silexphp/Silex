@@ -86,9 +86,9 @@ Usage
 
 The Swiftmailer provider provides a ``mailer`` service::
 
-    $app->post('/feedback', function () use ($app) {
-        $request = $app['request'];
+    use Symfony\Component\HttpFoundation\Request;
 
+    $app->post('/feedback', function (Request $request) use ($app) {
         $message = \Swift_Message::newInstance()
             ->setSubject('[YourSite] Feedback')
             ->setFrom(array('noreply@yoursite.com'))

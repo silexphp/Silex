@@ -167,18 +167,17 @@ Core services
 
 Silex defines a range of services.
 
-* **request**: Contains the current request object, which is an instance of
-  `Request
-  <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Request.html>`_.
+* **request_stack**: Controls the lifecycle of requests, an instance of
+  `RequestStack <http://api.symfony.com/master/Symfony/Component/HttpFoundation/RequestStack.html>` _.
   It gives you access to ``GET``, ``POST`` parameters and lots more!
 
   Example usage::
 
-    $id = $app['request']->get('id');
+    $id = $app['request_stack']->getCurrentRequest()->get('id');
 
-  This is only available when a request is being served; you can only access
-  it from within a controller, an application before/after middlewares, or an
-  error handler.
+  A request is only available when a request is being served; you can only
+  access it from within a controller, an application before/after middlewares,
+  or an error handler.
 
 * **routes**: The `RouteCollection
   <http://api.symfony.com/master/Symfony/Component/Routing/RouteCollection.html>`_
