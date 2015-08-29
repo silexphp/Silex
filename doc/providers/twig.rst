@@ -123,7 +123,8 @@ It gives access to the following methods:
     {{ app.debug }}
 
 A ``render`` function is also registered to help you render another controller
-from a template:
+from a template (available when the `HttpFragment Service Provider </providers/http_fragment.rst>`
+is registered):
 
 .. code-block:: jinja
 
