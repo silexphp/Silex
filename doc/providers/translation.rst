@@ -44,9 +44,7 @@ Registering
 
 .. note::
 
-    The Symfony Translation Component comes with the "fat" Silex archive but
-    not with the regular one. If you are using Composer, add it as a
-    dependency:
+    Add the Symfony Translation Component as a dependency:
 
     .. code-block:: bash
 

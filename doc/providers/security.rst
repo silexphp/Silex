@@ -58,8 +58,7 @@ Registering
 
 .. note::
 
-    The Symfony Security Component comes with the "fat" Silex archive but not
-    with the regular one. If you are using Composer, add it as a dependency:
+    Add the Symfony Security Component as a dependency:
 
     .. code-block:: bash
 

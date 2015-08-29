@@ -41,8 +41,7 @@ Registering
 
 .. note::
 
-    Twig comes with the "fat" Silex archive but not with the regular one. If
-    you are using Composer, add it as a dependency:
+    Add Twig as a dependency:
 
     .. code-block:: bash
 

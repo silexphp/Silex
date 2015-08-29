@@ -53,8 +53,7 @@ Registering
 
 .. note::
 
-    Monolog comes with the "fat" Silex archive but not with the regular one.
-    If you are using Composer, add it as a dependency:
+    Add Monolog as a dependency:
 
     .. code-block:: bash
 
