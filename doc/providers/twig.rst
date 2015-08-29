@@ -74,13 +74,6 @@ additional capabilities:
 
 * Access to the ``absolute_url()`` and ``relative_path()`` Twig functions.
 
-* **UrlGeneratorServiceProvider**: If you are using the
-  ``UrlGeneratorServiceProvider``, you will have access to the ``path()`` and
-  ``url()`` functions. You can find more information in the `Symfony Routing
-  documentation
-  <http://symfony.com/doc/current/book/routing.html#generating-urls-from-a-template>`_.
->>>>>>> pull/1220
-
 * **TranslationServiceProvider**: If you are using the
   ``TranslationServiceProvider``, you will get the ``trans()`` and
   ``transchoice()`` functions for translation in Twig templates. You can find
@@ -134,15 +127,7 @@ from a template:
 
 .. code-block:: jinja
 
-    {{ render(app.request.baseUrl ~ '/sidebar') }}
-
-    {# or if you are also using the UrlGeneratorServiceProvider #}
     {{ render(url('sidebar')) }}
-
-.. note::
-
-    You must prepend the ``app.request.baseUrl`` to render calls to ensure
-    that the render works when deployed into a sub-directory of the docroot.
 
 Traits
 ------
