@@ -21,16 +21,16 @@ class UrlGeneratorTraitTest extends \PHPUnit_Framework_TestCase
     public function testUrl()
     {
         $app = new UrlGeneratorApplication();
-        $app['url_generator'] = $translator = $this->getMockBuilder('Symfony\Component\Routing\Generator\UrlGeneratorInterface')->disableOriginalConstructor()->getMock();
-        $translator->expects($this->once())->method('generate')->with('foo', array(), true);
+        $app['url_generator'] = $this->getMockBuilder('Symfony\Component\Routing\Generator\UrlGeneratorInterface')->disableOriginalConstructor()->getMock();
+        $app['url_generator']->expects($this->once())->method('generate')->with('foo', array(), true);
         $app->url('foo');
     }
 
     public function testPath()
     {
         $app = new UrlGeneratorApplication();
-        $app['url_generator'] = $translator = $this->getMockBuilder('Symfony\Component\Routing\Generator\UrlGeneratorInterface')->disableOriginalConstructor()->getMock();
-        $translator->expects($this->once())->method('generate')->with('foo', array(), false);
+        $app['url_generator'] = $this->getMockBuilder('Symfony\Component\Routing\Generator\UrlGeneratorInterface')->disableOriginalConstructor()->getMock();
+        $app['url_generator']->expects($this->once())->method('generate')->with('foo', array(), false);
         $app->path('foo');
     }
 }

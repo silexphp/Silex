@@ -389,9 +389,9 @@ have the value ``index``.
 Named Routes
 ~~~~~~~~~~~~
 
-Some providers (such as ``UrlGeneratorProvider``) can make use of named routes.
-By default Silex will generate an internal route name for you but you can give
-an explicit route name by calling ``bind``::
+Some providers can make use of named routes. By default Silex will generate an
+internal route name for you but you can give an explicit route name by calling
+``bind``::
 
     $app->get('/', function () {
         // ...
@@ -625,7 +625,7 @@ round-trip to the browser (as for a redirect), use an internal sub-request::
 
 .. tip::
 
-    If you are using ``UrlGeneratorProvider``, you can also generate the URI::
+    You can also generate the URI via the built-in URL generator::
 
         $request = Request::create($app['url_generator']->generate('hello'), 'GET');
 

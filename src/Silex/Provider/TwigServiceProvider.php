@@ -67,10 +67,7 @@ class TwigServiceProvider implements ServiceProviderInterface
 
             if (class_exists('Symfony\Bridge\Twig\Extension\RoutingExtension')) {
                 $twig->addExtension(new HttpFoundationExtension($app['request_stack']));
-
-                if (isset($app['url_generator'])) {
-                    $twig->addExtension(new RoutingExtension($app['url_generator']));
-                }
+                $twig->addExtension(new RoutingExtension($app['url_generator']));
 
                 if (isset($app['translator'])) {
                     $twig->addExtension(new TranslationExtension($app['translator']));
