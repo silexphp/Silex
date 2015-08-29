@@ -34,7 +34,7 @@ Registering
 .. note::
 
     The *SerializerServiceProvider* relies on Symfony's `Serializer Component
-    <http://symfony.com/doc/current/components/serializer.html>`_, 
+    <http://symfony.com/doc/current/components/serializer.html>`_,
     which comes with the "fat" Silex archive but not with the regular
     one. If you are using Composer, add it as a dependency:
 

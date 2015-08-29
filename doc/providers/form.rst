@@ -7,10 +7,7 @@ your application with the Symfony Form component.
 Parameters
 ----------
 
-* **form.secret**: This secret value is used for generating and validating the
-  CSRF token for a specific page. It is very important for you to set this
-  value to a static randomly generated value, to prevent hijacking of your
-  forms. Defaults to ``md5(__DIR__)``.
+* none
 
 Services
 --------
@@ -18,9 +15,6 @@ Services
 * **form.factory**: An instance of `FormFactory
   <http://api.symfony.com/master/Symfony/Component/Form/FormFactory.html>`_,
   that is used to build a form.
-
-* **form.csrf_provider**: An instance of an implementation of
-  `CsrfTokenManagerInterface <http://api.symfony.com/2.7/Symfony/Component/Security/Csrf/CsrfTokenManagerInterface.html>`_.
 
 Registering
 -----------
@@ -63,13 +57,6 @@ Registering
     .. code-block:: bash
 
         composer require symfony/validator symfony/config symfony/translation
-        
-    The Symfony Security CSRF component is used to protect forms against CSRF
-    attacks:
-
-    .. code-block:: bash
-    
-        composer require symfony/security-csrf
 
     If you want to use forms in your Twig templates, you can also install the
     Symfony Twig Bridge. Make sure to install, if you didn't do that already,
@@ -182,6 +169,11 @@ You can register form type guessers by extending ``form.type.guessers``::
 
         return $guessers;
     });
+
+.. warning::
+
+    CSRF protection is only available and automatically enabled when the `CSRF
+    Service Provider </providers/csrf.rst>` is registered.
 
 Traits
 ------
