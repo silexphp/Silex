@@ -18,7 +18,11 @@ Parameters
   for more information.
 
 * **twig.form.templates** (optional): An array of templates used to render
-  forms (only available when the ``FormServiceProvider`` is enabled).
+  forms (only available when the ``FormServiceProvider`` is enabled). The
+  default theme is ``form_div_layout.html.twig``, but you can use the other
+  built-in themes: ``form_table_layout.html.twig``,
+  ``bootstrap_3_layout.html.twig``, and
+  ``bootstrap_3_horizontal_layout.html.twig``.
 
 Services
 --------
