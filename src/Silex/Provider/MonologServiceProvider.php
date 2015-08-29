@@ -49,7 +49,7 @@ class MonologServiceProvider implements ServiceProviderInterface, BootableProvid
 
             $log->pushHandler($app['monolog.handler']);
 
-            if (isset($app['debug']) && $app['debug'] && isset($app['monolog.handler.debug'])) {
+            if ($app['debug'] && isset($app['monolog.handler.debug'])) {
                 $log->pushHandler($app['monolog.handler.debug']);
             }
 

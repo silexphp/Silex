@@ -32,7 +32,7 @@ class HttpFragmentServiceProvider implements ServiceProviderInterface, EventList
     public function register(Container $app)
     {
         $app['fragment.handler'] = function ($app) {
-            return new FragmentHandler($app['fragment.renderers'], isset($app['debug']) ? $app['debug'] : false, $app['request_stack']);
+            return new FragmentHandler($app['fragment.renderers'], $app['debug'], $app['request_stack']);
         };
 
         $app['fragment.renderer.inline'] = function ($app) {
@@ -43,7 +43,7 @@ class HttpFragmentServiceProvider implements ServiceProviderInterface, EventList
         };
 
         $app['fragment.renderer.hinclude'] = function ($app) {
-            $renderer = new HIncludeFragmentRenderer(null, $app['uri_signer'], $app['fragment.renderer.hinclude.global_template'], isset($app['charset']) ? $app['charset'] : 'UTF-8');
+            $renderer = new HIncludeFragmentRenderer(null, $app['uri_signer'], $app['fragment.renderer.hinclude.global_template'], $app['charset']);
             $renderer->setFragmentPath($app['fragment.path']);
 
             return $renderer;

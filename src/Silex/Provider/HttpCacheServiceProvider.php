@@ -32,7 +32,7 @@ class HttpCacheServiceProvider implements ServiceProviderInterface, EventListene
         $app['http_cache'] = function ($app) {
             $app['http_cache.options'] = array_replace(
                 array(
-                    'debug' => isset($app['debug']) ? $app['debug'] : false,
+                    'debug' => $app['debug'],
                 ), $app['http_cache.options']
             );
 
