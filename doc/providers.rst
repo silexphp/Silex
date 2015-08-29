@@ -158,14 +158,16 @@ given. If the default is also missing, it will use an empty string.
 
 You can now use this provider as follows::
 
+    use Symfony\Component\HttpFoundation\Request;
+
     $app = new Silex\Application();
 
     $app->register(new Acme\HelloServiceProvider(), array(
         'hello.default_name' => 'Igor',
     ));
 
-    $app->get('/hello', function () use ($app) {
-        $name = $app['request']->get('name');
+    $app->get('/hello', function (Request $request) use ($app) {
+        $name = $request->get('name');
 
         return $app['hello']($name);
     });
