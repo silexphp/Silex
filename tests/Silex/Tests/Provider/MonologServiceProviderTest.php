@@ -66,11 +66,12 @@ class MonologServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->register(new MonologServiceProvider());
-        $app['monolog.formatter'] = new JsonFormatter();
-        $app['monolog.logfile'] = 'php://memory';
+        $app->register(new MonologServiceProvider(), array(
+            'monolog.formatter' => new JsonFormatter(),
+            'monolog.logfile' => 'php://memory',
+        ));
 
-        $this->assertInstanceOf('Monolog\Formatter\JsonFormatter', $app['logger']->popHandler()->getFormatter());
+        $this->assertInstanceOf('Monolog\Formatter\JsonFormatter', $app['monolog.handler']->getFormatter());
     }
 
     public function testErrorLogging()
@@ -197,13 +198,14 @@ class MonologServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->register(new MonologServiceProvider());
+        $app->register(new MonologServiceProvider(), array(
+            'monolog.handler' => function () use ($app) {
+                $level = MonologServiceProvider::translateLevel($app['monolog.level']);
 
-        $app['monolog.handler'] = function () use ($app) {
-            $level = MonologServiceProvider::translateLevel($app['monolog.level']);
-
-            return new TestHandler($level);
-        };
+                return new TestHandler($level);
+            },
+            'monolog.logfile' => 'php://memory',
+        ));
 
         return $app;
     }
