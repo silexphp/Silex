@@ -1,0 +1,5 @@
+---------------------------------------------------------------------------
+
+by Seldaek at 2015-08-30T10:25:02Z
+
+I think it looks good, except for the fact that monolog.handler (handler) becomes monolog.handlers (array), which is a BC break right? Might be nice to define `monolog.handlers` as `(array) $app['monolog.handler']` in case it is set, but I don't know how much you care about BC.
