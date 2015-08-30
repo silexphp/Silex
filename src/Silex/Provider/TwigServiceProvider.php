@@ -94,7 +94,7 @@ class TwigServiceProvider implements ServiceProviderInterface
                     };
 
                     $app['twig.form.renderer'] = function ($app) {
-                        return new TwigRenderer($app['twig.form.engine'], $app['form.csrf_provider']);
+                        return new TwigRenderer($app['twig.form.engine'], $app['csrf.token_manager']);
                     };
 
                     $twig->addExtension(new FormExtension($app['twig.form.renderer']));
