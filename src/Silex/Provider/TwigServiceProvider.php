@@ -15,6 +15,7 @@ use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bridge\Twig\Extension\AssetExtension;
+use Symfony\Bridge\Twig\Extension\DumpExtension;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Bridge\Twig\Extension\FormExtension;
@@ -102,6 +103,10 @@ class TwigServiceProvider implements ServiceProviderInterface
                     $reflected = new \ReflectionClass('Symfony\Bridge\Twig\Extension\FormExtension');
                     $path = dirname($reflected->getFileName()).'/../Resources/views/Form';
                     $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($path));
+                }
+
+                if (isset($app['var_dumper.cloner'])) {
+                    $twig->addExtension(new DumpExtension($app['var_dumper.cloner']));
                 }
             }
 
