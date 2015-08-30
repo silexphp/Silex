@@ -42,9 +42,7 @@ Registering
 
 .. note::
 
-    The Symfony Form Component and all its dependencies (optional or not) comes
-    with the "fat" Silex archive but not with the regular one. If you are using
-    Composer, add it as a dependency:
+    Add the Symfony Form Component as a dependency:
 
     .. code-block:: bash
 
