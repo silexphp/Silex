@@ -19,3 +19,4 @@ Silex
     remember_me
     serializer
     service_controller
+    var-dumper
