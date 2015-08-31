@@ -12,6 +12,8 @@
 namespace Silex\Tests\Provider;
 
 use Silex\Application;
+use Silex\Provider\CsrfServiceProvider;
+use Silex\Provider\FormServiceProvider;
 use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\AssetServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
@@ -92,5 +94,17 @@ class TwigServiceProviderTest extends \PHPUnit_Framework_TestCase
         ));
 
         $this->assertEquals('Fabien', $app['twig']->render('hello'));
+    }
+
+    public function testFormFactory()
+    {
+        $app = new Application();
+        $app->register(new FormServiceProvider());
+        $app->register(new CsrfServiceProvider());
+        $app->register(new TwigServiceProvider());
+
+        $this->assertInstanceOf('Twig_Environment', $app['twig'], 'Service twig is created successful.');
+        $this->assertInstanceOf('Symfony\Bridge\Twig\Form\TwigRendererEngine', $app['twig.form.engine'], 'Service twig.form.engine is created successful.');
+        $this->assertInstanceOf('Symfony\Bridge\Twig\Form\TwigRenderer', $app['twig.form.renderer'], 'Service twig.form.renderer is created successful.');
     }
 }
