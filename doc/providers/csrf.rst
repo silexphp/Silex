@@ -12,7 +12,7 @@ Parameters
 Services
 --------
 
-* **form.csrf_provider**: An instance of an implementation of the
+* **csrf.token_manager**: An instance of an implementation of the
   `CsrfProviderInterface
   <http://api.symfony.com/master/Symfony/Component/Form/Extension/Csrf/CsrfProvider/CsrfProviderInterface.html>`_,
   defaults to a `DefaultCsrfProvider

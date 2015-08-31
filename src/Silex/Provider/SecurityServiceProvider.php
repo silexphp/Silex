@@ -449,7 +449,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
                     $options,
                     $app['logger'],
                     $app['dispatcher'],
-                    isset($options['with_csrf']) && $options['with_csrf'] && isset($app['form.csrf_provider']) ? $app['form.csrf_provider'] : null
+                    isset($options['with_csrf']) && $options['with_csrf'] && isset($app['csrf.token_manager']) ? $app['csrf.token_manager'] : null
                 );
             };
         });
@@ -502,7 +502,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
                     $app['security.http_utils'],
                     $app['security.authentication.logout_handler.'.$name],
                     $options,
-                    isset($options['with_csrf']) && $options['with_csrf'] && isset($app['form.csrf_provider']) ? $app['form.csrf_provider'] : null
+                    isset($options['with_csrf']) && $options['with_csrf'] && isset($app['csrf.token_manager']) ? $app['csrf.token_manager'] : null
                 );
 
                 $invalidateSession = isset($options['invalidate_session']) ? $options['invalidate_session'] : true;
