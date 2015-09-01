@@ -24,10 +24,15 @@ Changelog
 * ``monolog.exception.logger_filter`` option added to Monolog service provider
 * [BC BREAK] ``$app['request']`` service removed, use ``$app['request_stack']`` instead
 
-1.3.2 (2015-XX-XX)
+1.3.3 (2015-XX-XX)
 ------------------
 
 * n/a
+
+1.3.2 (2015-08-24)
+------------------
+
+* no changes
 
 1.3.1 (2015-08-04)
 ------------------
