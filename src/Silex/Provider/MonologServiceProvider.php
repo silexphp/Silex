@@ -17,7 +17,6 @@ use Monolog\Formatter\LineFormatter;
 use Monolog\Logger;
 use Monolog\Handler;
 use Monolog\ErrorHandler;
-use Silex\Application;
 use Silex\Api\BootableProviderInterface;
 use Symfony\Bridge\Monolog\Handler\DebugHandler;
 use Symfony\Bridge\Monolog\Handler\FingersCrossed\NotFoundActivationStrategy;
@@ -105,7 +104,7 @@ class MonologServiceProvider implements ServiceProviderInterface, BootableProvid
         $app['monolog.logfile'] = null;
     }
 
-    public function boot(Application $app)
+    public function boot(Container $app)
     {
         ErrorHandler::register($app['monolog']);
 

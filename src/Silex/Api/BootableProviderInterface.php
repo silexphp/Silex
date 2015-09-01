@@ -11,7 +11,7 @@
 
 namespace Silex\Api;
 
-use Silex\Application;
+use Pimple\Container;
 
 /**
  * Interface that must implement all Silex service providers.
@@ -27,7 +27,7 @@ interface BootableProviderInterface
      * and should be used for "dynamic" configuration (whenever
      * a service must be requested).
      *
-     * @param Application $app
+     * @param Container $app
      */
-    public function boot(Application $app);
+    public function boot(Container $app);
 }
