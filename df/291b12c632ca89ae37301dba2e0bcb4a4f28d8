@@ -1,0 +1,29 @@
+---------------------------------------------------------------------------
+
+by Seldaek at 2015-09-01T17:07:15Z
+
+I fixed the build failure. Would be happy to get any feedback here.
+
+---------------------------------------------------------------------------
+
+by stof at 2015-09-01T17:11:27Z
+
+how could Silex 2 lack a RequestStack ? The only case where Silex 1 lacks it is when installing HttpFoundation 2.3 AFAIK, and Silex 2 requires Symfony 2.7+
+
+---------------------------------------------------------------------------
+
+by Seldaek at 2015-09-01T17:20:52Z
+
+Well in Cilex you don't register the HttpKernelServiceProvider and you run into issues.
+
+---------------------------------------------------------------------------
+
+by fabpot at 2015-09-02T13:06:43Z
+
+Is this one a problem for Cilex? 588c52a
+
+---------------------------------------------------------------------------
+
+by Seldaek at 2015-09-02T13:33:38Z
+
+Well no defining debug is alright, that's easy to do if it's not done by default (not sure anymore if it is, but I have it set..), the request_stack on the other hand is kinda problematic because that's something you really don't need in a CLI context
