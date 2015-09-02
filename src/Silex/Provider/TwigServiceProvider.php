@@ -44,7 +44,9 @@ class TwigServiceProvider implements ServiceProviderInterface
             if (isset($app['security.token_storage'])) {
                 $var->setTokenStorage($app['security.token_storage']);
             }
-            $var->setRequestStack($app['request_stack']);
+            if (isset($app['request_stack'])) {
+                $var->setRequestStack($app['request_stack']);
+            }
             $var->setDebug($app['debug']);
 
             return $var;
@@ -67,8 +69,10 @@ class TwigServiceProvider implements ServiceProviderInterface
             }
 
             if (class_exists('Symfony\Bridge\Twig\Extension\RoutingExtension')) {
-                $twig->addExtension(new HttpFoundationExtension($app['request_stack']));
-                $twig->addExtension(new RoutingExtension($app['url_generator']));
+                if (isset($app['request_stack'])) {
+                    $twig->addExtension(new HttpFoundationExtension($app['request_stack']));
+                    $twig->addExtension(new RoutingExtension($app['url_generator']));
+                }
 
                 if (isset($app['translator'])) {
                     $twig->addExtension(new TranslationExtension($app['translator']));

@@ -43,9 +43,11 @@ class MonologServiceProvider implements ServiceProviderInterface, BootableProvid
                 return new DebugHandler($level);
             };
 
-            $app['monolog.not_found_activation_strategy'] = function () use ($app) {
-                return new NotFoundActivationStrategy($app['request_stack'], array('^/'), $app['monolog.level']);
-            };
+            if (isset($app['request_stack'])) {
+                $app['monolog.not_found_activation_strategy'] = function () use ($app) {
+                    return new NotFoundActivationStrategy($app['request_stack'], array('^/'), $app['monolog.level']);
+                };
+            }
         }
 
         $app['monolog.logger.class'] = $bridge ? 'Symfony\Bridge\Monolog\Logger' : 'Monolog\Logger';
@@ -60,6 +62,10 @@ class MonologServiceProvider implements ServiceProviderInterface, BootableProvid
 
             $log->pushHandler($handler);
 
+            if ($app['debug'] && isset($app['monolog.handler.debug'])) {
+                $log->pushHandler($app['monolog.handler.debug']);
+            }
+
             return $log;
         };
 
@@ -67,7 +73,7 @@ class MonologServiceProvider implements ServiceProviderInterface, BootableProvid
             return new LineFormatter();
         };
 
-        $app['monolog.handler'] = function () use ($app) {
+        $app['monolog.handler'] = $defaultHandler = function () use ($app) {
             $level = MonologServiceProvider::translateLevel($app['monolog.level']);
 
             $handler = new Handler\StreamHandler($app['monolog.logfile'], $level, $app['monolog.bubble'], $app['monolog.permission']);
@@ -76,15 +82,12 @@ class MonologServiceProvider implements ServiceProviderInterface, BootableProvid
             return $handler;
         };
 
-        $app['monolog.handlers'] = function () use ($app) {
+        $app['monolog.handlers'] = function () use ($app, $defaultHandler) {
             $handlers = array();
 
-            if ($app['monolog.logfile']) {
+            // enables the default handler if a logfile was set or the monolog.handler service was redefined
+            if ($app['monolog.logfile'] || $defaultHandler !== $app->raw('monolog.handler')) {
                 $handlers[] = $app['monolog.handler'];
-            }
-
-            if ($app['debug'] && isset($app['monolog.handler.debug'])) {
-                $handlers[] = $app['monolog.handler.debug'];
             }
 
             return $handlers;

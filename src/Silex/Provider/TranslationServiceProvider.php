@@ -54,9 +54,11 @@ class TranslationServiceProvider implements ServiceProviderInterface, EventListe
             return $translator;
         };
 
-        $app['translator.listener'] = function ($app) {
-            return new TranslatorListener($app['translator'], $app['request_stack']);
-        };
+        if (isset($app['request_stack'])) {
+            $app['translator.listener'] = function ($app) {
+                return new TranslatorListener($app['translator'], $app['request_stack']);
+            };
+        }
 
         $app['translator.message_selector'] = function () {
             return new MessageSelector();
@@ -73,6 +75,8 @@ class TranslationServiceProvider implements ServiceProviderInterface, EventListe
 
     public function subscribe(Container $app, EventDispatcherInterface $dispatcher)
     {
-        $dispatcher->addSubscriber($app['translator.listener']);
+        if (isset($app['translator.listener'])) {
+            $dispatcher->addSubscriber($app['translator.listener']);
+        }
     }
 }
