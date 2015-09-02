@@ -99,7 +99,8 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface, EventListe
 
     public function subscribe(Container $app, EventDispatcherInterface $dispatcher)
     {
-        $onTerminate = function (PostResponseEvent $event) use ($app) {
+        // Event has no typehint as it can be either a PostResponseEvent or a ConsoleTerminateEvent
+        $onTerminate = function ($event) use ($app) {
             // To speed things up (by avoiding Swift Mailer initialization), flush
             // messages only if our mailer has been created (potentially used)
             if ($app['mailer.initialized']) {
