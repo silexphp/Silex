@@ -24,12 +24,10 @@ use Symfony\Component\HttpKernel\KernelEvents;
 class ExceptionHandler implements EventSubscriberInterface
 {
     protected $debug;
-    protected $enabled;
 
     public function __construct($debug)
     {
         $this->debug = $debug;
-        $this->enabled = true;
     }
 
     public function onSilexError(GetResponseForExceptionEvent $event)
