@@ -35,6 +35,7 @@
         "symfony/finder": "~2.3,<3.0",
         "symfony/monolog-bridge": "~2.3,<3.0",
         "symfony/options-resolver": "~2.3,<3.0",
+        "symfony/phpunit-bridge": "~2.7,<3.0",
         "symfony/process": "~2.3,<3.0",
         "symfony/serializer": "~2.3,<3.0",
         "symfony/translation": "~2.3,<3.0",
