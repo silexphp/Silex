@@ -17,7 +17,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
- * Defaults exception handler.
+ * Default exception handler.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

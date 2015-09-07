@@ -10,7 +10,6 @@ use Silex\ControllerResolver;
 use Silex\EventListener\ConverterListener;
 use Silex\EventListener\MiddlewareListener;
 use Silex\EventListener\StringToResponseListener;
-use Silex\ExceptionHandler;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -24,10 +23,6 @@ class HttpKernelServiceProvider implements ServiceProviderInterface, EventListen
      */
     public function register(Container $app)
     {
-        $app['exception_handler'] = function ($app) {
-            return new ExceptionHandler($app['debug']);
-        };
-
         $app['resolver'] = function ($app) {
             return new ControllerResolver($app, $app['logger']);
         };
@@ -47,7 +42,6 @@ class HttpKernelServiceProvider implements ServiceProviderInterface, EventListen
         $app['callback_resolver'] = function ($app) {
             return new CallbackResolver($app);
         };
-
     }
 
     /**
@@ -55,10 +49,6 @@ class HttpKernelServiceProvider implements ServiceProviderInterface, EventListen
      */
     public function subscribe(Container $app, EventDispatcherInterface $dispatcher)
     {
-        if (isset($app['exception_handler'])) {
-            $dispatcher->addSubscriber($app['exception_handler']);
-        }
-
         $dispatcher->addSubscriber(new ResponseListener($app['charset']));
         $dispatcher->addSubscriber(new MiddlewareListener($app));
         $dispatcher->addSubscriber(new ConverterListener($app['routes'], $app['callback_resolver']));
