@@ -567,9 +567,6 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Hello world', $response->getContent());
     }
 
-    /**
-     * @requires PHP 5.4
-     */
     public function testViewListenerWithCallableTypeHint()
     {
         $app = new Application();
