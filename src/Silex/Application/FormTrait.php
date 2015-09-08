@@ -29,8 +29,13 @@ trait FormTrait
      *
      * @return FormBuilder
      */
-    public function form($data = null, array $options = array(), $type = 'Symfony\Component\Form\Extension\Core\Type\FormType')
+    public function form($data = null, array $options = array(), $type = null)
     {
+        if (null === $type) {
+            // for BC with Symfony pre 2.7
+            $type = class_exists('Symfony\Component\Form\Extension\Core\Type\RangeType') ? 'Symfony\Component\Form\Extension\Core\Type\FormType' : 'form';
+        }
+
         return $this['form.factory']->createBuilder($type, $data, $options);
     }
 }
