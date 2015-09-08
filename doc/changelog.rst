@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.3.3 (2015-XX-XX)
+1.3.3 (2015-09-08)
 ------------------
 
 * added support for Symfony 3.0 and Twig 2.0
