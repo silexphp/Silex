@@ -8,11 +8,12 @@ cache:
 
 before_script:
     # symfony/*
-    - sh -c "if [ '$SYMFONY_DEPS_VERSION' = '2.8' ]; then sed -i 's/~2.3/2.8.*@dev/g' composer.json; composer update --dev --prefer-source; fi"
-    - sh -c "if [ '$SYMFONY_DEPS_VERSION' = '2.7' ]; then sed -i 's/~2.3/2.7.*@dev/g' composer.json; composer update --dev --prefer-source; fi"
-    - sh -c "if [ '$SYMFONY_DEPS_VERSION' = '' ]; then sed -i 's/~2.3/2.6.*@dev/g' composer.json; composer update --dev --prefer-source; fi"
-    - sh -c "if [ '$SYMFONY_DEPS_VERSION' = '2.3' ]; then sed -i 's/~2.3/2.3.*@dev/g' composer.json; composer update --dev --prefer-source; fi"
-    - composer install --dev --prefer-source
+    - sh -c "if [ '$TWIG_VERSION' != '2.0' ]; then sed -i 's/~1.8|~2.0/~1.8/g' composer.json; composer update; fi"
+    - sh -c "if [ '$SYMFONY_DEPS_VERSION' = '3.0' ]; then sed -i 's/~2\.3|3\.0\.\*/3.0.*@dev/g' composer.json; composer update; fi"
+    - sh -c "if [ '$SYMFONY_DEPS_VERSION' = '2.8' ]; then sed -i 's/~2\.3|3\.0\.\*/2.8.*@dev/g' composer.json; composer update; fi"
+    - sh -c "if [ '$SYMFONY_DEPS_VERSION' = '' ]; then sed -i 's/~2\.3|3\.0\.\*/2.7.*@dev/g' composer.json; composer update; fi"
+    - sh -c "if [ '$SYMFONY_DEPS_VERSION' = '2.3' ]; then sed -i 's/~2\.3|3\.0\.\*/2.3.*@dev/g' composer.json; composer update; fi"
+    - composer install
 
 script: phpunit
 
@@ -22,10 +23,12 @@ matrix:
         - php: 5.4
         - php: 5.5
         - php: 5.6
+          env: TWIG_VERSION=2.0
+        - php: 5.6
           env: SYMFONY_DEPS_VERSION=2.3
         - php: 5.6
-          env: SYMFONY_DEPS_VERSION=2.7
-        - php: 5.6
           env: SYMFONY_DEPS_VERSION=2.8
+        - php: 5.6
+          env: SYMFONY_DEPS_VERSION=3
         - php: 7.0
         - php: hhvm
