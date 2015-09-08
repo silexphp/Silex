@@ -29,7 +29,7 @@ trait FormTrait
      *
      * @return FormBuilder
      */
-    public function form($data = null, array $options = array(), $type = 'form')
+    public function form($data = null, array $options = array(), $type = 'Symfony\Component\Form\Extension\Core\Type\FormType')
     {
         return $this['form.factory']->createBuilder($type, $data, $options);
     }

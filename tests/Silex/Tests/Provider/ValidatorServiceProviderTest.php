@@ -88,7 +88,7 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @depends testRegister
-     * @dataProvider testValidatorConstraintProvider
+     * @dataProvider getTestValidatorConstraintProvider
      */
     public function testValidatorConstraint($email, $isValid, $nbGlobalError, $nbEmailError, $app)
     {
@@ -99,12 +99,12 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
             ),
         ));
 
-        $builder = $app['form.factory']->createBuilder('form', array(), array(
+        $builder = $app['form.factory']->createBuilder(class_exists('Symfony\Component\Form\Extension\Core\Type\RangeType') ? 'Symfony\Component\Form\Extension\Core\Type\FormType' : 'form', array(), array(
             'constraints' => $constraints,
         ));
 
         $form = $builder
-            ->add('email', 'email', array('label' => 'Email'))
+            ->add('email', class_exists('Symfony\Component\Form\Extension\Core\Type\RangeType') ? 'Symfony\Component\Form\Extension\Core\Type\EmailType' : 'email', array('label' => 'Email'))
             ->getForm()
         ;
 
@@ -136,9 +136,9 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testValidatorConstraintProvider()
+    public function getTestValidatorConstraintProvider()
     {
-        // Email, form is valid , nb global error, nb email error
+        // Email, form is valid, nb global error, nb email error
         return array(
             array('', false, 0, 1),
             array('not an email', false, 0, 1),
