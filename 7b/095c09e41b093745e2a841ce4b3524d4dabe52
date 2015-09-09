@@ -1,0 +1,23 @@
+---------------------------------------------------------------------------
+
+by henrikbjorn at 2015-09-09T07:22:18Z
+
+I am curious, what is the reasoning for doing this?
+
+---------------------------------------------------------------------------
+
+by fabpot at 2015-09-09T07:35:12Z
+
+Pure semantic. Same reasoning as for the other providers: they only do one thing and the exception handler has nothing to do with the other services of the provider.
+
+---------------------------------------------------------------------------
+
+by GromNaN at 2015-09-09T08:53:45Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by stof at 2015-09-09T12:51:41Z
+
+:+1:
