@@ -30,6 +30,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Silex\Api\BootableProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
 use Silex\Api\ControllerProviderInterface;
+use Silex\Provider\ExceptionHandlerServiceProvider;
 use Silex\Provider\RoutingServiceProvider;
 use Silex\Provider\HttpKernelServiceProvider;
 
@@ -67,6 +68,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
 
         $this->register(new HttpKernelServiceProvider());
         $this->register(new RoutingServiceProvider());
+        $this->register(new ExceptionHandlerServiceProvider());
 
         foreach ($values as $key => $value) {
             $this[$key] = $value;
