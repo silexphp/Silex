@@ -39,18 +39,20 @@ class TwigServiceProvider implements ServiceProviderInterface
         $app['twig.path'] = array();
         $app['twig.templates'] = array();
 
-        $app['twig.app_variable'] = function ($app) {
-            $var = new AppVariable();
-            if (isset($app['security.token_storage'])) {
-                $var->setTokenStorage($app['security.token_storage']);
-            }
-            if (isset($app['request_stack'])) {
-                $var->setRequestStack($app['request_stack']);
-            }
-            $var->setDebug($app['debug']);
+        if (class_exists('Symfony\Bridge\Twig\AppVariable')) {
+            $app['twig.app_variable'] = function ($app) {
+                $var = new AppVariable();
+                if (isset($app['security.token_storage'])) {
+                    $var->setTokenStorage($app['security.token_storage']);
+                }
+                if (isset($app['request_stack'])) {
+                    $var->setRequestStack($app['request_stack']);
+                }
+                $var->setDebug($app['debug']);
 
-            return $var;
-        };
+                return $var;
+            };
+        }
 
         $app['twig'] = function ($app) {
             $app['twig.options'] = array_replace(
@@ -62,7 +64,7 @@ class TwigServiceProvider implements ServiceProviderInterface
             );
 
             $twig = $app['twig.environment_factory']($app);
-            $twig->addGlobal('app', $app['twig.app_variable']);
+            $twig->addGlobal('app', isset($app['twig.app_variable']) ? $app['twig.app_variable'] : $app);
 
             if ($app['debug']) {
                 $twig->addExtension(new \Twig_Extension_Debug());
