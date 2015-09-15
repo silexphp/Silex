@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.3.4 (2015-XX-XX)
+1.3.4 (2015-09-15)
 ------------------
 
 * fixed some new deprecations
