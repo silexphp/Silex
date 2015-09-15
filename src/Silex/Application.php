@@ -44,7 +44,7 @@ use Silex\EventListener\StringToResponseListener;
  */
 class Application extends \Pimple implements HttpKernelInterface, TerminableInterface
 {
-    const VERSION = '1.3.4';
+    const VERSION = '1.3.5-DEV';
 
     const EARLY_EVENT = 512;
     const LATE_EVENT = -512;
