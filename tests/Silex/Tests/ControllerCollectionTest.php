@@ -154,11 +154,11 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
     public function testConvert()
     {
         $controllers = new ControllerCollection(new Route());
-        $controllers->convert('id', '1');
+        $controllers->convert('id', '1', 'object');
         $controller = $controllers->match('/{id}/{name}/{extra}', function () {})->convert('name', 'Fabien')->convert('extra', 'Symfony');
         $controllers->convert('extra', 'Twig');
 
-        $this->assertEquals(array('id' => '1', 'name' => 'Fabien', 'extra' => 'Twig'), $controller->getRoute()->getOption('_converters'));
+        $this->assertEquals(array('id' => ['1', 'object'], 'name' => ['Fabien', 'name'], 'extra' => ['Twig', 'extra']), $controller->getRoute()->getOption('_converters'));
     }
 
     public function testRequireHttp()
