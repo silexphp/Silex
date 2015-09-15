@@ -150,7 +150,10 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testAddResource()
+    /**
+     * @dataProvider getAddResourceData
+     */
+    public function testAddResource($registerValidatorFirst)
     {
         $app = new Application();
         $app['locale'] = 'fr';
@@ -163,9 +166,16 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
             return $translator;
         }));
 
-        $app['validator'];
+        if ($registerValidatorFirst) {
+            $app['validator'];
+        }
 
         $this->assertEquals('Pas vide', $app['translator']->trans('This value should not be blank.', array(), 'validators', 'fr'));
+    }
+
+    public function getAddResourceData()
+    {
+        return array(array(false), array(true));
     }
 
     public function testAddResourceAlternate()
