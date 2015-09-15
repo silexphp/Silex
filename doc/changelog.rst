@@ -5,7 +5,7 @@ Changelog
 ------------------
 
 * added support for the Symfony VarDumper Component
-* [BC BREAK] The app variable exposed in Twig is now an AppVariable instance
+* added a global Twig variable (an AppVariable instance)
 * [BC BREAK] CSRF has been moved to a standalone provider (``form.secret`` is not available anymore)
 * added support for the Symfony HttpFoundation Twig bridge extension
 * added support for the Symfony Asset Component

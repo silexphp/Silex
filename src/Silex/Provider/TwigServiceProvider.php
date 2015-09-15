@@ -62,13 +62,17 @@ class TwigServiceProvider implements ServiceProviderInterface
             );
 
             $twig = $app['twig.environment_factory']($app);
-            $twig->addGlobal('app', $app['twig.app_variable']);
+            // registered for BC, but should not be used anymore
+            // deprecated and should probably be removed in Silex 3.0
+            $twig->addGlobal('app', $app);
 
             if ($app['debug']) {
                 $twig->addExtension(new \Twig_Extension_Debug());
             }
 
             if (class_exists('Symfony\Bridge\Twig\Extension\RoutingExtension')) {
+                $twig->addGlobal('global', $app['twig.app_variable']);
+
                 if (isset($app['request_stack'])) {
                     $twig->addExtension(new HttpFoundationExtension($app['request_stack']));
                     $twig->addExtension(new RoutingExtension($app['url_generator']));

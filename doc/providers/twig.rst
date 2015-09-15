@@ -51,6 +51,17 @@ Registering
 
         composer require twig/twig
 
+Usage
+-----
+
+The Twig provider provides a ``twig`` service that can render templates::
+
+    $app->get('/hello/{name}', function ($name) use ($app) {
+        return $app['twig']->render('hello.twig', array(
+            'name' => $name,
+        ));
+    });
+
 Symfony Components Integration
 ------------------------------
 
@@ -62,7 +73,7 @@ some Symfony components and Twig. Add it as a dependency:
     composer require symfony/twig-bridge
 
 When present, the ``TwigServiceProvider`` will provide you with the following
-additional capabilities:
+additional capabilities.
 
 * Access to the ``path()`` and ``url()`` functions. You can find more
   information in the `Symfony Routing documentation
@@ -77,53 +88,54 @@ additional capabilities:
 
 * Access to the ``absolute_url()`` and ``relative_path()`` Twig functions.
 
-* **TranslationServiceProvider**: If you are using the
-  ``TranslationServiceProvider``, you will get the ``trans()`` and
-  ``transchoice()`` functions for translation in Twig templates. You can find
-  more information in the `Symfony Translation documentation
-  <http://symfony.com/doc/current/book/translation.html#twig-templates>`_.
+Translations Support
+~~~~~~~~~~~~~~~~~~~~
 
-* **FormServiceProvider**: If you are using the ``FormServiceProvider``, you
-  will get a set of helpers for working with forms in templates. You can find
-  more information in the `Symfony Forms reference
-  <http://symfony.com/doc/current/reference/forms/twig_reference.html>`_.
+If you are using the ``TranslationServiceProvider``, you will get the
+``trans()`` and ``transchoice()`` functions for translation in Twig templates.
+You can find more information in the `Symfony Translation documentation
+<http://symfony.com/doc/current/book/translation.html#twig-templates>`_.
 
-* **SecurityServiceProvider**: If you are using the
-  ``SecurityServiceProvider``, you will have access to the ``is_granted()``
-  function in templates. You can find more information in the `Symfony
-  Security documentation
-  <http://symfony.com/doc/current/book/security.html#access-control-in-templates>`_.
+Form Support
+~~~~~~~~~~~~
 
-Usage
------
+If you are using the ``FormServiceProvider``, you will get a set of helpers for
+working with forms in templates. You can find more information in the `Symfony
+Forms reference
+<http://symfony.com/doc/current/reference/forms/twig_reference.html>`_.
 
-The Twig provider provides a ``twig`` service::
+Security Support
+~~~~~~~~~~~~~~~~
 
-    $app->get('/hello/{name}', function ($name) use ($app) {
-        return $app['twig']->render('hello.twig', array(
-            'name' => $name,
-        ));
-    });
+If you are using the ``SecurityServiceProvider``, you will have access to the
+``is_granted()`` function in templates. You can find more information in the
+`Symfony Security documentation
+<http://symfony.com/doc/current/book/security.html#access-control-in-templates>`
+_.
 
-This will render a file named ``views/hello.twig``.
+Global Variable
+~~~~~~~~~~~~~~~
 
-In any Twig template, the ``app`` variable refers to an instance of
-`AppVariable <http://api.symfony.com/master/Symfony/Bridge/Twig/AppVariable.html >`_.
+When the Twig bridge is available, the ``global`` variable refers to an
+instance of `AppVariable <http://api.symfony.com/master/Symfony/Bridge/Twig/AppVariable.html >`_.
 It gives access to the following methods:
 
 .. code-block:: jinja
 
     {# The current Request #}
-    {{ app.request }}
+    {{ global.request }}
 
     {# The current User (when security is enabled) #}
-    {{ app.user }}
+    {{ global.user }}
 
     {# The current Session #}
-    {{ app.session }}
+    {{ global.session }}
 
     {# The debug flag #}
-    {{ app.debug }}
+    {{ global.debug }}
+
+Rendering a Controller
+~~~~~~~~~~~~~~~~~~~~~~
 
 A ``render`` function is also registered to help you render another controller
 from a template (available when the `HttpFragment Service Provider </providers/http_fragment.rst>`

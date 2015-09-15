@@ -183,15 +183,8 @@ Accessing translations in Twig templates
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Once loaded, the translation service provider is available from within Twig
-templates:
-
-.. code-block:: jinja
-
-    {{ app.translator.trans('translation_key') }}
-
-Moreover, when using the Twig bridge provided by Symfony (see
-:doc:`TwigServiceProvider </providers/twig>`), you will be allowed to translate
-strings in the Twig way:
+templates when using the Twig bridge provided by Symfony (see
+:doc:`TwigServiceProvider </providers/twig>`):
 
 .. code-block:: jinja
 
