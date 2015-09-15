@@ -1,0 +1,5 @@
+---------------------------------------------------------------------------
+
+by fabpot at 2015-09-15T05:52:49Z
+
+Note that using `app` in a Twig template is deprecated. Documentation has been updated to remove all occurrences of `app.` in Twig templates.
