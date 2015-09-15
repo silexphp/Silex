@@ -16,6 +16,9 @@ use Silex\CallbackResolver;
 
 class CallbackResolverTest extends \PHPUnit_Framework_Testcase
 {
+    private $app;
+    private $resolver;
+
     public function setup()
     {
         $this->app = new Container();

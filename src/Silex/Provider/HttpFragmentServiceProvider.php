@@ -20,6 +20,7 @@ use Symfony\Component\HttpKernel\Fragment\InlineFragmentRenderer;
 use Symfony\Component\HttpKernel\Fragment\EsiFragmentRenderer;
 use Symfony\Component\HttpKernel\Fragment\HIncludeFragmentRenderer;
 use Symfony\Component\HttpKernel\EventListener\FragmentListener;
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\UriSigner;
 
 /**
@@ -32,6 +33,10 @@ class HttpFragmentServiceProvider implements ServiceProviderInterface, EventList
     public function register(Container $app)
     {
         $app['fragment.handler'] = function ($app) {
+            if (Kernel::VERSION_ID >= 20800) {
+                return new FragmentHandler($app['request_stack'], $app['fragment.renderers'], $app['debug']);
+            }
+
             return new FragmentHandler($app['fragment.renderers'], $app['debug'], $app['request_stack']);
         };
 
