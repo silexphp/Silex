@@ -36,7 +36,7 @@ Usage
 Adding the VarDumper component as a Composer dependency gives you access to the
 ``dump()`` PHP function anywhere in your code.
 
-Ig you are using Twig, it also provides a ``dump()`` Twig function and a
+If you are using Twig, it also provides a ``dump()`` Twig function and a
 ``dump`` Twig tag.
 
 The VarDumperServiceProvider is also useful when used with the Silex
