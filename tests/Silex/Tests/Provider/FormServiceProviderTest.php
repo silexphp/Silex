@@ -153,7 +153,7 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
         $app->register(new CsrfServiceProvider());
         $app['session.test'] = true;
 
-        $form = $app['form.factory']->createBuilder('form', array())->getForm();
+        $form = $app['form.factory']->createBuilder(class_exists('Symfony\Component\Form\Extension\Core\Type\RangeType') ? 'Symfony\Component\Form\Extension\Core\Type\FormType' : 'form', array())->getForm();
 
         $this->assertTrue(isset($form->createView()['_token']));
     }
