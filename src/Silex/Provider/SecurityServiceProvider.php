@@ -350,10 +350,10 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
 
             $session = $request->getSession();
             if ($session && $session->has($error)) {
-                $error = $session->get($error)->getMessage();
+                $message = $session->get($error)->getMessage();
                 $session->remove($error);
 
-                return $error;
+                return $message;
             }
         });
 
