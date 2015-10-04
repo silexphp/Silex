@@ -67,6 +67,29 @@ class ControllerCollection
     }
 
     /**
+     * Creates a mounting point and creates a callable to mount controllers under it.
+     *
+     * @param string $prefix The mounting point prefix
+     * @param mixed  $to      Callback that creates the controllers under the mounting point
+     *
+     * @return Controller
+     */
+    public function group($prefix, $to = null)
+    {
+        $controllers = new ControllerCollection($this->defaultRoute, $this->routesFactory);
+
+        if(!is_callable($to)) {
+            return $controllers;
+        }
+
+        call_user_func($to, $controllers);
+
+        $this->mount($prefix, $controllers);
+
+        return $controllers;
+    }
+
+    /**
      * Maps a pattern to a callable.
      *
      * You can optionally specify HTTP methods that should be matched.
