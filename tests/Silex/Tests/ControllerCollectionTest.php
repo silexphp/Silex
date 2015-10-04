@@ -11,10 +11,13 @@
 
 namespace Silex\Tests;
 
+use Silex\Application;
 use Silex\Controller;
 use Silex\ControllerCollection;
 use Silex\Exception\ControllerFrozenException;
 use Silex\Route;
+use Symfony\Component\Routing\RouteCollection;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * ControllerCollection test cases.
@@ -69,7 +72,7 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
         $mountedRootController = $controllers->match('/', function () {});
 
         $mainRootController = new Controller(new Route('/'));
-        $mainRootController->bind($mainRootController->generateRouteName('main_'));
+        $mainRootController->bind($mainRootController->generateRouteName('main_1'));
 
         $controllers->flush();
 
@@ -82,11 +85,12 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
 
         $controllers->match('/a-a', function () {});
         $controllers->match('/a_a', function () {});
+        $controllers->match('/a/a', function () {});
 
         $routes = $controllers->flush();
 
-        $this->assertCount(2, $routes->all());
-        $this->assertEquals(array('_a_a', '_a_a_'), array_keys($routes->all()));
+        $this->assertCount(3, $routes->all());
+        $this->assertEquals(array('_a_a', '_a_a_1', '_a_a_2'), array_keys($routes->all()));
     }
 
     public function testUniqueGeneratedRouteNamesAmongMounts()
@@ -102,7 +106,7 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
         $routes = $controllers->flush();
 
         $this->assertCount(2, $routes->all());
-        $this->assertEquals(array('_root_a_leaf', '_root_a_leaf_'), array_keys($routes->all()));
+        $this->assertEquals(array('_root_a_leaf', '_root_a_leaf_1'), array_keys($routes->all()));
     }
 
     public function testUniqueGeneratedRouteNamesAmongNestedMounts()
@@ -121,7 +125,57 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
         $routes = $controllers->flush();
 
         $this->assertCount(2, $routes->all());
-        $this->assertEquals(array('_root_a_tree_leaf', '_root_a_tree_leaf_'), array_keys($routes->all()));
+        $this->assertEquals(array('_root_a_tree_leaf', '_root_a_tree_leaf_1'), array_keys($routes->all()));
+    }
+
+    public function testGroup()
+    {
+        $app = new Application();
+
+        $app->group('/group', function ($group) {
+            $group->get('/foo', function() {
+                return 'foo';
+            });
+
+            $group->post('/bar', function() {
+                return 'bar';
+            });
+        });
+
+        $request = Request::create('/group/foo', 'get');
+        $response = $app->handle($request);
+        $this->assertEquals('foo', $response->getContent());
+
+        $request = Request::create('/group/bar', 'post');
+        $response = $app->handle($request);
+        $this->assertEquals('bar', $response->getContent());
+    }
+
+    public function testNestedGroup()
+    {
+        $app = new Application();
+
+        $app->group('/group', function ($group) {
+            $group->group('/subgroup', function($subgroup) {
+                $subgroup->get('/foo', function() {
+                    return 'foo';
+                });
+
+                $subgroup->group('/bar', function($bargroup) {
+                    $bargroup->put('/bax', function() {
+                        return 'bax';
+                    });
+                });
+            });
+        });
+
+        $request = Request::create('/group/subgroup/foo', 'get');
+        $response = $app->handle($request);
+        $this->assertEquals('foo', $response->getContent());
+
+        $request = Request::create('/group/subgroup/bar/bax', 'put');
+        $response = $app->handle($request);
+        $this->assertEquals('bax', $response->getContent());
     }
 
     public function testAssert()
@@ -211,6 +265,43 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
         $controller = new ControllerCollection($route);
         $controller->bar();
     }
+
+    public function testNestedCollectionRouteCallbacks()
+    {
+        $cl1 = new ControllerCollection(new MyRoute1());
+        $cl2 = new ControllerCollection(new MyRoute1());
+
+        $c1 = $cl2->match('/c1', function () {});
+        $cl1->mount('/foo', $cl2);
+        $c2 = $cl2->match('/c2', function () {});
+        $cl1->before('before');
+        $c3 = $cl2->match('/c3', function () {});
+
+        $cl1->flush();
+
+        $this->assertEquals(array('before'), $c1->getRoute()->getOption('_before_middlewares'));
+        $this->assertEquals(array('before'), $c2->getRoute()->getOption('_before_middlewares'));
+        $this->assertEquals(array('before'), $c3->getRoute()->getOption('_before_middlewares'));
+    }
+
+    public function testRoutesFactoryOmitted()
+    {
+        $controllers = new ControllerCollection(new Route());
+        $routes = $controllers->flush();
+        $this->assertInstanceOf('Symfony\Component\Routing\RouteCollection', $routes);
+    }
+
+    public function testRoutesFactoryInConstructor()
+    {
+        $app = new Application();
+        $app['routes_factory'] = $app->factory(function () {
+            return new RouteCollectionSubClass2();
+        });
+
+        $controllers = new ControllerCollection(new Route(), $app['routes_factory']);
+        $routes = $controllers->flush();
+        $this->assertInstanceOf('Silex\Tests\RouteCollectionSubClass2', $routes);
+    }
 }
 
 class MyRoute1 extends Route
@@ -221,4 +312,8 @@ class MyRoute1 extends Route
     {
         $this->foo = $value;
     }
+}
+
+class RouteCollectionSubClass2 extends RouteCollection
+{
 }

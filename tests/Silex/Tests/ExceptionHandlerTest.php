@@ -189,7 +189,7 @@ class ExceptionHandlerTest extends \PHPUnit_Framework_TestCase
     public function testNoResponseExceptionHandler()
     {
         $app = new Application();
-        $app['exception_handler']->disable();
+        unset($app['exception_handler']);
 
         $app->match('/foo', function () {
             throw new \RuntimeException('foo exception');

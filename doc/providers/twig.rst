@@ -18,7 +18,11 @@ Parameters
   for more information.
 
 * **twig.form.templates** (optional): An array of templates used to render
-  forms (only available when the ``FormServiceProvider`` is enabled).
+  forms (only available when the ``FormServiceProvider`` is enabled). The
+  default theme is ``form_div_layout.html.twig``, but you can use the other
+  built-in themes: ``form_table_layout.html.twig``,
+  ``bootstrap_3_layout.html.twig``, and
+  ``bootstrap_3_horizontal_layout.html.twig``.
 
 Services
 --------
@@ -41,12 +45,22 @@ Registering
 
 .. note::
 
-    Twig comes with the "fat" Silex archive but not with the regular one. If
-    you are using Composer, add it as a dependency:
+    Add Twig as a dependency:
 
     .. code-block:: bash
 
         composer require twig/twig
+
+Usage
+-----
+
+The Twig provider provides a ``twig`` service that can render templates::
+
+    $app->get('/hello/{name}', function ($name) use ($app) {
+        return $app['twig']->render('hello.twig', array(
+            'name' => $name,
+        ));
+    });
 
 Symfony Components Integration
 ------------------------------
@@ -59,66 +73,77 @@ some Symfony components and Twig. Add it as a dependency:
     composer require symfony/twig-bridge
 
 When present, the ``TwigServiceProvider`` will provide you with the following
-additional capabilities:
+additional capabilities.
 
-* **UrlGeneratorServiceProvider**: If you are using the
-  ``UrlGeneratorServiceProvider``, you will have access to the ``path()`` and
-  ``url()`` functions. You can find more information in the `Symfony Routing
-  documentation
-  <http://symfony.com/doc/current/book/routing.html#generating-urls-from-a-template>`_.
+* Access to the ``path()`` and ``url()`` functions. You can find more
+  information in the `Symfony Routing documentation
+  <http://symfony.com/doc/current/book/routing.html#generating-urls-from-a-template>`_:
 
-* **TranslationServiceProvider**: If you are using the
-  ``TranslationServiceProvider``, you will get the ``trans()`` and
-  ``transchoice()`` functions for translation in Twig templates. You can find
-  more information in the `Symfony Translation documentation
-  <http://symfony.com/doc/current/book/translation.html#twig-templates>`_.
+  .. code-block:: jinja
+  
+      {{ path('homepage') }}
+      {{ url('homepage') }} {# generates the absolute url http://example.org/ #}
+      {{ path('hello', {name: 'Fabien'}) }}
+      {{ url('hello', {name: 'Fabien'}) }} {# generates the absolute url http://example.org/hello/Fabien #}
 
-* **FormServiceProvider**: If you are using the ``FormServiceProvider``, you
-  will get a set of helpers for working with forms in templates. You can find
-  more information in the `Symfony Forms reference
-  <http://symfony.com/doc/current/reference/forms/twig_reference.html>`_.
+* Access to the ``absolute_url()`` and ``relative_path()`` Twig functions.
 
-* **SecurityServiceProvider**: If you are using the
-  ``SecurityServiceProvider``, you will have access to the ``is_granted()``
-  function in templates. You can find more information in the `Symfony
-  Security documentation
-  <http://symfony.com/doc/current/book/security.html#access-control-in-templates>`_.
+Translations Support
+~~~~~~~~~~~~~~~~~~~~
 
-Usage
------
+If you are using the ``TranslationServiceProvider``, you will get the
+``trans()`` and ``transchoice()`` functions for translation in Twig templates.
+You can find more information in the `Symfony Translation documentation
+<http://symfony.com/doc/current/book/translation.html#twig-templates>`_.
 
-The Twig provider provides a ``twig`` service::
+Form Support
+~~~~~~~~~~~~
 
-    $app->get('/hello/{name}', function ($name) use ($app) {
-        return $app['twig']->render('hello.twig', array(
-            'name' => $name,
-        ));
-    });
+If you are using the ``FormServiceProvider``, you will get a set of helpers for
+working with forms in templates. You can find more information in the `Symfony
+Forms reference
+<http://symfony.com/doc/current/reference/forms/twig_reference.html>`_.
 
-This will render a file named ``views/hello.twig``.
+Security Support
+~~~~~~~~~~~~~~~~
 
-In any Twig template, the ``app`` variable refers to the Application object.
-So you can access any service from within your view. For example to access
-``$app['request']->getHost()``, just put this in your template:
+If you are using the ``SecurityServiceProvider``, you will have access to the
+``is_granted()`` function in templates. You can find more information in the
+`Symfony Security documentation
+<http://symfony.com/doc/current/book/security.html#access-control-in-templates>`
+_.
+
+Global Variable
+~~~~~~~~~~~~~~~
+
+When the Twig bridge is available, the ``global`` variable refers to an
+instance of `AppVariable <http://api.symfony.com/master/Symfony/Bridge/Twig/AppVariable.html >`_.
+It gives access to the following methods:
 
 .. code-block:: jinja
 
-    {{ app.request.host }}
+    {# The current Request #}
+    {{ global.request }}
+
+    {# The current User (when security is enabled) #}
+    {{ global.user }}
+
+    {# The current Session #}
+    {{ global.session }}
+
+    {# The debug flag #}
+    {{ global.debug }}
+
+Rendering a Controller
+~~~~~~~~~~~~~~~~~~~~~~
 
 A ``render`` function is also registered to help you render another controller
-from a template:
+from a template (available when the `HttpFragment Service Provider </providers/http_fragment.rst>`
+is registered):
 
 .. code-block:: jinja
 
-    {{ render(app.request.baseUrl ~ '/sidebar') }}
-
-    {# or if you are also using the UrlGeneratorServiceProvider #}
     {{ render(url('sidebar')) }}
-
-.. note::
-
-    You must prepend the ``app.request.baseUrl`` to render calls to ensure
-    that the render works when deployed into a sub-directory of the docroot.
 
 Traits
 ------
@@ -150,12 +175,12 @@ Customization
 You can configure the Twig environment before using it by extending the
 ``twig`` service::
 
-    $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
+    $app->extend('twig', function($twig, $app) {
         $twig->addGlobal('pi', 3.14);
         $twig->addFilter('levenshtein', new \Twig_Filter_Function('levenshtein'));
 
         return $twig;
-    }));
+    });
 
 For more information, check out the `official Twig documentation
 <http://twig.sensiolabs.org>`_.

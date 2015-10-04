@@ -58,7 +58,6 @@ the ``Silex\Provider`` namespace:
 * :doc:`SwiftmailerServiceProvider <providers/swiftmailer>`
 * :doc:`TwigServiceProvider <providers/twig>`
 * :doc:`TranslationServiceProvider <providers/translation>`
-* :doc:`UrlGeneratorServiceProvider <providers/url_generator>`
 * :doc:`ValidatorServiceProvider <providers/validator>`
 * :doc:`HttpCacheServiceProvider <providers/http_cache>`
 * :doc:`FormServiceProvider <providers/form>`
@@ -78,31 +77,59 @@ You are encouraged to share yours.
 Creating a provider
 ~~~~~~~~~~~~~~~~~~~
 
-Providers must implement the ``Silex\ServiceProviderInterface``::
+Providers must implement the ``Pimple\ServiceProviderInterface``::
 
     interface ServiceProviderInterface
     {
-        public function register(Application $app);
-
-        public function boot(Application $app);
+        public function register(Container $container);
     }
 
-The ``register()`` method defines services on the application which then may
-make use of other services and parameters.
+This is very straight forward, just create a new class that implements the
+register method. In the ``register()`` method, you can define services on the
+application which then may make use of other services and parameters. 
 
-The ``boot()`` method configures the application, just before it handles a
-request.
+.. tip::
+
+    The ``Pimple\ServiceProviderInterface`` belongs to the Pimple package, so
+    take care to only use the API of ``Pimple\Container`` within your
+    ``register`` method. Not only is this a good practice due to the way Pimple
+    and Silex work, but may allow your provider to be used outside of Silex.
+
+Optionally, your service provider can implement the
+``Silex\Api\BootableServiceProviderInterface``. A BootableServiceProvider must
+implement the ``boot()`` method, with which you can configure the application, just
+before it handles a request::
+
+    interface BootableServiceProviderInterface
+    {
+        function boot(Application $app);
+    }
+
+Another optional interface, is the ``Silex\Api\EventListenerProviderInterface``.
+This interface contains the ``subscribe()`` method, which allows your provider to
+subscribe event listener with Silex's EventDispatcher, just before it handles a
+request::
+
+    interface EventListenerProviderInterface
+    {
+        function subscribe(Container $app, EventDispatcherInterface $dispatcher);
+    }
 
 Here is an example of such a provider::
 
     namespace Acme;
 
+    use Pimple\Container;
+    use Pimple\ServiceProviderInterface;
     use Silex\Application;
-    use Silex\ServiceProviderInterface;
+    use Silex\Api\BootableProviderInterface;
+    use Silex\Api\EventListenerProviderInterface;
+    use Symfony\Component\HttpKernel\KernelEvents;
+    use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 
-    class HelloServiceProvider implements ServiceProviderInterface
+    class HelloServiceProvider implements ServiceProviderInterface, BootableServiceProviderInterface, EventListenerProviderInterface
     {
-        public function register(Application $app)
+        public function register(Container $app)
         {
             $app['hello'] = $app->protect(function ($name) use ($app) {
                 $default = $app['hello.default_name'] ? $app['hello.default_name'] : '';
@@ -114,6 +141,14 @@ Here is an example of such a provider::
 
         public function boot(Application $app)
         {
+            // do something 
+        }
+
+        public function subscribe(Container $app, EventDispatcherInterface $dispatcher)
+        {
+            $dispatcher->addListener(KernelEvents::REQUEST, function(FilterResponseEvent $event) use ($app) {
+                // do something 
+            });
         }
     }
 
@@ -123,14 +158,16 @@ given. If the default is also missing, it will use an empty string.
 
 You can now use this provider as follows::
 
+    use Symfony\Component\HttpFoundation\Request;
+
     $app = new Silex\Application();
 
     $app->register(new Acme\HelloServiceProvider(), array(
         'hello.default_name' => 'Igor',
     ));
 
-    $app->get('/hello', function () use ($app) {
-        $name = $app['request']->get('name');
+    $app->get('/hello', function (Request $request) use ($app) {
+        $name = $request->get('name');
 
         return $app['hello']($name);
     });
@@ -159,7 +196,7 @@ All controllers defined by the provider will now be available under the
 Creating a provider
 ~~~~~~~~~~~~~~~~~~~
 
-Providers must implement the ``Silex\ControllerProviderInterface``::
+Providers must implement the ``Silex\Api\ControllerProviderInterface``::
 
     interface ControllerProviderInterface
     {
@@ -171,7 +208,7 @@ Here is an example of such a provider::
     namespace Acme;
 
     use Silex\Application;
-    use Silex\ControllerProviderInterface;
+    use Silex\Api\ControllerProviderInterface;
 
     class HelloControllerProvider implements ControllerProviderInterface
     {

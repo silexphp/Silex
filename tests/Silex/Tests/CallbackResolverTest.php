@@ -11,6 +11,7 @@
 
 namespace Silex\Tests;
 
+use Pimple\Container;
 use Silex\CallbackResolver;
 
 class CallbackResolverTest extends \PHPUnit_Framework_Testcase
@@ -20,7 +21,7 @@ class CallbackResolverTest extends \PHPUnit_Framework_Testcase
 
     public function setup()
     {
-        $this->app = new \Pimple();
+        $this->app = new Container();
         $this->resolver = new CallbackResolver($this->app);
     }
 

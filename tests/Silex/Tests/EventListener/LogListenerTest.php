@@ -11,6 +11,7 @@
 
 namespace Silex\Tests\EventListener;
 
+use Psr\Log\LogLevel;
 use Silex\EventListener\LogListener;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
@@ -34,8 +35,8 @@ class LogListenerTest extends \PHPUnit_Framework_TestCase
         $logger = $this->getMock('Psr\\Log\\LoggerInterface');
         $logger
             ->expects($this->once())
-            ->method('info')
-            ->with($this->equalTo('> GET /foo'))
+            ->method('log')
+            ->with(LogLevel::DEBUG, '> GET /foo')
         ;
 
         $dispatcher = new EventDispatcher();
@@ -53,8 +54,8 @@ class LogListenerTest extends \PHPUnit_Framework_TestCase
         $logger = $this->getMock('Psr\\Log\\LoggerInterface');
         $logger
             ->expects($this->once())
-            ->method('info')
-            ->with($this->equalTo('< 301'))
+            ->method('log')
+            ->with(LogLevel::DEBUG, '< 301')
         ;
 
         $dispatcher = new EventDispatcher();
@@ -71,15 +72,14 @@ class LogListenerTest extends \PHPUnit_Framework_TestCase
     {
         $logger = $this->getMock('Psr\\Log\\LoggerInterface');
         $logger
-            ->expects($this->once())
-            ->method('critical')
-            ->with($this->equalTo('RuntimeException: Fatal error (uncaught exception) at '.__FILE__.' line '.(__LINE__ + 14)))
+            ->expects($this->at(0))
+            ->method('log')
+            ->with(LogLevel::CRITICAL, 'RuntimeException: Fatal error (uncaught exception) at '.__FILE__.' line '.(__LINE__ + 13))
         ;
-
         $logger
-            ->expects($this->once())
-            ->method('error')
-            ->with($this->equalTo('Symfony\Component\HttpKernel\Exception\HttpException: Http error (uncaught exception) at '.__FILE__.' line '.(__LINE__ + 10)))
+            ->expects($this->at(1))
+            ->method('log')
+            ->with(LogLevel::ERROR, 'Symfony\Component\HttpKernel\Exception\HttpException: Http error (uncaught exception) at '.__FILE__.' line '.(__LINE__ + 9))
         ;
 
         $dispatcher = new EventDispatcher();
@@ -88,7 +88,6 @@ class LogListenerTest extends \PHPUnit_Framework_TestCase
         $kernel = $this->getMock('Symfony\\Component\\HttpKernel\\HttpKernelInterface');
 
         $dispatcher->dispatch(KernelEvents::EXCEPTION, new GetResponseForExceptionEvent($kernel, Request::create('/foo'), HttpKernelInterface::SUB_REQUEST, new \RuntimeException('Fatal error')));
-
         $dispatcher->dispatch(KernelEvents::EXCEPTION, new GetResponseForExceptionEvent($kernel, Request::create('/foo'), HttpKernelInterface::SUB_REQUEST, new HttpException(400, 'Http error')));
     }
 }

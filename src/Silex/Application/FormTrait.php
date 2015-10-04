@@ -23,19 +23,19 @@ trait FormTrait
     /**
      * Creates and returns a form builder instance.
      *
-     * @param mixed $data    The initial data for the form
-     * @param array $options Options for the form
+     * @param mixed                    $data    The initial data for the form
+     * @param array                    $options Options for the form
+     * @param string|FormTypeInterface $type    Type of the form
      *
      * @return FormBuilder
      */
-    public function form($data = null, array $options = array())
+    public function form($data = null, array $options = array(), $type = null)
     {
-        $name = 'Symfony\Component\Form\Extension\Core\Type\FormType';
-        // for BC with Symfony pre 2.7
-        if (!class_exists('Symfony\Component\Form\Extension\Core\Type\RangeType')) {
-            $name = 'form';
+        if (null === $type) {
+            // for BC with Symfony pre 2.7
+            $type = class_exists('Symfony\Component\Form\Extension\Core\Type\RangeType') ? 'Symfony\Component\Form\Extension\Core\Type\FormType' : 'form';
         }
 
-        return $this['form.factory']->createBuilder($name, $data, $options);
+        return $this['form.factory']->createBuilder($type, $data, $options);
     }
 }

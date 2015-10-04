@@ -12,8 +12,10 @@
 namespace Silex\Tests\Provider;
 
 use Silex\Application;
+use Silex\Provider\CsrfServiceProvider;
+use Silex\Provider\FormServiceProvider;
 use Silex\Provider\TwigServiceProvider;
-use Silex\Provider\HttpFragmentServiceProvider;
+use Silex\Provider\AssetServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -40,35 +42,6 @@ class TwigServiceProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Hello john!', $response->getContent());
     }
 
-    public function testRenderFunction()
-    {
-        if (!class_exists('Symfony\Component\HttpFoundation\RequestStack')) {
-            $this->markTestSkipped();
-        }
-
-        $app = new Application();
-
-        $app->register(new HttpFragmentServiceProvider());
-        $app->register(new TwigServiceProvider(), array(
-            'twig.templates' => array(
-                'hello' => '{{ render("/foo") }}',
-                'foo' => 'foo',
-            ),
-        ));
-
-        $app->get('/hello', function () use ($app) {
-            return $app['twig']->render('hello');
-        });
-
-        $app->get('/foo', function () use ($app) {
-            return $app['twig']->render('foo');
-        });
-
-        $request = Request::create('/hello');
-        $response = $app->handle($request);
-        $this->assertEquals('foo', $response->getContent());
-    }
-
     public function testLoaderPriority()
     {
         $app = new Application();
@@ -77,9 +50,61 @@ class TwigServiceProviderTest extends \PHPUnit_Framework_TestCase
         ));
         $loader = $this->getMock('\Twig_LoaderInterface');
         $loader->expects($this->never())->method('getSource');
-        $app['twig.loader.filesystem'] = $app->share(function ($app) use ($loader) {
+        $app['twig.loader.filesystem'] = function ($app) use ($loader) {
             return $loader;
-        });
+        };
         $this->assertEquals('foo', $app['twig.loader']->getSource('foo'));
+    }
+
+    public function testHttpFoundationIntegration()
+    {
+        $app = new Application();
+        $app['request_stack']->push(Request::create('/dir1/dir2/file'));
+        $app->register(new TwigServiceProvider(), array(
+            'twig.templates' => array(
+                'absolute' => '{{ absolute_url("foo.css") }}',
+                'relative' => '{{ relative_path("/dir1/foo.css") }}',
+            ),
+        ));
+
+        $this->assertEquals('http://localhost/dir1/dir2/foo.css', $app['twig']->render('absolute'));
+        $this->assertEquals('../foo.css', $app['twig']->render('relative'));
+    }
+
+    public function testAssetIntegration()
+    {
+        $app = new Application();
+        $app->register(new TwigServiceProvider(), array(
+            'twig.templates' => array('hello' => '{{ asset("/foo.css") }}'),
+        ));
+        $app->register(new AssetServiceProvider(), array(
+            'assets.version' => 1,
+        ));
+
+        $this->assertEquals('/foo.css?1', $app['twig']->render('hello'));
+    }
+
+    public function testGlobalVariable()
+    {
+        $app = new Application();
+        $app['request_stack']->push(Request::create('/?name=Fabien'));
+
+        $app->register(new TwigServiceProvider(), array(
+            'twig.templates' => array('hello' => '{{ global.request.get("name") }}'),
+        ));
+
+        $this->assertEquals('Fabien', $app['twig']->render('hello'));
+    }
+
+    public function testFormFactory()
+    {
+        $app = new Application();
+        $app->register(new FormServiceProvider());
+        $app->register(new CsrfServiceProvider());
+        $app->register(new TwigServiceProvider());
+
+        $this->assertInstanceOf('Twig_Environment', $app['twig'], 'Service twig is created successful.');
+        $this->assertInstanceOf('Symfony\Bridge\Twig\Form\TwigRendererEngine', $app['twig.form.engine'], 'Service twig.form.engine is created successful.');
+        $this->assertInstanceOf('Symfony\Bridge\Twig\Form\TwigRenderer', $app['twig.form.renderer'], 'Service twig.form.renderer is created successful.');
     }
 }

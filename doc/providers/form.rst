@@ -7,10 +7,7 @@ your application with the Symfony Form component.
 Parameters
 ----------
 
-* **form.secret**: This secret value is used for generating and validating the
-  CSRF token for a specific page. It is very important for you to set this
-  value to a static randomly generated value, to prevent hijacking of your
-  forms. Defaults to ``md5(__DIR__)``.
+* none
 
 Services
 --------
@@ -18,11 +15,6 @@ Services
 * **form.factory**: An instance of `FormFactory
   <http://api.symfony.com/master/Symfony/Component/Form/FormFactory.html>`_,
   that is used to build a form.
-
-* **form.csrf_provider**: An instance of an implementation of
-  `CsrfProviderInterface
-  <http://api.symfony.com/2.3/Symfony/Component/Form/Extension/Csrf/CsrfProvider/CsrfProviderInterface.html>`_ for Symfony 2.3 or
-  `CsrfTokenManagerInterface <http://api.symfony.com/2.7/Symfony/Component/Security/Csrf/CsrfTokenManagerInterface.html>`_ for Symfony 2.4+.
 
 Registering
 -----------
@@ -37,16 +29,20 @@ Registering
 
     If you don't want to create your own form layout, it's fine: a default one
     will be used. But you will have to register the :doc:`translation provider
-    <translation>` as the default form layout requires it.
+    <translation>` as the default form layout requires it::
+
+    .. code-block:: php
+
+        $app->register(new Silex\Provider\TranslationServiceProvider(), array(
+            'translator.domains' => array(),
+        ));
 
     If you want to use validation with forms, do not forget to register the
     :doc:`Validator provider <validator>`.
 
 .. note::
 
-    The Symfony Form Component and all its dependencies (optional or not) comes
-    with the "fat" Silex archive but not with the regular one. If you are using
-    Composer, add it as a dependency:
+    Add the Symfony Form Component as a dependency:
 
     .. code-block:: bash
 
@@ -59,13 +55,6 @@ Registering
     .. code-block:: bash
 
         composer require symfony/validator symfony/config symfony/translation
-        
-    The Symfony Security CSRF component is used to protect forms against CSRF
-    attacks (as of Symfony 2.4+):
-
-    .. code-block:: bash
-    
-        composer require symfony/security-csrf
 
     If you want to use forms in your Twig templates, you can also install the
     Symfony Twig Bridge. Make sure to install, if you didn't do that already,
@@ -156,28 +145,33 @@ You can register form types by extending ``form.types``::
 
 You can register form extensions by extending ``form.extensions``::
 
-    $app['form.extensions'] = $app->share($app->extend('form.extensions', function ($extensions) use ($app) {
+    $app->extend('form.extensions', function ($extensions) use ($app) {
         $extensions[] = new YourTopFormExtension();
 
         return $extensions;
-    }));
+    });
 
 
 You can register form type extensions by extending ``form.type.extensions``::
 
-    $app['form.type.extensions'] = $app->share($app->extend('form.type.extensions', function ($extensions) use ($app) {
+    $app->extend('form.type.extensions', function ($extensions) use ($app) {
         $extensions[] = new YourFormTypeExtension();
 
         return $extensions;
-    }));
+    });
 
 You can register form type guessers by extending ``form.type.guessers``::
 
-    $app['form.type.guessers'] = $app->share($app->extend('form.type.guessers', function ($guessers) use ($app) {
+    $app->extend('form.type.guessers', function ($guessers) use ($app) {
         $guessers[] = new YourFormTypeGuesser();
 
         return $guessers;
-    }));
+    });
+
+.. warning::
+
+    CSRF protection is only available and automatically enabled when the `CSRF
+    Service Provider </providers/csrf.rst>` is registered.
 
 Traits
 ------

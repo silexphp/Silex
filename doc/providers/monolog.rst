@@ -28,6 +28,9 @@ Parameters
 * **monolog.name** (optional): Name of the monolog channel,
   defaults to ``myapp``.
 
+* **monolog.exception.logger_filter** (optional): An anonymous function that
+  filters which exceptions should be logged.
+
 Services
 --------
 
@@ -50,8 +53,7 @@ Registering
 
 .. note::
 
-    Monolog comes with the "fat" Silex archive but not with the regular one.
-    If you are using Composer, add it as a dependency:
+    Add Monolog as a dependency:
 
     .. code-block:: bash
 
@@ -80,15 +82,15 @@ Customization
 You can configure Monolog (like adding or changing the handlers) before using
 it by extending the ``monolog`` service::
 
-    $app['monolog'] = $app->share($app->extend('monolog', function($monolog, $app) {
+    $app->extend('monolog', function($monolog, $app) {
         $monolog->pushHandler(...);
 
         return $monolog;
-    }));
+    });
 
 By default, all requests, responses and errors are logged by an event listener
 registered as a service called `monolog.listener`. You can replace or remove
-this service if you want to modify or disable the informations logged.
+this service if you want to modify or disable the logged information.
 
 Traits
 ------

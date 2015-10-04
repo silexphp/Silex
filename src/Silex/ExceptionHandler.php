@@ -19,35 +19,21 @@ use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
- * Defaults exception handler.
+ * Default exception handler.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class ExceptionHandler implements EventSubscriberInterface
 {
     protected $debug;
-    protected $enabled;
 
     public function __construct($debug)
     {
         $this->debug = $debug;
-        $this->enabled = true;
-    }
-
-    /**
-     * @deprecated since 1.3, to be removed in 2.0
-     */
-    public function disable()
-    {
-        $this->enabled = false;
     }
 
     public function onSilexError(GetResponseForExceptionEvent $event)
     {
-        if (!$this->enabled) {
-            return;
-        }
-
         $handler = new DebugExceptionHandler($this->debug);
 
         if (method_exists($handler, 'getHtml')) {

@@ -33,10 +33,9 @@ Registering
     
 .. note::
 
-    The *SerializerServiceProvider* relies on Symfony's `Serializer Component
-    <http://symfony.com/doc/current/components/serializer.html>`_, 
-    which comes with the "fat" Silex archive but not with the regular
-    one. If you are using Composer, add it as a dependency:
+    Add the Symfony's `Serializer Component
+    <http://symfony.com/doc/current/components/serializer.html>`_ as a
+    dependency:
 
     .. code-block:: bash
 
@@ -51,6 +50,7 @@ The ``SerializerServiceProvider`` provider provides a ``serializer`` service:
 
     use Silex\Application;
     use Silex\Provider\SerializerServiceProvider;
+    use Symfony\Component\HttpFoundation\Request;
     use Symfony\Component\HttpFoundation\Response;
 
     $app = new Application();
@@ -58,18 +58,18 @@ The ``SerializerServiceProvider`` provider provides a ``serializer`` service:
     $app->register(new SerializerServiceProvider());
 
     // only accept content types supported by the serializer via the assert method.
-    $app->get("/pages/{id}.{_format}", function ($id) use ($app) {
+    $app->get("/pages/{id}.{_format}", function (Request $request, $id) use ($app) {
         // assume a page_repository service exists that returns Page objects. The
         // object returned has getters and setters exposing the state.
         $page = $app['page_repository']->find($id);
-        $format = $app['request']->getRequestFormat();
+        $format = $request->getRequestFormat();
 
         if (!$page instanceof Page) {
             $app->abort("No page found for id: $id");
         }
 
         return new Response($app['serializer']->serialize($page, $format), 200, array(
-            "Content-Type" => $app['request']->getMimeType($format)
+            "Content-Type" => $request->getMimeType($format)
         ));
     })->assert("_format", "xml|json")
       ->assert("id", "\d+");

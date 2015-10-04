@@ -10,7 +10,7 @@ Silex
     swiftmailer
     translation
     twig
-    url_generator
+    asset
     validator
     form
     http_cache
@@ -19,3 +19,4 @@ Silex
     remember_me
     serializer
     service_controller
+    var-dumper

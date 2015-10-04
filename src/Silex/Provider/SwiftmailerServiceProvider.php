@@ -11,39 +11,44 @@
 
 namespace Silex\Provider;
 
-use Silex\Application;
-use Silex\ServiceProviderInterface;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
+use Silex\Api\EventListenerProviderInterface;
+use Symfony\Component\Console\ConsoleEvents;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 
 /**
  * Swiftmailer Provider.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class SwiftmailerServiceProvider implements ServiceProviderInterface
+class SwiftmailerServiceProvider implements ServiceProviderInterface, EventListenerProviderInterface
 {
-    public function register(Application $app)
+    public function register(Container $app)
     {
         $app['swiftmailer.options'] = array();
         $app['swiftmailer.use_spool'] = true;
 
         $app['mailer.initialized'] = false;
 
-        $app['mailer'] = $app->share(function ($app) {
+        $app['mailer'] = function ($app) {
             $app['mailer.initialized'] = true;
             $transport = $app['swiftmailer.use_spool'] ? $app['swiftmailer.spooltransport'] : $app['swiftmailer.transport'];
 
             return new \Swift_Mailer($transport);
-        });
+        };
 
-        $app['swiftmailer.spooltransport'] = $app->share(function ($app) {
+        $app['swiftmailer.spooltransport'] = function ($app) {
             return new \Swift_Transport_SpoolTransport($app['swiftmailer.transport.eventdispatcher'], $app['swiftmailer.spool']);
-        });
+        };
 
-        $app['swiftmailer.spool'] = $app->share(function ($app) {
+        $app['swiftmailer.spool'] = function ($app) {
             return new \Swift_MemorySpool();
-        });
+        };
 
-        $app['swiftmailer.transport'] = $app->share(function ($app) {
+        $app['swiftmailer.transport'] = function ($app) {
             $transport = new \Swift_Transport_EsmtpTransport(
                 $app['swiftmailer.transport.buffer'],
                 array($app['swiftmailer.transport.authhandler']),
@@ -66,34 +71,47 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface
             $transport->setPassword($options['password']);
             $transport->setAuthMode($options['auth_mode']);
 
+            if (null !== $app['swiftmailer.sender_address']) {
+                $transport->registerPlugin(new \Swift_Plugins_ImpersonatePlugin($app['swiftmailer.sender_address']));
+            }
+
             return $transport;
-        });
+        };
 
-        $app['swiftmailer.transport.buffer'] = $app->share(function () {
+        $app['swiftmailer.transport.buffer'] = function () {
             return new \Swift_Transport_StreamBuffer(new \Swift_StreamFilters_StringReplacementFilterFactory());
-        });
+        };
 
-        $app['swiftmailer.transport.authhandler'] = $app->share(function () {
+        $app['swiftmailer.transport.authhandler'] = function () {
             return new \Swift_Transport_Esmtp_AuthHandler(array(
                 new \Swift_Transport_Esmtp_Auth_CramMd5Authenticator(),
                 new \Swift_Transport_Esmtp_Auth_LoginAuthenticator(),
                 new \Swift_Transport_Esmtp_Auth_PlainAuthenticator(),
             ));
-        });
+        };
 
-        $app['swiftmailer.transport.eventdispatcher'] = $app->share(function () {
+        $app['swiftmailer.transport.eventdispatcher'] = function () {
             return new \Swift_Events_SimpleEventDispatcher();
-        });
+        };
+
+        $app['swiftmailer.sender_address'] = null;
     }
 
-    public function boot(Application $app)
+    public function subscribe(Container $app, EventDispatcherInterface $dispatcher)
     {
-        $app->finish(function () use ($app) {
+        // Event has no typehint as it can be either a PostResponseEvent or a ConsoleTerminateEvent
+        $onTerminate = function ($event) use ($app) {
             // To speed things up (by avoiding Swift Mailer initialization), flush
             // messages only if our mailer has been created (potentially used)
             if ($app['mailer.initialized'] && $app['swiftmailer.use_spool'] && $app['swiftmailer.spooltransport'] instanceof \Swift_Transport_SpoolTransport) {
                 $app['swiftmailer.spooltransport']->getSpool()->flushQueue($app['swiftmailer.transport']);
             }
-        });
+        };
+
+        $dispatcher->addListener(KernelEvents::TERMINATE, $onTerminate);
+
+        if (class_exists('Symfony\Component\Console\ConsoleEvents')) {
+            $dispatcher->addListener(ConsoleEvents::TERMINATE, $onTerminate);
+        }
     }
 }

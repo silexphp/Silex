@@ -1,0 +1,34 @@
+{
+    "minimum-stability": "dev",
+    "name": "silex/api",
+    "description": "The Silex interfaces",
+    "keywords": ["microframework"],
+    "homepage": "http://silex.sensiolabs.org",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Fabien Potencier",
+            "email": "fabien@symfony.com"
+        },
+        {
+            "name": "Igor Wiedler",
+            "email": "igor@wiedler.ch"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.9",
+        "pimple/pimple": "~3.0"
+    },
+    "suggest": {
+        "symfony/event-dispatcher": "For EventListenerProviderInterface",
+        "silex/silex": "For BootableProviderInterface and ControllerProviderInterface"
+    },
+    "autoload": {
+        "psr-4": { "Silex\\Api\\": "" }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.0.x-dev"
+        }
+    }
+}
