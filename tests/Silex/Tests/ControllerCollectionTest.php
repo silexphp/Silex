@@ -17,6 +17,7 @@ use Silex\ControllerCollection;
 use Silex\Exception\ControllerFrozenException;
 use Silex\Route;
 use Symfony\Component\Routing\RouteCollection;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * ControllerCollection test cases.
@@ -125,6 +126,56 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertCount(2, $routes->all());
         $this->assertEquals(array('_root_a_tree_leaf', '_root_a_tree_leaf_1'), array_keys($routes->all()));
+    }
+
+    public function testGroup()
+    {
+        $app = new Application();
+
+        $app->group('/group', function ($group) {
+            $group->get('/foo', function() {
+                return 'foo';
+            });
+
+            $group->post('/bar', function() {
+                return 'bar';
+            });
+        });
+
+        $request = Request::create('/group/foo', 'get');
+        $response = $app->handle($request);
+        $this->assertEquals('foo', $response->getContent());
+
+        $request = Request::create('/group/bar', 'post');
+        $response = $app->handle($request);
+        $this->assertEquals('bar', $response->getContent());
+    }
+
+    public function testNestedGroup()
+    {
+        $app = new Application();
+
+        $app->group('/group', function ($group) {
+            $group->group('/subgroup', function($subgroup) {
+                $subgroup->get('/foo', function() {
+                    return 'foo';
+                });
+
+                $subgroup->group('/bar', function($bargroup) {
+                    $bargroup->put('/bax', function() {
+                        return 'bax';
+                    });
+                });
+            });
+        });
+
+        $request = Request::create('/group/subgroup/foo', 'get');
+        $response = $app->handle($request);
+        $this->assertEquals('foo', $response->getContent());
+
+        $request = Request::create('/group/subgroup/bar/bax', 'put');
+        $response = $app->handle($request);
+        $this->assertEquals('bax', $response->getContent());
     }
 
     public function testAssert()
