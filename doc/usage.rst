@@ -610,7 +610,7 @@ round-trip to the browser (as for a redirect), use an internal sub-request::
     use Symfony\Component\HttpKernel\HttpKernelInterface;
 
     $app->get('/', function () use ($app) {
-        // redirect to /hello
+        // forward to /hello
         $subRequest = Request::create('/hello', 'GET');
 
         return $app->handle($subRequest, HttpKernelInterface::SUB_REQUEST);
