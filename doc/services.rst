@@ -2,8 +2,8 @@ Services
 ========
 
 Silex is not only a framework, it is also a service container. It does this by
-extending `Pimple <http://pimple.sensiolabs.org>`_ which provides service
-goodness in just 44 NCLOC.
+extending `Pimple <http://pimple.sensiolabs.org>`_ which provides a very simple
+service container.
 
 Dependency Injection
 --------------------
