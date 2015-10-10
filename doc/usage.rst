@@ -553,7 +553,7 @@ View Handlers allow you to intercept a controller result that is not a
 ``Response`` and transform it before it gets returned to the kernel.
 
 To register a view handler, pass a callable (or string that can be resolved to a
-callable) to the view method. The callable should accept some sort of result
+callable) to the ``view()`` method. The callable should accept some sort of result
 from the controller::
 
     $app->view(function (array $controllerResult) use ($app) {
