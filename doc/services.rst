@@ -70,8 +70,7 @@ the container::
 
     $app['some_parameter'] = 'value';
 
-The array key can be anything, by convention periods are used for
-namespacing::
+The array key can be any value. By convention dots are used for namespacing::
 
     $app['asset.host'] = 'http://cdn.mysite.com/';
 
