@@ -145,9 +145,9 @@ possible or as late as possible::
 Short-circuiting the Controller
 -------------------------------
 
-If a before middleware returns a Response object, the Request handling is
+If a *before* middleware returns a ``Response`` object, the request handling is
 short-circuited (the next middlewares won't be run, nor the route
-callback), and the Response is passed to the after middlewares right away::
+callback), and the Response is passed to the *after* middlewares right away::
 
     $app->before(function (Request $request) {
         // redirect the user to the login screen if access to the Resource is protected
