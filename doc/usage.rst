@@ -670,9 +670,9 @@ after every chunk::
     $stream = function () {
         $fh = fopen('http://www.example.com/', 'rb');
         while (!feof($fh)) {
-          echo fread($fh, 1024);
-          ob_flush();
-          flush();
+            echo fread($fh, 1024);
+            ob_flush();
+            flush();
         }
         fclose($fh);
     };
