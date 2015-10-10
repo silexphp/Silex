@@ -759,6 +759,7 @@ Cross-Site-Scripting attacks.
 
       $app->get('/name', function (Silex\Application $app) {
           $name = $app['request']->get('name');
+
           return "You provided the name {$app->escape($name)}.";
       });
 
@@ -770,6 +771,7 @@ Cross-Site-Scripting attacks.
 
       $app->get('/name.json', function (Silex\Application $app) {
           $name = $app['request']->get('name');
+
           return $app->json(array('name' => $name));
       });
 
