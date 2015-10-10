@@ -336,7 +336,8 @@ converter based on Doctrine ObjectManager::
     }
 
 The service will now be registered in the application, and the
-convert method will be used as converter::
+``convert()`` method will be used as converter (using the syntax
+``service_name:method_name``)::
 
     $app['converter.user'] = $app->share(function () {
         return new UserConverter();
