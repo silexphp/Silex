@@ -591,8 +591,8 @@ as the input for the next.
 Redirects
 ---------
 
-You can redirect to another page by returning a redirect response, which you
-can create by calling the ``redirect`` method::
+You can redirect to another page by returning a ``RedirectResponse`` response,
+which you can create by calling the ``redirect`` method::
 
     $app->get('/', function () use ($app) {
         return $app->redirect('/hello');
