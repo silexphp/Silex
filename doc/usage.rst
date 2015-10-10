@@ -354,8 +354,8 @@ In some cases you may want to only match certain expressions. You can define
 requirements using regular expressions by calling ``assert`` on the
 ``Controller`` object, which is returned by the routing methods.
 
-The following will make sure the ``id`` argument is numeric, since ``\d+``
-matches any amount of digits::
+The following will make sure the ``id`` argument is a positive integer, since
+``\d+`` matches any amount of digits::
 
     $app->get('/blog/{id}', function ($id) {
         // ...
