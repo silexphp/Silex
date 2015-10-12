@@ -2,8 +2,8 @@ Services
 ========
 
 Silex is not only a framework, it is also a service container. It does this by
-extending `Pimple <http://pimple.sensiolabs.org>`_ which provides service
-goodness in just 44 NCLOC.
+extending `Pimple <http://pimple.sensiolabs.org>`_ which provides a very simple
+service container.
 
 Dependency Injection
 --------------------
@@ -70,8 +70,7 @@ the container::
 
     $app['some_parameter'] = 'value';
 
-The array key can be anything, by convention periods are used for
-namespacing::
+The array key can be any value. By convention dots are used for namespacing::
 
     $app['asset.host'] = 'http://cdn.mysite.com/';
 
