@@ -74,7 +74,7 @@ Registering
     booted. So, if you want to use it outside of the handling of a request,
     don't forget to call ``boot()`` first::
 
-        $application->boot();
+        $app->boot();
 
 .. caution::
 
