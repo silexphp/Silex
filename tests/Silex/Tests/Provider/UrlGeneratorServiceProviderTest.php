@@ -14,6 +14,7 @@ namespace Silex\Tests\Provider;
 use Silex\Application;
 use Silex\Provider\UrlGeneratorServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * UrlGeneratorProvider test cases.
@@ -68,7 +69,7 @@ class UrlGeneratorServiceProviderTest extends \PHPUnit_Framework_TestCase
             ->bind('hello');
 
         $app->get('/', function () use ($app) {
-            return $app['url_generator']->generate('hello', array('name' => 'john'), true);
+            return $app['url_generator']->generate('hello', array('name' => 'john'), UrlGeneratorInterface::ABSOLUTE_URL);
         });
 
         $request = Request::create('https://localhost:81/');
