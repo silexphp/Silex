@@ -32,7 +32,7 @@ trait FormTrait
     public function form($data = null, array $options = array(), $type = null)
     {
         if (null === $type) {
-            // for BC with Symfony pre 2.7
+            // BC with Symfony < 2.8
             $type = class_exists('Symfony\Component\Form\Extension\Core\Type\RangeType') ? 'Symfony\Component\Form\Extension\Core\Type\FormType' : 'form';
         }
 
