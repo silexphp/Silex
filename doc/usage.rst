@@ -459,7 +459,7 @@ the defaults for new controllers.
 Error Handlers
 --------------
 
-When an exception is thrown, error handlers allows you to display a custom
+When an exception is thrown, error handlers allow you to display a custom
 error page to the user. They can also be used to do additional things, such as
 logging.
 
