@@ -494,7 +494,7 @@ setting a more specific type hint for the Closure argument::
 
     $app->error(function (\LogicException $e, $code) {
         // this handler will only handle \LogicException exceptions
-        // and exceptions that extends \LogicException
+        // and exceptions that extend \LogicException
     });
 
 .. note::
