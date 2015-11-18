@@ -1,0 +1,35 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2015-11-13T12:58:43Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by GromNaN at 2015-11-13T14:17:12Z
+
+You could have made only 1 PR for all #1283 and #1282. (by making all changes on the same branch).
+
+---------------------------------------------------------------------------
+
+by nicoder at 2015-11-13T14:45:15Z
+
+yes, with hindsight I would have, I guess I did not expect to find more.
+Next time I should wait until I am done reading before sending the PRs, and juste send one if they are related.
+
+---------------------------------------------------------------------------
+
+by GromNaN at 2015-11-13T14:53:43Z
+
+You can (and should !) open a PR as soon as you find the first typo, but if you find another one just after you can add commits to the same branch, the PR will be automatically updated.
+
+Regardless, thank you for fixing the doc.
+
+---------------------------------------------------------------------------
+
+by nicoder at 2015-11-13T15:03:49Z
+
+Oh, thanks, I hadn't thought about that, good idea.
+I just clicked on 'Edit this' on the website and edited through the Github web UI,
+which created a new branch every time.
+I could've juste done that on the same branch on my fork in the web UI.
