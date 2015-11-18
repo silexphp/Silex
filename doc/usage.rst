@@ -25,7 +25,7 @@ If you want more flexibility, use Composer_ instead:
 Web Server
 ----------
 
-All examples in the documentation relies on a well-configured web server; read
+All examples in the documentation rely on a well-configured web server; read
 the :doc:`webserver documentation<web_servers>` to check yours.
 
 Bootstrap
