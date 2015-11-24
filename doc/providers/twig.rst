@@ -115,12 +115,10 @@ from a template:
     {# or if you are also using the UrlGeneratorServiceProvider #}
     {{ render(url('sidebar')) }}
 
-
 .. note::
 
     You must prepend the ``app.request.baseUrl`` to render calls to ensure
     that the render works when deployed into a sub-directory of the docroot.
-
 
 .. code-block:: jinja
 
