@@ -115,11 +115,22 @@ from a template:
     {# or if you are also using the UrlGeneratorServiceProvider #}
     {{ render(url('sidebar')) }}
 
+
 .. note::
 
     You must prepend the ``app.request.baseUrl`` to render calls to ensure
     that the render works when deployed into a sub-directory of the docroot.
 
+
+.. code-block:: jinja
+
+    {# You may also link to the controller directly without defining a route for it: #}
+    {{ render(controller(controller, attributes, query)) }}
+
+.. note::
+
+    Visit the symfony documentation for more information: http://symfony.com/doc/current/reference/twig_reference.html#controller
+    
 Traits
 ------
 
