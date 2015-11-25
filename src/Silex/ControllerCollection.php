@@ -171,12 +171,31 @@ class ControllerCollection
         call_user_func_array(array($this->defaultRoute, $method), $arguments);
 
         foreach ($this->controllers as $controller) {
-            if ($controller instanceof Controller) {
-                call_user_func_array(array($controller, $method), $arguments);
-            }
+            call_user_func_array(array($controller, $method), $arguments);
         }
 
         return $this;
+    }
+
+    /**
+     * Creates a mounting point and creates a callable to mount controllers under it.
+     *
+     * @param string $prefix The mounting point prefix
+     * @param mixed  $to     Callback that creates the controllers under the mounting point
+     *
+     * @return Controller
+     */
+    public function group($prefix, $to = null)
+    {
+        $controllers = new self($this->defaultRoute);
+
+        if(is_callable($to)) {
+            call_user_func($to, $controllers);
+
+            $this->mount($prefix, $controllers);
+        }
+
+        return $controllers;
     }
 
     /**
@@ -201,9 +220,10 @@ class ControllerCollection
             if ($controller instanceof Controller) {
                 $controller->getRoute()->setPath($prefix.$controller->getRoute()->getPath());
                 if (!$name = $controller->getRouteName()) {
-                    $name = $controller->generateRouteName('');
+                    $name = $base = $controller->generateRouteName('');
+                    $i = 0;
                     while ($routes->get($name)) {
-                        $name .= '_';
+                        $name = $base.'_'.++$i;
                     }
                     $controller->bind($name);
                 }
