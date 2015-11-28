@@ -52,6 +52,9 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
         $returnValue = $app->delete('/foo', function () {});
         $this->assertInstanceOf('Silex\Controller', $returnValue);
+
+        $returnValue = $app->group('/foo', function () {});
+        $this->assertInstanceOf('Silex\ControllerCollection', $returnValue);
     }
 
     public function testConstructorInjection()

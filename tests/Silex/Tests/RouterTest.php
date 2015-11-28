@@ -148,6 +148,46 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $this->checkRouteResponse($app, '/resource', 'delete resource', 'delete');
     }
 
+    public function testGroupRouting()
+    {
+        $app = new Application();
+
+        $app->group('/group', function ($group) {
+            $group->get('/foo', function() {
+                return 'foo';
+            });
+
+            $group->post('/bar', function() {
+                return 'bar';
+            });
+        });
+
+        $this->checkRouteResponse($app, '/group/foo', 'foo');
+        $this->checkRouteResponse($app, '/group/bar', 'bar', 'post');
+    }
+
+    public function testNestedGroupRouting()
+    {
+        $app = new Application();
+
+        $app->group('/group', function ($group) {
+            $group->group('/subgroup', function($subgroup) {
+                $subgroup->get('/foo', function() {
+                    return 'foo';
+                });
+
+                $subgroup->group('/bar', function($bargroup) {
+                    $bargroup->put('/bax', function() {
+                        return 'bax';
+                    });
+                });
+            });
+        });
+
+        $this->checkRouteResponse($app, '/group/subgroup/foo', 'foo');
+        $this->checkRouteResponse($app, '/group/subgroup/bar/bax', 'bax', 'put');
+    }
+
     public function testRequestShouldBeStoredRegardlessOfRouting()
     {
         $app = new Application();
