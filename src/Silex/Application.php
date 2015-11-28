@@ -295,6 +295,19 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
     }
 
     /**
+     * Creates a mounting point and creates a callable to mount controllers under it.
+     *
+     * @param string $prefix The mounting point prefix
+     * @param mixed  $to     Callback that creates the controllers under the mounting point
+     *
+     * @return Controller
+     */
+    public function group($prefix, $to = null)
+    {
+        return $this['controllers']->group($prefix, $to);
+    }
+
+    /**
      * Adds an event listener that listens on the specified events.
      *
      * @param string   $eventName The event to listen on
