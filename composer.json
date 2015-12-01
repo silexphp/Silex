@@ -52,6 +52,9 @@
         "symfony/dom-crawler": ">=2.3,<2.5-dev",
         "symfony/form": ">=2.3,<2.5-dev"
     },
+    "conflict": {
+        "symfony/dependency-injection": ">=3.0"
+    },
     "autoload": {
         "psr-0": { "Silex": "src/" }
     },
