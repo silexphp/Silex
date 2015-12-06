@@ -15,6 +15,7 @@ namespace Silex;
  * Interface that all Silex service providers must implement.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ * 
  * @deprecated
  */
 interface ServiceProviderInterface

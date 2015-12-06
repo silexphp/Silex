@@ -99,7 +99,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      * Registers a legacy service provider.
      *
      * @param LegacyServiceProviderInterface $provider A LegacyServiceProviderInterface instance
-     * @param array $values An array of values that customizes the provider
+     * @param array                          $values An array of values that customizes the provider
      *
      * @return Application
      */
