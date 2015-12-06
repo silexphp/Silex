@@ -575,12 +575,30 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      *
      * @return SharedService
      */
-    public static function share($callable)
+    public function share($callable)
     {
         if (!is_object($callable) || !method_exists($callable, '__invoke')) {
             throw new \InvalidArgumentException('Service definition is not a Closure or invokable object.');
         }
 
         return new SharedService($callable);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function protect($callable)
+    {
+        if (!$this->legacyProvider) {
+            return parent::protect($callable);
+        }
+
+        if (!is_object($callable) || !method_exists($callable, '__invoke')) {
+            throw new \InvalidArgumentException('Callable is not a Closure or invokable object.');
+        }
+
+        return function ($c) use ($callable) {
+            return $callable;
+        };
     }
 }
