@@ -38,8 +38,8 @@ class MonologServiceProviderTest extends \PHPUnit_Framework_TestCase
         $request = Request::create('/foo');
         $app->handle($request);
 
-        $this->assertTrue($app['monolog.handler']->hasInfo('> GET /foo'));
-        $this->assertTrue($app['monolog.handler']->hasInfo('< 200'));
+        $this->assertTrue($app['monolog.handler']->hasDebug('> GET /foo'));
+        $this->assertTrue($app['monolog.handler']->hasDebug('< 200'));
 
         $records = $app['monolog.handler']->getRecords();
         $this->assertContains('Matched route "GET_foo"', $records[0]['message']);
@@ -110,7 +110,7 @@ class MonologServiceProviderTest extends \PHPUnit_Framework_TestCase
         $request = Request::create('/foo');
         $app->handle($request);
 
-        $this->assertTrue($app['monolog.handler']->hasInfo('< 302 /bar'));
+        $this->assertTrue($app['monolog.handler']->hasDebug('< 302 /bar'));
     }
 
     public function testErrorLoggingGivesWayToSecurityExceptionHandling()
