@@ -11,6 +11,9 @@
 
 namespace Silex\Legacy;
 
+/**
+ * @internal
+ */
 class SharedService
 {
     /**

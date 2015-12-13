@@ -49,7 +49,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     const LATE_EVENT = -512;
 
     protected $providers = array();
-    protected $legacyProvider = false;
+    private $legacyProvider = false;
     protected $booted = false;
 
     /**
@@ -102,19 +102,28 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      * @param array                          $values   An array of values that customizes the provider
      *
      * @return Application
+     *
+     * @throws \Exception
      */
     public function registerLegacy(LegacyServiceProviderInterface $provider, array $values = array())
     {
         $this->providers[] = $provider;
-        $this->legacyProvider = true;
 
-        $provider->register($this);
+        try {
+            $this->legacyProvider = true;
 
-        foreach ($values as $key => $value) {
-            $this[$key] = $value;
+            $provider->register($this);
+
+            foreach ($values as $key => $value) {
+                $this[$key] = $value;
+            }
+
+            $this->legacyProvider = false;
+        } catch (\Exception $e) {
+            $this->legacyProvider = false;
+
+            throw $e;
         }
-
-        $this->legacyProvider = false;
 
         return $this;
     }
@@ -135,11 +144,18 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
 
         foreach ($this->providers as $provider) {
             if ($provider instanceof LegacyServiceProviderInterface) {
-                $this->legacyProvider = true;
+                try {
+                    $this->legacyProvider = true;
 
-                $provider->boot($this);
+                    $provider->boot($this);
 
-                $this->legacyProvider = false;
+                    $this->legacyProvider = false;
+
+                } catch (\Exception $e) {
+                    $this->legacyProvider = false;
+
+                    throw $e;
+                }
 
                 continue;
             }
@@ -568,7 +584,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     }
 
     /**
-     * Returns a closure that stores the result of the given service definition
+     * Returns a shared service instance that stores the result of the given service definition
      * for uniqueness in the scope of this instance of Pimple.
      *
      * @param callable $callable A service definition to wrap for uniqueness

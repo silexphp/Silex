@@ -16,7 +16,7 @@ namespace Silex;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * 
- * @deprecated
+ * @deprecated this is the old silex ~1.0 service provider interface, and should not be used anymore
  */
 interface ServiceProviderInterface
 {
