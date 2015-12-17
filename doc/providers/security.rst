@@ -618,6 +618,13 @@ argument of your authentication factory (see above).
 This example uses the authentication provider classes as described in the
 Symfony `cookbook`_.
 
+
+.. note::
+
+    Since Symfony 2.8, the Guard component simplify the creation of custom
+    authentication providers.
+    :doc:`How to Create a Custom Authentication System with Guard <cookbook/guard_authentication>`
+
 Stateless Authentication
 ~~~~~~~~~~~~~~~~~~~~~~~~
 

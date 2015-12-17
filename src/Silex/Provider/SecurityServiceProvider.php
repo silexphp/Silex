@@ -58,6 +58,9 @@ use Symfony\Component\Security\Http\Logout\SessionLogoutHandler;
 use Symfony\Component\Security\Http\Logout\DefaultLogoutSuccessHandler;
 use Symfony\Component\Security\Http\AccessMap;
 use Symfony\Component\Security\Http\HttpUtils;
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
+use Symfony\Component\Security\Guard\Firewall\GuardAuthenticationListener;
+use Symfony\Component\Security\Guard\Provider\GuardAuthenticationProvider;
 
 /**
  * Symfony Security component Provider.
@@ -148,12 +151,14 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
         };
 
         // generate the build-in authentication factories
-        foreach (array('logout', 'pre_auth', 'form', 'http', 'remember_me', 'anonymous') as $type) {
+        foreach (array('logout', 'pre_auth', 'guard', 'form', 'http', 'remember_me', 'anonymous') as $type) {
             $entryPoint = null;
             if ('http' === $type) {
                 $entryPoint = 'http';
             } elseif ('form' === $type) {
                 $entryPoint = 'form';
+            } elseif ('guard' === $type) {
+                $entryPoint = 'guard';
             }
 
             $app['security.authentication_listener.factory.'.$type] = $app->protect(function ($name, $options) use ($type, $app, $entryPoint) {
@@ -165,9 +170,14 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
                     $app['security.authentication_listener.'.$name.'.'.$type] = $app['security.authentication_listener.'.$type.'._proto']($name, $options);
                 }
 
-                $provider = 'anonymous' === $type ? 'anonymous' : 'dao';
+                $provider = 'dao';
+                if ('anonymous' === $type) {
+                    $provider = 'anonymous';
+                } elseif ('guard' === $type) {
+                    $provider = 'guard';
+                }
                 if (!isset($app['security.authentication_provider.'.$name.'.'.$provider])) {
-                    $app['security.authentication_provider.'.$name.'.'.$provider] = $app['security.authentication_provider.'.$provider.'._proto']($name);
+                    $app['security.authentication_provider.'.$name.'.'.$provider] = $app['security.authentication_provider.'.$provider.'._proto']($name, $options);
                 }
 
                 return array(
@@ -180,7 +190,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
         }
 
         $app['security.firewall_map'] = function ($app) {
-            $positions = array('logout', 'pre_auth', 'form', 'http', 'remember_me', 'anonymous');
+            $positions = array('logout', 'pre_auth', 'guard', 'form', 'http', 'remember_me', 'anonymous');
             $providers = array();
             $configs = array();
             foreach ($app['security.firewalls'] as $name => $firewall) {
@@ -285,7 +295,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
                         $listener = $app[$listenerId];
 
                         if (isset($app['security.remember_me.service.'.$name])) {
-                            if ($listener instanceof AbstractAuthenticationListener) {
+                            if ($listener instanceof AbstractAuthenticationListener || $listener instanceof GuardAuthenticationListener) {
                                 $listener->setRememberMeServices($app['security.remember_me.service.'.$name]);
                             }
                             if ($listener instanceof LogoutListener) {
@@ -420,6 +430,27 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
             };
         });
 
+        $app['security.authentication_listener.guard._proto'] = $app->protect(function ($providerKey, $options) use ($app, $that) {
+            return function () use ($app, $providerKey, $options, $that) {
+                if (!isset($app['security.authentication.guard_handler'])) {
+                    $app['security.authentication.guard_handler'] = new GuardAuthenticatorHandler($app['security.token_storage'], $app['dispatcher']);
+                }
+
+                $authenticators = array();
+                foreach ($options['authenticators'] as $authenticatorId) {
+                    $authenticators[] = $app[$authenticatorId];
+                }
+
+                return new GuardAuthenticationListener(
+                    $app['security.authentication.guard_handler'],
+                    $app['security.authentication_manager'],
+                    $providerKey,
+                    $authenticators,
+                    $app['logger']
+                );
+            };
+        });
+
         $app['security.authentication_listener.form._proto'] = $app->protect(function ($name, $options) use ($app, $that) {
             return function () use ($app, $name, $options, $that) {
                 $that->addFakeRoute(
@@ -545,7 +576,24 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
             };
         });
 
-        $app['security.authentication_provider.dao._proto'] = $app->protect(function ($name) use ($app) {
+        $app['security.entry_point.guard._proto'] = $app->protect(function ($name, array $options) use ($app) {
+            if (isset($options['entry_point'])) {
+                // if it's configured explicitly, use it!
+                return $app[$options['entry_point']];
+            }
+            $authenticatorIds = $options['authenticators'];
+            if (count($authenticatorIds) == 1) {
+                // if there is only one authenticator, use that as the entry point
+                return $app[reset($authenticatorIds)];
+            }
+            // we have multiple entry points - we must ask them to configure one
+            throw new \LogicException(sprintf(
+                'Because you have multiple guard configurators, you need to set the "guard.entry_point" key to one of you configurators (%s)',
+                implode(', ', $authenticatorIds)
+            ));
+        });
+
+        $app['security.authentication_provider.dao._proto'] = $app->protect(function ($name, $options) use ($app) {
             return function () use ($app, $name) {
                 return new DaoAuthenticationProvider(
                     $app['security.user_provider.'.$name],
@@ -557,7 +605,23 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
             };
         });
 
-        $app['security.authentication_provider.anonymous._proto'] = $app->protect(function ($name) use ($app) {
+        $app['security.authentication_provider.guard._proto'] = $app->protect(function ($name, $options) use ($app) {
+            return function () use ($app, $name, $options) {
+                $authenticators = array();
+                foreach ($options['authenticators'] as $authenticatorId) {
+                    $authenticators[] = $app[$authenticatorId];
+                }
+
+                return new GuardAuthenticationProvider(
+                    $authenticators,
+                    $app['security.user_provider.'.$name],
+                    $name,
+                    $app['security.user_checker']
+                );
+            };
+        });
+
+        $app['security.authentication_provider.anonymous._proto'] = $app->protect(function ($name, $options) use ($app) {
             return function () use ($app, $name) {
                 return new AnonymousAuthenticationProvider($name);
             };
