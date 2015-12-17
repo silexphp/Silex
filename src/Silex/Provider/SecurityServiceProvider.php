@@ -58,6 +58,8 @@ use Symfony\Component\Security\Http\Logout\SessionLogoutHandler;
 use Symfony\Component\Security\Http\Logout\DefaultLogoutSuccessHandler;
 use Symfony\Component\Security\Http\AccessMap;
 use Symfony\Component\Security\Http\HttpUtils;
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
+use Symfony\Component\Security\Guard\Provider\GuardAuthenticationProvider;
 
 /**
  * Symfony Security component Provider.
@@ -148,7 +150,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
         };
 
         // generate the build-in authentication factories
-        foreach (array('logout', 'pre_auth', 'form', 'http', 'remember_me', 'anonymous') as $type) {
+        foreach (array('logout', 'pre_auth', 'guard', 'form', 'http', 'remember_me', 'anonymous') as $type) {
             $entryPoint = null;
             if ('http' === $type) {
                 $entryPoint = 'http';
@@ -165,9 +167,14 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
                     $app['security.authentication_listener.'.$name.'.'.$type] = $app['security.authentication_listener.'.$type.'._proto']($name, $options);
                 }
 
-                $provider = 'anonymous' === $type ? 'anonymous' : 'dao';
+                $provider = 'dao';
+                if ('anonymous' === $type) {
+                    $provider = 'anonymous';
+                } elseif ('guard' === $type) {
+                    $provider = 'guard';
+                }
                 if (!isset($app['security.authentication_provider.'.$name.'.'.$provider])) {
-                    $app['security.authentication_provider.'.$name.'.'.$provider] = $app['security.authentication_provider.'.$provider.'._proto']($name);
+                    $app['security.authentication_provider.'.$name.'.'.$provider] = $app['security.authentication_provider.'.$provider.'._proto']($name, $options);
                 }
 
                 return array(
@@ -180,7 +187,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
         }
 
         $app['security.firewall_map'] = function ($app) {
-            $positions = array('logout', 'pre_auth', 'form', 'http', 'remember_me', 'anonymous');
+            $positions = array('logout', 'pre_auth', 'guard', 'form', 'http', 'remember_me', 'anonymous');
             $providers = array();
             $configs = array();
             foreach ($app['security.firewalls'] as $name => $firewall) {
@@ -420,6 +427,29 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
             };
         });
 
+        $app['security.authentication_listener.guard._proto'] = $app->protect(function ($providerKey, $options) use ($app, $that) {
+            return function () use ($app, $providerKey, $options, $that) {
+                if (!isset($app['security.authentication.guard_handler'])) {
+                    $app['security.authentication.guard_handler'] = new GuardAuthenticatorHandler($app['security.token_storage'], $app['dispatcher']);
+                }
+
+                $authenticators = array();
+                foreach ($options['authenticators'] as $authenticatorId) {
+                    $authenticators[] = $app[$authenticatorId];
+                }
+
+                $class = isset($options['listener_class']) ? $options['listener_class'] : 'Symfony\\Component\\Security\\Guard\\Firewall\\GuardAuthenticationListener';
+
+                return new $class(
+                    $app['security.authentication.guard_handler'],
+                    $app['security.authentication_manager'],
+                    $providerKey,
+                    $authenticators,
+                    $app['logger']
+                );
+            };
+        });
+
         $app['security.authentication_listener.form._proto'] = $app->protect(function ($name, $options) use ($app, $that) {
             return function () use ($app, $name, $options, $that) {
                 $that->addFakeRoute(
@@ -545,7 +575,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
             };
         });
 
-        $app['security.authentication_provider.dao._proto'] = $app->protect(function ($name) use ($app) {
+        $app['security.authentication_provider.dao._proto'] = $app->protect(function ($name, $options) use ($app) {
             return function () use ($app, $name) {
                 return new DaoAuthenticationProvider(
                     $app['security.user_provider.'.$name],
@@ -557,7 +587,23 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
             };
         });
 
-        $app['security.authentication_provider.anonymous._proto'] = $app->protect(function ($name) use ($app) {
+        $app['security.authentication_provider.guard._proto'] = $app->protect(function ($name, $options) use ($app) {
+            return function () use ($app, $name, $options) {
+                $authenticators = array();
+                foreach ($options['authenticators'] as $authenticatorId) {
+                    $authenticators[] = $app[$authenticatorId];
+                }
+
+                return new GuardAuthenticationProvider(
+                    $authenticators,
+                    $app['security.user_provider.'.$name],
+                    $name,
+                    $app['security.user_checker']
+                );
+            };
+        });
+
+        $app['security.authentication_provider.anonymous._proto'] = $app->protect(function ($name, $options) use ($app) {
             return function () use ($app, $name) {
                 return new AnonymousAuthenticationProvider($name);
             };
