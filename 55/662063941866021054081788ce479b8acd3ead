@@ -1,0 +1,5 @@
+---------------------------------------------------------------------------
+
+by jnardiello at 2015-12-20T02:08:26Z
+
+This is a good possible solution. Yet, I'd still rather include browser-kit as `require` instead of `require-dev` :)
