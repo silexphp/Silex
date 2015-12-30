@@ -59,6 +59,7 @@ use Symfony\Component\Security\Http\Logout\DefaultLogoutSuccessHandler;
 use Symfony\Component\Security\Http\AccessMap;
 use Symfony\Component\Security\Http\HttpUtils;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
+use Symfony\Component\Security\Guard\Firewall\GuardAuthenticationListener;
 use Symfony\Component\Security\Guard\Provider\GuardAuthenticationProvider;
 
 /**
@@ -294,7 +295,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
                         $listener = $app[$listenerId];
 
                         if (isset($app['security.remember_me.service.'.$name])) {
-                            if ($listener instanceof AbstractAuthenticationListener) {
+                            if ($listener instanceof AbstractAuthenticationListener || $listener instanceof GuardAuthenticationListener) {
                                 $listener->setRememberMeServices($app['security.remember_me.service.'.$name]);
                             }
                             if ($listener instanceof LogoutListener) {
