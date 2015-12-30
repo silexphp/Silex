@@ -1,13 +1,98 @@
 How to Create a Custom Authentication System with Guard
 =======================================================
 
-TODO: This cookbook will be inspired by the Symfony cookbook.
-http://symfony.com/doc/current/cookbook/security/guard-authentication
+Whether you need to build a traditional login form, an API token authentication system or you need to integrate with some proprietary single-sign-on system, the Guard component can make it easy... and fun!
+
+In this example, you'll build an API token authentication system and learn how to work with Guard.
 
 Step 1) Create the Authenticator Class
 --------------------------------------
 
-TODO: Same as the Symfony cookbook, but Doctrine ORM is not recommanded with Silex.
+Suppose you have an API where your clients will send an X-AUTH-TOKEN header on each request. This token is composed of the username followed by a password, separated by a colon. Your job is to read this, find the associated user (if any) and check the password.
+
+To create a custom authentication system, just create a class and make it implement GuardAuthenticatorInterface. Or, extend the simpler AbstractGuardAuthenticator. This requires you to implement six methods:
+
+.. code-block:: php
+
+    <?php
+
+    namespace App\Security;
+
+    use Symfony\Component\HttpFoundation\Request;
+    use Symfony\Component\HttpFoundation\JsonResponse;
+    use Symfony\Component\Security\Core\User\UserInterface;
+    use Symfony\Component\Security\Core\User\UserProviderInterface;
+    use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
+    use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+    use Symfony\Component\Security\Core\Exception\AuthenticationException;
+
+    class TokenAuthenticator extends AbstractGuardAuthenticator
+    {
+        public function getCredentials(Request $request)
+        {
+            if (!$token = $request->headers->get('X-AUTH-TOKEN')) {
+                return;
+            }
+
+            list($username, $secret) = explode(':', $token, 2);
+
+            return array(
+                'username' => $username,
+                'secret' => $secret,
+            );
+        }
+
+        public function getUser($credentials, UserProviderInterface $userProvider)
+        {
+            return $userProvider->loadUserByUsername($credentials['username']);
+        }
+
+        public function checkCredentials($credentials, UserInterface $user)
+        {
+            // check credentials - e.g. make sure the password is valid
+            // no credential check is needed in this case
+
+            // return true to cause authentication success
+            return $user->getPassword() === $credentials['secret'];
+        }
+
+        public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
+        {
+            // on success, let the request continue
+            return;
+        }
+
+        public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
+        {
+            $data = array(
+                'message' => strtr($exception->getMessageKey(), $exception->getMessageData()),
+
+                // or to translate this message
+                // $this->translator->trans($exception->getMessageKey(), $exception->getMessageData())
+            );
+
+            return new JsonResponse($data, 403);
+        }
+
+        /**
+         * Called when authentication is needed, but it's not sent
+         */
+        public function start(Request $request, AuthenticationException $authException = null)
+        {
+            $data = array(
+                // you might translate this message
+                'message' => 'Authentication Required',
+            );
+
+            return new JsonResponse($data, 401);
+        }
+
+        public function supportsRememberMe()
+        {
+            return false;
+        }
+    }
+
 
 Step 2) Configure the Authenticator
 -----------------------------------
@@ -21,14 +106,12 @@ To finish this, register the class as a service:
     }
 
 
-Finally, configure your firewalls key to use this authenticator:
+Finally, configure your `security.firewalls` key to use this authenticator:
 
 .. code-block:: php
 
     $app['security.firewalls'] => array(
         'main' => array(
-            'anonymous' => true,
-
             'guard' => array(
                 'authenticators' => array(
                     'app.token_authenticator'
@@ -36,10 +119,32 @@ Finally, configure your firewalls key to use this authenticator:
 
                 // Using more than 1 authenticator, you must specify
                 // which one is used as entry point.
-                'entry_point' => 'app.token_authenticator',
+                // 'entry_point' => 'app.token_authenticator',
+            ),
+            'users' => array(
+                'victoria' => array('ROLE_USER', 'randomsecret'),
             ),
         ),
     );
 
-Note: You can use many authenticators, they are executed by if the order they are configured.
+.. note::
+    You can use many authenticators, they are executed by if the order they are configured.
 
+You did it! You now have a fully-working API token authentication system. If your homepage required ROLE_USER, then you could test it under different conditions:
+
+
+.. code-block:: bash
+
+    # test with no token
+    curl http://localhost:8000/
+    # {"message":"Authentication Required"}
+
+    # test with a bad token
+    curl -H "X-AUTH-TOKEN: alan" http://localhost:8000/
+    # {"message":"Username could not be found."}
+
+    # test with a working token
+    curl -H "X-AUTH-TOKEN: victoria:ransomsecret" http://localhost:8000/
+    # the homepage controller is executed: the page loads normally
+
+For more details read the Symfony cookbook entry on `How to Create a Custom Authentication System with Guard  <http://symfony.com/doc/current/cookbook/security/guard-authentication.html>`_.
