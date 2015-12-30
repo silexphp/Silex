@@ -122,6 +122,11 @@ class SecurityServiceProviderTest extends WebTestCase
 
     public function testGuardAuthentication()
     {
+        if (!class_exists('Symfony\\Component\\Security\\Guard\\AbstractGuardAuthenticator')) {
+            $this->markTestSkipped(
+              'The guard component require Symfony 2.8+'
+            );
+        }
         $app = $this->createApplication('guard');
 
         $client = new Client($app);
