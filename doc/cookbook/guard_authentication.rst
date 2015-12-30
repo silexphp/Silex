@@ -33,8 +33,13 @@ Finally, configure your firewalls key to use this authenticator:
                 'authenticators' => array(
                     'app.token_authenticator'
                 ),
+
+                // Using more than 1 authenticator, you must specify
+                // which one is used as entry point.
+                'entry_point' => 'app.token_authenticator',
             ),
         ),
     );
 
+Note: You can use many authenticators, they are executed by if the order they are configured.
 

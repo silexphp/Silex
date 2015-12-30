@@ -156,6 +156,8 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
                 $entryPoint = 'http';
             } elseif ('form' === $type) {
                 $entryPoint = 'form';
+            } elseif ('guard' === $type) {
+                $entryPoint = 'guard';
             }
 
             $app['security.authentication_listener.factory.'.$type] = $app->protect(function ($name, $options) use ($type, $app, $entryPoint) {
@@ -573,6 +575,23 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
             return function () use ($app, $name, $options) {
                 return new BasicAuthenticationEntryPoint(isset($options['real_name']) ? $options['real_name'] : 'Secured');
             };
+        });
+
+        $app['security.entry_point.guard._proto'] = $app->protect(function ($name, array $options) use ($app) {
+            if (isset($options['entry_point'])) {
+                // if it's configured explicitly, use it!
+                return $app[$options['entry_point']];
+            }
+            $authenticatorIds = $options['authenticators'];
+            if (count($authenticatorIds) == 1) {
+                // if there is only one authenticator, use that as the entry point
+                return $app[array_shift($authenticatorIds)];
+            }
+            // we have multiple entry points - we must ask them to configure one
+            throw new \LogicException(sprintf(
+                'Because you have multiple guard configurators, you need to set the "guard.entry_point" key to one of you configurators (%s)',
+                implode(', ', $authenticatorIds)
+            ));
         });
 
         $app['security.authentication_provider.dao._proto'] = $app->protect(function ($name, $options) use ($app) {

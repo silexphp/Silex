@@ -120,6 +120,28 @@ class SecurityServiceProviderTest extends WebTestCase
         $this->assertEquals('admin', $client->getResponse()->getContent());
     }
 
+    public function testGuardAuthentication()
+    {
+        $app = $this->createApplication('guard');
+
+        $client = new Client($app);
+
+        $client->request('get', '/');
+        $this->assertEquals(401, $client->getResponse()->getStatusCode(), 'The entry point is configured');
+        $this->assertEquals('{"message":"Authentication Required"}', $client->getResponse()->getContent());
+
+        $client->request('get', '/', array(), array(), array('HTTP_X_AUTH_TOKEN' => 'lili:not the secret'));
+        $this->assertEquals(403, $client->getResponse()->getStatusCode(), 'User not found');
+        $this->assertEquals('{"message":"Username could not be found."}', $client->getResponse()->getContent());
+
+        $client->request('get', '/', array(), array(), array('HTTP_X_AUTH_TOKEN' => 'victoria:not the secret'));
+        $this->assertEquals(403, $client->getResponse()->getStatusCode(), 'Invalid credentials');
+        $this->assertEquals('{"message":"Invalid credentials."}', $client->getResponse()->getContent());
+
+        $client->request('get', '/', array(), array(), array('HTTP_X_AUTH_TOKEN' => 'victoria:victoriasecret'));
+        $this->assertEquals('victoria', $client->getResponse()->getContent());
+    }
+
     public function testUserPasswordValidatorIsRegistered()
     {
         $app = new Application();
@@ -353,6 +375,40 @@ class SecurityServiceProviderTest extends WebTestCase
         $app->get('/admin', function () use ($app) {
             return 'admin';
         });
+
+        return $app;
+    }
+
+    private function addGuardAuthentication($app)
+    {
+        $app['app.authenticator.token'] = function ($app) {
+            return new SecurityServiceProviderTest\TokenAuthenticator($app);
+        };
+
+        $app->register(new SecurityServiceProvider(), array(
+            'security.firewalls' => array(
+                'guard' => array(
+                    'pattern' => '^.*$',
+                    'form' => true,
+                    'guard' => array(
+                        'authenticators' => array(
+                            'app.authenticator.token',
+                        ),
+                    ),
+                    'users' => array(
+                        'victoria' => array('ROLE_USER', 'victoriasecret'),
+                    ),
+                ),
+            ),
+        ));
+
+        $app->get('/', function () use ($app) {
+            $user = $app['security.token_storage']->getToken()->getUser();
+
+            $content = is_object($user) ? $user->getUsername() : 'ANONYMOUS';
+
+            return $content;
+        })->bind('homepage');
 
         return $app;
     }
