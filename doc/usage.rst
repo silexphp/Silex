@@ -25,7 +25,7 @@ If you want more flexibility, use Composer_ instead:
 Web Server
 ----------
 
-All examples in the documentation relies on a well-configured web server; read
+All examples in the documentation rely on a well-configured web server; read
 the :doc:`webserver documentation<web_servers>` to check yours.
 
 Bootstrap
@@ -459,7 +459,7 @@ the defaults for new controllers.
 Error Handlers
 --------------
 
-When an exception is thrown, error handlers allows you to display a custom
+When an exception is thrown, error handlers allow you to display a custom
 error page to the user. They can also be used to do additional things, such as
 logging.
 
@@ -498,7 +498,7 @@ setting a more specific type hint for the Closure argument::
 
     $app->error(function (\LogicException $e, Request $request, $code) {
         // this handler will only handle \LogicException exceptions
-        // and exceptions that extends \LogicException
+        // and exceptions that extend \LogicException
     });
 
 .. note::
