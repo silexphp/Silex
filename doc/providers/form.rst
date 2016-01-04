@@ -91,8 +91,8 @@ example::
         $form = $app['form.factory']->createBuilder('form', $data)
             ->add('name')
             ->add('email')
-            ->add('gender', 'choice', array(
-                'choices' => array(1 => 'male', 2 => 'female'),
+            ->add('billing_plan', 'choice', array(
+                'choices' => array(1 => 'free', 2 => 'small_business', 3 => 'corporate'),
                 'expanded' => true,
             ))
             ->getForm();
@@ -139,10 +139,10 @@ form by adding constraints on the fields::
         ->add('email', 'text', array(
             'constraints' => new Assert\Email()
         ))
-        ->add('gender', 'choice', array(
-            'choices' => array(1 => 'male', 2 => 'female'),
+        ->add('billing_plan', 'choice', array(
+            'choices' => array(1 => 'free', 2 => 'small_business', 3 => 'corporate'),
             'expanded' => true,
-            'constraints' => new Assert\Choice(array(1, 2)),
+            'constraints' => new Assert\Choice(array(1, 2, 3)),
         ))
         ->getForm();
 
