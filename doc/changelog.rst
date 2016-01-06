@@ -1,10 +1,10 @@
 Changelog
 =========
 
-1.3.5 (2015-XX-XX)
+1.3.5 (2016-01-06)
 ------------------
 
-* n/a
+* fixed typo in SecurityServiceProvider
 
 1.3.4 (2015-09-15)
 ------------------
