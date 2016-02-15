@@ -552,18 +552,16 @@ sample users::
 Defining a custom Encoder
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-By default, Silex uses the ``sha512`` algorithm to encode passwords.
-Additionally, the password is encoded multiple times and converted to base64.
+By default, Silex uses the ``BCrypt`` algorithm to encode passwords.
+Additionally, the password is encoded multiple times (15) and converted to base64.
 You can change these defaults by overriding the ``security.encoder.digest``
 service::
 
-    use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
+    use Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder;
 
     $app['security.encoder.digest'] = function ($app) {
-        // use the sha1 algorithm
-        // don't base64 encode the password
-        // use only 1 iteration
-        return new MessageDigestPasswordEncoder('sha1', false, 1);
+        // use only 10 iterations
+        return new BCryptPasswordEncoder(10);
     };
 
 Defining a custom Authentication Provider
