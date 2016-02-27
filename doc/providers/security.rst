@@ -10,6 +10,8 @@ Parameters
 * **security.hide_user_not_found** (optional): Defines whether to hide user not
   found exception or not. Defaults to ``true``.
 
+* **security.encoder.bcrypt.cost** (optional): Defines BCrypt password encoder cost. Defaults to 13.
+
 Services
 --------
 
@@ -36,9 +38,15 @@ Services
   Request object.
 
 * **security.encoder_factory**: Defines the encoding strategies for user
-  passwords (default to use a digest algorithm for all users).
+  passwords (uses ``security.default_encoder``).
 
-* **security.encoder.digest**: The encoder to use by default for all users.
+* **security.default_encoder**: The encoder to use by default for all users (BCrypt).
+
+* **security.encoder.digest**: Digest password encoder.
+
+* **security.encoder.bcrypt**: BCrypt password encoder.
+
+* **security.encoder.pbkdf2**: Pbkdf2 password encoder.
 
 * **user**: Returns the current user
 
@@ -552,19 +560,35 @@ sample users::
 Defining a custom Encoder
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-By default, Silex uses the ``sha512`` algorithm to encode passwords.
-Additionally, the password is encoded multiple times and converted to base64.
-You can change these defaults by overriding the ``security.encoder.digest``
-service::
+By default, Silex uses the ``BCrypt`` algorithm to encode passwords.
+Additionally, the password is encoded multiple times.
+You can change these defaults by overriding ``security.default_encoder``
+service to return one of the predefined encoders:
 
-    use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
+* **security.encoder.digest**: Digest password encoder.
 
-    $app['security.encoder.digest'] = function ($app) {
-        // use the sha1 algorithm
-        // don't base64 encode the password
-        // use only 1 iteration
-        return new MessageDigestPasswordEncoder('sha1', false, 1);
+* **security.encoder.bcrypt**: BCrypt password encoder.
+
+* **security.encoder.pbkdf2**: Pbkdf2 password encoder.
+
+.. code-block:: php
+
+    $app['security.default_encoder'] = function ($app) {
+        return $app['security.encoder.pbkdf2'];
     };
+
+Or you can define you own, fully customizable encoder::
+
+    use Symfony\Component\Security\Core\Encoder\PlaintextPasswordEncoder;
+
+    $app['security.default_encoder'] = function ($app) {
+        // Plain text (e.g. for debugging)
+        return new PlaintextPasswordEncoder();
+    };
+
+.. tip::
+
+    You can change the default BCrypt encoding cost by overriding ``security.encoder.bcrypt.cost``
 
 Defining a custom Authentication Provider
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

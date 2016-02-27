@@ -26,6 +26,8 @@ use Symfony\Component\Security\Core\User\UserChecker;
 use Symfony\Component\Security\Core\User\InMemoryUserProvider;
 use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
+use Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder;
+use Symfony\Component\Security\Core\Encoder\Pbkdf2PasswordEncoder;
 use Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationProvider;
 use Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider;
 use Symfony\Component\Security\Core\Authentication\AuthenticationProviderManager;
@@ -78,6 +80,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
         $app['security.role_hierarchy'] = array();
         $app['security.access_rules'] = array();
         $app['security.hide_user_not_found'] = true;
+        $app['security.encoder.bcrypt.cost'] = 13;
 
         $app['security.authorization_checker'] = function ($app) {
             return new AuthorizationChecker($app['security.token_storage'], $app['security.authentication_manager'], $app['security.access_manager']);
@@ -109,12 +112,25 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
         // by default, all users use the digest encoder
         $app['security.encoder_factory'] = function ($app) {
             return new EncoderFactory(array(
-                'Symfony\Component\Security\Core\User\UserInterface' => $app['security.encoder.digest'],
+                'Symfony\Component\Security\Core\User\UserInterface' => $app['security.default_encoder'],
             ));
+        };
+
+        // by default, all users use the BCrypt encoder
+        $app['security.default_encoder'] = function ($app) {
+            return $app['security.encoder.bcrypt'];
         };
 
         $app['security.encoder.digest'] = function ($app) {
             return new MessageDigestPasswordEncoder();
+        };
+
+        $app['security.encoder.bcrypt'] = function ($app) {
+            return new BCryptPasswordEncoder($app['security.encoder.bcrypt.cost']);
+        };
+
+        $app['security.encoder.pbkdf2'] = function ($app) {
+            return new Pbkdf2PasswordEncoder();
         };
 
         $app['security.user_checker'] = function ($app) {
