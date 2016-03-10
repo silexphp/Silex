@@ -1,0 +1,14 @@
+---------------------------------------------------------------------------
+
+by quazardous at 2016-01-25T19:49:53Z
+
+I think it's not me :p
+
+```
+  [Composer\Downloader\TransportException]
+
+  The "https://api.github.com/repos/symfony/form/zipball/3bb87faafaa3037dca8a
+
+  049cc34ab8eeb72d52b8" file could not be downloaded (HTTP/1.1 403 Forbidden)
+
+```
