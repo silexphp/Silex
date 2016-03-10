@@ -1,0 +1,47 @@
+---------------------------------------------------------------------------
+
+by e-moe at 2016-02-27T15:06:34Z
+
+Merge conflict fixed.
+
+---------------------------------------------------------------------------
+
+by mathroc at 2016-02-27T15:10:04Z
+
+looks good to me! :+1:
+
+---------------------------------------------------------------------------
+
+by mvanbaak at 2016-02-27T15:37:27Z
+
+Thank you for doing my work. If only time did allow me to put my actions where my mouth is :(
+(+1)
+
+---------------------------------------------------------------------------
+
+by fabpot at 2016-02-29T16:37:42Z
+
+Would it makes sense to instead use `Pbkdf2PasswordEncoder`? Or at least add a sensible configuration for it by default in the provider?
+
+---------------------------------------------------------------------------
+
+by mathroc at 2016-02-29T16:54:17Z
+
+@fabpot I don't have enough knowledge to argue for bcrypt or pbkdf2 but [the php documentation on hash_pbkdf2](php.net/hash_pbkdf2) says :
+>  The PBKDF2 method can be used for hashing passwords for storage. However, it should be noted that password_hash() or crypt() with CRYPT_BLOWFISH are better suited for password storage.
+
+But yes, a `security.encoder.pbkdf2` could be added as it's also widely used
+
+@e-moe what do you think ?
+
+---------------------------------------------------------------------------
+
+by e-moe at 2016-02-29T17:00:10Z
+
+@mathroc I'm not a security expert either. But I would say let's give users possibility to choose. I will update my pull request
+
+---------------------------------------------------------------------------
+
+by e-moe at 2016-02-29T17:57:56Z
+
+updated to meet comments from @fabpot and @mathroc
