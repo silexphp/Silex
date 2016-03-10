@@ -77,7 +77,7 @@ class RememberMeServiceProviderTest extends WebTestCase
                 'remember_me' => array(),
                 'logout' => true,
                 'users' => array(
-                    'fabien' => array('ROLE_USER', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg=='),
+                    'fabien' => array('ROLE_USER', '$2y$15$lzUNsTegNXvZW3qtfucV0erYBcEqWVeyOmjolB7R1uodsAVJ95vvu'),
                 ),
             ),
         );
