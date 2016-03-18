@@ -255,7 +255,7 @@ class SecurityServiceProviderTest extends WebTestCase
             'security.access_rules' => array(
                 array(array(
                     'path' => '^/admin',
-                ), 'ROLE_ADMIN')
+                ), 'ROLE_ADMIN'),
             ),
         ));
 
