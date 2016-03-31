@@ -63,8 +63,13 @@ class FormServiceProvider implements ServiceProviderInterface
             return new CsrfExtension($app['csrf.token_manager']);
         };
 
+        $app['form.extension.silex'] = function ($app) {
+            return new Form\SilexFormExtension($app, $app['form.types'], $app['form.type.extensions'], $app['form.type.guessers']);
+        };
+
         $app['form.extensions'] = function ($app) {
             $extensions = array(
+                $app['form.extension.silex'],
                 new HttpFoundationExtension(),
             );
 
@@ -82,9 +87,6 @@ class FormServiceProvider implements ServiceProviderInterface
         $app['form.factory'] = function ($app) {
             return Forms::createFormFactoryBuilder()
                 ->addExtensions($app['form.extensions'])
-                ->addTypes($app['form.types'])
-                ->addTypeExtensions($app['form.type.extensions'])
-                ->addTypeGuessers($app['form.type.guessers'])
                 ->setResolvedTypeFactory($app['form.resolved_type_factory'])
                 ->getFormFactory()
             ;
