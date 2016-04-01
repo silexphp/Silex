@@ -64,6 +64,7 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
         };
         $app->extend('form.types', function ($extensions) {
             $extensions[] = 'dummy';
+
             return $extensions;
         });
 
@@ -87,6 +88,7 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $app->extend('form.types', function ($extensions) {
             $extensions[] = 'dummy';
+
             return $extensions;
         });
 
@@ -126,6 +128,7 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
         };
         $app->extend('form.type.extensions', function ($extensions) {
             $extensions[] = 'dummy.form.type.extension';
+
             return $extensions;
         });
 
@@ -149,6 +152,7 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $app->extend('form.type.extensions', function ($extensions) {
             $extensions[] = 'dummy.form.type.extension';
+
             return $extensions;
         });
 
@@ -203,6 +207,7 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $app->extend('form.type.guessers', function ($extensions) {
             $extensions[] = 'dummy.form.type.guesser';
+
             return $extensions;
         });
 

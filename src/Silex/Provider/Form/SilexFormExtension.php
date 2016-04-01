@@ -25,7 +25,6 @@ class SilexFormExtension implements FormExtensionInterface
     private $guesserLoaded = false;
     private $guesser;
 
-
     public function __construct(Application $silex, array $types, array $typeExtensions, array $guessers)
     {
         $this->silex = $silex;
@@ -42,6 +41,7 @@ class SilexFormExtension implements FormExtensionInterface
         if (!is_object($this->types[$name])) {
             $this->types[$name] = $this->silex[$this->types[$name]];
         }
+
         return $this->types[$name];
     }
 
@@ -76,6 +76,7 @@ class SilexFormExtension implements FormExtensionInterface
                 $this->guesser = new FormTypeGuesserChain($guessers);
             }
         }
+
         return $this->guesser;
     }
 
