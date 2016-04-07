@@ -31,6 +31,7 @@
         "symfony/css-selector": "~2.3|3.0.*",
         "symfony/debug": "~2.3|3.0.*",
         "symfony/dom-crawler": "~2.3|3.0.*",
+        "symfony/expression-language": "~2.3|3.0.*",
         "symfony/finder": "~2.3|3.0.*",
         "symfony/monolog-bridge": "~2.3|3.0.*",
         "symfony/options-resolver": "~2.3|3.0.*",
