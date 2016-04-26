@@ -1,16 +1,25 @@
 How to Create a Custom Authentication System with Guard
 =======================================================
 
-Whether you need to build a traditional login form, an API token authentication system or you need to integrate with some proprietary single-sign-on system, the Guard component can make it easy... and fun!
+Whether you need to build a traditional login form, an API token
+authentication system or you need to integrate with some proprietary
+single-sign-on system, the Guard component can make it easy... and fun!
 
-In this example, you'll build an API token authentication system and learn how to work with Guard.
+In this example, you'll build an API token authentication system and
+learn how to work with Guard.
 
 Step 1) Create the Authenticator Class
 --------------------------------------
 
-Suppose you have an API where your clients will send an X-AUTH-TOKEN header on each request. This token is composed of the username followed by a password, separated by a colon. Your job is to read this, find the associated user (if any) and check the password.
+Suppose you have an API where your clients will send an X-AUTH-TOKEN
+header on each request. This token is composed of the username followed
+by a password, separated by a colon (e.g. ``X-AUTH-TOKEN: coolguy:awesomepassword``).
+Your job is to read this, find theassociated user (if any) and check
+the password.
 
-To create a custom authentication system, just create a class and make it implement GuardAuthenticatorInterface. Or, extend the simpler AbstractGuardAuthenticator. This requires you to implement six methods:
+To create a custom authentication system, just create a class and make
+it implement GuardAuthenticatorInterface. Or, extend the simpler
+AbstractGuardAuthenticator. This requires you to implement six methods:
 
 .. code-block:: php
 
@@ -28,12 +37,24 @@ To create a custom authentication system, just create a class and make it implem
 
     class TokenAuthenticator extends AbstractGuardAuthenticator
     {
+        private $encoderFactory;
+
+        public function __construct(EncoderFactoryInterface $encoderFactory)
+        {
+            $this->encoderFactory = $encoderFactory;
+        }
+
         public function getCredentials(Request $request)
         {
+            // Checks if the credential header is provided
             if (!$token = $request->headers->get('X-AUTH-TOKEN')) {
                 return;
             }
 
+            // Parse the header or ignore it if the format is incorrect.
+            if (false === strpos(':', $token)) {
+                return;
+            }
             list($username, $secret) = explode(':', $token, 2);
 
             return array(
@@ -50,10 +71,15 @@ To create a custom authentication system, just create a class and make it implem
         public function checkCredentials($credentials, UserInterface $user)
         {
             // check credentials - e.g. make sure the password is valid
-            // no credential check is needed in this case
-
             // return true to cause authentication success
-            return $user->getPassword() === $credentials['secret'];
+
+            $encoder = $this->encoderFactory->getEncoder($user);
+
+            return $encoder->isPasswordValid(
+                $user->getPassword(),
+                $credentials['secret'],
+                $user->getSalt()
+            );
         }
 
         public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
@@ -102,8 +128,8 @@ To finish this, register the class as a service:
 .. code-block:: php
 
     $app['app.token_authenticator'] = function ($app) {
-        return new App\Security\TokenAuthenticator();
-    }
+        return new App\Security\TokenAuthenticator($app['security.encoder_factory']);
+    };
 
 
 Finally, configure your `security.firewalls` key to use this authenticator:
@@ -121,17 +147,22 @@ Finally, configure your `security.firewalls` key to use this authenticator:
                 // which one is used as entry point.
                 // 'entry_point' => 'app.token_authenticator',
             ),
+            // configure where your users come from. Hardcode them, or load them from somewhere
+            // http://silex.sensiolabs.org/doc/providers/security.html#defining-a-custom-user-provider
             'users' => array(
                 'victoria' => array('ROLE_USER', 'randomsecret'),
             ),
+            // 'anonymous' => true
         ),
     );
 
 .. note::
-    You can use many authenticators, they are executed by if the order they are configured.
+    You can use many authenticators, they are executed by the order
+    they are configured.
 
-You did it! You now have a fully-working API token authentication system. If your homepage required ROLE_USER, then you could test it under different conditions:
-
+You did it! You now have a fully-working API token authentication
+system. If your homepage required ROLE_USER, then you could test it
+under different conditions:
 
 .. code-block:: bash
 
@@ -147,4 +178,5 @@ You did it! You now have a fully-working API token authentication system. If you
     curl -H "X-AUTH-TOKEN: victoria:ransomsecret" http://localhost:8000/
     # the homepage controller is executed: the page loads normally
 
-For more details read the Symfony cookbook entry on `How to Create a Custom Authentication System with Guard  <http://symfony.com/doc/current/cookbook/security/guard-authentication.html>`_.
+For more details read the Symfony cookbook entry on
+`How to Create aCustom Authentication System with Guard <http://symfony.com/doc/current/cookbook/security/guard-authentication.html>`_.

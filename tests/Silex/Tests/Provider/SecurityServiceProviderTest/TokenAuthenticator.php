@@ -45,6 +45,7 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
 
     public function checkCredentials($credentials, UserInterface $user)
     {
+        // This is not a safe way of validating a password.
         return $user->getPassword() === $credentials['secret'];
     }
 
