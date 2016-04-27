@@ -441,9 +441,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
                     $authenticators[] = $app[$authenticatorId];
                 }
 
-                $class = isset($options['listener_class']) ? $options['listener_class'] : 'Symfony\\Component\\Security\\Guard\\Firewall\\GuardAuthenticationListener';
-
-                return new $class(
+                return new GuardAuthenticationListener(
                     $app['security.authentication.guard_handler'],
                     $app['security.authentication_manager'],
                     $providerKey,
@@ -586,7 +584,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
             $authenticatorIds = $options['authenticators'];
             if (count($authenticatorIds) == 1) {
                 // if there is only one authenticator, use that as the entry point
-                return $app[array_shift($authenticatorIds)];
+                return $app[reset($authenticatorIds)];
             }
             // we have multiple entry points - we must ask them to configure one
             throw new \LogicException(sprintf(
