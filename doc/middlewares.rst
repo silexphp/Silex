@@ -1,5 +1,5 @@
 Middleware
-===========
+==========
 
 Silex allows you to run code, that changes the default Silex behavior, at
 different stages during the handling of a request through *middleware*:
