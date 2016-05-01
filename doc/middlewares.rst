@@ -1,18 +1,18 @@
-Middlewares
-===========
+Middleware
+==========
 
 Silex allows you to run code, that changes the default Silex behavior, at
-different stages during the handling of a request through *middlewares*:
+different stages during the handling of a request through *middleware*:
 
-* *Application middlewares* are triggered independently of the current handled
+* *Application middleware* is triggered independently of the current handled
   request;
 
-* *Route middlewares* are triggered when their associated route is matched.
+* *Route middleware* is triggered when its associated route is matched.
 
-Application Middlewares
------------------------
+Application Middleware
+----------------------
 
-The application middlewares are only run for the "master" Request.
+Application middleware is only run for the "master" Request.
 
 Before Middleware
 ~~~~~~~~~~~~~~~~~
@@ -73,10 +73,10 @@ Response has been sent to the client (like sending emails or logging)::
     The finish middleware is an event registered on the Symfony *terminate*
     event.
 
-Route Middlewares
------------------
+Route Middleware
+----------------
 
-Route middlewares are added to routes or route collections and they are only
+Route middleware is added to routes or route collections and it is only
 triggered when the corresponding route is matched. You can also stack them::
 
     $app->get('/somewhere', function () {
@@ -92,7 +92,7 @@ Before Middleware
 ~~~~~~~~~~~~~~~~~
 
 A *before* route middleware is fired just before the route callback, but after
-the *before* application middlewares::
+the *before* application middleware::
 
     $before = function (Request $request, Application $app) {
         // ...
@@ -107,7 +107,7 @@ After Middleware
 ~~~~~~~~~~~~~~~~
 
 An *after* route middleware is fired just after the route callback, but before
-the application *after* application middlewares::
+the application *after* application middleware::
 
     $after = function (Request $request, Response $response, Application $app) {
         // ...
@@ -118,10 +118,10 @@ the application *after* application middlewares::
     })
     ->after($after);
 
-Middlewares Priority
---------------------
+Middleware Priority
+-------------------
 
-You can add as many middlewares as you want, in which case they are triggered
+You can add as much middleware as you want, in which case they are triggered
 in the same order as you added them.
 
 You can explicitly control the priority of your middleware by passing an
@@ -146,8 +146,8 @@ Short-circuiting the Controller
 -------------------------------
 
 If a *before* middleware returns a ``Response`` object, the request handling is
-short-circuited (the next middlewares won't be run, nor the route
-callback), and the Response is passed to the *after* middlewares right away::
+short-circuited (the next middleware won't be run, nor the route
+callback), and the Response is passed to the *after* middleware right away::
 
     $app->before(function (Request $request) {
         // redirect the user to the login screen if access to the Resource is protected
