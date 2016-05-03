@@ -69,7 +69,9 @@ Usage
 
 The FormServiceProvider provides a ``form.factory`` service. Here is a usage
 example::
-
+    use Symfony\Component\Form\Extension\Core\Type\FormType;
+    use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+    
     $app->match('/form', function (Request $request) use ($app) {
         // some default data for when the form is displayed the first time
         $data = array(
@@ -77,10 +79,10 @@ example::
             'email' => 'Your email',
         );
 
-        $form = $app['form.factory']->createBuilder('form', $data)
+        $form = $app['form.factory']->createBuilder(FormType::class, $data)
             ->add('name')
             ->add('email')
-            ->add('billing_plan', 'choice', array(
+            ->add('billing_plan', ChoiceType::class, array(
                 'choices' => array(1 => 'free', 2 => 'small_business', 3 => 'corporate'),
                 'expanded' => true,
             ))
@@ -114,6 +116,9 @@ And here is the ``index.twig`` form template (requires ``symfony/twig-bridge``):
 If you are using the validator provider, you can also add validation to your
 form by adding constraints on the fields::
 
+    use Symfony\Component\Form\Extension\Core\Type\FormType;
+    use Symfony\Component\Form\Extension\Core\Type\TextType;
+    use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
     use Symfony\Component\Validator\Constraints as Assert;
 
     $app->register(new Silex\Provider\ValidatorServiceProvider());
@@ -121,14 +126,14 @@ form by adding constraints on the fields::
         'translator.domains' => array(),
     ));
 
-    $form = $app['form.factory']->createBuilder('form')
-        ->add('name', 'text', array(
+    $form = $app['form.factory']->createBuilder(FormType::class)
+        ->add('name', TextType::class, array(
             'constraints' => array(new Assert\NotBlank(), new Assert\Length(array('min' => 5)))
         ))
-        ->add('email', 'text', array(
+        ->add('email', TextType::class, array(
             'constraints' => new Assert\Email()
         ))
-        ->add('billing_plan', 'choice', array(
+        ->add('billing_plan', ChoiceType::class, array(
             'choices' => array(1 => 'free', 2 => 'small_business', 3 => 'corporate'),
             'expanded' => true,
             'constraints' => new Assert\Choice(array(1, 2, 3)),
