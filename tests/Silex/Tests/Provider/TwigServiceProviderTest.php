@@ -107,4 +107,13 @@ class TwigServiceProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Symfony\Bridge\Twig\Form\TwigRendererEngine', $app['twig.form.engine'], 'Service twig.form.engine is created successful.');
         $this->assertInstanceOf('Symfony\Bridge\Twig\Form\TwigRenderer', $app['twig.form.renderer'], 'Service twig.form.renderer is created successful.');
     }
+
+    public function testFormWithoutCsrf()
+    {
+        $app = new Application();
+        $app->register(new FormServiceProvider());
+        $app->register(new TwigServiceProvider());
+
+        $this->assertInstanceOf('Twig_Environment', $app['twig']);
+    }
 }
