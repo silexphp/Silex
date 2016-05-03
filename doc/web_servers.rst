@@ -29,7 +29,7 @@ Alternatively, if you use Apache 2.2.16 or higher, you can use the
 
 .. code-block:: apache
 
-    FallbackResource /index.php
+    FallbackResource index.php
 
 .. note::
 
