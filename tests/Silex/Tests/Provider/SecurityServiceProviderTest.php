@@ -270,6 +270,31 @@ class SecurityServiceProviderTest extends WebTestCase
         $this->assertNull($app['user']);
     }
 
+    public function testAccessRulePathArray()
+    {
+        $app = new Application();
+        $app->register(new SecurityServiceProvider(), array(
+            'security.firewalls' => array(
+                'default' => array(
+                    'http' => true,
+                ),
+            ),
+            'security.access_rules' => array(
+                array(array(
+                    'path' => '^/admin',
+                ), 'ROLE_ADMIN'),
+            ),
+        ));
+
+        $request = Request::create('/admin');
+        $app->boot();
+        $accessMap = $app['security.access_map'];
+        $this->assertEquals($accessMap->getPatterns($request), array(
+            array('ROLE_ADMIN'),
+            '',
+        ));
+    }
+
     public function createApplication($authenticationMethod = 'form')
     {
         $app = new Application();
