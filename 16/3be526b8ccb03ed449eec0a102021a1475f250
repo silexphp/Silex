@@ -1,0 +1,29 @@
+---------------------------------------------------------------------------
+
+by stof at 2016-01-15T18:51:42Z
+
+The Silex master branch currently depends on Symfony 2.7+. The easiest would probably to make it require 2.8+ instead, allowing to use only the new APIs.
+
+---------------------------------------------------------------------------
+
+by dirkluijk at 2016-01-28T19:13:50Z
+
+:+1:  thanks, got these issues as well with the latest Silex version.
+
+---------------------------------------------------------------------------
+
+by ragboyjr at 2016-05-03T01:04:30Z
+
+Is there anything else that needs to be done here? Does this need to be rebased off of master before we can merge in?
+
+---------------------------------------------------------------------------
+
+by fabpot at 2016-05-03T05:35:54Z
+
+As 2.8 is a LTS, I'm going to remove support for 2.7 in Silex 2.0. That could make things easier for everyone.
+
+---------------------------------------------------------------------------
+
+by fabpot at 2016-05-03T06:32:42Z
+
+This one can be merged after #1338
