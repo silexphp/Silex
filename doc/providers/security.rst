@@ -131,7 +131,7 @@ under ``/admin/``::
             'http' => true,
             'users' => array(
                 // raw password is foo
-                'admin' => array('ROLE_ADMIN', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg=='),
+                'admin' => array('ROLE_ADMIN', '$2y$10$3i9/lVd8UOFIJ6PAMFt8gu3/r5g0qeCJvoSlLCsvMTythye19F77a'),
             ),
         ),
     );
@@ -214,7 +214,7 @@ Here is how to secure all URLs under ``/admin/`` with a form::
             'pattern' => '^/admin/',
             'form' => array('login_path' => '/login', 'check_path' => '/admin/login_check'),
             'users' => array(
-                'admin' => array('ROLE_ADMIN', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg=='),
+                'admin' => array('ROLE_ADMIN', '$2y$10$3i9/lVd8UOFIJ6PAMFt8gu3/r5g0qeCJvoSlLCsvMTythye19F77a'),
             ),
         ),
     );
@@ -279,7 +279,7 @@ It's also useful when you want to secure all URLs except the login form::
             'pattern' => '^.*$',
             'form' => array('login_path' => '/login', 'check_path' => '/login_check'),
             'users' => array(
-                'admin' => array('ROLE_ADMIN', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg=='),
+                'admin' => array('ROLE_ADMIN', '$2y$10$3i9/lVd8UOFIJ6PAMFt8gu3/r5g0qeCJvoSlLCsvMTythye19F77a'),
             ),
         ),
     );
@@ -540,13 +540,13 @@ sample users::
 
         $app['db']->insert('users', array(
           'username' => 'fabien',
-          'password' => '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==',
+          'password' => '$2y$10$3i9/lVd8UOFIJ6PAMFt8gu3/r5g0qeCJvoSlLCsvMTythye19F77a',
           'roles' => 'ROLE_USER'
         ));
 
         $app['db']->insert('users', array(
           'username' => 'admin',
-          'password' => '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==',
+          'password' => '$2y$10$3i9/lVd8UOFIJ6PAMFt8gu3/r5g0qeCJvoSlLCsvMTythye19F77a',
           'roles' => 'ROLE_ADMIN'
         ));
     }
