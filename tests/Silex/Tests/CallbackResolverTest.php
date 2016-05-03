@@ -27,27 +27,55 @@ class CallbackResolverTest extends \PHPUnit_Framework_Testcase
 
     public function testShouldResolveCallback()
     {
-        $this->app['some_service'] = function () { return new \stdClass(); };
+        $callable = function () {};
+        $this->app['some_service'] = function () { return new \ArrayObject(); };
+        $this->app['callable_service'] = function () use ($callable) {
+            return $callable;
+        };
 
         $this->assertTrue($this->resolver->isValid('some_service:methodName'));
+        $this->assertTrue($this->resolver->isValid('callable_service'));
         $this->assertEquals(
-            array($this->app['some_service'], 'methodName'),
-            $this->resolver->convertCallback('some_service:methodName')
+            array($this->app['some_service'], 'append'),
+            $this->resolver->convertCallback('some_service:append')
         );
+        $this->assertSame($callable, $this->resolver->convertCallback('callable_service'));
     }
 
-    public function testNonStringsAreNotValid()
+    /**
+     * @dataProvider nonStringsAreNotValidProvider
+     */
+    public function testNonStringsAreNotValid($name)
     {
-        $this->assertFalse($this->resolver->isValid(null));
-        $this->assertFalse($this->resolver->isValid('some_service::methodName'));
+        $this->assertFalse($this->resolver->isValid($name));
+    }
+
+    public function nonStringsAreNotValidProvider()
+    {
+        return array(
+            array(null),
+            array('some_service::methodName'),
+            array('missing_service'),
+        );
     }
 
     /**
      * @expectedException          \InvalidArgumentException
-     * @expectedExceptionMessage   Service "some_service" does not exist.
+     * @expectedExceptionMessageRegExp  /Service "[a-z_]+" is not callable./
+     * @dataProvider shouldThrowAnExceptionIfServiceIsNotCallableProvider
      */
-    public function testShouldThrowAnExceptionIfServiceIsMissing()
+    public function testShouldThrowAnExceptionIfServiceIsNotCallable($name)
     {
-        $this->resolver->convertCallback('some_service:methodName');
+        $this->app['non_callable_obj'] = function () { return new \stdClass(); };
+        $this->app['non_callable'] = function () { return array(); };
+        $this->resolver->convertCallback($name);
+    }
+
+    public function shouldThrowAnExceptionIfServiceIsNotCallableProvider()
+    {
+        return array(
+            array('non_callable_obj:methodA'),
+            array('non_callable'),
+        );
     }
 }
