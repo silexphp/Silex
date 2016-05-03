@@ -32,6 +32,7 @@ use Symfony\Component\HttpFoundation\Request;
  * @method ControllerCollection requireHttps()
  * @method ControllerCollection before(mixed $callback)
  * @method ControllerCollection after(mixed $callback)
+ * @method ControllerCollection when(string $condition)
  *
  * @author Igor Wiedler <igor@wiedler.ch>
  * @author Fabien Potencier <fabien@symfony.com>
