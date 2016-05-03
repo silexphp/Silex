@@ -71,10 +71,6 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstraintValidatorFactoryWithExpression($app)
     {
-        if (!class_exists('Symfony\Component\Validator\Constraints\Expression')) {
-            $this->markTestSkipped('Expression are not supported by this version of Symfony');
-        }
-
         $constraint = new Assert\Expression('true');
         $validator = $app['validator.validator_factory']->getInstance($constraint);
         $this->assertInstanceOf('Symfony\Component\Validator\Constraints\ExpressionValidator', $validator);
@@ -101,12 +97,12 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
             ),
         ));
 
-        $builder = $app['form.factory']->createBuilder(class_exists('Symfony\Component\Form\Extension\Core\Type\RangeType') ? 'Symfony\Component\Form\Extension\Core\Type\FormType' : 'form', array(), array(
+        $builder = $app['form.factory']->createBuilder('Symfony\Component\Form\Extension\Core\Type\FormType', array(), array(
             'constraints' => $constraints,
         ));
 
         $form = $builder
-            ->add('email', class_exists('Symfony\Component\Form\Extension\Core\Type\RangeType') ? 'Symfony\Component\Form\Extension\Core\Type\EmailType' : 'email', array('label' => 'Email'))
+            ->add('email', 'Symfony\Component\Form\Extension\Core\Type\EmailType', array('label' => 'Email'))
             ->getForm()
         ;
 

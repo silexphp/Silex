@@ -21,7 +21,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RequestMatcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Core\User\UserChecker;
 use Symfony\Component\Security\Core\User\InMemoryUserProvider;
 use Symfony\Component\Security\Core\Encoder\EncoderFactory;
@@ -374,19 +373,14 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
         };
 
         $app['security.last_error'] = $app->protect(function (Request $request) {
-            if (class_exists('Symfony\Component\Security\Core\Security')) {
-                $error = Security::AUTHENTICATION_ERROR;
-            } else {
-                $error = SecurityContextInterface::AUTHENTICATION_ERROR;
-            }
-            if ($request->attributes->has($error)) {
-                return $request->attributes->get($error)->getMessage();
+            if ($request->attributes->has(Security::AUTHENTICATION_ERROR)) {
+                return $request->attributes->get(Security::AUTHENTICATION_ERROR)->getMessage();
             }
 
             $session = $request->getSession();
-            if ($session && $session->has($error)) {
-                $message = $session->get($error)->getMessage();
-                $session->remove($error);
+            if ($session && $session->has(Security::AUTHENTICATION_ERROR)) {
+                $message = $session->get(Security::AUTHENTICATION_ERROR)->getMessage();
+                $session->remove(Security::AUTHENTICATION_ERROR);
 
                 return $message;
             }

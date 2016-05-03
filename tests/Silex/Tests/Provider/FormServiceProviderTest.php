@@ -46,8 +46,8 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
             return $extensions;
         });
 
-        $form = $app['form.factory']->createBuilder(class_exists('Symfony\Component\Form\Extension\Core\Type\RangeType') ? 'Symfony\Component\Form\Extension\Core\Type\FormType' : 'form', array())
-            ->add('dummy', class_exists('Symfony\Component\Form\Extension\Core\Type\RangeType') ? 'Silex\Tests\Provider\DummyFormType' : 'dummy')
+        $form = $app['form.factory']->createBuilder('Symfony\Component\Form\Extension\Core\Type\FormType', array())
+            ->add('dummy', 'Silex\Tests\Provider\DummyFormType')
             ->getForm();
 
         $this->assertInstanceOf('Symfony\Component\Form\Form', $form);
@@ -65,8 +65,8 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
             return $extensions;
         });
 
-        $form = $app['form.factory']->createBuilder(class_exists('Symfony\Component\Form\Extension\Core\Type\RangeType') ? 'Symfony\Component\Form\Extension\Core\Type\FormType' : 'form', array())
-            ->add('file', class_exists('Symfony\Component\Form\Extension\Core\Type\RangeType') ? 'Symfony\Component\Form\Extension\Core\Type\FileType' : 'file', array('image_path' => 'webPath'))
+        $form = $app['form.factory']->createBuilder('Symfony\Component\Form\Extension\Core\Type\FormType', array())
+            ->add('file', 'Symfony\Component\Form\Extension\Core\Type\FileType', array('image_path' => 'webPath'))
             ->getForm();
 
         $this->assertInstanceOf('Symfony\Component\Form\Form', $form);
@@ -106,7 +106,7 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
             return $this->getMock('Symfony\Component\Security\Csrf\CsrfTokenManagerInterface');
         };
 
-        $form = $app['form.factory']->createBuilder(class_exists('Symfony\Component\Form\Extension\Core\Type\RangeType') ? 'Symfony\Component\Form\Extension\Core\Type\FormType' : 'form', array())
+        $form = $app['form.factory']->createBuilder('Symfony\Component\Form\Extension\Core\Type\FormType', array())
             ->getForm();
 
         $form->handleRequest($req = Request::create('/', 'POST', array('form' => array(
@@ -153,27 +153,14 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
         $app->register(new CsrfServiceProvider());
         $app['session.test'] = true;
 
-        $form = $app['form.factory']->createBuilder(class_exists('Symfony\Component\Form\Extension\Core\Type\RangeType') ? 'Symfony\Component\Form\Extension\Core\Type\FormType' : 'form', array())->getForm();
+        $form = $app['form.factory']->createBuilder('Symfony\Component\Form\Extension\Core\Type\FormType', array())->getForm();
 
         $this->assertTrue(isset($form->createView()['_token']));
     }
 }
 
-if (class_exists('Symfony\Component\Form\Extension\Core\Type\RangeType')) {
-    class DummyFormType extends AbstractType
-    {
-    }
-} else {
-    class DummyFormType extends AbstractType
-    {
-        /**
-         * @return string The name of this type
-         */
-        public function getName()
-        {
-            return 'dummy';
-        }
-    }
+class DummyFormType extends AbstractType
+{
 }
 
 if (method_exists('Symfony\Component\Form\AbstractType', 'configureOptions')) {
@@ -181,7 +168,7 @@ if (method_exists('Symfony\Component\Form\AbstractType', 'configureOptions')) {
     {
         public function getExtendedType()
         {
-            return class_exists('Symfony\Component\Form\Extension\Core\Type\RangeType') ? 'Symfony\Component\Form\Extension\Core\Type\FileType' : 'file';
+            return 'Symfony\Component\Form\Extension\Core\Type\FileType';
         }
 
         public function configureOptions(OptionsResolver $resolver)
@@ -194,7 +181,7 @@ if (method_exists('Symfony\Component\Form\AbstractType', 'configureOptions')) {
     {
         public function getExtendedType()
         {
-            return class_exists('Symfony\Component\Form\Extension\Core\Type\RangeType') ? 'Symfony\Component\Form\Extension\Core\Type\FileType' : 'file';
+            return 'Symfony\Component\Form\Extension\Core\Type\FileType';
         }
 
         public function setDefaultOptions(OptionsResolverInterface $resolver)
