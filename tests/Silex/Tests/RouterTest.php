@@ -232,6 +232,19 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($response->isRedirect('https://example.com/secured?query=string'));
     }
 
+    public function testConditionOnRoute()
+    {
+        $app = new Application();
+        $app->match('/secured', function () {
+            return 'secured content';
+        })
+        ->when('request.isSecure() == true');
+
+        $request = Request::create('http://example.com/secured');
+        $response = $app->handle($request);
+        $this->assertEquals(404, $response->getStatusCode());
+    }
+
     public function testClassNameControllerSyntax()
     {
         $app = new Application();

@@ -1,9 +1,10 @@
 Changelog
 =========
 
-2.0.0 (2015-XX-XX)
+2.0.0 (2016-XX-XX)
 ------------------
 
+* added support for conditions on routes
 * added support for the Symfony VarDumper Component
 * added a global Twig variable (an AppVariable instance)
 * [BC BREAK] CSRF has been moved to a standalone provider (``form.secret`` is not available anymore)

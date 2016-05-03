@@ -194,6 +194,14 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array('mid1', 'mid2', 'mid3'), $controller->getRoute()->getOption('_after_middlewares'));
     }
 
+    public function testWhen()
+    {
+        $controllers = new ControllerCollection(new Route());
+        $controller = $controllers->match('/{id}/{name}/{extra}', function () {})->when('request.isSecure() == true');
+
+        $this->assertEquals('request.isSecure() == true', $controller->getRoute()->getCondition());
+    }
+
     public function testRouteExtension()
     {
         $route = new MyRoute1();

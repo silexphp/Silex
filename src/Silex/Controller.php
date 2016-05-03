@@ -27,6 +27,7 @@ use Silex\Exception\ControllerFrozenException;
  * @method Controller requireHttps()
  * @method Controller before(mixed $callback)
  * @method Controller after(mixed $callback)
+ * @method Controller when(string $condition)
  *
  * @author Igor Wiedler <igor@wiedler.ch>
  */

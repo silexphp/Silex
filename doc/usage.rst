@@ -370,6 +370,22 @@ You can also chain these calls::
     ->assert('postId', '\d+')
     ->assert('commentId', '\d+');
 
+Conditions
+~~~~~~~~~~
+
+Besides restricting route matching based on the HTTP method or parameter
+requirements, you can set conditions on any part of the request by calling
+``when`` on the ``Controller`` object, which is returned by the routing
+methods::
+
+    $app->get('/blog/{id}', function ($id) {
+        // ...
+    })
+    ->when("request.headers.get('User-Agent') matches '/firefox/i'");
+
+The ``when`` argument is a Symfony Expression_ , which means that you need to
+add ``symfony/expression-language`` as a dependency of your project.
+
 Default Values
 ~~~~~~~~~~~~~~
 
@@ -445,6 +461,7 @@ middleware, a requirement, or a default value), configure it on
         ->method('get')
         ->convert('id', function () { /* ... */ })
         ->before(function () { /* ... */ })
+        ->when('request.isSecure() == true')
     ;
 
 These settings are applied to already registered controllers and they become
@@ -785,3 +802,4 @@ Cross-Site-Scripting attacks.
 .. _Request: http://api.symfony.com/master/Symfony/Component/HttpFoundation/Request.html
 .. _Response: http://api.symfony.com/master/Symfony/Component/HttpFoundation/Response.html
 .. _Monolog: https://github.com/Seldaek/monolog
+.. _Expression: https://symfony.com/doc/current/book/routing.html#completely-customized-route-matching-with-conditions
