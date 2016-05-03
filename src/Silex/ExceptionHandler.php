@@ -36,17 +36,12 @@ class ExceptionHandler implements EventSubscriberInterface
     {
         $handler = new DebugExceptionHandler($this->debug);
 
-        if (method_exists($handler, 'getHtml')) {
-            $exception = $event->getException();
-            if (!$exception instanceof FlattenException) {
-                $exception = FlattenException::create($exception);
-            }
-
-            $response = Response::create($handler->getHtml($exception), $exception->getStatusCode(), $exception->getHeaders())->setCharset(ini_get('default_charset'));
-        } else {
-            // BC with Symfony < 2.8
-            $response = $handler->createResponse($event->getException());
+        $exception = $event->getException();
+        if (!$exception instanceof FlattenException) {
+            $exception = FlattenException::create($exception);
         }
+
+        $response = Response::create($handler->getHtml($exception), $exception->getStatusCode(), $exception->getHeaders())->setCharset(ini_get('default_charset'));
 
         $event->setResponse($response);
     }

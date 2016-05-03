@@ -9,7 +9,7 @@ Changelog
 * [BC BREAK] CSRF has been moved to a standalone provider (``form.secret`` is not available anymore)
 * added support for the Symfony HttpFoundation Twig bridge extension
 * added support for the Symfony Asset Component
-* bumped minimum version of Symfony to 2.7
+* bumped minimum version of Symfony to 2.8
 * bumped minimum version of PHP to 5.5.0
 * Updated Pimple to 3.0
 * Updated session listeners to extends HttpKernel ones

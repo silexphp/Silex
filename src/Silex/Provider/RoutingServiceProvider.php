@@ -21,7 +21,6 @@ use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\HttpKernel\EventListener\RouterListener;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -76,11 +75,7 @@ class RoutingServiceProvider implements ServiceProviderInterface, EventListenerP
                 return $app['request_matcher'];
             });
 
-            if (Kernel::VERSION_ID >= 20800) {
-                return new RouterListener($urlMatcher, $app['request_stack'], $app['request_context'], $app['logger']);
-            }
-
-            return new RouterListener($urlMatcher, $app['request_context'], $app['logger'], $app['request_stack']);
+            return new RouterListener($urlMatcher, $app['request_stack'], $app['request_context'], $app['logger']);
         };
     }
 

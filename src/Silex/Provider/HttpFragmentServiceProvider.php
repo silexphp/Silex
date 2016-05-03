@@ -33,11 +33,7 @@ class HttpFragmentServiceProvider implements ServiceProviderInterface, EventList
     public function register(Container $app)
     {
         $app['fragment.handler'] = function ($app) {
-            if (Kernel::VERSION_ID >= 20800) {
-                return new FragmentHandler($app['request_stack'], $app['fragment.renderers'], $app['debug']);
-            }
-
-            return new FragmentHandler($app['fragment.renderers'], $app['debug'], $app['request_stack']);
+            return new FragmentHandler($app['request_stack'], $app['fragment.renderers'], $app['debug']);
         };
 
         $app['fragment.renderer.inline'] = function ($app) {
