@@ -1,0 +1,17 @@
+---------------------------------------------------------------------------
+
+by ragboyjr at 2016-05-04T18:16:43Z
+
+@fabpot. Those are updated.
+
+out of curiosity with doing conditionals on one line, how would you format a bunch of conditions so that the line isn't so long.
+
+```php
+$long_var_name == 1 || $long_var_name_b == 1 || ($long_var_name_2 == 2 || $long_var_name3 == 2) && $one_more_long_var_name ==5
+```
+
+---------------------------------------------------------------------------
+
+by fabpot at 2016-05-04T18:34:48Z
+
+Everyone has a large screen nowadays, so there is no need to cut lines at 80 chars.
