@@ -38,7 +38,7 @@ class SessionServiceProvider implements ServiceProviderInterface, EventListenerP
         $app['session.test'] = false;
 
         $app['session'] = function ($app) {
-            return new Session($app['session.storage']);
+            return new Session($app['session.storage'], $app['session.attribute_bag'], $app['session.flash_bag']);
         };
 
         $app['session.storage'] = function ($app) {
@@ -61,7 +61,7 @@ class SessionServiceProvider implements ServiceProviderInterface, EventListenerP
         };
 
         $app['session.listener'] = function ($app) {
-            return new SessionListener($app, $app['session.attribute_bag'], $app['session.flash_bag']);
+            return new SessionListener($app);
         };
 
         $app['session.storage.test'] = function () {
