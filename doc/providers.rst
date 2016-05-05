@@ -66,6 +66,13 @@ the ``Silex\Provider`` namespace:
 * :doc:`UrlGeneratorServiceProvider <providers/url_generator>`
 * :doc:`ValidatorServiceProvider <providers/validator>`
 
+.. note::
+
+    The Silex core team maintains a `WebProfiler
+    <https://github.com/silexphp/Silex-WebProfiler>`_ provider that helps debug
+    code in the development environment thanks to the Symfony web debug toolbar
+    and the Symfony profiler.
+
 Third party providers
 ~~~~~~~~~~~~~~~~~~~~~
 
