@@ -41,7 +41,7 @@ class CallbackResolver
      *
      * @param string $name
      *
-     * @return callable A callable value
+     * @return callable
      *
      * @throws \InvalidArgumentException In case the method does not exist.
      */
