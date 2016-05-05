@@ -14,6 +14,7 @@ following ``.htaccess`` file:
 
         RewriteEngine On
         #RewriteBase /path/to/app
+        RewriteCond %{REQUEST_FILENAME} !-d
         RewriteCond %{REQUEST_FILENAME} !-f
         RewriteRule ^ index.php [QSA,L]
     </IfModule>
