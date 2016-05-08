@@ -11,13 +11,10 @@ Parameters
 ----------
 
 * **swiftmailer.use_spool**: A boolean to specify whether or not to use the
-  memory spool, defaults to true. 
+  memory spool, defaults to true.
 
 * **swiftmailer.options**: An array of options for the default SMTP-based
   configuration.
-
-* **swiftmailer.sender_address**: If set, all messages will be delivered with
-  this address as the "return path" address.
 
   The following options can be set:
 
@@ -38,6 +35,17 @@ Parameters
         'encryption' => null,
         'auth_mode' => null
     );
+
+* **swiftmailer.sender_address**: If set, all messages will be delivered with
+  this address as the "return path" address.
+
+* **swiftmailer.delivery_addresses**: If not empty, all email messages will be
+  sent to those addresses instead of being sent to their actual recipients. This
+  is often useful when developing.
+
+* **swiftmailer.delivery_whitelist**: Used in combination with
+  delivery_addresses. If set, emails matching any of these patterns will be
+  delivered like normal, as well as being sent to delivery_addresses.
 
 Services
 --------
