@@ -44,11 +44,13 @@ class ControllerCollection
     protected $defaultController;
     protected $prefix;
     protected $routesFactory;
+    protected $controllersFactory;
 
-    public function __construct(Route $defaultRoute, $routesFactory = null)
+    public function __construct(Route $defaultRoute, RouteCollection $routesFactory = null, $controllersFactory = null)
     {
         $this->defaultRoute = $defaultRoute;
         $this->routesFactory = $routesFactory;
+        $this->controllersFactory = $controllersFactory;
         $this->defaultController = function (Request $request) {
             throw new \LogicException(sprintf('The "%s" route must have code to run when it matches.', $request->attributes->get('_route')));
         };
@@ -57,11 +59,21 @@ class ControllerCollection
     /**
      * Mounts controllers under the given route prefix.
      *
-     * @param string               $prefix      The route prefix
-     * @param ControllerCollection $controllers A ControllerCollection instance
+     * @param string                        $prefix      The route prefix
+     * @param ControllerCollection|callable $controllers A ControllerCollection instance or a callable for defining routes
+     *
+     * @throws \LogicException
      */
-    public function mount($prefix, ControllerCollection $controllers)
+    public function mount($prefix, $controllers)
     {
+        if (is_callable($controllers)) {
+            $collection = $this->controllersFactory ? call_user_func($this->controllersFactory) : new static(new Route(), new RouteCollection());
+            call_user_func($controllers, $collection);
+            $controllers = $collection;
+        } elseif (!$controllers instanceof self) {
+            throw new \LogicException('The "mount" method takes either a "ControllerCollection" instance or callable.');
+        }
+
         $controllers->prefix = $prefix;
 
         $this->controllers[] = $controllers;

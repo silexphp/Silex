@@ -437,8 +437,8 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     /**
      * Mounts controllers under the given route prefix.
      *
-     * @param string                                           $prefix      The route prefix
-     * @param ControllerCollection|ControllerProviderInterface $controllers A ControllerCollection or a ControllerProviderInterface instance
+     * @param string                                                    $prefix      The route prefix
+     * @param ControllerCollection|callable|ControllerProviderInterface $controllers A ControllerCollection, a callable, or a ControllerProviderInterface instance
      *
      * @return Application
      *
@@ -454,8 +454,8 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
             }
 
             $controllers = $connectedControllers;
-        } elseif (!$controllers instanceof ControllerCollection) {
-            throw new \LogicException('The "mount" method takes either a "ControllerCollection" or a "ControllerProviderInterface" instance.');
+        } elseif (!$controllers instanceof ControllerCollection && !is_callable($controllers)) {
+            throw new \LogicException('The "mount" method takes either a "ControllerCollection" instance, "ControllerProviderInterface" instance, or a callable.');
         }
 
         $this['controllers']->mount($prefix, $controllers);
