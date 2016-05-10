@@ -75,6 +75,13 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface, EventListe
                 $transport->registerPlugin(new \Swift_Plugins_ImpersonatePlugin($app['swiftmailer.sender_address']));
             }
 
+            if (!empty($app['swiftmailer.delivery_addresses'])) {
+                $transport->registerPlugin(new \Swift_Plugins_RedirectingPlugin(
+                    $app['swiftmailer.delivery_addresses'],
+                    $app['swiftmailer.delivery_whitelist']
+                ));
+            }
+
             return $transport;
         };
 
@@ -95,6 +102,8 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface, EventListe
         };
 
         $app['swiftmailer.sender_address'] = null;
+        $app['swiftmailer.delivery_addresses'] = [];
+        $app['swiftmailer.delivery_whitelist'] = [];
     }
 
     public function subscribe(Container $app, EventDispatcherInterface $dispatcher)
