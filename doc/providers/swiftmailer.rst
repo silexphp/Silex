@@ -44,8 +44,8 @@ Parameters
   is often useful when developing.
 
 * **swiftmailer.delivery_whitelist**: Used in combination with
-  delivery_addresses. If set, emails matching any of these patterns will be
-  delivered like normal, as well as being sent to delivery_addresses.
+  ``delivery_addresses``. If set, emails matching any of these patterns will be
+  delivered like normal, as well as being sent to ``delivery_addresses``.
 
 Services
 --------
