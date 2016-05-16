@@ -26,9 +26,9 @@ group them logically::
     $app->mount('/forum', $forum);
 
     // define controllers for a admin
-    $app->mount('/admin', function ($api) {
+    $app->mount('/admin', function ($admin) {
         // recursively mount
-        $api->mount('/blog', function ($user) {
+        $admin->mount('/blog', function ($user) {
             $user->get('/', function () {
                 return 'Admin Blog home page';
             });
