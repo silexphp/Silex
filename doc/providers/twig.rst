@@ -168,4 +168,4 @@ You can configure the Twig environment before using it by extending the
 For more information, check out the `official Twig documentation
 <http://twig.sensiolabs.org>`_.
 
-.. _reference_: https://symfony.com/doc/current/reference/twig_reference.html#controller
+.. _reference: https://symfony.com/doc/current/reference/twig_reference.html#controller
