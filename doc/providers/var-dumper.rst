@@ -1,5 +1,5 @@
-VarDumperServiceProvider
-========================
+Var Dumper
+==========
 
 The *VarDumperServiceProvider* provides a mechanism that allows exploring then
 dumping any PHP variable.

@@ -1,5 +1,5 @@
-AssetServiceProvider
-====================
+Asset
+=====
 
 The *AssetServiceProvider* provides a way to manage URL generation and
 versioning of web assets such as CSS stylesheets, JavaScript files and image

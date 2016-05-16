@@ -1,5 +1,5 @@
-CsrfServiceProvider
-===================
+CSRF
+====
 
 The *CsrfServiceProvider* provides a service for building forms in your
 application with the Symfony Form component.

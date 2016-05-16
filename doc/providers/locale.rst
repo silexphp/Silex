@@ -1,5 +1,5 @@
-LocaleServiceProvider
-=====================
+Locale
+======
 
 The *LocaleServiceProvider* manages the locale of an application.
 
