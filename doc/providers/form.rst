@@ -31,8 +31,6 @@ Registering
     will be used. But you will have to register the :doc:`translation provider
     <translation>` as the default form layout requires it::
 
-    .. code-block:: php
-
         $app->register(new Silex\Provider\TranslationServiceProvider(), array(
             'translator.domains' => array(),
         ));
@@ -69,9 +67,10 @@ Usage
 
 The FormServiceProvider provides a ``form.factory`` service. Here is a usage
 example::
+
     use Symfony\Component\Form\Extension\Core\Type\FormType;
     use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-    
+
     $app->match('/form', function (Request $request) use ($app) {
         // some default data for when the form is displayed the first time
         $data = array(
