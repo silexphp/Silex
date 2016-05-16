@@ -69,7 +69,7 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
         });
 
         $form = $app['form.factory']
-            ->createBuilder(class_exists('Symfony\Component\Form\Extension\Core\Type\RangeType') ? 'Symfony\Component\Form\Extension\Core\Type\FormType' : 'form', array())
+            ->createBuilder('Symfony\Component\Form\Extension\Core\Type\FormType', array())
             ->add('dummy', 'dummy')
             ->getForm();
 
@@ -93,7 +93,7 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
         });
 
         $app['form.factory']
-            ->createBuilder(class_exists('Symfony\Component\Form\Extension\Core\Type\RangeType') ? 'Symfony\Component\Form\Extension\Core\Type\FormType' : 'form', array())
+            ->createBuilder('Symfony\Component\Form\Extension\Core\Type\FormType', array())
             ->add('dummy', 'dummy')
             ->getForm();
     }
@@ -133,8 +133,8 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
         });
 
         $form = $app['form.factory']
-            ->createBuilder(class_exists('Symfony\Component\Form\Extension\Core\Type\RangeType') ? 'Symfony\Component\Form\Extension\Core\Type\FormType' : 'form', array())
-            ->add('file', class_exists('Symfony\Component\Form\Extension\Core\Type\RangeType') ? 'Symfony\Component\Form\Extension\Core\Type\FileType' : 'file', array('image_path' => 'webPath'))
+            ->createBuilder('Symfony\Component\Form\Extension\Core\Type\FormType', array())
+            ->add('file', 'Symfony\Component\Form\Extension\Core\Type\FileType', array('image_path' => 'webPath'))
             ->getForm();
 
         $this->assertInstanceOf('Symfony\Component\Form\Form', $form);
@@ -157,7 +157,7 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
         });
 
         $app['form.factory']
-            ->createBuilder(class_exists('Symfony\Component\Form\Extension\Core\Type\RangeType') ? 'Symfony\Component\Form\Extension\Core\Type\FormType' : 'form', array())
+            ->createBuilder('Symfony\Component\Form\Extension\Core\Type\FormType', array())
             ->add('dummy', 'dummy.form.type')
             ->getForm();
     }
