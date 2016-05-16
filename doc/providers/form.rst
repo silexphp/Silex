@@ -187,7 +187,7 @@ You can register form type guessers by extending ``form.type.guessers``::
 .. warning::
 
     CSRF protection is only available and automatically enabled when the `CSRF
-    Service Provider </providers/csrf.rst>` is registered.
+    Service Provider </providers/csrf>` is registered.
 
 Traits
 ------
