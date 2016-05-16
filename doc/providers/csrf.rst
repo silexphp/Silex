@@ -2,7 +2,7 @@ CsrfServiceProvider
 ===================
 
 The *CsrfServiceProvider* provides a service for building forms in your
-application with the Symfony2 Form component.
+application with the Symfony Form component.
 
 Parameters
 ----------

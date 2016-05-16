@@ -1,7 +1,7 @@
 Introduction
 ============
 
-Silex is a PHP microframework. It is built on the shoulders of `Symfony2`_ and
+Silex is a PHP microframework. It is built on the shoulders of `Symfony`_ and
 `Pimple`_ and also inspired by `Sinatra`_.
 
 Silex aims to be:
