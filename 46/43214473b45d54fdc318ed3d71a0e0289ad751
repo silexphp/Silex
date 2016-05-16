@@ -1,0 +1,33 @@
+---------------------------------------------------------------------------
+
+by ragboyjr at 2016-05-08T20:01:59Z
+
+I had to add a `$controllersFactory` parameter to the ControllerCollection because the new mount method can act as a factory method for creating ControllerCollections. I started out with only trying to do this from the `Application` class, however, the nesting/recursive routing wouldn't work, so I took it out and moved it into the controller collection. Having the ControllerCollections act like a factory might seem like it's going against Separation of concerns principle, but I couldn't see a better way to implement this feature.
+
+```php
+$app->mount('/admin', function($admin) {
+    $admin->mount('/blog', function($blog) {
+        $blog->get('/');
+    });
+});
+```
+
+The above is only possible if the controller collection `mount` method is able to create else we'd have to do something like the following.
+
+```php
+$app->mount('/admin', function($admin) use ($app) {
+    // either we don't allow recursive routing, which might seem inconsistent for users
+    // or we do something like this
+    $app->mount($admin, '/blog', function($blog) {
+        $blog->get('/');
+    });
+});
+```
+
+The syntax of the second isn't as clean or intuitive as the first; however the Silex code structure is a little cleaner in my opinion, but I can go both ways on this.
+
+---------------------------------------------------------------------------
+
+by ragboyjr at 2016-05-10T08:34:23Z
+
+Any word?
