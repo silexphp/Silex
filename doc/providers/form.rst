@@ -142,8 +142,12 @@ form by adding constraints on the fields::
 
 You can register form types by extending ``form.types``::
 
-    $app['form.types'] = $app->share($app->extend('form.types', function ($types) use ($app) {
+    $app['your.type.service'] = function ($app) {
+        return new YourServiceFormType();
+    };
+    $app->extend('form.types', function ($types) use ($app) {
         $types[] = new YourFormType();
+        $types[] = 'your.type.service';
 
         return $types;
     }));
@@ -159,16 +163,24 @@ You can register form extensions by extending ``form.extensions``::
 
 You can register form type extensions by extending ``form.type.extensions``::
 
+    $app['your.type.extension.service'] = function ($app) {
+        return new YourServiceFormTypeExtension();
+    };
     $app->extend('form.type.extensions', function ($extensions) use ($app) {
         $extensions[] = new YourFormTypeExtension();
+        $extensions[] = 'your.type.extension.service';
 
         return $extensions;
     });
 
 You can register form type guessers by extending ``form.type.guessers``::
 
+    $app['your.type.guesser.service'] = function ($app) {
+        return new YourServiceFormTypeGuesser();
+    };
     $app->extend('form.type.guessers', function ($guessers) use ($app) {
         $guessers[] = new YourFormTypeGuesser();
+        $guessers[] = 'your.type.guesser.service';
 
         return $guessers;
     });

@@ -53,6 +53,51 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Symfony\Component\Form\Form', $form);
     }
 
+    public function testFormServiceProviderWillLoadTypesServices()
+    {
+        $app = new Application();
+
+        $app->register(new FormServiceProvider());
+
+        $app['dummy'] = function () {
+            return new DummyFormType();
+        };
+        $app->extend('form.types', function ($extensions) {
+            $extensions[] = 'dummy';
+
+            return $extensions;
+        });
+
+        $form = $app['form.factory']
+            ->createBuilder('Symfony\Component\Form\Extension\Core\Type\FormType', array())
+            ->add('dummy', 'dummy')
+            ->getForm();
+
+        $this->assertInstanceOf('Symfony\Component\Form\Form', $form);
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Form\Exception\InvalidArgumentException
+     * @expectedExceptionMessage Invalid form type. The silex service "dummy" does not exist.
+     */
+    public function testNonExistentTypeService()
+    {
+        $app = new Application();
+
+        $app->register(new FormServiceProvider());
+
+        $app->extend('form.types', function ($extensions) {
+            $extensions[] = 'dummy';
+
+            return $extensions;
+        });
+
+        $app['form.factory']
+            ->createBuilder('Symfony\Component\Form\Extension\Core\Type\FormType', array())
+            ->add('dummy', 'dummy')
+            ->getForm();
+    }
+
     public function testFormServiceProviderWillLoadTypeExtensions()
     {
         $app = new Application();
@@ -72,6 +117,51 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Symfony\Component\Form\Form', $form);
     }
 
+    public function testFormServiceProviderWillLoadTypeExtensionsServices()
+    {
+        $app = new Application();
+
+        $app->register(new FormServiceProvider());
+
+        $app['dummy.form.type.extension'] = function () {
+            return new DummyFormTypeExtension();
+        };
+        $app->extend('form.type.extensions', function ($extensions) {
+            $extensions[] = 'dummy.form.type.extension';
+
+            return $extensions;
+        });
+
+        $form = $app['form.factory']
+            ->createBuilder('Symfony\Component\Form\Extension\Core\Type\FormType', array())
+            ->add('file', 'Symfony\Component\Form\Extension\Core\Type\FileType', array('image_path' => 'webPath'))
+            ->getForm();
+
+        $this->assertInstanceOf('Symfony\Component\Form\Form', $form);
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Form\Exception\InvalidArgumentException
+     * @expectedExceptionMessage Invalid form type extension. The silex service "dummy.form.type.extension" does not exist.
+     */
+    public function testNonExistentTypeExtensionService()
+    {
+        $app = new Application();
+
+        $app->register(new FormServiceProvider());
+
+        $app->extend('form.type.extensions', function ($extensions) {
+            $extensions[] = 'dummy.form.type.extension';
+
+            return $extensions;
+        });
+
+        $app['form.factory']
+            ->createBuilder('Symfony\Component\Form\Extension\Core\Type\FormType', array())
+            ->add('dummy', 'dummy.form.type')
+            ->getForm();
+    }
+
     public function testFormServiceProviderWillLoadTypeGuessers()
     {
         $app = new Application();
@@ -85,6 +175,43 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
         });
 
         $this->assertInstanceOf('Symfony\Component\Form\FormFactory', $app['form.factory']);
+    }
+
+    public function testFormServiceProviderWillLoadTypeGuessersServices()
+    {
+        $app = new Application();
+
+        $app->register(new FormServiceProvider());
+
+        $app['dummy.form.type.guesser'] = function () {
+            return new FormTypeGuesserChain(array());
+        };
+        $app->extend('form.type.guessers', function ($guessers) {
+            $guessers[] = 'dummy.form.type.guesser';
+
+            return $guessers;
+        });
+
+        $this->assertInstanceOf('Symfony\Component\Form\FormFactory', $app['form.factory']);
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Form\Exception\InvalidArgumentException
+     * @expectedExceptionMessage Invalid form type guesser. The silex service "dummy.form.type.guesser" does not exist.
+     */
+    public function testNonExistentTypeGuesserService()
+    {
+        $app = new Application();
+
+        $app->register(new FormServiceProvider());
+
+        $app->extend('form.type.guessers', function ($extensions) {
+            $extensions[] = 'dummy.form.type.guesser';
+
+            return $extensions;
+        });
+
+        $factory = $app['form.factory'];
     }
 
     public function testFormServiceProviderWillUseTranslatorIfAvailable()
@@ -159,8 +286,22 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
     }
 }
 
-class DummyFormType extends AbstractType
-{
+if (!class_exists('Symfony\Component\Form\Deprecated\FormEvents')) {
+    class DummyFormType extends AbstractType
+    {
+    }
+} else {
+    // FormTypeInterface::getName() is needed by the form component 2.8.x
+    class DummyFormType extends AbstractType
+    {
+        /**
+         * @return string The name of this type
+         */
+        public function getName()
+        {
+            return 'dummy';
+        }
+    }
 }
 
 if (method_exists('Symfony\Component\Form\AbstractType', 'configureOptions')) {
