@@ -8,11 +8,13 @@ Silex
     monolog
     session
     swiftmailer
+    locale
     translation
     twig
     asset
     validator
     form
+    csrf
     http_cache
     http_fragment
     security

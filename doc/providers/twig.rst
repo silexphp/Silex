@@ -117,7 +117,7 @@ Global Variable
 ~~~~~~~~~~~~~~~
 
 When the Twig bridge is available, the ``global`` variable refers to an
-instance of `AppVariable <http://api.symfony.com/master/Symfony/Bridge/Twig/AppVariable.html >`_.
+instance of `AppVariable <http://api.symfony.com/master/Symfony/Bridge/Twig/AppVariable.html>`_.
 It gives access to the following methods:
 
 .. code-block:: jinja

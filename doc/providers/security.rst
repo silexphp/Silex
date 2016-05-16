@@ -647,7 +647,7 @@ Symfony `cookbook`_.
 
     The Guard component simplifies the creation of custom authentication
     providers. :doc:`How to Create a Custom Authentication System with Guard
-    <cookbook/guard_authentication>`
+    </cookbook/guard_authentication>`
 
 Stateless Authentication
 ~~~~~~~~~~~~~~~~~~~~~~~~
