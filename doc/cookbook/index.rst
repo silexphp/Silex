@@ -36,3 +36,5 @@ Recipes
 * :doc:`Converting Errors to Exceptions <error_handler>`.
 
 * :doc:`Using multiple Monolog Loggers <multiple_loggers>`.
+
+* :doc:`How to Create a Custom Authentication System with Guard <guard_authentication>`.
