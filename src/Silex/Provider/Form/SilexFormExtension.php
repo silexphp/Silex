@@ -82,8 +82,6 @@ class SilexFormExtension implements FormExtensionInterface
 
     private function setTypes(array $types)
     {
-        $isForm28 = class_exists('Symfony\Component\Form\Extension\Core\Type\RangeType');
-
         $this->types = [];
         foreach ($types as $type) {
             if (!is_object($type)) {
@@ -92,7 +90,7 @@ class SilexFormExtension implements FormExtensionInterface
                 }
                 $this->types[$type] = $type;
             } else {
-                $this->types[$isForm28 ? get_class($type) : $type->getName()] = $type;
+                $this->types[get_class($type)] = $type;
             }
         }
     }
