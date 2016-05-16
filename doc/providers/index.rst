@@ -4,14 +4,13 @@ Built-in Service Providers
 .. toctree::
     :maxdepth: 1
 
-    doctrine
+    twig
+    asset
     monolog
     session
     swiftmailer
     locale
     translation
-    twig
-    asset
     validator
     form
     csrf
@@ -22,3 +21,4 @@ Built-in Service Providers
     serializer
     service_controller
     var-dumper
+    doctrine
