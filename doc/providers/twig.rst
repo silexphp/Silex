@@ -150,7 +150,13 @@ is registered):
 
 .. note::
 
-    Read the Twig reference_ for Symfony document to learn more about the various Twig functions
+    You must prepend the ``app.request.baseUrl`` to render calls to ensure
+    that the render works when deployed into a sub-directory of the docroot.
+
+.. note::
+
+    Read the Twig `reference`_ for Symfony document to learn more about the
+    various Twig functions.
 
 Traits
 ------
@@ -192,4 +198,4 @@ You can configure the Twig environment before using it by extending the
 For more information, check out the `official Twig documentation
 <http://twig.sensiolabs.org>`_.
 
-.. reference_:: https://symfony.com/doc/current/reference/twig_reference.html#controller
+.. _reference_: https://symfony.com/doc/current/reference/twig_reference.html#controller
