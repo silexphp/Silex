@@ -14,7 +14,7 @@ contribute a provider, just follow these steps:
 
 * `Send a pull request
   <https://help.github.com/articles/creating-a-pull-request>`_, to the correct
-  `target branch`_.
+  target branch (1.3 for bug fixes, master for new features).
 
 .. note::
 
