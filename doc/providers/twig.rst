@@ -138,8 +138,8 @@ Rendering a Controller
 ~~~~~~~~~~~~~~~~~~~~~~
 
 A ``render`` function is also registered to help you render another controller
-from a template (available when the `HttpFragment Service Provider </providers/http_fragment>`
-is registered):
+from a template (available when the :doc:`HttpFragment Service Provider
+</providers/http_fragment>` is registered):
 
 .. code-block:: jinja
 
