@@ -1,5 +1,5 @@
-ValidatorServiceProvider
-========================
+Validator
+=========
 
 The *ValidatorServiceProvider* provides a service for validating data. It is
 most useful when used with the *FormServiceProvider*, but can also be used

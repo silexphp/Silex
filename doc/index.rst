@@ -1,5 +1,5 @@
-Silex
-=====
+The Book
+========
 
 .. toctree::
     :maxdepth: 1

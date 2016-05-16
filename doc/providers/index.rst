@@ -1,5 +1,5 @@
-Silex
-=====
+Built-in Service Providers
+==========================
 
 .. toctree::
     :maxdepth: 1

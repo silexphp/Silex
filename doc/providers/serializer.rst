@@ -1,5 +1,5 @@
-SerializerServiceProvider
-===========================
+Serializer
+==========
 
 The *SerializerServiceProvider* provides a service for serializing objects.
 

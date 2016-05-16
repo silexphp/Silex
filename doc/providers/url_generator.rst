@@ -1,5 +1,5 @@
-UrlGeneratorServiceProvider
-===========================
+URL Generator
+=============
 
 The *UrlGeneratorServiceProvider* provides a service for generating URLs for
 named routes.

@@ -1,5 +1,5 @@
-ServiceControllerServiceProvider
-================================
+Service Controllers
+===================
 
 As your Silex application grows, you may wish to begin organizing your
 controllers in a more formal fashion. Silex can use controller classes out of
