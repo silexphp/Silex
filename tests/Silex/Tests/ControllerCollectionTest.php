@@ -127,6 +127,57 @@ class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array('_root_a_tree_leaf', '_root_a_tree_leaf_1'), array_keys($routes->all()));
     }
 
+    public function testMountCallable()
+    {
+        $controllers = new ControllerCollection(new Route());
+        $controllers->mount('/prefix', function (ControllerCollection $coll) {
+            $coll->mount('/path', function ($coll) {
+                $coll->get('/part');
+            });
+        });
+
+        $routes = $controllers->flush();
+        $this->assertEquals('/prefix/path/part', current($routes->all())->getPath());
+    }
+
+    public function testMountCallableProperClone()
+    {
+        $controllers = new ControllerCollection(new Route(), new RouteCollection());
+        $controllers->get('/');
+
+        $subControllers = null;
+        $controllers->mount('/prefix', function (ControllerCollection $coll) use (&$subControllers) {
+            $subControllers = $coll;
+            $coll->get('/');
+        });
+
+        $routes = $controllers->flush();
+        $subRoutes = $subControllers->flush();
+        $this->assertTrue($routes->count() == 2 && $subRoutes->count() == 0);
+    }
+
+    public function testMountControllersFactory()
+    {
+        $testControllers = new ControllerCollection(new Route());
+        $controllers = new ControllerCollection(new Route(), null, function () use ($testControllers) {
+            return $testControllers;
+        });
+
+        $controllers->mount('/prefix', function ($mounted) use ($testControllers) {
+            $this->assertSame($mounted, $testControllers);
+        });
+    }
+
+    /**
+     * @expectedException \LogicException
+     * @expectedExceptionMessage The "mount" method takes either a "ControllerCollection" instance or callable.
+     */
+    public function testMountCallableException()
+    {
+        $controllers = new ControllerCollection(new Route());
+        $controllers->mount('/prefix', '');
+    }
+
     public function testAssert()
     {
         $controllers = new ControllerCollection(new Route());

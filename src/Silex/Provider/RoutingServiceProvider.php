@@ -66,9 +66,10 @@ class RoutingServiceProvider implements ServiceProviderInterface, EventListenerP
             return $app['controllers_factory'];
         };
 
-        $app['controllers_factory'] = $app->factory(function ($app) {
-            return new ControllerCollection($app['route_factory'], $app['routes_factory']);
-        });
+        $controllers_factory = function () use ($app, &$controllers_factory) {
+            return new ControllerCollection($app['route_factory'], $app['routes_factory'], $controllers_factory);
+        };
+        $app['controllers_factory'] = $app->factory($controllers_factory);
 
         $app['routing.listener'] = function ($app) {
             $urlMatcher = new LazyRequestMatcher(function () use ($app) {

@@ -464,7 +464,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException        \LogicException
-     * @expectedExceptionMessage The "mount" method takes either a "ControllerCollection" or a "ControllerProviderInterface" instance.
+     * @expectedExceptionMessage The "mount" method takes either a "ControllerCollection" instance, "ControllerProviderInterface" instance, or a callable.
      */
     public function testMountNullException()
     {
@@ -480,6 +480,18 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
         $app->mount('/exception', new IncorrectControllerCollection());
+    }
+
+    public function testMountCallable()
+    {
+        $app = new Application();
+        $app->mount('/prefix', function (ControllerCollection $coll) {
+            $coll->get('/path');
+        });
+
+        $app->flush();
+
+        $this->assertEquals(1, $app['routes']->count());
     }
 
     public function testSendFile()
