@@ -206,7 +206,7 @@ Silex defines a range of services.
   Request as input and returns a Response as output.
 
 * **request_context**: The request context is a simplified representation of
-  the request that is used by the Router and the :doc:`UrlGenerator </providers/url_generator.rst>`.
+  the request that is used by the Router and the :doc:`UrlGenerator </providers/url_generator>`.
 
 * **exception_handler**: The Exception handler is the default handler that is
   used when you don't register one via the ``error()`` method or if your
