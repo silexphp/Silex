@@ -1,0 +1,95 @@
+---------------------------------------------------------------------------
+
+by HeahDude at 2016-04-01T17:12:50Z
+
+Hi @skalpa, thanks for proposing this!
+You can use both `getName()` and `getBlockPrefix()` in `DummyType`:
+```php
+class DummyType extends AbstractType
+{
+    // ...
+    public function getName()
+    {
+        return $this->getBlockPrefix();
+    }
+    // ...
+}
+```
+~~Besides, I'm not sure of the benefit given that you can already do:~~
+```php
+$app['your.type.service'] = function ($app) {
+    return new YourServiceFormType();
+};
+$app->extend('form.types', function ($types) use ($app) {
+    $types[] = $app['your.type.service'];
+
+    return $types;
+}));
+```
+~~Am I missing something ?~~
+
+---------------------------------------------------------------------------
+
+by HeahDude at 2016-04-01T17:20:54Z
+
+Hmmmm, yes maybe the lazy loading!
+
+---------------------------------------------------------------------------
+
+by skalpa at 2016-04-01T20:44:23Z
+
+@HeahDude Yes, my use case is about lazy loading. The app I am upgrading to SF3 contains several dozens of forms, and instantiating all of them + their dependencies (some of the forms have dependencies injected as constructor arguments) every time I need a single one just feels wrong.
+
+With Symfony 2.7 I used to do something like this (well, to give you the idea... the real code is a bit more complicated considering my controllers don't usually have access to the application instance):
+```php
+    $form = $app['form.factory']->createBuilder($app['my.something.form']);
+```
+But this is not possible anymore, so I checked how the `Symfony\Component\Form\Extension\DependencyInjection\DependencyInjectionExtension` worked and did something similar for Silex.
+
+It's mostly useful for form types, but I added support for type extensions and guessers for the sake of consistency.
+
+Also, thanks for your tip about `DummyFormType`, but this was already here and I tried and change as little as possible to existing files. Actually, I intend to propose other changes to this test class later on (if I'm correct one of the tests doesn't actually do anything and should be fixed), but I'll wait until the pull request is merged (or rejected) before I contribute more changes to this file.
+
+---------------------------------------------------------------------------
+
+by HeahDude at 2016-04-01T20:52:32Z
+
+You're right, this is a nice improvement :+1:
+
+But I'm realising that you can already achieve lazy loading by using:
+```php
+$app['your.type.service'] = YourServiceFormType::class;
+```
+And the same goes for guessers and form extensions. ~~So we may not need that PR.~~
+
+---------------------------------------------------------------------------
+
+by HeahDude at 2016-04-01T20:55:34Z
+
+Except if they have dependencies....
+
+---------------------------------------------------------------------------
+
+by skalpa at 2016-04-01T20:56:39Z
+
+Yes, "except if", that's the point ;-)
+
+---------------------------------------------------------------------------
+
+by skalpa at 2016-05-16T10:09:51Z
+
+I changed the Application type hint to Container and renamed the private property to app as advised by @GromNaN
+I also removed a piece of code that was dealing with the differences between versions of the Form component now that Silex isn't compatible with versions before 2.8.x
+I guess it should be ready to review/merge now.
+
+---------------------------------------------------------------------------
+
+by fabpot at 2016-05-16T11:50:50Z
+
+LGTM. Can you rebase to get rid of the merge commit?
+
+---------------------------------------------------------------------------
+
+by skalpa at 2016-05-16T14:49:38Z
+
+@fabpot The branch has been rebased, and all the tests for < 2.8 have been removed from `FormServiceProviderTest` (I actually removed all the tests I could find in the file, not only the ones I had added myself, I hope it's all right).
