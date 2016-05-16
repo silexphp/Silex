@@ -4,13 +4,12 @@ Built-in Service Providers
 .. toctree::
     :maxdepth: 1
 
-    doctrine
+    twig
+    url_generator
     monolog
     session
     swiftmailer
     translation
-    twig
-    url_generator
     validator
     form
     http_cache
@@ -19,3 +18,4 @@ Built-in Service Providers
     remember_me
     serializer
     service_controller
+    doctrine
