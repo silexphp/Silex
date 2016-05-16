@@ -20,5 +20,5 @@ Built-in Service Providers
     remember_me
     serializer
     service_controller
-    var-dumper
+    var_dumper
     doctrine
