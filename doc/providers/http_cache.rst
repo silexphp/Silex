@@ -1,5 +1,5 @@
-HttpCacheServiceProvider
-========================
+HTTP Cache
+==========
 
 The *HttpCacheServiceProvider* provides support for the Symfony Reverse
 Proxy.

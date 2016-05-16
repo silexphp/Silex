@@ -1,5 +1,5 @@
-DoctrineServiceProvider
-=======================
+Doctrine
+========
 
 The *DoctrineServiceProvider* provides integration with the `Doctrine DBAL
 <http://www.doctrine-project.org/projects/dbal>`_ for easy database access

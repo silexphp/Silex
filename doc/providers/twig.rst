@@ -1,5 +1,5 @@
-TwigServiceProvider
-===================
+Twig
+====
 
 The *TwigServiceProvider* provides integration with the `Twig
 <http://twig.sensiolabs.org/>`_ template engine.

@@ -1,5 +1,5 @@
-FormServiceProvider
-===================
+Form
+====
 
 The *FormServiceProvider* provides a service for building forms in
 your application with the Symfony Form component.

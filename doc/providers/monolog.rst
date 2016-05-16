@@ -1,5 +1,5 @@
-MonologServiceProvider
-======================
+Monolog
+=======
 
 The *MonologServiceProvider* provides a default logging mechanism through
 Jordi Boggiano's `Monolog <https://github.com/Seldaek/monolog>`_ library.
