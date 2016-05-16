@@ -31,6 +31,14 @@ Parameters
 * **monolog.exception.logger_filter** (optional): An anonymous function that
   filters which exceptions should be logged.
 
+* **monolog.use_error_handler** (optional): Whether errors and uncaught exceptions
+  should be handled by the Monolog ``ErrorHandler`` class and added to the log.
+  By default the error handler is enabled unless the application ``debug`` parameter
+  is set to true.
+
+  Please note that enabling the error handler may silence some errors,
+  ignoring the PHP ``display_errors`` configuration setting.
+
 Services
 --------
 
