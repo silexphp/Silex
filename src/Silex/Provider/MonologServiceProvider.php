@@ -106,11 +106,14 @@ class MonologServiceProvider implements ServiceProviderInterface, BootableProvid
         $app['monolog.permission'] = null;
         $app['monolog.exception.logger_filter'] = null;
         $app['monolog.logfile'] = null;
+        $app['monolog.use_error_handler'] = !$app['debug'];
     }
 
     public function boot(Application $app)
     {
-        ErrorHandler::register($app['monolog']);
+        if ($app['monolog.use_error_handler']) {
+            ErrorHandler::register($app['monolog']);
+        }
 
         if (isset($app['monolog.listener'])) {
             $app['dispatcher']->addSubscriber($app['monolog.listener']);
