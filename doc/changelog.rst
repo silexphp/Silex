@@ -4,6 +4,15 @@ Changelog
 2.0.0 (2016-XX-XX)
 ------------------
 
+* decoupled the exception handler from HttpKernelServiceProvider
+* Switched to BCrypt as the default encoder in the security provider
+* added full support for RequestMatcher
+* added support for Symfony Guard
+* added support for callables in CallbackResolver
+* added FormTrait::namedForm()
+* added support for delivery_addresses, delivery_whitelist, and sender_address
+* added support to register form types / form types extensions / form types guessers as services
+* added support for callable in mounts (allow nested route collection to be built easily)
 * added support for conditions on routes
 * added support for the Symfony VarDumper Component
 * added a global Twig variable (an AppVariable instance)
