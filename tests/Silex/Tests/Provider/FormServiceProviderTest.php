@@ -284,6 +284,24 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue(isset($form->createView()['_token']));
     }
+
+    public function testUserExtensionCanConfigureDefaultExtensions()
+    {
+        $app = new Application();
+        $app->register(new FormServiceProvider());
+        $app->register(new SessionServiceProvider());
+        $app->register(new CsrfServiceProvider());
+        $app['session.test'] = true;
+
+        $app->extend('form.type.extensions', function ($extensions) {
+            $extensions[] = new FormServiceProviderTest\DisableCsrfExtension();
+
+            return $extensions;
+        });
+        $form = $app['form.factory']->createBuilder('Symfony\Component\Form\Extension\Core\Type\FormType', array())->getForm();
+
+        $this->assertFalse($form->getConfig()->getOption('csrf_protection'));
+    }
 }
 
 if (!class_exists('Symfony\Component\Form\Deprecated\FormEvents')) {

@@ -69,7 +69,6 @@ class FormServiceProvider implements ServiceProviderInterface
 
         $app['form.extensions'] = function ($app) {
             $extensions = array(
-                $app['form.extension.silex'],
                 new HttpFoundationExtension(),
             );
 
@@ -80,6 +79,7 @@ class FormServiceProvider implements ServiceProviderInterface
             if (isset($app['validator'])) {
                 $extensions[] = new FormValidatorExtension($app['validator']);
             }
+            $extensions[] = $app['form.extension.silex'];
 
             return $extensions;
         };
