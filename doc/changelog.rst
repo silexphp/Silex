@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0.0 (2016-XX-XX)
+2.0.0 (2016-05-18)
 ------------------
 
 * decoupled the exception handler from HttpKernelServiceProvider
