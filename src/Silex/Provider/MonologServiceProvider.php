@@ -108,7 +108,7 @@ class MonologServiceProvider implements ServiceProviderInterface, BootableProvid
         $app['monolog.logfile'] = null;
         $app['monolog.use_error_handler'] = !$app['debug'];
         $app['monolog.formatter.output'] = "[%datetime%] [%level_name%] %channel% - %message% %context% %extra%\n";
-        $app['monolog.formatter.dateformat'] = "Y-m-d H:i:s";
+        $app['monolog.formatter.dateformat'] = 'Y-m-d H:i:s';
     }
 
     public function boot(Application $app)
