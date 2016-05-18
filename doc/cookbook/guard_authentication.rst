@@ -175,8 +175,8 @@ under different conditions:
     # {"message":"Username could not be found."}
 
     # test with a working token
-    curl -H "X-AUTH-TOKEN: victoria:ransomsecret" http://localhost:8000/
+    curl -H "X-AUTH-TOKEN: victoria:randomsecret" http://localhost:8000/
     # the homepage controller is executed: the page loads normally
 
 For more details read the Symfony cookbook entry on
-`How to Create aCustom Authentication System with Guard <http://symfony.com/doc/current/cookbook/security/guard-authentication.html>`_.
+`How to Create a Custom Authentication System with Guard <http://symfony.com/doc/current/cookbook/security/guard-authentication.html>`_.
