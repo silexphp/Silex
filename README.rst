@@ -27,7 +27,7 @@ The recommended way to install Silex is through `Composer`_:
 
 .. code-block:: bash
 
-    composer require silex/silex "~2.0@dev"
+    composer require silex/silex "~2.0"
 
 Alternatively, you can download the `silex.zip`_ file and extract it.
 
