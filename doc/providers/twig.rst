@@ -110,8 +110,7 @@ Security Support
 If you are using the ``SecurityServiceProvider``, you will have access to the
 ``is_granted()`` function in templates. You can find more information in the
 `Symfony Security documentation
-<http://symfony.com/doc/current/book/security.html#access-control-in-templates>`
-_.
+<http://symfony.com/doc/current/book/security.html#access-control-in-templates>`_.
 
 Global Variable
 ~~~~~~~~~~~~~~~
