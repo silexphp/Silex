@@ -47,8 +47,6 @@ You can also use the CSRF protection even without using the Symfony Form
 component. If, for example, you're doing a DELETE action, you can check the
 CSRF token::
 
-.. code-block:: php
-
     use Symfony\Component\Security\Csrf\CsrfToken;
 
     $app['csrf.token_manager']->isTokenValid(new CsrfToken('token_id', 'TOKEN'));
