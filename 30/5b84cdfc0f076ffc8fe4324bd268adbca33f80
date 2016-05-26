@@ -1,0 +1,27 @@
+---------------------------------------------------------------------------
+
+by GromNaN at 2016-05-26T18:21:28Z
+
+Can you give some reasons for disabling Xdebug?
+
+---------------------------------------------------------------------------
+
+by hkdobrev at 2016-05-26T18:39:28Z
+
+@GromNaN It improves the speed of tools like Composer, PHPUnit, PHP CS Fixer. Since it's not used for code coverage or benchmark profiling it could be disabled. See https://github.com/travis-ci/travis-ci/issues/5780
+
+---------------------------------------------------------------------------
+
+by romainneutron at 2016-05-26T18:42:17Z
+
+It uses resources for no benefit
+On May 26, 2016 8:21 PM, "Jérôme Tamarelle" <notifications@github.com>
+wrote:
+
+> Can you give some reasons for disabling Xdebug?
+>
+> —
+> You are receiving this because you authored the thread.
+> Reply to this email directly or view it on GitHub
+> <https://github.com/silexphp/Silex/pull/1376#issuecomment-221952861>
+>
