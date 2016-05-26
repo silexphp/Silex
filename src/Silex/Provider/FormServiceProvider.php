@@ -28,19 +28,8 @@ class FormServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $app)
     {
-        if (!class_exists('Locale') && !class_exists('Symfony\Component\Locale\Stub\StubLocale')) {
-            throw new \RuntimeException('You must either install the PHP intl extension or the Symfony Locale Component to use the Form extension.');
-        }
-
         if (!class_exists('Locale')) {
-            $r = new \ReflectionClass('Symfony\Component\Locale\Stub\StubLocale');
-            $path = dirname(dirname($r->getFilename())).'/Resources/stubs';
-
-            require_once $path.'/functions.php';
-            require_once $path.'/Collator.php';
-            require_once $path.'/IntlDateFormatter.php';
-            require_once $path.'/Locale.php';
-            require_once $path.'/NumberFormatter.php';
+            throw new \RuntimeException('You must either install the PHP intl extension or the Symfony Intl Component to use the Form extension.');
         }
 
         $app['form.types'] = function ($app) {
