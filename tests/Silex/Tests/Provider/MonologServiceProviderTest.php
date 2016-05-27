@@ -18,6 +18,7 @@ use Silex\Application;
 use Silex\Provider\MonologServiceProvider;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * MonologProvider test cases.
@@ -43,7 +44,12 @@ class MonologServiceProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($app['monolog.handler']->hasDebug('< 200'));
 
         $records = $app['monolog.handler']->getRecords();
-        $this->assertContains('Matched route "GET_foo"', $records[0]['message']);
+        if (version_compare('3.1', Kernel::VERSION, '>=')) {
+            $this->assertContains('Matched route "GET_foo"', $records[0]['message']);
+        } else {
+            $this->assertContains('Matched route "{route}".', $records[0]['message']);
+            $this->assertSame('GET_foo', $records[0]['context']['route']);
+        }
     }
 
     public function testManualLogging()
