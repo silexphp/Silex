@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0.1 (2016-XX-XX)
+2.0.1 (2016-05-27)
 ------------------
 
 * fixed the silex form extension registration to allow overriding default ones
