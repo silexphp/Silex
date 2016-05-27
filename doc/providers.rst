@@ -103,11 +103,11 @@ application which then may make use of other services and parameters.
     and Silex work, but may allow your provider to be used outside of Silex.
 
 Optionally, your service provider can implement the
-``Silex\Api\BootableServiceProviderInterface``. A BootableServiceProvider must
+``Silex\Api\BootableProviderInterface``. A bootable provider must
 implement the ``boot()`` method, with which you can configure the application, just
 before it handles a request::
 
-    interface BootableServiceProviderInterface
+    interface BootableProviderInterface
     {
         function boot(Application $app);
     }
@@ -134,7 +134,7 @@ Here is an example of such a provider::
     use Symfony\Component\HttpKernel\KernelEvents;
     use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 
-    class HelloServiceProvider implements ServiceProviderInterface, BootableServiceProviderInterface, EventListenerProviderInterface
+    class HelloServiceProvider implements ServiceProviderInterface, BootableProviderInterface, EventListenerProviderInterface
     {
         public function register(Container $app)
         {
