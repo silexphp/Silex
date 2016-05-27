@@ -32,4 +32,21 @@ class ControllerResolverTest extends \PHPUnit_Framework_TestCase
         $args = $resolver->getArguments(Request::create('/'), $controller);
         $this->assertSame($app, $args[0]);
     }
+
+    public function testResolvingController()
+    {
+        $app = new Application();
+        $resolver = new ControllerResolver($app);
+        $request = Request::create('/');
+
+        $app['my.controller'] = function () {
+            return __CLASS__;
+        };
+
+        $request->attributes->set('_controller', 'my.controller::testResolvingController');
+
+        $callable = $resolver->getController($request);
+
+        $this->assertEquals(__CLASS__, $callable[0]);
+    }
 }
