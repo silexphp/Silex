@@ -44,7 +44,7 @@ class MonologServiceProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($app['monolog.handler']->hasDebug('< 200'));
 
         $records = $app['monolog.handler']->getRecords();
-        if (version_compare('3.1', Kernel::VERSION, '>=')) {
+        if (Kernel::VERSION_ID >= 30100) {
             $this->assertContains('Matched route "GET_foo"', $records[0]['message']);
         } else {
             $this->assertContains('Matched route "{route}".', $records[0]['message']);
