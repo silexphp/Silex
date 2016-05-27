@@ -4,7 +4,9 @@ Changelog
 2.0.1 (2016-XX-XX)
 ------------------
 
-n/a
+* fixed the silex form extension registration to allow overriding default ones
+* removed support for the obsolete Locale Symfony component (uses the Intl one now)
+* added support for Symfony 3.1
 
 2.0.0 (2016-05-18)
 ------------------
