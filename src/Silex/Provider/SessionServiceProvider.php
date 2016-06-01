@@ -29,12 +29,8 @@ use Symfony\Component\HttpFoundation\Session\Session;
  */
 class SessionServiceProvider implements ServiceProviderInterface, EventListenerProviderInterface
 {
-    private $app;
-
     public function register(Container $app)
     {
-        $this->app = $app;
-
         $app['session.test'] = false;
 
         $app['session'] = function ($app) {
