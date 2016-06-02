@@ -165,18 +165,18 @@ Modify services after definition
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Sometimes you want to alter a service after its definition. Pimple facilitates
-this by ``extend``-ing the already defined service.
+this by extending the already defined service.
 
 First argument of the ``extend`` method is the name of the service you want to
 modify. Second argument is a callable. This callable is executed with the service
-you want to alter as its first argument, the service container self is provided
+you want to alter as its first argument, the service container itself is provided
 in the second argument.
 
 .. note::
 
     Be sure to return the modified service in the callable.
 
-You can use this pattern to add functionality to :doc:Twig <providers/twig> for
+You can use this pattern to add functionality to :doc:Monolog <providers/twig> for
 example::
 
     $app->extend('twig', function($twig, $app) {
