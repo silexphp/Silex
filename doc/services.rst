@@ -176,7 +176,7 @@ in the second argument.
 
     Be sure to return the modified service in the callable.
 
-You can use this pattern to add functionality to :doc:Monolog <providers/twig> for
+You can use this pattern to add functionality to :doc:Twig <providers/twig> for
 example::
 
     $app->extend('twig', function($twig, $app) {
