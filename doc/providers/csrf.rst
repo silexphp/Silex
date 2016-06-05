@@ -29,8 +29,8 @@ Registering
 
 .. note::
 
-    Add the Symfony's `Serializer Component
-    <http://symfony.com/doc/current/components/serializer.html>`_ as a
+    Add the Symfony's `Security CSRF Component
+    <http://symfony.com/doc/current/components/security/index.html>`_ as a
     dependency:
 
     .. code-block:: bash
