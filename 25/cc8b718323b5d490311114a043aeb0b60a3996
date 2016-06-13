@@ -1,0 +1,29 @@
+---------------------------------------------------------------------------
+
+by romainneutron at 2016-06-09T13:56:08Z
+
+PR updated, comments addressed
+
+---------------------------------------------------------------------------
+
+by romainneutron at 2016-06-09T14:22:21Z
+
+PR updated, comments addressed
+
+---------------------------------------------------------------------------
+
+by romainneutron at 2016-06-09T14:46:38Z
+
+PR updated, comments addressed
+
+---------------------------------------------------------------------------
+
+by romainneutron at 2016-06-10T13:36:50Z
+
+PR updated, @stof comment addressed. Add support for Symfony 3.2 btw, since symfony/symfony#19011 is merged
+
+---------------------------------------------------------------------------
+
+by romainneutron at 2016-06-13T12:11:29Z
+
+PR updated, comment addressed
