@@ -19,6 +19,8 @@ use Symfony\Component\HttpFoundation\Request;
  * Adds Application as a valid argument for controllers.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ *
+ * @deprecated This class can be dropped once Symfony 3.0 is not supported anymore.
  */
 class ControllerResolver extends BaseControllerResolver
 {
