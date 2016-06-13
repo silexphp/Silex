@@ -201,4 +201,4 @@ Traits
     $app->form($data);
 
 For more information, consult the `Symfony Forms documentation
-<http://symfony.com/doc/2.3/book/forms.html>`_.
+<http://symfony.com/doc/2.8/book/forms.html>`_.
