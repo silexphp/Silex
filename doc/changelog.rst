@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0.2 (2016-XX-XX)
+2.0.2 (2016-06-14)
 ------------------
 
 * fixed Symfony 3.1 deprecations
