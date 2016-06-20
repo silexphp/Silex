@@ -177,6 +177,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testControllersAsMethods()
     {
         $app = new Application();
+        unset($app['exception_handler']);
 
         $app->get('/{name}', 'Silex\Tests\FooController::barAction');
 
@@ -186,8 +187,22 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testApplicationTypeHintWorks()
     {
         $app = new SpecialApplication();
+        unset($app['exception_handler']);
 
         $app->get('/{name}', 'Silex\Tests\FooController::barSpecialAction');
+
+        $this->assertEquals('Hello Fabien in Silex\Tests\SpecialApplication', $app->handle(Request::create('/Fabien'))->getContent());
+    }
+
+    /**
+     * @requires PHP 7.0
+     */
+    public function testPhp7TypeHintWorks()
+    {
+        $app = new SpecialApplication();
+        unset($app['exception_handler']);
+
+        $app->get('/{name}', 'Silex\Tests\Fixtures\Php7Controller::typehintedAction');
 
         $this->assertEquals('Hello Fabien in Silex\Tests\SpecialApplication', $app->handle(Request::create('/Fabien'))->getContent());
     }
