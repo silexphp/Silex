@@ -69,8 +69,8 @@ class MonologServiceProvider implements ServiceProviderInterface, BootableProvid
             return $log;
         };
 
-        $app['monolog.formatter'] = function () {
-            return new LineFormatter();
+        $app['monolog.formatter'] = function () use ($app) {
+            return new LineFormatter($app['monolog.formatter.output'], $app['monolog.formatter.dateformat']);
         };
 
         $app['monolog.handler'] = $defaultHandler = function () use ($app) {
@@ -107,6 +107,8 @@ class MonologServiceProvider implements ServiceProviderInterface, BootableProvid
         $app['monolog.exception.logger_filter'] = null;
         $app['monolog.logfile'] = null;
         $app['monolog.use_error_handler'] = !$app['debug'];
+        $app['monolog.formatter.output'] = "[%datetime%] [%level_name%] %channel% - %message% %context% %extra%\n";
+        $app['monolog.formatter.dateformat'] = 'Y-m-d H:i:s';
     }
 
     public function boot(Application $app)
@@ -137,3 +139,4 @@ class MonologServiceProvider implements ServiceProviderInterface, BootableProvid
         return $levels[$upper];
     }
 }
+
