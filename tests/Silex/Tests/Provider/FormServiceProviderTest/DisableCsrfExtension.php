@@ -10,9 +10,9 @@ class DisableCsrfExtension extends AbstractTypeExtension
 {
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'csrf_protection' => false,
-        ));
+        ]);
     }
 
     public function getExtendedType()

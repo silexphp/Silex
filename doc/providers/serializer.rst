@@ -30,7 +30,7 @@ Registering
 .. code-block:: php
 
     $app->register(new Silex\Provider\SerializerServiceProvider());
-    
+
 .. note::
 
     Add the Symfony's `Serializer Component
@@ -66,8 +66,8 @@ The ``SerializerServiceProvider`` provider provides a ``serializer`` service::
             $app->abort("No page found for id: $id");
         }
 
-        return new Response($app['serializer']->serialize($page, $format), 200, array(
+        return new Response($app['serializer']->serialize($page, $format), 200, [
             "Content-Type" => $request->getMimeType($format)
-        ));
+        ]);
     })->assert("_format", "xml|json")
       ->assert("id", "\d+");

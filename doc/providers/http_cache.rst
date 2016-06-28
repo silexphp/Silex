@@ -33,9 +33,9 @@ Registering
 
 .. code-block:: php
 
-    $app->register(new Silex\Provider\HttpCacheServiceProvider(), array(
+    $app->register(new Silex\Provider\HttpCacheServiceProvider(), [
         'http_cache.cache_dir' => __DIR__.'/cache/',
-    ));
+    ]);
 
 Usage
 -----
@@ -46,9 +46,9 @@ setting Response HTTP cache headers::
     use Symfony\Component\HttpFoundation\Response;
 
     $app->get('/', function() {
-        return new Response('Foo', 200, array(
+        return new Response('Foo', 200, [
             'Cache-Control' => 's-maxage=5',
-        ));
+        ]);
     });
 
 .. tip::
@@ -61,8 +61,8 @@ setting Response HTTP cache headers::
     If you would be running Varnish in front of your application on the same machine::
 
         use Symfony\Component\HttpFoundation\Request;
-        
-        Request::setTrustedProxies(array('127.0.0.1', '::1'));
+
+        Request::setTrustedProxies(['127.0.0.1', '::1']);
         $app->run();
 
 This provider allows you to use the Symfony reverse proxy natively with
@@ -70,8 +70,8 @@ Silex applications by using the ``http_cache`` service. The Symfony reverse prox
 acts much like any other proxy would, so you will want to whitelist it::
 
     use Symfony\Component\HttpFoundation\Request;
-        
-    Request::setTrustedProxies(array('127.0.0.1'));
+
+    Request::setTrustedProxies(['127.0.0.1']);
     $app['http_cache']->run();
 
 The provider also provides ESI support::
@@ -86,9 +86,9 @@ The provider also provides ESI support::
     </html>
 
     EOF
-        , 200, array(
+        , 200, [
             'Surrogate-Control' => 'content="ESI/1.0"',
-        ));
+        ]);
 
         $response->setTtl(20);
 
@@ -107,10 +107,10 @@ The provider also provides ESI support::
 If your application doesn't use ESI, you can disable it to slightly improve the
 overall performance::
 
-    $app->register(new Silex\Provider\HttpCacheServiceProvider(), array(
+    $app->register(new Silex\Provider\HttpCacheServiceProvider(), [
        'http_cache.cache_dir' => __DIR__.'/cache/',
        'http_cache.esi'       => null,
-    ));
+    ]);
 
 .. tip::
 

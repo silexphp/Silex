@@ -31,9 +31,9 @@ class HttpCacheServiceProvider implements ServiceProviderInterface, EventListene
     {
         $app['http_cache'] = function ($app) {
             $app['http_cache.options'] = array_replace(
-                array(
+                [
                     'debug' => $app['debug'],
-                ), $app['http_cache.options']
+                ], $app['http_cache.options']
             );
 
             return new HttpCache($app, $app['http_cache.store'], $app['http_cache.esi'], $app['http_cache.options']);
@@ -51,7 +51,7 @@ class HttpCacheServiceProvider implements ServiceProviderInterface, EventListene
             return new SurrogateListener($app['http_cache.esi']);
         };
 
-        $app['http_cache.options'] = array();
+        $app['http_cache.options'] = [];
     }
 
     public function subscribe(Container $app, EventDispatcherInterface $dispatcher)

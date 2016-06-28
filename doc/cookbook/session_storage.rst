@@ -27,12 +27,12 @@ With a dedicated PDO service
     $app['pdo.user'] = 'myuser';
     $app['pdo.password'] = 'mypassword';
 
-    $app['session.db_options'] = array(
+    $app['session.db_options'] = [
         'db_table'      => 'session',
         'db_id_col'     => 'session_id',
         'db_data_col'   => 'session_value',
         'db_time_col'   => 'session_time',
-    );
+    ];
 
     $app['pdo'] = function () use ($app) {
         return new PDO(
@@ -62,13 +62,13 @@ have to make another database connection, simply pass the getWrappedConnection m
 
     $app->register(new Silex\Provider\SessionServiceProvider());
 
-    $app['session.db_options'] = array(
+    $app['session.db_options'] = [
         'db_table'        => 'session',
         'db_id_col'       => 'session_id',
         'db_data_col'     => 'session_value',
         'db_lifetime_col' => 'session_lifetime',
         'db_time_col'     => 'session_time',
-    );
+    ];
 
     $app['session.storage.handler'] = function () use ($app) {
         return new PdoSessionHandler(

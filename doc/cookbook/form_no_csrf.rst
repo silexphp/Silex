@@ -22,7 +22,7 @@ Example
 
 .. code-block:: php
 
-    $form = $app['form.factory']->createBuilder('form', null, array('csrf_protection' => false));
+    $form = $app['form.factory']->createBuilder('form', null, ['csrf_protection' => false]);
 
 That's it, your form could be submitted from everywhere without CSRF Protection.
 

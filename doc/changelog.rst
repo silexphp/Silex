@@ -313,7 +313,7 @@ Changelog
 
 * **2012-03-20**: Added ``json`` helper::
 
-        $data = array('some' => 'data');
+        $data = ['some' => 'data'];
         $response = $app->json($data);
 
 * **2012-03-11**: Added route middlewares.

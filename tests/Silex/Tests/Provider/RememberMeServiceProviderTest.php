@@ -31,13 +31,13 @@ class RememberMeServiceProviderTest extends WebTestCase
         $app = $this->createApplication();
 
         $interactiveLogin = new InteractiveLoginTriggered();
-        $app->on(SecurityEvents::INTERACTIVE_LOGIN, array($interactiveLogin, 'onInteractiveLogin'));
+        $app->on(SecurityEvents::INTERACTIVE_LOGIN, [$interactiveLogin, 'onInteractiveLogin']);
 
         $client = new Client($app);
 
         $client->request('get', '/');
         $this->assertFalse($interactiveLogin->triggered, 'The interactive login has not been triggered yet');
-        $client->request('post', '/login_check', array('_username' => 'fabien', '_password' => 'foo', '_remember_me' => 'true'));
+        $client->request('post', '/login_check', ['_username' => 'fabien', '_password' => 'foo', '_remember_me' => 'true']);
         $client->followRedirect();
         $this->assertEquals('AUTHENTICATED_FULLY', $client->getResponse()->getContent());
         $this->assertTrue($interactiveLogin->triggered, 'The interactive login has been triggered');
@@ -64,23 +64,23 @@ class RememberMeServiceProviderTest extends WebTestCase
         $app['debug'] = true;
         unset($app['exception_handler']);
 
-        $app->register(new SessionServiceProvider(), array(
+        $app->register(new SessionServiceProvider(), [
             'session.test' => true,
-        ));
+        ]);
         $app->register(new SecurityServiceProvider());
         $app->register(new RememberMeServiceProvider());
 
-        $app['security.firewalls'] = array(
-            'http-auth' => array(
+        $app['security.firewalls'] = [
+            'http-auth' => [
                 'pattern' => '^.*$',
                 'form' => true,
-                'remember_me' => array(),
+                'remember_me' => [],
                 'logout' => true,
-                'users' => array(
-                    'fabien' => array('ROLE_USER', '$2y$15$lzUNsTegNXvZW3qtfucV0erYBcEqWVeyOmjolB7R1uodsAVJ95vvu'),
-                ),
-            ),
-        );
+                'users' => [
+                    'fabien' => ['ROLE_USER', '$2y$15$lzUNsTegNXvZW3qtfucV0erYBcEqWVeyOmjolB7R1uodsAVJ95vvu'],
+                ],
+            ],
+        ];
 
         $app->get('/', function () use ($app) {
             if ($app['security.authorization_checker']->isGranted('IS_AUTHENTICATED_FULLY')) {

@@ -38,9 +38,9 @@ Registering
 .. code-block:: php
 
     $app->register(new Silex\Provider\LocaleServiceProvider());
-    $app->register(new Silex\Provider\TranslationServiceProvider(), array(
-        'locale_fallbacks' => array('en'),
-    ));
+    $app->register(new Silex\Provider\TranslationServiceProvider(), [
+        'locale_fallbacks' => ['en'],
+    ]);
 
 .. note::
 
@@ -56,30 +56,30 @@ Usage
 The Translation provider provides a ``translator`` service and makes use of
 the ``translator.domains`` parameter::
 
-    $app['translator.domains'] = array(
-        'messages' => array(
-            'en' => array(
+    $app['translator.domains'] = [
+        'messages' => [
+            'en' => [
                 'hello'     => 'Hello %name%',
                 'goodbye'   => 'Goodbye %name%',
-            ),
-            'de' => array(
+            ],
+            'de' => [
                 'hello'     => 'Hallo %name%',
                 'goodbye'   => 'Tschüss %name%',
-            ),
-            'fr' => array(
+            ],
+            'fr' => [
                 'hello'     => 'Bonjour %name%',
                 'goodbye'   => 'Au revoir %name%',
-            ),
+            ],
         ),
-        'validators' => array(
-            'fr' => array(
+        'validators' => [
+            'fr' => [
                 'This value should be a valid number.' => 'Cette valeur doit être un nombre.',
-            ),
+            ],
         ),
     );
 
     $app->get('/{_locale}/{message}/{name}', function ($message, $name) use ($app) {
-        return $app['translator']->trans($message, array('%name%' => $name));
+        return $app['translator']->trans($message, ['%name%' => $name]);
     });
 
 The above example will result in following routes:
@@ -98,12 +98,12 @@ Using Resources
 When translations are stored in a file, you can load them as follows::
 
     $app = new Application();
-    
+
     $app->register(new TranslationServiceProvider());
     $app->extend('translator.resources', function ($resources, $app) {
-        $resources = array_merge($resources, array(
-            array('array', array('This value should be a valid number.' => 'Cette valeur doit être un nombre.'), 'fr', 'validators'),
-        ));
+        $resources = array_merge($resources, [
+            ['array', ['This value should be a valid number.' => 'Cette valeur doit être un nombre.'], 'fr', 'validators'],
+        ]);
 
         return $resources;
     });

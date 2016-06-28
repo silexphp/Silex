@@ -24,13 +24,13 @@ class HttpFragmentServiceProviderTest extends \PHPUnit_Framework_TestCase
         $app = new Application();
 
         $app->register(new HttpFragmentServiceProvider());
-        $app->register(new HttpCacheServiceProvider(), array('http_cache.cache_dir' => sys_get_temp_dir()));
-        $app->register(new TwigServiceProvider(), array(
-            'twig.templates' => array(
+        $app->register(new HttpCacheServiceProvider(), ['http_cache.cache_dir' => sys_get_temp_dir()]);
+        $app->register(new TwigServiceProvider(), [
+            'twig.templates' => [
                 'hello' => '{{ render("/foo") }}{{ render_esi("/foo") }}{{ render_hinclude("/foo") }}',
                 'foo' => 'foo',
-            ),
-        ));
+            ],
+        ]);
 
         $app->get('/hello', function () use ($app) {
             return $app['twig']->render('hello');

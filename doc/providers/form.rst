@@ -31,9 +31,9 @@ Registering
     will be used. But you will have to register the :doc:`translation provider
     <translation>` as the default form layout requires it::
 
-        $app->register(new Silex\Provider\TranslationServiceProvider(), array(
-            'translator.domains' => array(),
-        ));
+        $app->register(new Silex\Provider\TranslationServiceProvider(), [
+            'translator.domains' => [],
+        ]);
 
     If you want to use validation with forms, do not forget to register the
     :doc:`Validator provider <validator>`.
@@ -73,18 +73,18 @@ example::
 
     $app->match('/form', function (Request $request) use ($app) {
         // some default data for when the form is displayed the first time
-        $data = array(
+        $data = [
             'name' => 'Your name',
             'email' => 'Your email',
-        );
+        ];
 
         $form = $app['form.factory']->createBuilder(FormType::class, $data)
             ->add('name')
             ->add('email')
-            ->add('billing_plan', ChoiceType::class, array(
-                'choices' => array(1 => 'free', 2 => 'small_business', 3 => 'corporate'),
+            ->add('billing_plan', ChoiceType::class, [
+                'choices' => [1 => 'free', 2 => 'small_business', 3 => 'corporate'],
                 'expanded' => true,
-            ))
+            ])
             ->getForm();
 
         $form->handleRequest($request);
@@ -99,7 +99,7 @@ example::
         }
 
         // display the form
-        return $app['twig']->render('index.twig', array('form' => $form->createView()));
+        return $app['twig']->render('index.twig', ['form' => $form->createView()]);
     });
 
 And here is the ``index.twig`` form template (requires ``symfony/twig-bridge``):
@@ -121,22 +121,22 @@ form by adding constraints on the fields::
     use Symfony\Component\Validator\Constraints as Assert;
 
     $app->register(new Silex\Provider\ValidatorServiceProvider());
-    $app->register(new Silex\Provider\TranslationServiceProvider(), array(
-        'translator.domains' => array(),
-    ));
+    $app->register(new Silex\Provider\TranslationServiceProvider(), [
+        'translator.domains' => [],
+    ]);
 
     $form = $app['form.factory']->createBuilder(FormType::class)
-        ->add('name', TextType::class, array(
-            'constraints' => array(new Assert\NotBlank(), new Assert\Length(array('min' => 5)))
+        ->add('name', TextType::class, [
+            'constraints' => [new Assert\NotBlank(), new Assert\Length(['min' => 5])]
         ))
-        ->add('email', TextType::class, array(
+        ->add('email', TextType::class, [
             'constraints' => new Assert\Email()
-        ))
-        ->add('billing_plan', ChoiceType::class, array(
-            'choices' => array(1 => 'free', 2 => 'small_business', 3 => 'corporate'),
+        ])
+        ->add('billing_plan', ChoiceType::class, [
+            'choices' => [1 => 'free', 2 => 'small_business', 3 => 'corporate'],
             'expanded' => true,
-            'constraints' => new Assert\Choice(array(1, 2, 3)),
-        ))
+            'constraints' => new Assert\Choice([1, 2, 3]),
+        ])
         ->getForm();
 
 You can register form types by extending ``form.types``::

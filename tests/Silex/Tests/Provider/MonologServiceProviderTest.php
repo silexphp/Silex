@@ -72,10 +72,10 @@ class MonologServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->register(new MonologServiceProvider(), array(
+        $app->register(new MonologServiceProvider(), [
             'monolog.formatter' => new JsonFormatter(),
             'monolog.logfile' => 'php://memory',
-        ));
+        ]);
 
         $this->assertInstanceOf('Monolog\Formatter\JsonFormatter', $app['monolog.handler']->getFormatter());
     }
@@ -137,15 +137,15 @@ class MonologServiceProviderTest extends \PHPUnit_Framework_TestCase
         $app = $this->getApplication();
         $app['monolog.level'] = Logger::ERROR;
 
-        $app->register(new \Silex\Provider\SecurityServiceProvider(), array(
-            'security.firewalls' => array(
-                'admin' => array(
+        $app->register(new \Silex\Provider\SecurityServiceProvider(), [
+            'security.firewalls' => [
+                'admin' => [
                     'pattern' => '^/admin',
                     'http' => true,
-                    'users' => array(),
-                ),
-            ),
-        ));
+                    'users' => [],
+                ],
+            ],
+        ]);
 
         $app->get('/admin', function () {
             return 'SECURE!';
@@ -204,14 +204,14 @@ class MonologServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->register(new MonologServiceProvider(), array(
+        $app->register(new MonologServiceProvider(), [
             'monolog.handler' => function () use ($app) {
                 $level = MonologServiceProvider::translateLevel($app['monolog.level']);
 
                 return new TestHandler($level);
             },
             'monolog.logfile' => 'php://memory',
-        ));
+        ]);
 
         return $app;
     }

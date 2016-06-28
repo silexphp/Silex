@@ -29,12 +29,12 @@ class TwigServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->register(new TwigServiceProvider(), array(
-            'twig.templates' => array('hello' => 'Hello {{ name }}!'),
-        ));
+        $app->register(new TwigServiceProvider(), [
+            'twig.templates' => ['hello' => 'Hello {{ name }}!'],
+        ]);
 
         $app->get('/hello/{name}', function ($name) use ($app) {
-            return $app['twig']->render('hello', array('name' => $name));
+            return $app['twig']->render('hello', ['name' => $name]);
         });
 
         $request = Request::create('/hello/john');
@@ -45,9 +45,9 @@ class TwigServiceProviderTest extends \PHPUnit_Framework_TestCase
     public function testLoaderPriority()
     {
         $app = new Application();
-        $app->register(new TwigServiceProvider(), array(
-            'twig.templates' => array('foo' => 'foo'),
-        ));
+        $app->register(new TwigServiceProvider(), [
+            'twig.templates' => ['foo' => 'foo'],
+        ]);
         $loader = $this->getMock('\Twig_LoaderInterface');
         $loader->expects($this->never())->method('getSource');
         $app['twig.loader.filesystem'] = function ($app) use ($loader) {
@@ -60,12 +60,12 @@ class TwigServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
         $app['request_stack']->push(Request::create('/dir1/dir2/file'));
-        $app->register(new TwigServiceProvider(), array(
-            'twig.templates' => array(
+        $app->register(new TwigServiceProvider(), [
+            'twig.templates' => [
                 'absolute' => '{{ absolute_url("foo.css") }}',
                 'relative' => '{{ relative_path("/dir1/foo.css") }}',
-            ),
-        ));
+            ],
+        ]);
 
         $this->assertEquals('http://localhost/dir1/dir2/foo.css', $app['twig']->render('absolute'));
         $this->assertEquals('../foo.css', $app['twig']->render('relative'));
@@ -74,12 +74,12 @@ class TwigServiceProviderTest extends \PHPUnit_Framework_TestCase
     public function testAssetIntegration()
     {
         $app = new Application();
-        $app->register(new TwigServiceProvider(), array(
-            'twig.templates' => array('hello' => '{{ asset("/foo.css") }}'),
-        ));
-        $app->register(new AssetServiceProvider(), array(
+        $app->register(new TwigServiceProvider(), [
+            'twig.templates' => ['hello' => '{{ asset("/foo.css") }}'],
+        ]);
+        $app->register(new AssetServiceProvider(), [
             'assets.version' => 1,
-        ));
+        ]);
 
         $this->assertEquals('/foo.css?1', $app['twig']->render('hello'));
     }
@@ -89,9 +89,9 @@ class TwigServiceProviderTest extends \PHPUnit_Framework_TestCase
         $app = new Application();
         $app['request_stack']->push(Request::create('/?name=Fabien'));
 
-        $app->register(new TwigServiceProvider(), array(
-            'twig.templates' => array('hello' => '{{ global.request.get("name") }}'),
-        ));
+        $app->register(new TwigServiceProvider(), [
+            'twig.templates' => ['hello' => '{{ global.request.get("name") }}'],
+        ]);
 
         $this->assertEquals('Fabien', $app['twig']->render('hello'));
     }

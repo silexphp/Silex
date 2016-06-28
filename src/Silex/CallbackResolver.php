@@ -49,7 +49,7 @@ class CallbackResolver
     {
         if (preg_match(static::SERVICE_PATTERN, $name)) {
             list($service, $method) = explode(':', $name, 2);
-            $callback = array($this->app[$service], $method);
+            $callback = [$this->app[$service], $method];
         } else {
             $service = $name;
             $callback = $this->app[$name];

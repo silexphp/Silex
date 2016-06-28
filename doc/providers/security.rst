@@ -60,9 +60,9 @@ Registering
 
 .. code-block:: php
 
-    $app->register(new Silex\Provider\SecurityServiceProvider(), array(
+    $app->register(new Silex\Provider\SecurityServiceProvider(), [
         'security.firewalls' => // see below
-    ));
+    ]);
 
 .. note::
 
@@ -125,16 +125,16 @@ Securing a Path with HTTP Authentication
 The following configuration uses HTTP basic authentication to secure URLs
 under ``/admin/``::
 
-    $app['security.firewalls'] = array(
-        'admin' => array(
+    $app['security.firewalls'] = [
+        'admin' => [
             'pattern' => '^/admin',
             'http' => true,
-            'users' => array(
+            'users' => [
                 // raw password is foo
-                'admin' => array('ROLE_ADMIN', '$2y$10$3i9/lVd8UOFIJ6PAMFt8gu3/r5g0qeCJvoSlLCsvMTythye19F77a'),
-            ),
-        ),
-    );
+                'admin' => ['ROLE_ADMIN', '$2y$10$3i9/lVd8UOFIJ6PAMFt8gu3/r5g0qeCJvoSlLCsvMTythye19F77a'],
+            ],
+        ],
+    ];
 
 The ``pattern`` is a regular expression on the URL path; the ``http`` setting
 tells the security layer to use HTTP basic authentication and the ``users``
@@ -148,12 +148,12 @@ for the ``pattern`` option::
 
     use Symfony/Component/HttpFoundation/RequestMatcher;
 
-    $app['security.firewalls'] = array(
-        'admin' => array(
+    $app['security.firewalls'] = [
+        'admin' => [
             'pattern' => new RequestMatcher('^/admin', 'example.com', 'POST'),
             // ...
-        ),
-    );
+        ],
+    ];
 
 Each user is defined with the following information:
 
@@ -209,15 +209,15 @@ two parameters:
 
 Here is how to secure all URLs under ``/admin/`` with a form::
 
-    $app['security.firewalls'] = array(
-        'admin' => array(
+    $app['security.firewalls'] = [
+        'admin' => [
             'pattern' => '^/admin/',
-            'form' => array('login_path' => '/login', 'check_path' => '/admin/login_check'),
-            'users' => array(
-                'admin' => array('ROLE_ADMIN', '$2y$10$3i9/lVd8UOFIJ6PAMFt8gu3/r5g0qeCJvoSlLCsvMTythye19F77a'),
-            ),
-        ),
-    );
+            'form' => ['login_path' => '/login', 'check_path' => '/admin/login_check'],
+            'users' => [
+                'admin' => ['ROLE_ADMIN', '$2y$10$3i9/lVd8UOFIJ6PAMFt8gu3/r5g0qeCJvoSlLCsvMTythye19F77a'],
+            ],
+        ],
+    ];
 
 Always keep in mind the following two golden rules:
 
@@ -232,10 +232,10 @@ For the login form to work, create a controller like the following::
     use Symfony\Component\HttpFoundation\Request;
 
     $app->get('/login', function(Request $request) use ($app) {
-        return $app['twig']->render('login.html', array(
+        return $app['twig']->render('login.html', [
             'error'         => $app['security.last_error']($request),
             'last_username' => $app['session']->get('_security.last_username'),
-        ));
+        ]);
     });
 
 The ``error`` and ``last_username`` variables contain the last authentication
@@ -271,18 +271,18 @@ and a form to secure your website administration area).
 
 It's also useful when you want to secure all URLs except the login form::
 
-    $app['security.firewalls'] = array(
-        'login' => array(
+    $app['security.firewalls'] = [
+        'login' => [
             'pattern' => '^/login$',
-        ),
-        'secured' => array(
+        ],
+        'secured' => [
             'pattern' => '^.*$',
-            'form' => array('login_path' => '/login', 'check_path' => '/login_check'),
-            'users' => array(
-                'admin' => array('ROLE_ADMIN', '$2y$10$3i9/lVd8UOFIJ6PAMFt8gu3/r5g0qeCJvoSlLCsvMTythye19F77a'),
-            ),
-        ),
-    );
+            'form' => ['login_path' => '/login', 'check_path' => '/login_check'],
+            'users' => [
+                'admin' => ['ROLE_ADMIN', '$2y$10$3i9/lVd8UOFIJ6PAMFt8gu3/r5g0qeCJvoSlLCsvMTythye19F77a'],
+            ],
+        ],
+    ];
 
 The order of the firewall configurations is significant as the first one to
 match wins. The above configuration first ensures that the ``/login`` URL is
@@ -293,15 +293,15 @@ not secured (no authentication settings), and then it secures all other URLs.
     You can toggle all registered authentication mechanisms for a particular
     area on and off with the ``security`` flag::
 
-        $app['security.firewalls'] = array(
-            'api' => array(
+        $app['security.firewalls'] = [
+            'api' => [
                 'pattern' => '^/api',
                 'security' => $app['debug'] ? false : true,
                 'wsse' => true,
 
                 // ...
-            ),
-        );
+            ],
+        ];
 
 Adding a Logout
 ~~~~~~~~~~~~~~~
@@ -310,15 +310,15 @@ When using a form for authentication, you can let users log out if you add the
 ``logout`` setting, where ``logout_path`` must match the main firewall
 pattern::
 
-    $app['security.firewalls'] = array(
-        'secured' => array(
+    $app['security.firewalls'] = [
+        'secured' => [
             'pattern' => '^/admin/',
-            'form' => array('login_path' => '/login', 'check_path' => '/admin/login_check'),
-            'logout' => array('logout_path' => '/admin/logout', 'invalidate_session' => true),
+            'form' => ['login_path' => '/login', 'check_path' => '/admin/login_check'],
+            'logout' => ['logout_path' => '/admin/logout', 'invalidate_session' => true],
 
             // ...
-        ),
-    );
+        ],
+    ];
 
 A route is automatically generated, based on the configured path (all ``/``
 are replaced with ``_`` and the leading ``/`` is stripped):
@@ -334,13 +334,13 @@ When securing only some parts of your website, the user information are not
 available in non-secured areas. To make the user accessible in such areas,
 enabled the ``anonymous`` authentication mechanism::
 
-    $app['security.firewalls'] = array(
-        'unsecured' => array(
+    $app['security.firewalls'] = [
+        'unsecured' => [
             'anonymous' => true,
 
             // ...
-        ),
-    );
+        ],
+    ];
 
 When enabling the anonymous setting, a user will always be accessible from the
 security context; if the user is not authenticated, it returns the ``anon.``
@@ -392,13 +392,13 @@ Impersonating a User
 If you want to be able to switch to another user (without knowing the user
 credentials), enable the ``switch_user`` authentication strategy::
 
-    $app['security.firewalls'] = array(
-        'unsecured' => array(
-            'switch_user' => array('parameter' => '_switch_user', 'role' => 'ROLE_ALLOWED_TO_SWITCH'),
+    $app['security.firewalls'] = [
+        'unsecured' => [
+            'switch_user' => ['parameter' => '_switch_user', 'role' => 'ROLE_ALLOWED_TO_SWITCH'],
 
             // ...
-        ),
-    );
+        ],
+    ];
 
 Switching to another user is now a matter of adding the ``_switch_user`` query
 parameter to any URL when logged in as a user who has the
@@ -427,9 +427,9 @@ Defining a Role Hierarchy
 Defining a role hierarchy allows to automatically grant users some additional
 roles::
 
-    $app['security.role_hierarchy'] = array(
-        'ROLE_ADMIN' => array('ROLE_USER', 'ROLE_ALLOWED_TO_SWITCH'),
-    );
+    $app['security.role_hierarchy'] = [
+        'ROLE_ADMIN' => ['ROLE_USER', 'ROLE_ALLOWED_TO_SWITCH'],
+    ];
 
 With this configuration, all users with the ``ROLE_ADMIN`` role also
 automatically have the ``ROLE_USER`` and ``ROLE_ALLOWED_TO_SWITCH`` roles.
@@ -441,10 +441,10 @@ Roles are a great way to adapt the behavior of your website depending on
 groups of users, but they can also be used to further secure some areas by
 defining access rules::
 
-    $app['security.access_rules'] = array(
-        array('^/admin', 'ROLE_ADMIN', 'https'),
-        array('^.*$', 'ROLE_USER'),
-    );
+    $app['security.access_rules'] = [
+        ['^/admin', 'ROLE_ADMIN', 'https'],
+        ['^.*$', 'ROLE_USER'],
+    ];
 
 With the above configuration, users must have the ``ROLE_ADMIN`` to access the
 ``/admin`` section of the website, and ``ROLE_USER`` for everything else.
@@ -492,7 +492,7 @@ store the users::
 
         public function loadUserByUsername($username)
         {
-            $stmt = $this->conn->executeQuery('SELECT * FROM users WHERE username = ?', array(strtolower($username)));
+            $stmt = $this->conn->executeQuery('SELECT * FROM users WHERE username = ?', [strtolower($username)]);
 
             if (!$user = $stmt->fetch()) {
                 throw new UsernameNotFoundException(sprintf('Username "%s" does not exist.', $username));
@@ -529,26 +529,26 @@ sample users::
     $schema = $app['db']->getSchemaManager();
     if (!$schema->tablesExist('users')) {
         $users = new Table('users');
-        $users->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
-        $users->setPrimaryKey(array('id'));
-        $users->addColumn('username', 'string', array('length' => 32));
-        $users->addUniqueIndex(array('username'));
-        $users->addColumn('password', 'string', array('length' => 255));
-        $users->addColumn('roles', 'string', array('length' => 255));
+        $users->addColumn('id', 'integer', ['unsigned' => true, 'autoincrement' => true]);
+        $users->setPrimaryKey(['id']);
+        $users->addColumn('username', 'string', ['length' => 32]);
+        $users->addUniqueIndex(['username']);
+        $users->addColumn('password', 'string', ['length' => 255]);
+        $users->addColumn('roles', 'string', ['length' => 255]);
 
         $schema->createTable($users);
 
-        $app['db']->insert('users', array(
+        $app['db']->insert('users', [
           'username' => 'fabien',
           'password' => '$2y$10$3i9/lVd8UOFIJ6PAMFt8gu3/r5g0qeCJvoSlLCsvMTythye19F77a',
           'roles' => 'ROLE_USER'
-        ));
+        ]);
 
-        $app['db']->insert('users', array(
+        $app['db']->insert('users', [
           'username' => 'admin',
           'password' => '$2y$10$3i9/lVd8UOFIJ6PAMFt8gu3/r5g0qeCJvoSlLCsvMTythye19F77a',
           'roles' => 'ROLE_ADMIN'
-        ));
+        ]);
     }
 
 .. tip::
@@ -610,7 +610,7 @@ use in your configuration::
             return new WsseListener($app['security.token_storage'], $app['security.authentication_manager']);
         };
 
-        return array(
+        return [
             // the authentication provider id
             'security.authentication_provider.'.$name.'.wsse',
             // the authentication listener id
@@ -619,21 +619,21 @@ use in your configuration::
             null,
             // the position of the listener in the stack
             'pre_auth'
-        );
+        ];
     });
 
 You can now use it in your configuration like any other built-in
 authentication provider::
 
-    $app->register(new Silex\Provider\SecurityServiceProvider(), array(
-        'security.firewalls' => array(
-            'default' => array(
+    $app->register(new Silex\Provider\SecurityServiceProvider(), [
+        'security.firewalls' => [
+            'default' => [
                 'wsse' => true,
 
                 // ...
-            ),
-        ),
-    ));
+            ],
+        ],
+    ]);
 
 Instead of ``true``, you can also define an array of options that customize
 the behavior of your authentication factory; it will be passed as the second
@@ -657,14 +657,14 @@ the user. However, if you use certificates, HTTP authentication, WSSE and so
 on, the credentials are sent for each request. In that case, you can turn off
 persistence by activating the ``stateless`` authentication flag::
 
-    $app['security.firewalls'] = array(
-        'default' => array(
+    $app['security.firewalls'] = [
+        'default' => [
             'stateless' => true,
             'wsse' => true,
 
             // ...
-        ),
-    );
+        ],
+    ];
 
 Traits
 ------

@@ -28,18 +28,18 @@ Before registering this service provider, you must register the
     $app->register(new Silex\Provider\SecurityServiceProvider());
     $app->register(new Silex\Provider\RememberMeServiceProvider());
 
-    $app['security.firewalls'] = array(
-        'my-firewall' => array(
+    $app['security.firewalls'] = [
+        'my-firewall' => [
             'pattern'     => '^/secure$',
             'form'        => true,
             'logout'      => true,
-            'remember_me' => array(
+            'remember_me' => [
                 'key'                => 'Choose_A_Unique_Random_Key',
                 'always_remember_me' => true,
                 /* Other options */
-            ),
-            'users' => array( /* ... */ ),
-        ),
+            ],
+            'users' => [ /* ... */ ],
+        ],
     );
 
 Options

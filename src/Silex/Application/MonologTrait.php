@@ -29,7 +29,7 @@ trait MonologTrait
      *
      * @return bool Whether the record has been processed
      */
-    public function log($message, array $context = array(), $level = Logger::INFO)
+    public function log($message, array $context = [], $level = Logger::INFO)
     {
         return $this['monolog']->addRecord($level, $message, $context);
     }

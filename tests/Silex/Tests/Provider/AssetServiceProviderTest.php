@@ -19,14 +19,14 @@ class AssetServiceProviderTest extends \PHPUnit_Framework_TestCase
     public function testGenerateAssetUrl()
     {
         $app = new Application();
-        $app->register(new AssetServiceProvider(), array(
+        $app->register(new AssetServiceProvider(), [
             'assets.version' => 'v1',
             'assets.version_format' => '%s?version=%s',
-            'assets.named_packages' => array(
-                'css' => array('version' => 'css2', 'base_path' => '/whatever-makes-sense'),
-                'images' => array('base_urls' => array('https://img.example.com')),
-            ),
-        ));
+            'assets.named_packages' => [
+                'css' => ['version' => 'css2', 'base_path' => '/whatever-makes-sense'],
+                'images' => ['base_urls' => ['https://img.example.com']],
+            ],
+        ]);
 
         $this->assertEquals('/foo.png?version=v1', $app['assets.packages']->getUrl('/foo.png'));
         $this->assertEquals('/whatever-makes-sense/foo.css?css2', $app['assets.packages']->getUrl('/foo.css', 'css'));
