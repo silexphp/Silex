@@ -57,9 +57,7 @@ The **minimum configuration** to get your application running under Nginx is:
         # location ~ ^/(index|index_dev)\.php(/|$) {
         location ~ ^/index\.php(/|$) {
             # the ubuntu default
-            fastcgi_pass   unix:/var/run/php/php7.0-fpm.sock;
-            # for running php5
-            # fastcgi_pass   unix:/var/run/php5-fpm.sock;
+            fastcgi_pass   unix:/var/run/php/phpX.X-fpm.sock;
             # for running on centos
             #fastcgi_pass   unix:/var/run/php-fpm/www.sock;
     
