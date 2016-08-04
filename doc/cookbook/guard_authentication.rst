@@ -52,7 +52,7 @@ AbstractGuardAuthenticator. This requires you to implement six methods:
             }
 
             // Parse the header or ignore it if the format is incorrect.
-            if (false === strpos(':', $token)) {
+            if (false === strpos($token, ':')) {
                 return;
             }
             list($username, $secret) = explode(':', $token, 2);
