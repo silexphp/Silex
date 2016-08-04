@@ -106,7 +106,7 @@ class MonologServiceProvider implements ServiceProviderInterface, BootableProvid
         $app['monolog.permission'] = null;
         $app['monolog.exception.logger_filter'] = null;
         $app['monolog.logfile'] = null;
-        $app['monolog.use_error_handler'] = function($app) {
+        $app['monolog.use_error_handler'] = function ($app) {
             return !$app['debug'];
         };
     }
