@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0.3 (2016-XX-XX)
+2.0.3 (2016-08-22)
 ------------------
 
 * fixed lazy evaluation of 'monolog.use_error_handler'
