@@ -3,6 +3,12 @@ Internals
 
 This chapter will tell you how Silex works internally.
 
+Architecture
+------------
+
+.. image:: architecture.png
+   :width: 600px
+
 Silex
 -----
 
