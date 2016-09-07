@@ -14,10 +14,13 @@ namespace Silex\Provider;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Silex\ConstraintValidatorFactory;
-use Symfony\Component\Validator\Validator;
+use Symfony\Component\Validator\Validator as LegacyValidator;
+use Symfony\Component\Validator\Context\ExecutionContextFactory;
 use Symfony\Component\Validator\DefaultTranslator;
 use Symfony\Component\Validator\Mapping\ClassMetadataFactory;
+use Symfony\Component\Validator\Mapping\Factory\LazyLoadingMetadataFactory
 use Symfony\Component\Validator\Mapping\Loader\StaticMethodLoader;
+use Symfony\Component\Validator\Validator\RecursiveValidator;
 
 /**
  * Symfony Validator component Provider.
@@ -36,14 +39,47 @@ class ValidatorServiceProvider implements ServiceProviderInterface
                     $app['translator']->addResource('xliff', $file, $app['locale'], 'validators');
                 }
             }
+            
+            if (isset($app['use_refactorized_validator']) && $app['use_refactorized_validator'] === true) {
+                if (!class_exists('Symfony\\Component\\Validator\\Validator\\RecursiveValidator')) {
+                    throw new \LogicException('Your symfony version does not support the refactorized validator');
+                }
+                
+                return new RecursiveValidator(
+                    $app['validator.execution_context.factory'],
+                    $app['validator.metadata.factory'],
+                    $app['validator.validator_factory'],
+                    $app['validator.object_initializers']
+                );
+            }
 
-            return new Validator(
+            return new LegacyValidator(
                 $app['validator.mapping.class_metadata_factory'],
                 $app['validator.validator_factory'],
                 isset($app['translator']) ? $app['translator'] : new DefaultTranslator(),
                 'validators',
                 $app['validator.object_initializers']
             );
+        });
+
+        $app['validator.execution_context.factory'] = $app->share(function ($app) {
+            if (!class_exists('Symfony\\Component\\Validator\\Context\\ExecutionContextFactory')) {
+                throw new \LogicException('Your symfony version does not support the ExecutionContextFactory');
+            }
+            
+            // according to the documentation, 
+            // a validator should use the validators
+            // domain, so we use it for the execution
+            // context
+            return new ExecutionContextFactory($app['translator'], 'validators');
+        });
+        
+        $app['validator.metadata.factory'] = $app->share(function ($app) {
+            if (!class_exists('Symfony\\Component\\Validator\\Mapping\\Factory\\LazyLoadingMetadataFactory')) {
+                throw new \LogicException('Your symfony version does not support the LazyLoadingMetadataFactory');
+            }
+            
+            return new LazyLoadingMetadataFactory(new StaticMethodLoader());
         });
 
         $app['validator.mapping.class_metadata_factory'] = $app->share(function ($app) {
