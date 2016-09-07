@@ -5,7 +5,9 @@ By default, the :doc:`SessionServiceProvider </providers/session>` writes
 session information in files using Symfony2 NativeFileSessionStorage. Most
 medium to large websites use a database to store sessions instead of files,
 because databases are easier to use and scale in a multi-webserver
-environment.
+environment. While using multi-webserver environment with transactional
+queries remember to change the query mode for saving session information
+in the database.
 
 Symfony2's `NativeSessionStorage
 <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/NativeSessionStorage.html>`_
@@ -33,6 +35,7 @@ With a dedicated PDO service
         'db_id_col'     => 'session_id',
         'db_data_col'   => 'session_value',
         'db_time_col'   => 'session_time',
+        'lock_mode'     => PdoSessionHandler::LOCK_TRANSACTIONAL,
     );
 
     $app['pdo'] = $app->share(function () use ($app) {
@@ -68,6 +71,7 @@ have to make another database connection, simply pass the getWrappedConnection m
         'db_id_col'     => 'session_id',
         'db_data_col'   => 'session_value',
         'db_time_col'   => 'session_time',
+        'lock_mode'     => PdoSessionHandler::LOCK_TRANSACTIONAL,
     );
 
     $app['session.storage.handler'] = $app->share(function () use ($app) {
