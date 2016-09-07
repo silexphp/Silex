@@ -27,6 +27,7 @@ use Silex\Exception\ControllerFrozenException;
  * @method Controller requireHttps()
  * @method Controller before(mixed $callback)
  * @method Controller after(mixed $callback)
+ *
  * @author Igor Wiedler <igor@wiedler.ch>
  */
 class Controller
@@ -107,11 +108,15 @@ class Controller
     public function generateRouteName($prefix)
     {
         $requirements = $this->route->getRequirements();
-        $method = isset($requirements['_method']) ? $requirements['_method'] : '';
 
-        $routeName = $prefix.$method.$this->route->getPath();
+        $method = isset($requirements['_method']) ? $requirements['_method'].'_' : '';
+
+        $routeName = $method.$prefix.$this->route->getPath();
         $routeName = str_replace(array('/', ':', '|', '-'), '_', $routeName);
         $routeName = preg_replace('/[^a-z0-9A-Z_.]+/', '', $routeName);
+
+        // Collapse consecutive underscores down into a single underscore.
+        $routeName = preg_replace('/_+/', '_', $routeName);
 
         return $routeName;
     }
