@@ -54,12 +54,12 @@ Registering
 
 .. code-block:: php
 
-    $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
-        'db.options' => array(
+    $app->register(new Silex\Provider\DoctrineServiceProvider(), [
+        'db.options' => [
             'driver'   => 'pdo_sqlite',
             'path'     => __DIR__.'/app.db',
-        ),
-    ));
+        ],
+    ]);
 
 .. note::
 
@@ -77,7 +77,7 @@ example::
 
     $app->get('/blog/{id}', function ($id) use ($app) {
         $sql = "SELECT * FROM posts WHERE id = ?";
-        $post = $app['db']->fetchAssoc($sql, array((int) $id));
+        $post = $app['db']->fetchAssoc($sql, [(int) $id]);
 
         return  "<h1>{$post['title']}</h1>".
                 "<p>{$post['body']}</p>";
@@ -91,26 +91,26 @@ configure the data sources, replace the **db.options** with **dbs.options**.
 **dbs.options** is an array of configurations where keys are connection names
 and values are options::
 
-    $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
-        'dbs.options' => array (
-            'mysql_read' => array(
+    $app->register(new Silex\Provider\DoctrineServiceProvider(), [
+        'dbs.options' => [
+            'mysql_read' => [
                 'driver'    => 'pdo_mysql',
                 'host'      => 'mysql_read.someplace.tld',
                 'dbname'    => 'my_database',
                 'user'      => 'my_username',
                 'password'  => 'my_password',
                 'charset'   => 'utf8mb4',
-            ),
-            'mysql_write' => array(
+            ],
+            'mysql_write' => [
                 'driver'    => 'pdo_mysql',
                 'host'      => 'mysql_write.someplace.tld',
                 'dbname'    => 'my_database',
                 'user'      => 'my_username',
                 'password'  => 'my_password',
                 'charset'   => 'utf8mb4',
-            ),
-        ),
-    ));
+            ],
+        ],
+    ]);
 
 The first registered connection is the default and can simply be accessed as
 you would if there was only one connection. Given the above configuration,
@@ -124,10 +124,10 @@ Using multiple connections::
 
     $app->get('/blog/{id}', function ($id) use ($app) {
         $sql = "SELECT * FROM posts WHERE id = ?";
-        $post = $app['dbs']['mysql_read']->fetchAssoc($sql, array((int) $id));
+        $post = $app['dbs']['mysql_read']->fetchAssoc($sql, [(int) $id]);
 
         $sql = "UPDATE posts SET value = ? WHERE id = ?";
-        $app['dbs']['mysql_write']->executeUpdate($sql, array('newValue', (int) $id));
+        $app['dbs']['mysql_write']->executeUpdate($sql, ['newValue', (int) $id]);
 
         return  "<h1>{$post['title']}</h1>".
                 "<p>{$post['body']}</p>";

@@ -67,10 +67,10 @@ class WebTestCaseTest extends WebTestCase
         $user = 'klaus';
         $pass = '123456';
 
-        $client = $this->createClient(array(
+        $client = $this->createClient([
             'PHP_AUTH_USER' => $user,
             'PHP_AUTH_PW' => $pass,
-        ));
+        ]);
 
         $crawler = $client->request('GET', '/server');
         $this->assertEquals("$user:$pass", $crawler->filter('h1')->text());

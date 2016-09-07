@@ -68,7 +68,7 @@ class SessionServiceProvider implements ServiceProviderInterface, EventListenerP
             return new TestSessionListener($app);
         };
 
-        $app['session.storage.options'] = array();
+        $app['session.storage.options'] = [];
         $app['session.default_locale'] = 'en';
         $app['session.storage.save_path'] = null;
         $app['session.attribute_bag'] = null;

@@ -70,7 +70,7 @@ authenticates a user and creates a session for them::
         $password = $request->server->get('PHP_AUTH_PW');
 
         if ('igor' === $username && 'password' === $password) {
-            $app['session']->set('user', array('username' => $username));
+            $app['session']->set('user', ['username' => $username]);
             return $app->redirect('/account');
         }
 
@@ -100,4 +100,3 @@ setting ``session.storage.handler`` to null. You will have to configure the
 .. code-block:: php
 
     $app['session.storage.handler'] = null;
-

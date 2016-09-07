@@ -35,7 +35,7 @@ class Route extends BaseRoute
      * @param string|array $schemes      A required URI scheme or an array of restricted schemes
      * @param string|array $methods      A required HTTP method or an array of restricted methods
      */
-    public function __construct($path = '/', array $defaults = array(), array $requirements = array(), array $options = array(), $host = '', $schemes = array(), $methods = array())
+    public function __construct($path = '/', array $defaults = [], array $requirements = [], array $options = [], $host = '', $schemes = [], $methods = [])
     {
         // overridden constructor to make $path optional
         parent::__construct($path, $defaults, $requirements, $options, $host, $schemes, $methods);

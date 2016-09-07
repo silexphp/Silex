@@ -51,6 +51,6 @@ class ExceptionHandler implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(KernelEvents::EXCEPTION => array('onSilexError', -255));
+        return [KernelEvents::EXCEPTION => ['onSilexError', -255]];
     }
 }

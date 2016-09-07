@@ -33,7 +33,7 @@ trait FormTrait
      *
      * @return FormBuilder
      */
-    public function form($data = null, array $options = array(), $type = null)
+    public function form($data = null, array $options = [], $type = null)
     {
         return $this['form.factory']->createBuilder($type ?: FormType::class, $data, $options);
     }
@@ -48,7 +48,7 @@ trait FormTrait
      *
      * @return FormBuilder
      */
-    public function namedForm($name, $data = null, array $options = array(), $type = null)
+    public function namedForm($name, $data = null, array $options = [], $type = null)
     {
         return $this['form.factory']->createNamedBuilder($name, $type ?: FormType::class, $data, $options);
     }

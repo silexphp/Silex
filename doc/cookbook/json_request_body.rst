@@ -59,7 +59,7 @@ replace the request data on the ``$request`` object::
     $app->before(function (Request $request) {
         if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
             $data = json_decode($request->getContent(), true);
-            $request->request->replace(is_array($data) ? $data : array());
+            $request->request->replace(is_array($data) ? $data : []);
         }
     });
 
@@ -73,10 +73,10 @@ return the post object, including its ``id``, as JSON::
     use Symfony\Component\HttpFoundation\Response;
 
     $app->post('/blog/posts', function (Request $request) use ($app) {
-        $post = array(
+        $post = [
             'title' => $request->request->get('title'),
             'body'  => $request->request->get('body'),
-        );
+        ];
 
         $post['id'] = createPost($post);
 

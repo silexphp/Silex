@@ -22,11 +22,11 @@ application::
 You can also provide some parameters as a second argument. These will be set
 **after** the provider is registered, but **before** it is booted::
 
-    $app->register(new Acme\DatabaseServiceProvider(), array(
+    $app->register(new Acme\DatabaseServiceProvider(), [
         'database.dsn'      => 'mysql:host=localhost;dbname=myapp',
         'database.user'     => 'root',
         'database.password' => 'secret_root_password',
-    ));
+    ]);
 
 Conventions
 ~~~~~~~~~~~
@@ -93,7 +93,7 @@ Providers must implement the ``Pimple\ServiceProviderInterface``::
 
 This is very straight forward, just create a new class that implements the
 register method. In the ``register()`` method, you can define services on the
-application which then may make use of other services and parameters. 
+application which then may make use of other services and parameters.
 
 .. tip::
 
@@ -148,13 +148,13 @@ Here is an example of such a provider::
 
         public function boot(Application $app)
         {
-            // do something 
+            // do something
         }
 
         public function subscribe(Container $app, EventDispatcherInterface $dispatcher)
         {
             $dispatcher->addListener(KernelEvents::REQUEST, function(FilterResponseEvent $event) use ($app) {
-                // do something 
+                // do something
             });
         }
     }
@@ -169,9 +169,9 @@ You can now use this provider as follows::
 
     $app = new Silex\Application();
 
-    $app->register(new Acme\HelloServiceProvider(), array(
+    $app->register(new Acme\HelloServiceProvider(), [
         'hello.default_name' => 'Igor',
-    ));
+    ]);
 
     $app->get('/hello', function (Request $request) use ($app) {
         $name = $request->get('name');

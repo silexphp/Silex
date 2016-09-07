@@ -27,14 +27,14 @@ Parameters
 
   Example usage::
 
-    $app['swiftmailer.options'] = array(
+    $app['swiftmailer.options'] = [
         'host' => 'host',
         'port' => '25',
         'username' => 'username',
         'password' => 'password',
         'encryption' => null,
         'auth_mode' => null
-    );
+    ];
 
 * **swiftmailer.sender_address**: If set, all messages will be delivered with
   this address as the "return path" address.
@@ -98,8 +98,8 @@ The Swiftmailer provider provides a ``mailer`` service::
     $app->post('/feedback', function (Request $request) use ($app) {
         $message = \Swift_Message::newInstance()
             ->setSubject('[YourSite] Feedback')
-            ->setFrom(array('noreply@yoursite.com'))
-            ->setTo(array('feedback@yoursite.com'))
+            ->setFrom(['noreply@yoursite.com'])
+            ->setTo(['feedback@yoursite.com'])
             ->setBody($request->get('message'));
 
         $app['mailer']->send($message);
@@ -138,8 +138,8 @@ Traits
 
     $app->mail(\Swift_Message::newInstance()
         ->setSubject('[YourSite] Feedback')
-        ->setFrom(array('noreply@yoursite.com'))
-        ->setTo(array('feedback@yoursite.com'))
+        ->setFrom(['noreply@yoursite.com'])
+        ->setTo(['feedback@yoursite.com'])
         ->setBody($request->get('message')));
 
 For more information, check out the `Swift Mailer documentation

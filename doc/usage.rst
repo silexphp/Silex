@@ -59,7 +59,7 @@ definitions, call the ``run`` method on your application::
 
         use Symfony\Component\HttpFoundation\Request;
 
-        Request::setTrustedProxies(array($ip));
+        Request::setTrustedProxies([$ip]);
         $app->run();
 
 Routing
@@ -89,14 +89,14 @@ Example GET Route
 
 Here is an example definition of a ``GET`` route::
 
-    $blogPosts = array(
-        1 => array(
+    $blogPosts = [
+        1 => [
             'date'      => '2011-03-29',
             'author'    => 'igorw',
             'title'     => 'Using Silex',
             'body'      => '...',
-        ),
-    );
+        ],
+    ];
 
     $app->get('/blog', function () use ($blogPosts) {
         $output = '';
@@ -525,7 +525,7 @@ setting a more specific type hint for the Closure argument::
     response won't work. If you want to overwrite the status code, set the
     ``X-Status-Code`` header::
 
-        return new Response('Error', 404 /* ignored */, array('X-Status-Code' => 200));
+        return new Response('Error', 404 /* ignored */, ['X-Status-Code' => 200]);
 
 If you want to use a separate error handler for logging, make sure you register
 it with a higher priority than response error handlers, because once a response
@@ -587,7 +587,7 @@ making them a good candidate for basic content negotiation::
 
     $app->view(function (array $controllerResult, Request $request) use ($app) {
         $acceptHeader = $request->headers->get('Accept');
-        $bestFormat = $app['negotiator']->getBestFormat($acceptHeader, array('json', 'xml'));
+        $bestFormat = $app['negotiator']->getBestFormat($acceptHeader, ['json', 'xml']);
 
         if ('json' === $bestFormat) {
             return new JsonResponse($controllerResult);
@@ -660,7 +660,7 @@ response for you::
         $user = getUser($id);
 
         if (!$user) {
-            $error = array('message' => 'The user was not found.');
+            $error = ['message' => 'The user was not found.'];
 
             return $app->json($error, 404);
         }
@@ -683,7 +683,7 @@ want to buffer the data being sent::
             readfile($file);
         };
 
-        return $app->stream($stream, 200, array('Content-Type' => 'image/png'));
+        return $app->stream($stream, 200, ['Content-Type' => 'image/png']);
     });
 
 If you need to send chunks, make sure you call ``ob_flush`` and ``flush``
@@ -794,7 +794,7 @@ Cross-Site-Scripting attacks.
       $app->get('/name.json', function (Request $request, Silex\Application $app) {
           $name = $request->get('name');
 
-          return $app->json(array('name' => $name));
+          return $app->json(['name' => $name]);
       });
 
 .. _download: http://silex.sensiolabs.org/download

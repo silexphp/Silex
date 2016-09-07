@@ -26,14 +26,14 @@ Registering
 
 .. code-block:: php
 
-    $app->register(new Silex\Provider\AssetServiceProvider(), array(
+    $app->register(new Silex\Provider\AssetServiceProvider(), [
         'assets.version' => 'v1',
         'assets.version_format' => '%s?version=%s',
-        'assets.named_packages' => array(
-            'css' => array('version' => 'css2', 'base_path' => '/whatever-makes-sense'),
-            'images' => array('base_urls' => array('https://img.example.com')),
-        ),
-    ));
+        'assets.named_packages' => [
+            'css' => ['version' => 'css2', 'base_path' => '/whatever-makes-sense'],
+            'images' => ['base_urls' => ['https://img.example.com']],
+        ],
+    ]);
 
 .. note::
 

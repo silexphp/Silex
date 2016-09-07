@@ -160,7 +160,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
             return new Response($request->getRequestUri());
         });
 
-        foreach (array('/foo', '/bar') as $path) {
+        foreach (['/foo', '/bar'] as $path) {
             $request = Request::create($path);
             $response = $app->handle($request);
             $this->assertContains($path, $response->getContent());

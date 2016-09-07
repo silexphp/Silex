@@ -41,7 +41,7 @@ holds the master request)::
     use Symfony\Component\HttpFoundation\Request;
     use Symfony\Component\HttpKernel\HttpKernelInterface;
 
-    $subRequest = Request::create('/', 'GET', array(), $request->cookies->all(), array(), $request->server->all());
+    $subRequest = Request::create('/', 'GET', [], $request->cookies->all(), [], $request->server->all());
     if ($request->getSession()) {
         $subRequest->setSession($request->getSession());
     }
@@ -118,7 +118,7 @@ You can prevent that from happening by always prepending the base path when
 constructing a request::
 
     $url = $request->getUriForPath('/');
-    $subRequest = Request::create($url, 'GET', array(), $request->cookies->all(), array(), $request->server->all());
+    $subRequest = Request::create($url, 'GET', [], $request->cookies->all(), [], $request->server->all());
 
 This is something to be aware of when making sub-requests by hand.
 

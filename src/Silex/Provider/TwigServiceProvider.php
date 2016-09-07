@@ -34,10 +34,10 @@ class TwigServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $app)
     {
-        $app['twig.options'] = array();
-        $app['twig.form.templates'] = array('form_div_layout.html.twig');
-        $app['twig.path'] = array();
-        $app['twig.templates'] = array();
+        $app['twig.options'] = [];
+        $app['twig.form.templates'] = ['form_div_layout.html.twig'];
+        $app['twig.path'] = [];
+        $app['twig.templates'] = [];
 
         $app['twig.app_variable'] = function ($app) {
             $var = new AppVariable();
@@ -54,11 +54,11 @@ class TwigServiceProvider implements ServiceProviderInterface
 
         $app['twig'] = function ($app) {
             $app['twig.options'] = array_replace(
-                array(
+                [
                     'charset' => $app['charset'],
                     'debug' => $app['debug'],
                     'strict_variables' => $app['debug'],
-                ), $app['twig.options']
+                ], $app['twig.options']
             );
 
             $twig = $app['twig.environment_factory']($app);
@@ -132,10 +132,10 @@ class TwigServiceProvider implements ServiceProviderInterface
         };
 
         $app['twig.loader'] = function ($app) {
-            return new \Twig_Loader_Chain(array(
+            return new \Twig_Loader_Chain([
                 $app['twig.loader.array'],
                 $app['twig.loader.filesystem'],
-            ));
+            ]);
         };
 
         $app['twig.environment_factory'] = $app->protect(function ($app) {

@@ -40,11 +40,11 @@ class SerializerServiceProvider implements ServiceProviderInterface
         };
 
         $app['serializer.encoders'] = function () {
-            return array(new JsonEncoder(), new XmlEncoder());
+            return [new JsonEncoder(), new XmlEncoder()];
         };
 
         $app['serializer.normalizers'] = function () {
-            return array(new CustomNormalizer(), new GetSetMethodNormalizer());
+            return [new CustomNormalizer(), new GetSetMethodNormalizer()];
         };
     }
 }

@@ -69,7 +69,7 @@ class HttpFragmentServiceProvider implements ServiceProviderInterface, EventList
         $app['fragment.path'] = '/_fragment';
         $app['fragment.renderer.hinclude.global_template'] = null;
         $app['fragment.renderers'] = function ($app) {
-            $renderers = array($app['fragment.renderer.inline'], $app['fragment.renderer.hinclude']);
+            $renderers = [$app['fragment.renderer.inline'], $app['fragment.renderer.hinclude']];
 
             if (isset($app['http_cache.esi'])) {
                 $renderers[] = $app['fragment.renderer.esi'];

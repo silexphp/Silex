@@ -32,10 +32,10 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
 
         list($username, $secret) = explode(':', $token);
 
-        return array(
+        return [
             'username' => $username,
             'secret' => $secret,
-        );
+        ];
     }
 
     public function getUser($credentials, UserProviderInterface $userProvider)
@@ -56,18 +56,18 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
-        $data = array(
+        $data = [
             'message' => strtr($exception->getMessageKey(), $exception->getMessageData()),
-        );
+        ];
 
         return new JsonResponse($data, 403);
     }
 
     public function start(Request $request, AuthenticationException $authException = null)
     {
-        $data = array(
+        $data = [
             'message' => 'Authentication Required',
-        );
+        ];
 
         return new JsonResponse($data, 401);
     }

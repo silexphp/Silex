@@ -6,7 +6,7 @@ often desirable and allows you to configure them independently, allowing for fin
 grained control of where your logging goes and in what detail.
 
 This simple example allows you to quickly configure several monolog instances,
-using the bundled handler, but each with a different channel. 
+using the bundled handler, but each with a different channel.
 
 .. code-block:: php
 
@@ -17,7 +17,7 @@ using the bundled handler, but each with a different channel.
         return $log;
     });
 
-    foreach (array('auth', 'payments', 'stats') as $channel) {
+    foreach (['auth', 'payments', 'stats'] as $channel) {
         $app['monolog.'.$channel] = function ($app) use ($channel) {
             return $app['monolog.factory']($channel);
         };
@@ -53,7 +53,7 @@ the container with the channel name, defaulting to the bundled handler.
 
         $handlers = isset($app['monolog.'.$name.'.handlers'])
             ? $app['monolog.'.$name.'.handlers']
-            : array($app['monolog.handler']);
+            : [$app['monolog.handler']];
 
         foreach ($handlers as $handler) {
             $log->pushHandler($handler);
@@ -63,7 +63,7 @@ the container with the channel name, defaulting to the bundled handler.
     });
 
     $app['monolog.payments.handlers'] = function ($app) {
-        return array(
+        return [
             new StreamHandler(__DIR__.'/../payments.log', Logger::DEBUG),
-        );
+        ];
     };

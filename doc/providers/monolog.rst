@@ -55,9 +55,9 @@ Registering
 
 .. code-block:: php
 
-    $app->register(new Silex\Provider\MonologServiceProvider(), array(
+    $app->register(new Silex\Provider\MonologServiceProvider(), [
         'monolog.logfile' => __DIR__.'/development.log',
-    ));
+    ]);
 
 .. note::
 

@@ -33,15 +33,15 @@ class FormServiceProvider implements ServiceProviderInterface
         }
 
         $app['form.types'] = function ($app) {
-            return array();
+            return [];
         };
 
         $app['form.type.extensions'] = function ($app) {
-            return array();
+            return [];
         };
 
         $app['form.type.guessers'] = function ($app) {
-            return array();
+            return [];
         };
 
         $app['form.extension.csrf'] = function ($app) {
@@ -57,9 +57,9 @@ class FormServiceProvider implements ServiceProviderInterface
         };
 
         $app['form.extensions'] = function ($app) {
-            $extensions = array(
+            $extensions = [
                 new HttpFoundationExtension(),
-            );
+            ];
 
             if (isset($app['csrf.token_manager'])) {
                 $extensions[] = $app['form.extension.csrf'];

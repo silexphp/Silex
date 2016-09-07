@@ -57,10 +57,10 @@ AbstractGuardAuthenticator. This requires you to implement six methods:
             }
             list($username, $secret) = explode(':', $token, 2);
 
-            return array(
+            return [
                 'username' => $username,
                 'secret' => $secret,
-            );
+            ];
         }
 
         public function getUser($credentials, UserProviderInterface $userProvider)
@@ -90,12 +90,12 @@ AbstractGuardAuthenticator. This requires you to implement six methods:
 
         public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
         {
-            $data = array(
+            $data = [
                 'message' => strtr($exception->getMessageKey(), $exception->getMessageData()),
 
                 // or to translate this message
                 // $this->translator->trans($exception->getMessageKey(), $exception->getMessageData())
-            );
+            ];
 
             return new JsonResponse($data, 403);
         }
@@ -105,10 +105,10 @@ AbstractGuardAuthenticator. This requires you to implement six methods:
          */
         public function start(Request $request, AuthenticationException $authException = null)
         {
-            $data = array(
+            $data = [
                 // you might translate this message
                 'message' => 'Authentication Required',
-            );
+            ];
 
             return new JsonResponse($data, 401);
         }
@@ -136,25 +136,25 @@ Finally, configure your `security.firewalls` key to use this authenticator:
 
 .. code-block:: php
 
-    $app['security.firewalls'] => array(
-        'main' => array(
-            'guard' => array(
-                'authenticators' => array(
+    $app['security.firewalls'] => [
+        'main' => [
+            'guard' => [
+                'authenticators' => [
                     'app.token_authenticator'
-                ),
+                ],
 
                 // Using more than 1 authenticator, you must specify
                 // which one is used as entry point.
                 // 'entry_point' => 'app.token_authenticator',
-            ),
+            ],
             // configure where your users come from. Hardcode them, or load them from somewhere
             // http://silex.sensiolabs.org/doc/providers/security.html#defining-a-custom-user-provider
-            'users' => array(
-                'victoria' => array('ROLE_USER', 'randomsecret'),
-            ),
+            'users' => [
+                'victoria' => ['ROLE_USER', 'randomsecret'],
+            ],
             // 'anonymous' => true
-        ),
-    );
+        ],
+    ];
 
 .. note::
     You can use many authenticators, they are executed by the order

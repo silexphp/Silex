@@ -39,9 +39,9 @@ Registering
 
 .. code-block:: php
 
-    $app->register(new Silex\Provider\TwigServiceProvider(), array(
+    $app->register(new Silex\Provider\TwigServiceProvider(), [
         'twig.path' => __DIR__.'/views',
-    ));
+    ]);
 
 .. note::
 
@@ -57,9 +57,9 @@ Usage
 The Twig provider provides a ``twig`` service that can render templates::
 
     $app->get('/hello/{name}', function ($name) use ($app) {
-        return $app['twig']->render('hello.twig', array(
+        return $app['twig']->render('hello.twig', [
             'name' => $name,
-        ));
+        ]);
     });
 
 Symfony Components Integration
@@ -80,7 +80,7 @@ additional capabilities.
   <http://symfony.com/doc/current/book/routing.html#generating-urls-from-a-template>`_:
 
   .. code-block:: jinja
-  
+
       {{ path('homepage') }}
       {{ url('homepage') }} {# generates the absolute url http://example.org/ #}
       {{ path('hello', {name: 'Fabien'}) }}

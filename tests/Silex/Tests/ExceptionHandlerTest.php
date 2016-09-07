@@ -383,7 +383,7 @@ class ExceptionHandlerTest extends \PHPUnit_Framework_TestCase
         });
 
         // Array style callback for error handler
-        $app->error(array($this, 'exceptionHandler'));
+        $app->error([$this, 'exceptionHandler']);
 
         $request = Request::create('/foo');
         $response = $app->handle($request);
