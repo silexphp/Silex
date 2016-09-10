@@ -539,19 +539,6 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $app->handle(Request::create('/'));
     }
 
-    public function testRedirectDoesNotRaisePHPNoticesWhenMonologIsRegistered()
-    {
-        $app = new Application();
-
-        ErrorHandler::register(null, false);
-        $app['monolog.logfile'] = 'php://memory';
-        $app->register(new MonologServiceProvider());
-        $app->get('/foo/', function () { return 'ok'; });
-
-        $response = $app->handle(Request::create('/foo'));
-        $this->assertEquals(301, $response->getStatusCode());
-    }
-
     public function testBeforeFilterOnMountedControllerGroupIsolatedToGroup()
     {
         $app = new Application();
