@@ -478,7 +478,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testRegisterShouldReturnSelf()
     {
         $app = new Application();
-        $provider = $this->getMock('Silex\ServiceProviderInterface');
+        $provider = $this->getMockBuilder('Silex\ServiceProviderInterface')->getMock();
 
         $this->assertSame($app, $app->register($provider));
     }
