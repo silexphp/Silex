@@ -27,7 +27,7 @@ class LazyRequestMatcherTest extends \PHPUnit_Framework_TestCase
     public function testUserMatcherIsCreatedLazily()
     {
         $callCounter = 0;
-        $requestMatcher = $this->getMock('Symfony\Component\Routing\Matcher\RequestMatcherInterface');
+        $requestMatcher = $this->getMockBuilder('Symfony\Component\Routing\Matcher\RequestMatcherInterface')->getMock();
 
         $matcher = new LazyRequestMatcher(function () use ($requestMatcher, &$callCounter) {
             ++$callCounter;
@@ -61,7 +61,7 @@ class LazyRequestMatcherTest extends \PHPUnit_Framework_TestCase
     public function testMatchIsProxy()
     {
         $request = Request::create('path');
-        $matcher = $this->getMock('Symfony\Component\Routing\Matcher\RequestMatcherInterface');
+        $matcher = $this->getMockBuilder('Symfony\Component\Routing\Matcher\RequestMatcherInterface')->getMock();
         $matcher->expects($this->once())
             ->method('matchRequest')
             ->with($request)

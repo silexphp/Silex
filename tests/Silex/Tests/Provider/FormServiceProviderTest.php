@@ -230,7 +230,7 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
         $app['locale'] = 'de';
 
         $app['csrf.token_manager'] = function () {
-            return $this->getMock('Symfony\Component\Security\Csrf\CsrfTokenManagerInterface');
+            return $this->getMockBuilder('Symfony\Component\Security\Csrf\CsrfTokenManagerInterface')->getMock();
         };
 
         $form = $app['form.factory']->createBuilder('Symfony\Component\Form\Extension\Core\Type\FormType', array())
