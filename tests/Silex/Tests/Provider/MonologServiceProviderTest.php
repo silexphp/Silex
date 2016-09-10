@@ -25,6 +25,19 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class MonologServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
+    private $currErrorHandler;
+
+    protected function setUp()
+    {
+        $this->currErrorHandler = set_error_handler('var_dump');
+        restore_error_handler();
+    }
+
+    protected function tearDown()
+    {
+        set_error_handler($this->currErrorHandler);
+    }
+
     public function testRequestLogging()
     {
         $app = $this->getApplication();
