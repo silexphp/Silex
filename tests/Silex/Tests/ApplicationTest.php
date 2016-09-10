@@ -458,7 +458,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testRegisterShouldReturnSelf()
     {
         $app = new Application();
-        $provider = $this->getMock('Pimple\ServiceProviderInterface');
+        $provider = $this->getMockBuilder('Pimple\ServiceProviderInterface')->getMock();
 
         $this->assertSame($app, $app->register($provider));
     }

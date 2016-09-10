@@ -48,7 +48,7 @@ class TwigServiceProviderTest extends \PHPUnit_Framework_TestCase
         $app->register(new TwigServiceProvider(), array(
             'twig.templates' => array('foo' => 'foo'),
         ));
-        $loader = $this->getMock('\Twig_LoaderInterface');
+        $loader = $this->getMockBuilder('\Twig_LoaderInterface')->getMock();
         $loader->expects($this->never())->method('getSource');
         $app['twig.loader.filesystem'] = function ($app) use ($loader) {
             return $loader;
