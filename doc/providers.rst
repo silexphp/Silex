@@ -131,6 +131,7 @@ Here is an example of such a provider::
     use Silex\Application;
     use Silex\Api\BootableProviderInterface;
     use Silex\Api\EventListenerProviderInterface;
+    use Symfony\Component\EventDispatcher\EventDispatcherInterface;
     use Symfony\Component\HttpKernel\KernelEvents;
     use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 
