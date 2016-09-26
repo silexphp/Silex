@@ -60,7 +60,7 @@ Registering
 
     .. code-block:: bash
 
-        composer require symfony/twig-bridge symfony/translation
+        composer require symfony/twig-bridge symfony/config symfony/translation
 
 Usage
 -----
