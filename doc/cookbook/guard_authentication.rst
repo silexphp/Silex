@@ -14,7 +14,7 @@ Step 1) Create the Authenticator Class
 Suppose you have an API where your clients will send an X-AUTH-TOKEN
 header on each request. This token is composed of the username followed
 by a password, separated by a colon (e.g. ``X-AUTH-TOKEN: coolguy:awesomepassword``).
-Your job is to read this, find theassociated user (if any) and check
+Your job is to read this, find the associated user (if any) and check
 the password.
 
 To create a custom authentication system, just create a class and make
