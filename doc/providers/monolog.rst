@@ -29,7 +29,7 @@ Parameters
   defaults to ``myapp``.
 
 * **monolog.exception.logger_filter** (optional): An anonymous function that
-  filters which exceptions should be logged.
+  returns an error level for on uncaught exception that should be logged.
 
 * **monolog.use_error_handler** (optional): Whether errors and uncaught exceptions
   should be handled by the Monolog ``ErrorHandler`` class and added to the log.

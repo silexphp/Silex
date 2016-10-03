@@ -18,6 +18,7 @@ use Silex\Application;
 use Silex\Provider\MonologServiceProvider;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Kernel;
 
 /**
@@ -109,7 +110,6 @@ class MonologServiceProviderTest extends \PHPUnit_Framework_TestCase
         $request = Request::create('/error');
         $app->handle($request);
 
-        $records = $app['monolog.handler']->getRecords();
         $pattern = "#Symfony\\\\Component\\\\HttpKernel\\\\Exception\\\\NotFoundHttpException: No route found for \"GET /error\" \(uncaught exception\) at .* line \d+#";
         $this->assertMatchingRecord($pattern, Logger::ERROR, $app['monolog.handler']);
 
@@ -200,7 +200,32 @@ class MonologServiceProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertEmpty($app['monolog.handler']->getRecords(), 'Expected no logging to occur');
     }
 
-    protected function assertMatchingRecord($pattern, $level, $handler)
+    public function testExceptionFiltering()
+    {
+        $app = new Application();
+        $app->get('/foo', function () use ($app) {
+            throw new NotFoundHttpException();
+        });
+
+        $level = Logger::ERROR;
+        $app->register(new MonologServiceProvider(), array(
+            'monolog.exception.logger_filter' => $app->protect(function () {
+                return Logger::DEBUG;
+            }),
+            'monolog.handler' => function () use ($app) {
+                return new TestHandler($app['monolog.level']);
+            },
+            'monolog.level' => $level,
+            'monolog.logfile' => 'php://memory',
+        ));
+
+        $request = Request::create('/foo');
+        $app->handle($request);
+
+        $this->assertCount(0, $app['monolog.handler']->getRecords(), 'Expected no logging to occur');
+    }
+
+    protected function assertMatchingRecord($pattern, $level, TestHandler $handler)
     {
         $found = false;
         $records = $handler->getRecords();
