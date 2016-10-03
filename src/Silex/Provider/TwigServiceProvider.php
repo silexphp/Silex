@@ -39,19 +39,6 @@ class TwigServiceProvider implements ServiceProviderInterface
         $app['twig.path'] = array();
         $app['twig.templates'] = array();
 
-        $app['twig.app_variable'] = function ($app) {
-            $var = new AppVariable();
-            if (isset($app['security.token_storage'])) {
-                $var->setTokenStorage($app['security.token_storage']);
-            }
-            if (isset($app['request_stack'])) {
-                $var->setRequestStack($app['request_stack']);
-            }
-            $var->setDebug($app['debug']);
-
-            return $var;
-        };
-
         $app['twig'] = function ($app) {
             $app['twig.options'] = array_replace(
                 array(
@@ -71,6 +58,19 @@ class TwigServiceProvider implements ServiceProviderInterface
             }
 
             if (class_exists('Symfony\Bridge\Twig\Extension\RoutingExtension')) {
+                $app['twig.app_variable'] = function ($app) {
+                    $var = new AppVariable();
+                    if (isset($app['security.token_storage'])) {
+                        $var->setTokenStorage($app['security.token_storage']);
+                    }
+                    if (isset($app['request_stack'])) {
+                        $var->setRequestStack($app['request_stack']);
+                    }
+                    $var->setDebug($app['debug']);
+
+                    return $var;
+                };
+
                 $twig->addGlobal('global', $app['twig.app_variable']);
 
                 if (isset($app['request_stack'])) {
