@@ -56,6 +56,21 @@ Registering
 
     $app->register(new Silex\Provider\SessionServiceProvider());
 
+Using Handlers
+--------------
+
+The default session handler is `NativeFileSessionHandler`. However, there are multiple handlers available for use by setting ``session.storage.handler`` to an instance of one of the following handler objects.
+
+* `LegacyPdoSessionHandler <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/LegacyPdoSessionHandler.html>`_
+* `MemcacheSessionHandler <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/MemcacheSessionHandler.html>`_
+* `MemcachedSessionHandler <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/MemcachedSessionHandler.html>`_
+* `MongoDbSessionHandler <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/MongoDbSessionHandler.html>`_
+* `NativeFileSessionHandler <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/NativeFileSessionHandler.html>`_
+* `NativeSessionHandler <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/NativeSessionHandler.html>`_
+* `NullSessionHandler <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/NullSessionHandler.html>`_
+* `PdoSessionHandler <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/PdoSessionHandler.html>`_
+* `WriteCheckSessionHandler <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/WriteCheckSessionHandler.html>`_
+
 Usage
 -----
 
