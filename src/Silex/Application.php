@@ -65,6 +65,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
         $this['debug'] = false;
         $this['charset'] = 'UTF-8';
         $this['logger'] = null;
+        $this['kernel.root_dir'] = dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))).DIRECTORY_SEPARATOR.'app';
 
         $this->register(new HttpKernelServiceProvider());
         $this->register(new RoutingServiceProvider());
