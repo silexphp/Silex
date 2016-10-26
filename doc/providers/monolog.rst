@@ -35,7 +35,7 @@ Services
 
   Example usage::
 
-    $app['monolog']->addDebug('Testing the Monolog logging.');
+    $app['monolog']->debug('Testing the Monolog logging.');
 
 * **monolog.listener**: An event listener to log requests, responses and errors.
 
@@ -61,15 +61,15 @@ Usage
 -----
 
 The MonologServiceProvider provides a ``monolog`` service. You can use it to
-add log entries for any logging level through ``addDebug()``, ``addInfo()``,
-``addWarning()`` and ``addError()``::
+add log entries for any logging level through ``debug()``, ``info()``,
+``warning()`` and ``error()``::
 
     use Symfony\Component\HttpFoundation\Response;
 
     $app->post('/user', function () use ($app) {
         // ...
 
-        $app['monolog']->addInfo(sprintf("User '%s' registered.", $username));
+        $app['monolog']->info(sprintf("User '%s' registered.", $username));
 
         return new Response('', 201);
     });
