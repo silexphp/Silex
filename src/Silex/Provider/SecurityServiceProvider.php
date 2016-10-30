@@ -607,7 +607,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
             }
             // we have multiple entry points - we must ask them to configure one
             throw new \LogicException(sprintf(
-                'Because you have multiple guard configurators, you need to set the "guard.entry_point" key to one of you configurators (%s)',
+                'Because you have multiple guard configurators, you need to set the "guard.entry_point" key to one of your configurators (%s)',
                 implode(', ', $authenticatorIds)
             ));
         });
