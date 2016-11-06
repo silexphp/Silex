@@ -22,6 +22,7 @@ class HttpFragmentServiceProviderTest extends \PHPUnit_Framework_TestCase
     public function testRenderFunction()
     {
         $app = new Application();
+        unset($app['exception_handler']);
 
         $app->register(new HttpFragmentServiceProvider());
         $app->register(new HttpCacheServiceProvider(), array('http_cache.cache_dir' => sys_get_temp_dir()));
