@@ -97,8 +97,8 @@ class TwigServiceProvider implements ServiceProviderInterface
                 }
 
                 if (isset($app['form.factory'])) {
-                    $app['twig.form.engine'] = function ($app) {
-                        return new TwigRendererEngine($app['twig.form.templates']);
+                    $app['twig.form.engine'] = function ($app) use ($twig) {
+                        return new TwigRendererEngine($app['twig.form.templates'], $twig);
                     };
 
                     $app['twig.form.renderer'] = function ($app) {
