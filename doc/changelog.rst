@@ -4,7 +4,9 @@ Changelog
 2.0.4 (2016-XX-XX)
 ------------------
 
-* n/a
+* fixed twig.app_variable definition
+* added support for latest versions of Twig 1.x and 2.0 (Twig runtime loaders)
+* added support for Symfony 2.3
 
 2.0.3 (2016-08-22)
 ------------------
