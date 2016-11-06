@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0.4 (2016-XX-XX)
+2.0.4 (2016-11-06)
 ------------------
 
 * fixed twig.app_variable definition
