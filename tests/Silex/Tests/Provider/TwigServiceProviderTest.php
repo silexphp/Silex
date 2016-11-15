@@ -116,4 +116,13 @@ class TwigServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('Twig_Environment', $app['twig']);
     }
+
+    public function testServices()
+    {
+        $app = new Application();
+        $app->register(new TwigServiceProvider());
+        foreach ($app->keys() as $id) {
+            $app[$id];
+        }
+    }
 }
