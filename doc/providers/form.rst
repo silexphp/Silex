@@ -132,14 +132,20 @@ form by adding constraints on the fields::
         'translator.domains' => array(),
     ));
 
-    $form = $app['form.factory']->createBuilder('form')
-        ->add('name', 'text', array(
+    // some default data for when the form is displayed the first time
+    $data = array(
+        'name' => 'Your name',
+        'email' => 'Your email',
+    );
+        
+    $form = $app['form.factory']->createBuilder(FormType::class, $data)
+        ->add('name', TextType::class, array(
             'constraints' => array(new Assert\NotBlank(), new Assert\Length(array('min' => 5)))
         ))
-        ->add('email', 'text', array(
+        ->add('email', EmailType::class, array(
             'constraints' => new Assert\Email()
         ))
-        ->add('billing_plan', 'choice', array(
+        ->add('billing_plan', ChoiceType::class, array(
             'choices' => array(1 => 'free', 2 => 'small_business', 3 => 'corporate'),
             'expanded' => true,
             'constraints' => new Assert\Choice(array(1, 2, 3)),
