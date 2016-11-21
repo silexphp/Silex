@@ -152,6 +152,12 @@ Traits
 
     return $app->render('index.html', ['name' => 'Fabien'], new StreamedResponse());
 
+* **renderView**: Renders a view with the given parameters and returns a string.
+
+.. code-block:: php
+
+    $content = $app->renderView('index.html', ['name' => 'Fabien']);
+
 Customization
 -------------
 
