@@ -53,12 +53,12 @@ Registering
         composer require symfony/form
 
     If you are going to use the validation extension with forms, you must also
-    add a dependency to the ``symfony/config`` and ``symfony/translation``
+    add a dependency to the ``symfony/validator`` and ``symfony/config``
     components:
 
     .. code-block:: bash
 
-        composer require symfony/validator symfony/config symfony/translation
+        composer require symfony/validator symfony/config
         
     The Symfony Security CSRF component is used to protect forms against CSRF
     attacks (as of Symfony 2.4+):
@@ -73,7 +73,7 @@ Registering
 
     .. code-block:: bash
 
-        composer require symfony/twig-bridge symfony/config symfony/translation
+        composer require symfony/twig-bridge
 
 Usage
 -----
