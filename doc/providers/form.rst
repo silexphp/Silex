@@ -146,7 +146,7 @@ form by adding constraints on the fields::
             'constraints' => new Assert\Email()
         ))
         ->add('billing_plan', ChoiceType::class, array(
-            'choices' => array(1 => 'free', 2 => 'small_business', 3 => 'corporate'),
+            'choices' => array('free' => 1, 'small business' => 2, 'corporate' => 3),
             'expanded' => true,
             'constraints' => new Assert\Choice(array(1, 2, 3)),
         ))
