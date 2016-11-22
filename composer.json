@@ -40,7 +40,7 @@
         "symfony/translation": "~2.3|3.0.*",
         "symfony/twig-bridge": "~2.3|3.0.*",
         "symfony/validator": "~2.3|3.0.*",
-        "twig/twig": "~1.8|~2.0",
+        "twig/twig": "~1.28|~2.0",
         "doctrine/dbal": "~2.2",
         "swiftmailer/swiftmailer": "~5",
         "monolog/monolog": "^1.4.1"
