@@ -136,7 +136,7 @@ Finally, configure your `security.firewalls` key to use this authenticator:
 
 .. code-block:: php
 
-    $app['security.firewalls'] => array(
+    $app['security.firewalls'] = array(
         'main' => array(
             'guard' => array(
                 'authenticators' => array(
