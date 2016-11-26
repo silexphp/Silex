@@ -58,6 +58,7 @@ class FormServiceProvider implements ServiceProviderInterface
 
         $app['form.extensions'] = function ($app) {
             $extensions = array(
+                $app['form.extension.silex'],
                 new HttpFoundationExtension(),
             );
 
