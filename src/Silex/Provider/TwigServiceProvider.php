@@ -118,7 +118,10 @@ class TwigServiceProvider implements ServiceProviderInterface
                 }
 
                 if (isset($app['var_dumper.cloner'])) {
-                    $twig->addExtension(new DumpExtension($app['var_dumper.cloner']));
+                    $twig->addExtension(new DumpExtension(
+                        $app['var_dumper.cloner'],
+                        $app['var_dumper.html_dumper']
+                    ));
                 }
 
                 if (class_exists(HttpKernelRuntime::class)) {
