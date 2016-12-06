@@ -4,7 +4,7 @@ Changelog
 2.1.0 (2016-XX-XX)
 ------------------
 
-* n/a
+* added support for registering Swiftmailer plugins
 
 2.0.4 (2016-11-06)
 ------------------
