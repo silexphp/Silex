@@ -71,17 +71,6 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface, EventListe
             $transport->setPassword($options['password']);
             $transport->setAuthMode($options['auth_mode']);
 
-            if (null !== $app['swiftmailer.sender_address']) {
-                $transport->registerPlugin(new \Swift_Plugins_ImpersonatePlugin($app['swiftmailer.sender_address']));
-            }
-
-            if (!empty($app['swiftmailer.delivery_addresses'])) {
-                $transport->registerPlugin(new \Swift_Plugins_RedirectingPlugin(
-                    $app['swiftmailer.delivery_addresses'],
-                    $app['swiftmailer.delivery_whitelist']
-                ));
-            }
-
             return $transport;
         };
 
@@ -97,13 +86,36 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface, EventListe
             ));
         };
 
-        $app['swiftmailer.transport.eventdispatcher'] = function () {
-            return new \Swift_Events_SimpleEventDispatcher();
+        $app['swiftmailer.transport.eventdispatcher'] = function ($app) {
+            $dispatcher = new \Swift_Events_SimpleEventDispatcher();
+
+            $plugins = $app['swiftmailer.plugins'];
+
+            if (null !== $app['swiftmailer.sender_address']) {
+                $plugins[] = new \Swift_Plugins_ImpersonatePlugin($app['swiftmailer.sender_address']);
+            }
+
+            if (!empty($app['swiftmailer.delivery_addresses'])) {
+                $plugins[] = new \Swift_Plugins_RedirectingPlugin(
+                    $app['swiftmailer.delivery_addresses'],
+                    $app['swiftmailer.delivery_whitelist']
+                );
+            }
+
+            foreach ($plugins as $plugin) {
+                $dispatcher->bindEventListener($plugin);
+            }
+
+            return $dispatcher;
+        };
+
+        $app['swiftmailer.plugins'] = function ($app) {
+            return array();
         };
 
         $app['swiftmailer.sender_address'] = null;
-        $app['swiftmailer.delivery_addresses'] = [];
-        $app['swiftmailer.delivery_whitelist'] = [];
+        $app['swiftmailer.delivery_addresses'] = array();
+        $app['swiftmailer.delivery_whitelist'] = array();
     }
 
     public function subscribe(Container $app, EventDispatcherInterface $dispatcher)
