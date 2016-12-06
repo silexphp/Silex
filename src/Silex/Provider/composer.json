@@ -18,7 +18,7 @@
     "require": {
         "php": ">=5.5.9",
         "pimple/pimple": "~3.0",
-        "silex/api": "~2.0"
+        "silex/api": "~2.1"
     },
     "autoload": {
         "psr-4": { "Silex\\Provider\\": "" }
