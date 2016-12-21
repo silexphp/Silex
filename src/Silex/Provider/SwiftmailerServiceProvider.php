@@ -91,26 +91,28 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface, EventListe
 
             $plugins = $app['swiftmailer.plugins'];
 
-            if (null !== $app['swiftmailer.sender_address']) {
-                $plugins[] = new \Swift_Plugins_ImpersonatePlugin($app['swiftmailer.sender_address']);
-            }
-
-            if (!empty($app['swiftmailer.delivery_addresses'])) {
-                $plugins[] = new \Swift_Plugins_RedirectingPlugin(
-                    $app['swiftmailer.delivery_addresses'],
-                    $app['swiftmailer.delivery_whitelist']
-                );
-            }
-
-            foreach ($plugins as $plugin) {
-                $dispatcher->bindEventListener($plugin);
+            foreach ($plugins->keys() as $key) {
+                $dispatcher->bindEventListener($plugins[$key]);
             }
 
             return $dispatcher;
         };
 
         $app['swiftmailer.plugins'] = function ($app) {
-            return array();
+            $plugins = new Container();
+
+            if (null !== $app['swiftmailer.sender_address']) {
+                $plugins['sender_address'] = new \Swift_Plugins_ImpersonatePlugin($app['swiftmailer.sender_address']);
+            }
+
+            if (!empty($app['swiftmailer.delivery_addresses'])) {
+                $plugins['delivery_addresses'] = new \Swift_Plugins_RedirectingPlugin(
+                    $app['swiftmailer.delivery_addresses'],
+                    $app['swiftmailer.delivery_whitelist']
+                );
+            }
+
+            return $plugins;
         };
 
         $app['swiftmailer.sender_address'] = null;

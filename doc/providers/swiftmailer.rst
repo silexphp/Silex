@@ -47,16 +47,6 @@ Parameters
   ``delivery_addresses``. If set, emails matching any of these patterns will be
   delivered like normal, as well as being sent to ``delivery_addresses``.
 
-* **swiftmailer.plugins**: Array of SwiftMailer plugins.
-
-  Example usage::
-
-    $app['swiftmailer.plugins'] = function ($app) {
-        return array(
-            new \Swift_Plugins_PopBeforeSmtpPlugin('pop3.example.com'),
-        );
-    };
-
 Services
 --------
 
@@ -82,6 +72,14 @@ Services
 
 * **swiftmailer.transport.eventdispatcher**: Internal event
   dispatcher used by Swiftmailer.
+
+* **swiftmailer.plugins**: SwiftMailer plugins to register.
+
+  Example usage::
+
+    $app['swiftmailer.plugins']['foo'] = function ($app) {
+        return new \Swift_Plugins_PopBeforeSmtpPlugin('pop3.example.com');
+    };
 
 Registering
 -----------
