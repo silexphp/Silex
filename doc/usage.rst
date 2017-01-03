@@ -20,7 +20,7 @@ If you want more flexibility, use Composer_ instead:
 
 .. code-block:: bash
 
-    composer require silex/silex:~1.3
+    composer require silex/silex:~2.0
 
 Web Server
 ----------
@@ -207,7 +207,7 @@ methods on your application: ``get``, ``post``, ``put``, ``delete``, ``patch``, 
             <input type="hidden" id="_method" name="_method" value="PUT" />
         </form>
 
-    you need to explicitly enable this method override::
+    You need to explicitly enable this method override::
 
         use Symfony\Component\HttpFoundation\Request;
 
@@ -339,9 +339,9 @@ The service will now be registered in the application, and the
 ``convert()`` method will be used as converter (using the syntax
 ``service_name:method_name``)::
 
-    $app['converter.user'] = $app->share(function () {
+    $app['converter.user'] = function () {
         return new UserConverter();
-    });
+    };
 
     $app->get('/user/{user}', function (User $user) {
         // ...
@@ -370,6 +370,22 @@ You can also chain these calls::
     ->assert('postId', '\d+')
     ->assert('commentId', '\d+');
 
+Conditions
+~~~~~~~~~~
+
+Besides restricting route matching based on the HTTP method or parameter
+requirements, you can set conditions on any part of the request by calling
+``when`` on the ``Controller`` object, which is returned by the routing
+methods::
+
+    $app->get('/blog/{id}', function ($id) {
+        // ...
+    })
+    ->when("request.headers.get('User-Agent') matches '/firefox/i'");
+
+The ``when`` argument is a Symfony Expression_ , which means that you need to
+add ``symfony/expression-language`` as a dependency of your project.
+
 Default Values
 ~~~~~~~~~~~~~~
 
@@ -387,9 +403,9 @@ have the value ``index``.
 Named Routes
 ~~~~~~~~~~~~
 
-Some providers (such as ``UrlGeneratorProvider``) can make use of named routes.
-By default Silex will generate an internal route name for you but you can give
-an explicit route name by calling ``bind``::
+Some providers can make use of named routes. By default Silex will generate an
+internal route name for you but you can give an explicit route name by calling
+``bind``::
 
     $app->get('/', function () {
         // ...
@@ -445,6 +461,7 @@ middleware, a requirement, or a default value), configure it on
         ->method('get')
         ->convert('id', function () { /* ... */ })
         ->before(function () { /* ... */ })
+        ->when('request.isSecure() == true')
     ;
 
 These settings are applied to already registered controllers and they become
@@ -467,8 +484,9 @@ To register an error handler, pass a closure to the ``error`` method which
 takes an ``Exception`` argument and returns a response::
 
     use Symfony\Component\HttpFoundation\Response;
+    use Symfony\Component\HttpFoundation\Request;
 
-    $app->error(function (\Exception $e, $code) {
+    $app->error(function (\Exception $e, Request $request, $code) {
         return new Response('We are sorry, but something went terribly wrong.');
     });
 
@@ -476,8 +494,9 @@ You can also check for specific errors by using the ``$code`` argument, and
 handle them differently::
 
     use Symfony\Component\HttpFoundation\Response;
+    use Symfony\Component\HttpFoundation\Request;
 
-    $app->error(function (\Exception $e, $code) {
+    $app->error(function (\Exception $e, Request $request, $code) {
         switch ($code) {
             case 404:
                 $message = 'The requested page could not be found.';
@@ -492,7 +511,9 @@ handle them differently::
 You can restrict an error handler to only handle some Exception classes by
 setting a more specific type hint for the Closure argument::
 
-    $app->error(function (\LogicException $e, $code) {
+    use Symfony\Component\HttpFoundation\Request;
+
+    $app->error(function (\LogicException $e, Request $request, $code) {
         // this handler will only handle \LogicException exceptions
         // and exceptions that extend \LogicException
     });
@@ -524,8 +545,9 @@ is returned, the following handlers are ignored.
     is turned on like this::
 
         use Symfony\Component\HttpFoundation\Response;
+        use Symfony\Component\HttpFoundation\Request;
 
-        $app->error(function (\Exception $e, $code) use ($app) {
+        $app->error(function (\Exception $e, Request $request, $code) use ($app) {
             if ($app['debug']) {
                 return;
             }
@@ -618,7 +640,7 @@ round-trip to the browser (as for a redirect), use an internal sub-request::
 
 .. tip::
 
-    If you are using ``UrlGeneratorProvider``, you can also generate the URI::
+    You can also generate the URI via the built-in URL generator::
 
         $request = Request::create($app['url_generator']->generate('hello'), 'GET');
 
@@ -707,10 +729,6 @@ Traits
 
 Silex comes with PHP traits that define shortcut methods.
 
-.. caution::
-
-    You need to use PHP 5.4 or later to benefit from this feature.
-
 Almost all built-in service providers have some corresponding PHP traits. To
 use them, define your own Application class and include the traits you want::
 
@@ -757,8 +775,10 @@ Cross-Site-Scripting attacks.
 * **Escaping HTML**: PHP provides the ``htmlspecialchars`` function for this.
   Silex provides a shortcut ``escape`` method::
 
-      $app->get('/name', function (Silex\Application $app) {
-          $name = $app['request']->get('name');
+      use Symfony\Component\HttpFoundation\Request;
+
+      $app->get('/name', function (Request $request, Silex\Application $app) {
+          $name = $request->get('name');
 
           return "You provided the name {$app->escape($name)}.";
       });
@@ -769,8 +789,10 @@ Cross-Site-Scripting attacks.
 * **Escaping JSON**: If you want to provide data in JSON format you should
   use the Silex ``json`` function::
 
-      $app->get('/name.json', function (Silex\Application $app) {
-          $name = $app['request']->get('name');
+      use Symfony\Component\HttpFoundation\Request;
+
+      $app->get('/name.json', function (Request $request, Silex\Application $app) {
+          $name = $request->get('name');
 
           return $app->json(array('name' => $name));
       });
@@ -780,3 +802,4 @@ Cross-Site-Scripting attacks.
 .. _Request: http://api.symfony.com/master/Symfony/Component/HttpFoundation/Request.html
 .. _Response: http://api.symfony.com/master/Symfony/Component/HttpFoundation/Response.html
 .. _Monolog: https://github.com/Seldaek/monolog
+.. _Expression: https://symfony.com/doc/current/book/routing.html#completely-customized-route-matching-with-conditions

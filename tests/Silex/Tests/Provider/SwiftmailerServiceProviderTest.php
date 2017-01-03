@@ -50,9 +50,9 @@ class SwiftmailerServiceProviderTest extends \PHPUnit_Framework_TestCase
         $app->register(new SwiftmailerServiceProvider());
         $app->boot();
 
-        $app['swiftmailer.spool'] = $app->share(function () {
+        $app['swiftmailer.spool'] = function () {
             return new SpoolStub();
-        });
+        };
 
         $app->get('/', function () use ($app) {
             $app['mailer']->send(\Swift_Message::newInstance());
@@ -76,9 +76,9 @@ class SwiftmailerServiceProviderTest extends \PHPUnit_Framework_TestCase
         $app->register(new SwiftmailerServiceProvider());
         $app->boot();
 
-        $app['swiftmailer.spool'] = $app->share(function () {
+        $app['swiftmailer.spool'] = function () {
             return new SpoolStub();
-        });
+        };
 
         $app->get('/', function () use ($app) { });
 
@@ -88,5 +88,46 @@ class SwiftmailerServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $app->terminate($request, $response);
         $this->assertFalse($app['swiftmailer.spool']->hasFlushed);
+    }
+
+    public function testSwiftMailerSenderAddress()
+    {
+        $app = new Application();
+
+        $app->register(new SwiftmailerServiceProvider());
+        $app->boot();
+
+        $app['swiftmailer.spool'] = function () {
+            return new SpoolStub();
+        };
+
+        $app['swiftmailer.sender_address'] = 'foo@example.com';
+
+        $app['mailer']->send(\Swift_Message::newInstance());
+
+        $messages = $app['swiftmailer.spool']->getMessages();
+        $this->assertCount(1, $messages);
+
+        list($message) = $messages;
+        $this->assertEquals('foo@example.com', $message->getReturnPath());
+    }
+
+    public function testSwiftMailerPlugins()
+    {
+        $plugin = $this->getMockBuilder('Swift_Events_TransportChangeListener')->getMock();
+        $plugin->expects($this->once())->method('beforeTransportStarted');
+
+        $app = new Application();
+        $app->boot();
+
+        $app->register(new SwiftmailerServiceProvider());
+
+        $app['swiftmailer.plugins'] = function ($app) use ($plugin) {
+            return array($plugin);
+        };
+
+        $dispatcher = $app['swiftmailer.transport.eventdispatcher'];
+        $event = $dispatcher->createTransportChangeEvent(new \Swift_Transport_NullTransport($dispatcher));
+        $dispatcher->dispatchEvent($event, 'beforeTransportStarted');
     }
 }

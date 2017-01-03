@@ -11,8 +11,10 @@
 
 namespace Silex\Provider;
 
-use Silex\Application;
-use Silex\ServiceProviderInterface;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
+use Silex\Api\EventListenerProviderInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpKernel\Fragment\FragmentHandler;
 use Symfony\Component\HttpKernel\Fragment\InlineFragmentRenderer;
 use Symfony\Component\HttpKernel\Fragment\EsiFragmentRenderer;
@@ -24,59 +26,49 @@ use Symfony\Component\HttpKernel\UriSigner;
 /**
  * HttpKernel Fragment integration for Silex.
  *
- * This service provider requires Symfony 2.4+.
- *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class HttpFragmentServiceProvider implements ServiceProviderInterface
+class HttpFragmentServiceProvider implements ServiceProviderInterface, EventListenerProviderInterface
 {
-    public function register(Application $app)
+    public function register(Container $app)
     {
-        if (!class_exists('Symfony\Component\HttpFoundation\RequestStack')) {
-            throw new \LogicException('The HTTP Fragment service provider only works with Symfony 2.4+.');
-        }
+        $app['fragment.handler'] = function ($app) {
+            return new FragmentHandler($app['request_stack'], $app['fragment.renderers'], $app['debug']);
+        };
 
-        $app['fragment.handler'] = $app->share(function ($app) {
-            if (Kernel::VERSION_ID >= 20800) {
-                return new FragmentHandler($app['request_stack'], $app['fragment.renderers'], $app['debug']);
-            }
-
-            return new FragmentHandler($app['fragment.renderers'], $app['debug'], $app['request_stack']);
-        });
-
-        $app['fragment.renderer.inline'] = $app->share(function ($app) {
+        $app['fragment.renderer.inline'] = function ($app) {
             $renderer = new InlineFragmentRenderer($app['kernel'], $app['dispatcher']);
             $renderer->setFragmentPath($app['fragment.path']);
 
             return $renderer;
-        });
+        };
 
-        $app['fragment.renderer.hinclude'] = $app->share(function ($app) {
+        $app['fragment.renderer.hinclude'] = function ($app) {
             $renderer = new HIncludeFragmentRenderer(null, $app['uri_signer'], $app['fragment.renderer.hinclude.global_template'], $app['charset']);
             $renderer->setFragmentPath($app['fragment.path']);
 
             return $renderer;
-        });
+        };
 
-        $app['fragment.renderer.esi'] = $app->share(function ($app) {
+        $app['fragment.renderer.esi'] = function ($app) {
             $renderer = new EsiFragmentRenderer($app['http_cache.esi'], $app['fragment.renderer.inline']);
             $renderer->setFragmentPath($app['fragment.path']);
 
             return $renderer;
-        });
+        };
 
-        $app['fragment.listener'] = $app->share(function ($app) {
+        $app['fragment.listener'] = function ($app) {
             return new FragmentListener($app['uri_signer'], $app['fragment.path']);
-        });
+        };
 
-        $app['uri_signer'] = $app->share(function ($app) {
+        $app['uri_signer'] = function ($app) {
             return new UriSigner($app['uri_signer.secret']);
-        });
+        };
 
         $app['uri_signer.secret'] = md5(__DIR__);
         $app['fragment.path'] = '/_fragment';
         $app['fragment.renderer.hinclude.global_template'] = null;
-        $app['fragment.renderers'] = $app->share(function ($app) {
+        $app['fragment.renderers'] = function ($app) {
             $renderers = array($app['fragment.renderer.inline'], $app['fragment.renderer.hinclude']);
 
             if (isset($app['http_cache.esi'])) {
@@ -84,11 +76,11 @@ class HttpFragmentServiceProvider implements ServiceProviderInterface
             }
 
             return $renderers;
-        });
+        };
     }
 
-    public function boot(Application $app)
+    public function subscribe(Container $app, EventDispatcherInterface $dispatcher)
     {
-        $app['dispatcher']->addSubscriber($app['fragment.listener']);
+        $dispatcher->addSubscriber($app['fragment.listener']);
     }
 }

@@ -185,4 +185,18 @@ class Route extends BaseRoute
 
         return $this;
     }
+
+    /**
+     * Sets a condition for the route to match.
+     *
+     * @param string $condition The condition
+     *
+     * @return Route $this The current Route instance
+     */
+    public function when($condition)
+    {
+        $this->setCondition($condition);
+
+        return $this;
+    }
 }

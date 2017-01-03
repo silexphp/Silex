@@ -2,10 +2,11 @@ Disabling CSRF Protection on a Form using the FormExtension
 ===========================================================
 
 The *FormExtension* provides a service for building form in your application
-with the Symfony Form component. By default, the *FormExtension* uses the
-CSRF Protection avoiding Cross-site request forgery, a method by which a
-malicious user attempts to make your legitimate users unknowingly submit data
-that they don't intend to submit.
+with the Symfony Form component. When the :doc:`CSRF Service Provider
+</providers/csrf>` is registered, the *FormExtension* uses the CSRF Protection
+avoiding Cross-site request forgery, a method by which a malicious user
+attempts to make your legitimate users unknowingly submit data that they don't
+intend to submit.
 
 You can find more details about CSRF Protection and CSRF token in the
 `Symfony Book

@@ -11,7 +11,8 @@ Parameters
 ----------
 
 * **swiftmailer.use_spool**: A boolean to specify whether or not to use the
-  memory spool, defaults to true. 
+  memory spool, defaults to true.
+
 * **swiftmailer.options**: An array of options for the default SMTP-based
   configuration.
 
@@ -34,6 +35,27 @@ Parameters
         'encryption' => null,
         'auth_mode' => null
     );
+
+* **swiftmailer.sender_address**: If set, all messages will be delivered with
+  this address as the "return path" address.
+
+* **swiftmailer.delivery_addresses**: If not empty, all email messages will be
+  sent to those addresses instead of being sent to their actual recipients. This
+  is often useful when developing.
+
+* **swiftmailer.delivery_whitelist**: Used in combination with
+  ``delivery_addresses``. If set, emails matching any of these patterns will be
+  delivered like normal, as well as being sent to ``delivery_addresses``.
+
+* **swiftmailer.plugins**: Array of SwiftMailer plugins.
+
+  Example usage::
+
+    $app['swiftmailer.plugins'] = function ($app) {
+        return array(
+            new \Swift_Plugins_PopBeforeSmtpPlugin('pop3.example.com'),
+        );
+    };
 
 Services
 --------
@@ -70,8 +92,7 @@ Registering
 
 .. note::
 
-    SwiftMailer comes with the "fat" Silex archive but not with the regular
-    one. If you are using Composer, add it as a dependency:
+    Add SwiftMailer as a dependency:
 
     .. code-block:: bash
 
@@ -82,9 +103,9 @@ Usage
 
 The Swiftmailer provider provides a ``mailer`` service::
 
-    $app->post('/feedback', function () use ($app) {
-        $request = $app['request'];
+    use Symfony\Component\HttpFoundation\Request;
 
+    $app->post('/feedback', function (Request $request) use ($app) {
         $message = \Swift_Message::newInstance()
             ->setSubject('[YourSite] Feedback')
             ->setFrom(array('noreply@yoursite.com'))

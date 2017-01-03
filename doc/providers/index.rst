@@ -5,17 +5,20 @@ Built-in Service Providers
     :maxdepth: 1
 
     twig
-    url_generator
+    asset
     monolog
     session
     swiftmailer
+    locale
     translation
     validator
     form
+    csrf
     http_cache
     http_fragment
     security
     remember_me
     serializer
     service_controller
+    var_dumper
     doctrine

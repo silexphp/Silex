@@ -1,0 +1,31 @@
+{
+    "minimum-stability": "dev",
+    "name": "silex/providers",
+    "description": "The Silex providers",
+    "keywords": ["microframework"],
+    "homepage": "http://silex.sensiolabs.org",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Fabien Potencier",
+            "email": "fabien@symfony.com"
+        },
+        {
+            "name": "Igor Wiedler",
+            "email": "igor@wiedler.ch"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.9",
+        "pimple/pimple": "~3.0",
+        "silex/api": "~2.1"
+    },
+    "autoload": {
+        "psr-4": { "Silex\\Provider\\": "" }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.0.x-dev"
+        }
+    }
+}

@@ -11,10 +11,10 @@
 
 namespace Silex\Provider;
 
-use Silex\Application;
-use Silex\ServiceProviderInterface;
-use Silex\ConstraintValidatorFactory;
-use Symfony\Component\Validator\Mapping\ClassMetadataFactory;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
+use Silex\Provider\Validator\ConstraintValidatorFactory;
+use Symfony\Component\Validator\Validator;
 use Symfony\Component\Validator\Mapping\Factory\LazyLoadingMetadataFactory;
 use Symfony\Component\Validator\Mapping\Loader\StaticMethodLoader;
 use Symfony\Component\Validator\Validation;
@@ -26,13 +26,13 @@ use Symfony\Component\Validator\Validation;
  */
 class ValidatorServiceProvider implements ServiceProviderInterface
 {
-    public function register(Application $app)
+    public function register(Container $app)
     {
-        $app['validator'] = $app->share(function ($app) {
+        $app['validator'] = function ($app) {
             return $app['validator.builder']->getValidator();
-        });
+        };
 
-        $app['validator.builder'] = $app->share(function ($app) {
+        $app['validator.builder'] = function ($app) {
             $builder = Validation::createValidatorBuilder();
             $builder->setConstraintValidatorFactory($app['validator.validator_factory']);
             $builder->setTranslationDomain('validators');
@@ -43,28 +43,20 @@ class ValidatorServiceProvider implements ServiceProviderInterface
             }
 
             return $builder;
-        });
+        };
 
-        $app['validator.mapping.class_metadata_factory'] = $app->share(function ($app) {
-            if (class_exists('Symfony\Component\Validator\Mapping\Factory\LazyLoadingMetadataFactory')) {
-                return new LazyLoadingMetadataFactory(new StaticMethodLoader());
-            }
+        $app['validator.mapping.class_metadata_factory'] = function ($app) {
+            return new LazyLoadingMetadataFactory(new StaticMethodLoader());
+        };
 
-            return new ClassMetadataFactory(new StaticMethodLoader());
-        });
-
-        $app['validator.validator_factory'] = $app->share(function () use ($app) {
+        $app['validator.validator_factory'] = function () use ($app) {
             return new ConstraintValidatorFactory($app, $app['validator.validator_service_ids']);
-        });
+        };
 
-        $app['validator.object_initializers'] = $app->share(function ($app) {
+        $app['validator.object_initializers'] = function ($app) {
             return array();
-        });
+        };
 
         $app['validator.validator_service_ids'] = array();
-    }
-
-    public function boot(Application $app)
-    {
     }
 }

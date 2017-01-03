@@ -17,8 +17,6 @@ use Silex\Provider\FormServiceProvider;
  * FormTrait test cases.
  *
  * @author Fabien Potencier <fabien@symfony.com>
- *
- * @requires PHP 5.4
  */
 class FormTraitTest extends \PHPUnit_Framework_TestCase
 {

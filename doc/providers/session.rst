@@ -62,11 +62,12 @@ Usage
 The Session provider provides a ``session`` service. Here is an example that
 authenticates a user and creates a session for them::
 
+    use Symfony\Component\HttpFoundation\Request;
     use Symfony\Component\HttpFoundation\Response;
 
-    $app->get('/login', function () use ($app) {
-        $username = $app['request']->server->get('PHP_AUTH_USER', false);
-        $password = $app['request']->server->get('PHP_AUTH_PW');
+    $app->get('/login', function (Request $request) use ($app) {
+        $username = $request->server->get('PHP_AUTH_USER', false);
+        $password = $request->server->get('PHP_AUTH_PW');
 
         if ('igor' === $username && 'password' === $password) {
             $app['session']->set('user', array('username' => $username));

@@ -25,6 +25,16 @@ group them logically::
     $app->mount('/blog', $blog);
     $app->mount('/forum', $forum);
 
+    // define controllers for a admin
+    $app->mount('/admin', function ($admin) {
+        // recursively mount
+        $admin->mount('/blog', function ($user) {
+            $user->get('/', function () {
+                return 'Admin Blog home page';
+            });
+        });
+    });
+
 .. note::
 
     ``$app['controllers_factory']`` is a factory that returns a new instance
@@ -32,7 +42,8 @@ group them logically::
 
 ``mount()`` prefixes all routes with the given prefix and merges them into the
 main Application. So, ``/`` will map to the main home page, ``/blog/`` to the
-blog home page, and ``/forum/`` to the forum home page.
+blog home page, ``/forum/`` to the forum home page, and ``/admin/blog/`` to the
+admin blog home page.
 
 .. caution::
 

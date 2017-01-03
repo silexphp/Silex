@@ -58,9 +58,9 @@ In this slightly contrived example of a blog API, we're going to change the
 
     $app = new Application();
 
-    $app['posts.repository'] = $app->share(function() {
+    $app['posts.repository'] = function() {
         return new PostRepository;
-    });
+    };
 
     $app->get('/posts.json', function() use ($app) {
         return $app->json($app['posts.repository']->findAll());
@@ -109,8 +109,34 @@ followed by a single colon (:), followed by the method name.
 
 .. code-block:: php
 
-    $app['posts.controller'] = $app->share(function() use ($app) {
+    $app['posts.controller'] = function() use ($app) {
         return new PostController($app['posts.repository']);
-    });
+    };
 
     $app->get('/posts.json', "posts.controller:indexJsonAction");
+
+In addition to using classes for service controllers, you can define any
+callable as a service in the application to be used for a route.
+
+.. code-block:: php
+
+    namespace Demo\Controller;
+
+    use Demo\Repository\PostRepository;
+    use Symfony\Component\HttpFoundation\JsonResponse;
+
+    function postIndexJson(PostRepository $repo) {
+        return function() use ($repo) {
+            return new JsonResponse($repo->findAll());
+        };
+    }
+
+And when defining your route, the code would look like the following:
+
+.. code-block:: php
+
+    $app['posts.controller'] = function($app) {
+        return Demo\Controller\postIndexJson($app['posts.repository']);
+    };
+
+    $app->get('/posts.json', 'posts.controller');

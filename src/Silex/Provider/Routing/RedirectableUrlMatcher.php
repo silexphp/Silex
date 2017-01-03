@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Silex;
+namespace Silex\Provider\Routing;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Matcher\RedirectableUrlMatcher as BaseRedirectableUrlMatcher;
@@ -48,7 +48,6 @@ class RedirectableUrlMatcher extends BaseRedirectableUrlMatcher
 
         return array(
             '_controller' => function ($url) { return new RedirectResponse($url, 301); },
-            '_route' => null,
             'url' => $url,
         );
     }

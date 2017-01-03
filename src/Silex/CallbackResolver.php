@@ -11,13 +11,15 @@
 
 namespace Silex;
 
+use Pimple\Container;
+
 class CallbackResolver
 {
     const SERVICE_PATTERN = "/[A-Za-z0-9\._\-]+:[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/";
 
     private $app;
 
-    public function __construct(\Pimple $app)
+    public function __construct(Container $app)
     {
         $this->app = $app;
     }
@@ -31,7 +33,7 @@ class CallbackResolver
      */
     public function isValid($name)
     {
-        return is_string($name) && preg_match(static::SERVICE_PATTERN, $name);
+        return is_string($name) && (preg_match(static::SERVICE_PATTERN, $name) || isset($this->app[$name]));
     }
 
     /**
@@ -39,19 +41,25 @@ class CallbackResolver
      *
      * @param string $name
      *
-     * @return array A callable array
+     * @return callable
      *
      * @throws \InvalidArgumentException In case the method does not exist.
      */
     public function convertCallback($name)
     {
-        list($service, $method) = explode(':', $name, 2);
-
-        if (!isset($this->app[$service])) {
-            throw new \InvalidArgumentException(sprintf('Service "%s" does not exist.', $service));
+        if (preg_match(static::SERVICE_PATTERN, $name)) {
+            list($service, $method) = explode(':', $name, 2);
+            $callback = array($this->app[$service], $method);
+        } else {
+            $service = $name;
+            $callback = $this->app[$name];
         }
 
-        return array($this->app[$service], $method);
+        if (!is_callable($callback)) {
+            throw new \InvalidArgumentException(sprintf('Service "%s" is not callable.', $service));
+        }
+
+        return $callback;
     }
 
     /**
@@ -59,7 +67,7 @@ class CallbackResolver
      *
      * @param string $name
      *
-     * @return array A callable array
+     * @return string|callable A callable value or the string passed in
      *
      * @throws \InvalidArgumentException In case the method does not exist.
      */

@@ -9,8 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Silex;
+namespace Silex\Provider\Validator;
 
+use Pimple\Container;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidatorFactory as BaseConstraintValidatorFactory;
 
@@ -23,7 +24,7 @@ use Symfony\Component\Validator\ConstraintValidatorFactory as BaseConstraintVali
 class ConstraintValidatorFactory extends BaseConstraintValidatorFactory
 {
     /**
-     * @var \Pimple
+     * @var Container
      */
     protected $container;
 
@@ -35,15 +36,12 @@ class ConstraintValidatorFactory extends BaseConstraintValidatorFactory
     /**
      * Constructor.
      *
-     * @param \Pimple $container    DI container
-     * @param array   $serviceNames Validator service names
+     * @param Container $container    DI container
+     * @param array     $serviceNames Validator service names
      */
-    public function __construct(\Pimple $container, array $serviceNames = array(), $propertyAccessor = null)
+    public function __construct(Container $container, array $serviceNames = array(), $propertyAccessor = null)
     {
-        // for BC with 2.3
-        if (method_exists('Symfony\Component\Validator\Constraint\BaseConstraintValidatorFactory', '__construct')) {
-            parent::__construct($propertyAccessor);
-        }
+        parent::__construct($propertyAccessor);
 
         $this->container = $container;
         $this->serviceNames = $serviceNames;

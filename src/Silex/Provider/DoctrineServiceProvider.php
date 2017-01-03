@@ -11,8 +11,8 @@
 
 namespace Silex\Provider;
 
-use Silex\Application;
-use Silex\ServiceProviderInterface;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Configuration;
 use Doctrine\Common\EventManager;
@@ -25,7 +25,7 @@ use Symfony\Bridge\Doctrine\Logger\DbalLogger;
  */
 class DoctrineServiceProvider implements ServiceProviderInterface
 {
-    public function register(Application $app)
+    public function register(Container $app)
     {
         $app['db.default_options'] = array(
             'driver' => 'pdo_mysql',
@@ -59,10 +59,10 @@ class DoctrineServiceProvider implements ServiceProviderInterface
             $app['dbs.options'] = $tmp;
         });
 
-        $app['dbs'] = $app->share(function ($app) {
+        $app['dbs'] = function ($app) {
             $app['dbs.options.initializer']();
 
-            $dbs = new \Pimple();
+            $dbs = new Container();
             foreach ($app['dbs.options'] as $name => $options) {
                 if ($app['dbs.default'] === $name) {
                     // we use shortcuts here in case the default has been overridden
@@ -73,61 +73,57 @@ class DoctrineServiceProvider implements ServiceProviderInterface
                     $manager = $app['dbs.event_manager'][$name];
                 }
 
-                $dbs[$name] = $dbs->share(function ($dbs) use ($options, $config, $manager) {
+                $dbs[$name] = function ($dbs) use ($options, $config, $manager) {
                     return DriverManager::getConnection($options, $config, $manager);
-                });
+                };
             }
 
             return $dbs;
-        });
+        };
 
-        $app['dbs.config'] = $app->share(function ($app) {
+        $app['dbs.config'] = function ($app) {
             $app['dbs.options.initializer']();
 
-            $configs = new \Pimple();
+            $configs = new Container();
+            $addLogger = isset($app['logger']) && null !== $app['logger'] && class_exists('Symfony\Bridge\Doctrine\Logger\DbalLogger');
             foreach ($app['dbs.options'] as $name => $options) {
                 $configs[$name] = new Configuration();
-
-                if (isset($app['logger']) && class_exists('Symfony\Bridge\Doctrine\Logger\DbalLogger')) {
+                if ($addLogger) {
                     $configs[$name]->setSQLLogger(new DbalLogger($app['logger'], isset($app['stopwatch']) ? $app['stopwatch'] : null));
                 }
             }
 
             return $configs;
-        });
+        };
 
-        $app['dbs.event_manager'] = $app->share(function ($app) {
+        $app['dbs.event_manager'] = function ($app) {
             $app['dbs.options.initializer']();
 
-            $managers = new \Pimple();
+            $managers = new Container();
             foreach ($app['dbs.options'] as $name => $options) {
                 $managers[$name] = new EventManager();
             }
 
             return $managers;
-        });
+        };
 
         // shortcuts for the "first" DB
-        $app['db'] = $app->share(function ($app) {
+        $app['db'] = function ($app) {
             $dbs = $app['dbs'];
 
             return $dbs[$app['dbs.default']];
-        });
+        };
 
-        $app['db.config'] = $app->share(function ($app) {
+        $app['db.config'] = function ($app) {
             $dbs = $app['dbs.config'];
 
             return $dbs[$app['dbs.default']];
-        });
+        };
 
-        $app['db.event_manager'] = $app->share(function ($app) {
+        $app['db.event_manager'] = function ($app) {
             $dbs = $app['dbs.event_manager'];
 
             return $dbs[$app['dbs.default']];
-        });
-    }
-
-    public function boot(Application $app)
-    {
+        };
     }
 }

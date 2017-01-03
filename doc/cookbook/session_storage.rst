@@ -34,21 +34,21 @@ With a dedicated PDO service
         'db_time_col'   => 'session_time',
     );
 
-    $app['pdo'] = $app->share(function () use ($app) {
+    $app['pdo'] = function () use ($app) {
         return new PDO(
             $app['pdo.dsn'],
             $app['pdo.user'],
             $app['pdo.password']
         );
-    });
+    };
 
-    $app['session.storage.handler'] = $app->share(function () use ($app) {
+    $app['session.storage.handler'] = function () use ($app) {
         return new PdoSessionHandler(
             $app['pdo'],
             $app['session.db_options'],
             $app['session.storage.options']
         );
-    });
+    };
 
 Using the DoctrineServiceProvider
 ---------------------------------
@@ -63,19 +63,20 @@ have to make another database connection, simply pass the getWrappedConnection m
     $app->register(new Silex\Provider\SessionServiceProvider());
 
     $app['session.db_options'] = array(
-        'db_table'      => 'session',
-        'db_id_col'     => 'session_id',
-        'db_data_col'   => 'session_value',
-        'db_time_col'   => 'session_time',
+        'db_table'        => 'session',
+        'db_id_col'       => 'session_id',
+        'db_data_col'     => 'session_value',
+        'db_lifetime_col' => 'session_lifetime',
+        'db_time_col'     => 'session_time',
     );
 
-    $app['session.storage.handler'] = $app->share(function () use ($app) {
+    $app['session.storage.handler'] = function () use ($app) {
         return new PdoSessionHandler(
             $app['db']->getWrappedConnection(),
             $app['session.db_options'],
             $app['session.storage.options']
         );
-    });
+    };
 
 Database structure
 ------------------
@@ -84,6 +85,7 @@ PdoSessionStorage needs a database table with 3 columns:
 
 * ``session_id``: ID column (VARCHAR(255) or larger)
 * ``session_value``: Value column (TEXT or CLOB)
+* ``session_lifetime``: Lifetime column (INTEGER)
 * ``session_time``: Time column (INTEGER)
 
 You can find examples of SQL statements to create the session table in the

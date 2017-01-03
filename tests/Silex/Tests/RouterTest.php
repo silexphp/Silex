@@ -152,12 +152,12 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->get('/foo', function () use ($app) {
-            return new Response($app['request']->getRequestUri());
+        $app->get('/foo', function (Request $request) use ($app) {
+            return new Response($request->getRequestUri());
         });
 
-        $app->error(function ($e) use ($app) {
-            return new Response($app['request']->getRequestUri());
+        $app->error(function ($e, Request $request, $code) use ($app) {
+            return new Response($request->getRequestUri());
         });
 
         foreach (array('/foo', '/bar') as $path) {
@@ -230,6 +230,19 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $request = Request::create('http://example.com/secured?query=string');
         $response = $app->handle($request);
         $this->assertTrue($response->isRedirect('https://example.com/secured?query=string'));
+    }
+
+    public function testConditionOnRoute()
+    {
+        $app = new Application();
+        $app->match('/secured', function () {
+            return 'secured content';
+        })
+        ->when('request.isSecure() == true');
+
+        $request = Request::create('http://example.com/secured');
+        $response = $app->handle($request);
+        $this->assertEquals(404, $response->getStatusCode());
     }
 
     public function testClassNameControllerSyntax()
