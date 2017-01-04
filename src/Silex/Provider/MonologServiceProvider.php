@@ -55,6 +55,14 @@ class MonologServiceProvider implements ServiceProviderInterface
 
         $app['monolog.handler'] = function () use ($app) {
             $level = MonologServiceProvider::translateLevel($app['monolog.level']);
+            if (is_string($app['monolog.logfile']) && false === strpos($app['monolog.logfile'], '://')) {
+                $logdir = dirname($app['monolog.logfile']);
+                if (!is_dir($logdir)) {
+                    if (!@mkdir($logdir, 0755, true)) {
+                        throw new \Exception(sprintf('There is no logdir at: %s and its not createable!', $logdir));
+                    }
+                }
+            }
 
             return new StreamHandler($app['monolog.logfile'], $level, $app['monolog.bubble'], $app['monolog.permission']);
         };
