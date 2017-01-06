@@ -4,17 +4,11 @@ Usage
 Installation
 ------------
 
-If you want to get started fast, `download`_ Silex as an archive and extract
-it, you should have the following directory structure:
+If you want to get started fast, use the `Silex Skeleton`_:
 
-.. code-block:: text
+.. code-block:: bash
 
-    ├── composer.json
-    ├── composer.lock
-    ├── vendor
-    │   └── ...
-    └── web
-        └── index.php
+    composer create-project fabpot/silex-skeleton path/to/install "~2.0"
 
 If you want more flexibility, use Composer_ instead:
 
@@ -797,7 +791,7 @@ Cross-Site-Scripting attacks.
           return $app->json(array('name' => $name));
       });
 
-.. _download: http://silex.sensiolabs.org/download
+.. _Silex Skeleton: http://github.com/silexphp/Silex-Skeleton
 .. _Composer: http://getcomposer.org/
 .. _Request: http://api.symfony.com/master/Symfony/Component/HttpFoundation/Request.html
 .. _Response: http://api.symfony.com/master/Symfony/Component/HttpFoundation/Response.html
