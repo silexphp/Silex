@@ -34,6 +34,13 @@ class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Symfony\Component\Form\FormFactory', $app['form.factory']);
     }
 
+    public function testFormRegistryServiceIsFormRegistry()
+    {
+        $app = new Application();
+        $app->register(new FormServiceProvider());
+        $this->assertInstanceOf('Symfony\Component\Form\FormRegistry', $app['form.registry']);
+    }
+
     public function testFormServiceProviderWillLoadTypes()
     {
         $app = new Application();
