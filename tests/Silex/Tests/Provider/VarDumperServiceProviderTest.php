@@ -38,7 +38,7 @@ final class VarDumperServiceProviderTest extends \PHPUnit_Framework_TestCase
             array(
                 'var_dumper.env' => $env,
                 'var_dumper.dump_destination' => $app->protect(
-                    function($line, $depth, $indentPad) use (&$output) {
+                    function ($line, $depth, $indentPad) use (&$output) {
                         $output .= sprintf("%s|%d|%s\n", $line, $depth, $indentPad);
                     }
                 ),
