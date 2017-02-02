@@ -71,3 +71,16 @@ The ``SerializerServiceProvider`` provider provides a ``serializer`` service::
         ));
     })->assert("_format", "xml|json")
       ->assert("id", "\d+");
+      
+Use a Cache
+-----
+
+To use a cache you can register it in the specified encoder needed. All you need to do is have a class implementing ``Doctrine\Common\Cache\Cache``::
+
+    $app->register(new Silex\Provider\SerializerServiceProvider());
+    $app['serializer.normalizers'] = function () use ($app) {
+    return [new \Symfony\Component\Serializer\Normalizer\CustomNormalizer(),
+            new \Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer(new ClassMetadataFactory(new  AnnotationLoader(new AnnotationReader()), $app['my_custom_cache']))
+    ];
+    };
+  
