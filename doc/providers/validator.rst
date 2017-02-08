@@ -11,6 +11,14 @@ Parameters
 * **validator.validator_service_ids**: An array of service names representing
   validators.
 
+* **validator.mapping.use_annotation**: A boolean used to define if metadata should be readed through annotations.
+  By default the validator will read the metadata from classes that implement a static ``loadValidatorMetadata`` method.
+  Setting this property to true allows the validator to read from annotations. Defaults to null.
+
+* **validator.mapping.cache**: A class implementing `Symfony\\Component\\Validator\\Mapping\\Cache\\CacheInterface
+  <http://api.symfony.com/master/Symfony/Component/Validator/Mapping/Cache/CacheInterface.html>`_.
+  When given the metadata will be cached using this class. Defaults to null.
+
 Services
 --------
 
