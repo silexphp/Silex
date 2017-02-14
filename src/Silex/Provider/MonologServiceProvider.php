@@ -69,7 +69,10 @@ class MonologServiceProvider implements ServiceProviderInterface
 
         $app['monolog.name'] = 'myapp';
         $app['monolog.bubble'] = true;
-        $app['monolog.permission'] = null;
+
+        if (!isset($app['monolog.permission']))  {
+            $app['monolog.permission'] = null;
+        }
     }
 
     public function boot(Application $app)
