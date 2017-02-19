@@ -2,7 +2,9 @@ Silex, a simple Web Framework
 =============================
 
 Silex is a PHP micro-framework to develop websites based on `Symfony
-components`_::
+components`_:
+
+.. code-block:: php
 
     <?php
 
@@ -25,7 +27,7 @@ The recommended way to install Silex is through `Composer`_:
 
 .. code-block:: bash
 
-    composer require silex/silex "~2.0"
+    $ composer require silex/silex "~2.0"
 
 Alternatively, you can download the `silex.zip`_ file and extract it.
 
