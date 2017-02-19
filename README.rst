@@ -2,7 +2,9 @@ Silex, a simple Web Framework
 =============================
 
 Silex is a PHP micro-framework to develop websites based on `Symfony
-components`_::
+components`_:
+
+.. code-block:: php
 
     <?php
 
@@ -42,8 +44,8 @@ To run the test suite, you need `Composer`_ and `PHPUnit`_:
 
 .. code-block:: bash
 
-    $ composer install
-    $ phpunit
+    composer install
+    phpunit
 
 Community
 ---------
