@@ -16,7 +16,7 @@ Next, you need to tell the Validation Service that you are not using
 
     $app->register(new ValidatorServiceProvider());
 
-    $app['validator.mapping.class_metadata_factory'] = new Symfony\Component\Validator\Mapping\ClassMetadataFactory(
+    $app['validator.mapping.class_metadata_factory'] = new Symfony\Component\Validator\Mapping\Factory\LazyLoadingMetadataFactory(
         new Symfony\Component\Validator\Mapping\Loader\YamlFileLoader(__DIR__.'/validation.yml')
     );
 
