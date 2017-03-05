@@ -27,7 +27,7 @@ The recommended way to install Silex is through `Composer`_:
 
 .. code-block:: bash
 
-    $ composer require silex/silex "~2.0"
+    composer require silex/silex "~2.0"
 
 Alternatively, you can download the `silex.zip`_ file and extract it.
 
@@ -44,8 +44,8 @@ To run the test suite, you need `Composer`_ and `PHPUnit`_:
 
 .. code-block:: bash
 
-    $ composer install
-    $ phpunit
+    composer install
+    phpunit
 
 Community
 ---------
