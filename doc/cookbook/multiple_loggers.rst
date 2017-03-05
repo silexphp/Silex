@@ -6,7 +6,7 @@ often desirable and allows you to configure them independently, allowing for fin
 grained control of where your logging goes and in what detail.
 
 This simple example allows you to quickly configure several monolog instances,
-using the bundled handler, but each with a different channel. 
+using the bundled handler, but each with a different channel.
 
 .. code-block:: php
 

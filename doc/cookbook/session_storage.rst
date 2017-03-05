@@ -45,8 +45,7 @@ With a dedicated PDO service
     $app['session.storage.handler'] = function () use ($app) {
         return new PdoSessionHandler(
             $app['pdo'],
-            $app['session.db_options'],
-            $app['session.storage.options']
+            $app['session.db_options']
         );
     };
 
@@ -62,19 +61,16 @@ have to make another database connection, simply pass the getWrappedConnection m
 
     $app->register(new Silex\Provider\SessionServiceProvider());
 
-    $app['session.db_options'] = array(
-        'db_table'        => 'session',
-        'db_id_col'       => 'session_id',
-        'db_data_col'     => 'session_value',
-        'db_lifetime_col' => 'session_lifetime',
-        'db_time_col'     => 'session_time',
-    );
-
     $app['session.storage.handler'] = function () use ($app) {
         return new PdoSessionHandler(
             $app['db']->getWrappedConnection(),
-            $app['session.db_options'],
-            $app['session.storage.options']
+            array(
+                'db_table'        => 'session',
+                'db_id_col'       => 'session_id',
+                'db_data_col'     => 'session_value',
+                'db_lifetime_col' => 'session_lifetime',
+                'db_time_col'     => 'session_time',
+            )
         );
     };
 

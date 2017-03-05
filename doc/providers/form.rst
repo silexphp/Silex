@@ -47,12 +47,12 @@ Registering
         composer require symfony/form
 
     If you are going to use the validation extension with forms, you must also
-    add a dependency to the ``symfony/config`` and ``symfony/translation``
+    add a dependency to the ``symfony/validator`` and ``symfony/config``
     components:
 
     .. code-block:: bash
 
-        composer require symfony/validator symfony/config symfony/translation
+        composer require symfony/validator symfony/config
 
     If you want to use forms in your Twig templates, you can also install the
     Symfony Twig Bridge. Make sure to install, if you didn't do that already,
@@ -60,7 +60,7 @@ Registering
 
     .. code-block:: bash
 
-        composer require symfony/twig-bridge symfony/config symfony/translation
+        composer require symfony/twig-bridge
 
 Usage
 -----
@@ -68,8 +68,9 @@ Usage
 The FormServiceProvider provides a ``form.factory`` service. Here is a usage
 example::
 
-    use Symfony\Component\Form\Extension\Core\Type\FormType;
     use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+    use Symfony\Component\Form\Extension\Core\Type\FormType;
+    use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
     $app->match('/form', function (Request $request) use ($app) {
         // some default data for when the form is displayed the first time
@@ -82,9 +83,12 @@ example::
             ->add('name')
             ->add('email')
             ->add('billing_plan', ChoiceType::class, array(
-                'choices' => array(1 => 'free', 2 => 'small_business', 3 => 'corporate'),
+                'choices' => array('free' => 1, 'small business' => 2, 'corporate' => 3),
                 'expanded' => true,
             ))
+            ->add('submit', SubmitType::class, [
+                'label' => 'Save',
+            ])
             ->getForm();
 
         $form->handleRequest($request);
@@ -115,9 +119,10 @@ And here is the ``index.twig`` form template (requires ``symfony/twig-bridge``):
 If you are using the validator provider, you can also add validation to your
 form by adding constraints on the fields::
 
-    use Symfony\Component\Form\Extension\Core\Type\FormType;
-    use Symfony\Component\Form\Extension\Core\Type\TextType;
     use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+    use Symfony\Component\Form\Extension\Core\Type\FormType;
+    use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+    use Symfony\Component\Form\Extension\Core\Type\TextType;
     use Symfony\Component\Validator\Constraints as Assert;
 
     $app->register(new Silex\Provider\ValidatorServiceProvider());
@@ -133,10 +138,13 @@ form by adding constraints on the fields::
             'constraints' => new Assert\Email()
         ))
         ->add('billing_plan', ChoiceType::class, array(
-            'choices' => array(1 => 'free', 2 => 'small_business', 3 => 'corporate'),
+            'choices' => array('free' => 1, 'small business' => 2, 'corporate' => 3),
             'expanded' => true,
             'constraints' => new Assert\Choice(array(1, 2, 3)),
         ))
+        ->add('submit', SubmitType::class, [
+            'label' => 'Save',
+        ])
         ->getForm();
 
 You can register form types by extending ``form.types``::
@@ -194,11 +202,15 @@ Traits
 
 ``Silex\Application\FormTrait`` adds the following shortcuts:
 
-* **form**: Creates a FormBuilder instance.
+* **form**: Creates a FormBuilderInterface instance.
+
+* **namedForm**: Creates a FormBuilderInterface instance (named).
 
 .. code-block:: php
 
     $app->form($data);
+
+    $app->namedForm($name, $data, $options, $type);
 
 For more information, consult the `Symfony Forms documentation
 <http://symfony.com/doc/2.8/book/forms.html>`_.
