@@ -28,7 +28,6 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface, EventListe
 {
     public function register(Container $app)
     {
-        $app['swiftmailer.options'] = array();
         $app['swiftmailer.use_spool'] = true;
 
         $app['mailer.initialized'] = false;
