@@ -1,0 +1,24 @@
+{
+    "silex": {
+        "autoload": {
+            "register_namespace": [{
+                "namespace" : "Acme",
+                "path" : "path/to/acme/src"
+            }],
+
+            "register_prefix": [{
+                "prefix" : "Acme",
+                "path" : "path/to/acme/src"
+            }]
+        },
+
+        "service_provider": [{
+            "classname" : "Acme\\ServiceProvider\\MyServiceProvider"
+        }],
+
+        "controller_provider": [{
+            "mount": "/blog",
+            "classname" : "Acme\\BlogControllerProvider"
+        }]
+    }
+}

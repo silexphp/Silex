@@ -1,0 +1,13 @@
+<?xml version="1"?>
+<configuration>
+    <silex>
+        <autoload>
+            <register_namespace namespace="Acme" path="path/to/acme/src" />
+            <register_namespace namespace="Acme" path="path/to/acme/src" />
+        </autoload>
+
+        <service_provider>
+            <classname>Acme\ServiceProvider\MyServiceProvider</classname>
+        </service_provider>
+    </silex>
+</configuration>
