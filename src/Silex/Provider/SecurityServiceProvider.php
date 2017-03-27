@@ -265,6 +265,10 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
                             $entryPoint = $entryPointId;
                         }
 
+                        if (!in_array($position, $positions)) {
+                            $positions[] = $position;
+                        }
+
                         $factories[$position][] = $listenerId;
                         $providers[] = $providerId;
                     }
