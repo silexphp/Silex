@@ -191,3 +191,9 @@ templates when using the Twig bridge provided by Symfony (see
     {{ 'translation_key'|trans }}
     {{ 'translation_key'|transchoice }}
     {% trans %}translation_key{% endtrans %}
+
+In order to be able to use these filters directly in the twig templates, you must also include the extension:
+
+.. code-block:: php
+
+    $app['twig']->addExtension(new Symfony\Bridge\Twig\Extension\TranslationExtension($app['translator'])); 
