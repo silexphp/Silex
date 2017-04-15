@@ -47,6 +47,10 @@ class RememberMeServiceProviderTest extends WebTestCase
 
         $client->getCookiejar()->expire('MOCKSESSID');
 
+        // For BrowserKit 2.1.9, 2.3, possibly 2.2.2 
+        // see https://github.com/symfony/symfony/pull/7738
+        $client->getCookiejar()->expire('MOCKSESSID', '/', 'localhost'); 
+
         $client->request('get', '/');
         $this->assertEquals('AUTHENTICATED_REMEMBERED', $client->getResponse()->getContent());
         $this->assertTrue($interactiveLogin->triggered, 'The interactive login has been triggered');
