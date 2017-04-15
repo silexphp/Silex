@@ -49,6 +49,17 @@ class ControllerResolver extends BaseControllerResolver
             }
         }
 
+        foreach ($controller as $object)
+        {
+            if (is_object($object))
+            {
+                if (method_exists($object, 'setPimple'))
+                {
+                    $object->setPimple($this->app);
+                }
+            }
+        }
+
         return parent::doGetArguments($request, $controller, $parameters);
     }
 }
