@@ -503,4 +503,14 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     {
         $this['kernel']->terminate($request, $response);
     }
+
+    /**
+     * Enables or disables the debug state of the application
+	 * 
+	 * @param boolean $debug
+	 */
+	public function setDebug($enabled){
+		$this['debug'] = $enabled;
+		$this['exception_handler']->setDebug($enabled);
+	}
 }

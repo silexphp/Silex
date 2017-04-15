@@ -53,4 +53,8 @@ class ExceptionHandler implements EventSubscriberInterface
     {
         return array(KernelEvents::EXCEPTION => array('onSilexError', -255));
     }
+
+    public function setDebug($enabled){
+        $this->debug = $enabled;
+    }
 }
