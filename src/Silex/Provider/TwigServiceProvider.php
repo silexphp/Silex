@@ -38,6 +38,11 @@ class TwigServiceProvider implements ServiceProviderInterface
     {
         $app['twig.options'] = array();
         $app['twig.form.templates'] = array('form_div_layout.html.twig');
+        $app['twig.form.templates.paths'] = $app->share(function ($app) {
+            // add loader for Symfony built-in form templates
+            $reflected = new \ReflectionClass('Symfony\Bridge\Twig\Extension\FormExtension');
+            return array(dirname($reflected->getFileName()).'/../Resources/views/Form');
+        });
         $app['twig.path'] = array();
         $app['twig.templates'] = array();
 
@@ -111,10 +116,7 @@ class TwigServiceProvider implements ServiceProviderInterface
 
                     $twig->addExtension(new FormExtension($app['twig.form.renderer']));
 
-                    // add loader for Symfony built-in form templates
-                    $reflected = new \ReflectionClass('Symfony\Bridge\Twig\Extension\FormExtension');
-                    $path = dirname($reflected->getFileName()).'/../Resources/views/Form';
-                    $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($path));
+                    $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($app['twig.form.templates.paths']));
                 }
 
                 if (isset($app['var_dumper.cloner'])) {
