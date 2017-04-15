@@ -146,7 +146,7 @@ you'll have to make sure your front controller returns false in that case::
         return false;
     }
 
-    $app = require __DIR__.'/../src/app.php';
+    $app = new Silex\Application();
     $app->run();
 
 
