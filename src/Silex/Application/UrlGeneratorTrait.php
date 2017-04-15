@@ -45,4 +45,18 @@ trait UrlGeneratorTrait
     {
         return $this['url_generator']->generate($route, $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
     }
+
+    /**
+     * Overrides the default redirect behaviour of the Application class
+     *
+     * @param string  $url        The URL to redirect to
+     * @param array   $parameters An array of paramaters
+     * @param integer $status     The status code (302 by default)
+     *
+     * @return RedirectResponse
+     */
+    public function redirectRoute($route, $parameters = array(), $status = 302)
+    {
+        return $this->redirect($this->path($route, $parameters), $status);
+    }
 }
