@@ -302,7 +302,7 @@ The converter callback also receives the ``Request`` as its second argument::
 
     $app->get('/blog/{id}/{slug}', function (Post $post) {
         // ...
-    })->convert('post', $callback);
+    })->convert('slug', $callback);
 
 A converter can also be defined as a service. For example, here is a user
 converter based on Doctrine ObjectManager::
