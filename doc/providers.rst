@@ -260,3 +260,28 @@ the provider.
     You can also define a provider that implements both the service and the
     controller provider interface and package in the same class the services
     needed to make your controllers work.
+
+If you don't like Anonymous Functions or Controller Services, you can define 
+the Controllers and Controller Provider in the same class.
+
+    namespace Acme;
+    
+    use Silex\Application;
+    use Silex\ControllerProviderInterface;
+    
+    class WebControllerProvider implements ControllerProviderInterface
+    {
+        public function connect(Application $app)
+        {
+            $controllers = $app['controllers_factory'];
+    
+            $controllers->get('/public/{id}', array($this, 'web'));
+    
+            return $controllers;
+        }
+    
+        public function web($id)
+        {
+            return "Web page ID: {$id}";
+        }
+    }
