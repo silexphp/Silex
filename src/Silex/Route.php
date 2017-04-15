@@ -131,6 +131,20 @@ class Route extends BaseRoute
     }
 
     /**
+     * Sets the requirement of host on this Route
+     *
+     * @param string $host The host for which this route should be enabled
+     *
+     * @return Route $this The current Route instance
+     */
+    public function host($host)
+    {
+        $this->setHost($host);
+
+        return $this;
+    }
+
+    /**
      * Sets the requirement of HTTP (no HTTPS) on this Route.
      *
      * @return Route $this The current Route instance
