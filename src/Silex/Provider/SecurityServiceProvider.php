@@ -215,7 +215,18 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
                 $security = isset($firewall['security']) ? (bool) $firewall['security'] : true;
                 $stateless = isset($firewall['stateless']) ? (bool) $firewall['stateless'] : false;
                 $context = isset($firewall['context']) ? $firewall['context'] : $name;
-                unset($firewall['pattern'], $firewall['users'], $firewall['security'], $firewall['stateless'], $firewall['context']);
+                $hosts = isset($firewall['hosts']) ? $firewall['hosts'] : null;
+                $methods = isset($firewall['methods']) ? $firewall['methods'] : null;
+
+                unset(
+                    $firewall['pattern'],
+                    $firewall['users'],
+                    $firewall['security'],
+                    $firewall['stateless'],
+                    $firewall['context'],
+                    $firewall['methods'],
+                    $firewall['hosts']
+                );
 
                 $protected = false === $security ? false : count($firewall);
 
@@ -295,7 +306,13 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
                     }
                 }
 
-                $configs[$name] = array($pattern, $listeners, $protected);
+                $configs[$name] = array(
+                    'pattern' => $pattern,
+                    'listeners' => $listeners,
+                    'protected' => $protected,
+                    'methods' => $methods,
+                    'hosts' => $hosts,
+                );
             }
 
             $app['security.authentication_providers'] = array_map(function ($provider) use ($app) {
@@ -304,8 +321,18 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
 
             $map = new FirewallMap();
             foreach ($configs as $name => $config) {
+                if (is_string($config['pattern'])) {
+                    $requestMatcher = new RequestMatcher(
+                        $config['pattern'],
+                        $config['hosts'],
+                        $config['methods']
+                    );
+                } else {
+                    $requestMatcher = $config['pattern'];
+                }
+
                 $map->add(
-                    is_string($config[0]) ? new RequestMatcher($config[0]) : $config[0],
+                    $requestMatcher,
                     array_map(function ($listenerId) use ($app, $name) {
                         $listener = $app[$listenerId];
 
@@ -319,8 +346,8 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
                         }
 
                         return $listener;
-                    }, $config[1]),
-                    $config[2] ? $app['security.exception_listener.'.$name] : null
+                    }, $config['listeners']),
+                    $config['protected'] ? $app['security.exception_listener.'.$name] : null
                 );
             }
 
@@ -344,14 +371,14 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
                 if (is_string($rule[0])) {
                     $rule[0] = new RequestMatcher($rule[0]);
                 } elseif (is_array($rule[0])) {
-                    $rule[0] += [
+                    $rule[0] += array(
                         'path' => null,
                         'host' => null,
                         'methods' => null,
                         'ips' => null,
                         'attributes' => array(),
                         'schemes' => null,
-                    ];
+                    );
                     $rule[0] = new RequestMatcher($rule[0]['path'], $rule[0]['host'], $rule[0]['methods'], $rule[0]['ips'], $rule[0]['attributes'], $rule[0]['schemes']);
                 }
                 $map->add($rule[0], (array) $rule[1], isset($rule[2]) ? $rule[2] : null);
