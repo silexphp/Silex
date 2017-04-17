@@ -13,7 +13,6 @@ namespace Silex\Provider;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use Silex\Application;
 use Silex\Api\BootableProviderInterface;
 use Symfony\Component\VarDumper\VarDumper;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
@@ -39,7 +38,7 @@ class VarDumperServiceProvider implements ServiceProviderInterface, BootableProv
         $app['var_dumper.dump_destination'] = null;
     }
 
-    public function boot(Application $app)
+    public function boot(Container $app)
     {
         if (!$app['debug']) {
             return;
