@@ -17,6 +17,37 @@ use Symfony\Component\HttpFoundation\Request;
 
 class SwiftmailerServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
+    public function defaultOptions()
+    {
+        return array(
+            array(
+                array(
+                    'host' => 'justchanginghost',
+                ),
+            ),
+            array(
+                array(
+                    'host' => 'my-host-here',
+                    'port' => 587,
+                    'username' => 'some-user',
+                    'password' => 'P@SS',
+                    'encryption' => 'tls',
+                    'auth_mode' => 'login',
+                ),
+            ),
+            array(
+                array(
+                    'host' => '100.10.100.1',
+                    'port' => 65000,
+                    'username' => 'some user name that has spaces for some reason',
+                    'password' => '123456789123456789123456789123456789',
+                    'encryption' => 'tls',
+                    'auth_mode' => null,
+                ),
+            ),
+        );
+    }
+
     public function testSwiftMailerServiceIsSwiftMailer()
     {
         $app = new Application();
@@ -88,5 +119,16 @@ class SwiftmailerServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $app->terminate($request, $response);
         $this->assertFalse($app['swiftmailer.spool']->hasFlushed);
+    }
+
+    /**
+     * @dataProvider defaultOptions
+     */
+    public function testSwiftMailerProviderUsesDefaultOptions($options) {
+        $app = new Application();
+        $app['swiftmailer.options'] = $options;
+        $app->register(new SwiftmailerServiceProvider());
+
+        $this->assertEquals($app['swiftmailer.options'],$options);
     }
 }
