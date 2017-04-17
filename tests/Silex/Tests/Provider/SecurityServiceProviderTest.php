@@ -178,6 +178,56 @@ class SecurityServiceProviderTest extends WebTestCase
         $this->assertCount(1, unserialize(serialize($app['routes'])));
     }
 
+    public function testCustomListenerIsRegistered()
+    {
+        $app = new Application();
+
+        $app->register(new SecurityServiceProvider());
+        $this->createCustomAuthenticationProvider($app);
+
+        // setup a firewall with our 'custom' authentication provider
+        $app['security.firewalls'] = array(
+            'admin' => array(
+                'pattern' => '/',
+                'custom' => true,
+            ),
+        );
+
+        $app->boot();
+
+        $listeners = $app['security.firewall_map']->getListeners(new Request());
+        $nonExceptionListeners = $listeners[0];
+
+        // see if our custom authentication listener is registered to the firewall map
+        $exists = false;
+        foreach($nonExceptionListeners as $listener) {
+            if(get_class($listener) === 'Silex\\Tests\\Provider\\ThisClassShouldBeRegistered') {
+                $exists = true;
+            }
+        }
+
+        $this->assertTrue($exists);
+    }
+
+    public function createCustomAuthenticationProvider(Application $app)
+    {
+        $app['security.authentication_listener.factory.custom'] = $app->protect(function($name) use ($app) {
+
+            $app['security.authentication_provider.'.$name.'.dao'] = $app['security.authentication_provider.dao._proto']($name);
+
+            $app['security.authentication_listener.'.$name.'.custom'] = $app->share(function() {
+                return new ThisClassShouldBeRegistered();
+            });
+
+            return array(
+                'security.authentication_provider.'.$name.'.dao',
+                'security.authentication_listener.'.$name.'.custom',
+                null,
+                'custom',
+            );
+        });
+    }
+
     public function createApplication($authenticationMethod = 'form')
     {
         $app = new Application();
@@ -289,4 +339,8 @@ class SecurityServiceProviderTest extends WebTestCase
 
         return $app;
     }
+}
+
+class ThisClassShouldBeRegistered
+{
 }
