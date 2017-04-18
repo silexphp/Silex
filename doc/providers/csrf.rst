@@ -45,7 +45,7 @@ Service Provider are protected against CSRF by default.
 
 You can also use the CSRF protection even without using the Symfony Form
 component. If, for example, you're doing a DELETE action, you can check the
-CSRF token::
+CSRF token:
 
     use Symfony\Component\Security\Csrf\CsrfToken;
 
