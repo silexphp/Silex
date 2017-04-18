@@ -55,7 +55,7 @@ class VarDumperServiceProvider implements ServiceProviderInterface, BootableProv
         // This code is here to lazy load the dump stack.
         VarDumper::setHandler(function ($var) use ($app) {
             $handler = function ($var) use ($app) {
-                $env = null === $app['var_dumper.env'] ? PHP_SAPI : $app['var_dumper.env'];
+                $env = null === $app['var_dumper.env'] ? \PHP_SAPI : $app['var_dumper.env'];
                 'cli' === $env
                     ? $app['var_dumper.cli_dumper']->dump($app['var_dumper.cloner']->cloneVar($var))
                     : $app['var_dumper.html_dumper']->dump($app['var_dumper.cloner']->cloneVar($var))
