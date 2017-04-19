@@ -6,6 +6,8 @@ components`_:
 
 .. code-block:: php
 
+.. code-block:: php
+
     <?php
 
     require_once __DIR__.'/../vendor/autoload.php';
