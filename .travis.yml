@@ -22,7 +22,7 @@ before_script:
     - sh -c "if [ '$SYMFONY_DEPS_VERSION' = '' ]; then sed -i 's/~2\.8|^3\.0/2.8.*@dev/g' composer.json; composer update; fi"
     - composer install
 
-script: phpunit
+script: ./vendor/bin/simple-phpunit
 
 matrix:
     include:
@@ -36,4 +36,9 @@ matrix:
         - php: 5.6
           env: SYMFONY_DEPS_VERSION=3.2
         - php: 7.0
+        - php: 7.1
         - php: hhvm
+
+cache:
+    directories:
+        - .phpunit
