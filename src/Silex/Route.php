@@ -60,12 +60,17 @@ class Route extends BaseRoute
      *
      * @param string $variable The variable name
      * @param string $regexp   The regexp to apply
+     * @param bool   $isUnicode The flag of unicode regexp
      *
      * @return Route $this The current route instance
      */
-    public function assert($variable, $regexp)
+    public function assert($variable, $regexp, $isUnicode = true)
     {
         $this->setRequirement($variable, $regexp);
+
+	    if($isUnicode){
+		    $this->setOption("utf8", true);
+	    }
 
         return $this;
     }
