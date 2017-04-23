@@ -58,8 +58,8 @@ class Route extends BaseRoute
     /**
      * Sets the requirement for a route variable.
      *
-     * @param string $variable The variable name
-     * @param string $regexp   The regexp to apply
+     * @param string $variable  The variable name
+     * @param string $regexp    The regexp to apply
      * @param bool   $isUnicode The flag of unicode regexp
      *
      * @return Route $this The current route instance
@@ -68,9 +68,9 @@ class Route extends BaseRoute
     {
         $this->setRequirement($variable, $regexp);
 
-	    if($isUnicode){
-		    $this->setOption("utf8", true);
-	    }
+        if($isUnicode){
+            $this->setOption("utf8", true);
+        }
 
         return $this;
     }
