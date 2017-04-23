@@ -68,8 +68,8 @@ class Route extends BaseRoute
     {
         $this->setRequirement($variable, $regexp);
 
-        if($isUnicode){
-            $this->setOption("utf8", true);
+        if ($isUnicode) {
+            $this->setOption('utf8', true);
         }
 
         return $this;
