@@ -201,7 +201,6 @@ class SecurityServiceProviderTest extends WebTestCase
         $this->assertCount(1, unserialize(serialize($app['routes'])));
     }
 
-
     public function testFirewallWithMethod()
     {
         $app = new Application();
