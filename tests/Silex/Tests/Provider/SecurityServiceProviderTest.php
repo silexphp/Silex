@@ -201,29 +201,6 @@ class SecurityServiceProviderTest extends WebTestCase
         $this->assertCount(1, unserialize(serialize($app['routes'])));
     }
 
-    public function testFirewallMethod()
-    {
-        $app = new Application();
-        $app->register(new SecurityServiceProvider(), array(
-            'security.firewalls' => array(
-                'default' => array(
-                    'pattern' => '/',
-                    'http' => true,
-                    'methods' => ['POST'],
-                ),
-            ),
-        ));
-        $app->match('/', function () { return 'foo'; })
-        ->method('POST|GET');
-
-        $request = Request::create('/', 'GET');
-        $response = $app->handle($request);
-        $this->assertEquals(200, $response->getStatusCode());
-
-        $request = Request::create('/', 'POST');
-        $response = $app->handle($request);
-        $this->assertEquals(401, $response->getStatusCode());
-    }
 
     public function testFirewallWithMethod()
     {
@@ -233,7 +210,7 @@ class SecurityServiceProviderTest extends WebTestCase
                 'default' => array(
                     'pattern' => '/',
                     'http' => true,
-                    'methods' => ['POST'],
+                    'methods' => array('POST'),
                 ),
             ),
         ));
