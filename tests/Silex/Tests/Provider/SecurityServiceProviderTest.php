@@ -201,6 +201,81 @@ class SecurityServiceProviderTest extends WebTestCase
         $this->assertCount(1, unserialize(serialize($app['routes'])));
     }
 
+    public function testFirewallMethod()
+    {
+        $app = new Application();
+        $app->register(new SecurityServiceProvider(), array(
+            'security.firewalls' => array(
+                'default' => array(
+                    'pattern' => '/',
+                    'http' => true,
+                    'methods' => ['POST'],
+                ),
+            ),
+        ));
+        $app->match('/', function () { return 'foo'; })
+        ->method('POST|GET');
+
+        $request = Request::create('/', 'GET');
+        $response = $app->handle($request);
+        $this->assertEquals(200, $response->getStatusCode());
+
+        $request = Request::create('/', 'POST');
+        $response = $app->handle($request);
+        $this->assertEquals(401, $response->getStatusCode());
+    }
+
+    public function testFirewallWithMethod()
+    {
+        $app = new Application();
+        $app->register(new SecurityServiceProvider(), array(
+            'security.firewalls' => array(
+                'default' => array(
+                    'pattern' => '/',
+                    'http' => true,
+                    'methods' => ['POST'],
+                ),
+            ),
+        ));
+        $app->match('/', function () { return 'foo'; })
+        ->method('POST|GET');
+
+        $request = Request::create('/', 'GET');
+        $response = $app->handle($request);
+        $this->assertEquals(200, $response->getStatusCode());
+
+        $request = Request::create('/', 'POST');
+        $response = $app->handle($request);
+        $this->assertEquals(401, $response->getStatusCode());
+    }
+
+    public function testFirewallWithHost()
+    {
+        $app = new Application();
+        $app->register(new SecurityServiceProvider(), array(
+            'security.firewalls' => array(
+                'default' => array(
+                    'pattern' => '/',
+                    'http' => true,
+                    'hosts' => 'localhost2',
+                ),
+            ),
+        ));
+        $app->get('/', function () { return 'foo'; })
+        ->host('localhost2');
+
+        $app->get('/', function () { return 'foo'; })
+        ->host('localhost1');
+
+        $request = Request::create('http://localhost2/');
+        $response = $app->handle($request);
+        $this->assertEquals(401, $response->getStatusCode());
+
+        $request = Request::create('http://localhost1/');
+        $response = $app->handle($request);
+        $this->assertEquals(200, $response->getStatusCode());
+    }
+
     public function testUser()
     {
         $app = new Application();
