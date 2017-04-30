@@ -116,4 +116,26 @@ class TwigServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('Twig_Environment', $app['twig']);
     }
+
+    public function testFormatParameters()
+    {
+        $app = new Application();
+
+        $timezone = new \DateTimeZone('Europe/Paris');
+
+        $app->register(new TwigServiceProvider(), array(
+            'twig.date.format' => 'Y-m-d',
+            'twig.date.interval_format' => '%h hours',
+            'twig.date.timezone' => $timezone,
+            'twig.number_format.decimals' => 2,
+            'twig.number_format.decimal_point' => ',',
+            'twig.number_format.thousands_separator' => ' ',
+        ));
+
+        $twig = $app['twig'];
+
+        $this->assertSame(array('Y-m-d', '%h hours'), $twig->getExtension('Twig_Extension_Core')->getDateFormat());
+        $this->assertSame($timezone, $twig->getExtension('Twig_Extension_Core')->getTimezone());
+        $this->assertSame(array(2, ',', ' '), $twig->getExtension('Twig_Extension_Core')->getNumberFormat());
+    }
 }
