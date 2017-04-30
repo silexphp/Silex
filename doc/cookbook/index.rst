@@ -15,6 +15,7 @@ The cookbook section contains recipes for solving specific problems.
     error_handler
     multiple_loggers
     assets
+    monolog_request_hash
 
 Recipes
 -------
@@ -36,5 +37,7 @@ Recipes
 * :doc:`Converting Errors to Exceptions <error_handler>`.
 
 * :doc:`Using multiple Monolog Loggers <multiple_loggers>`.
+
+* :doc:`Adding a request hash to logs with Monolog <monolog_request_hash>`.
 
 * :doc:`Managing Assets in Templates <assets>`.
