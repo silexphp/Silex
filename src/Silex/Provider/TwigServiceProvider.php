@@ -23,9 +23,11 @@ use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Bridge\Twig\Extension\SecurityExtension;
 use Symfony\Bridge\Twig\Extension\HttpFoundationExtension;
 use Symfony\Bridge\Twig\Extension\HttpKernelExtension;
+use Symfony\Bridge\Twig\Extension\WebLinkExtension;
 use Symfony\Bridge\Twig\Form\TwigRendererEngine;
 use Symfony\Bridge\Twig\Form\TwigRenderer;
 use Symfony\Bridge\Twig\Extension\HttpKernelRuntime;
+use Symfony\Component\WebLink\HttpHeaderSerializer;
 
 /**
  * Twig integration for Silex.
@@ -123,6 +125,10 @@ class TwigServiceProvider implements ServiceProviderInterface
 
                 if (class_exists(HttpKernelRuntime::class)) {
                     $twig->addRuntimeLoader($app['twig.runtime_loader']);
+                }
+
+                if (class_exists(HttpHeaderSerializer::class) && class_exists(WebLinkExtension::class)) {
+                    $twig->addExtension(new WebLinkExtension($app['request_stack']));
                 }
             }
 

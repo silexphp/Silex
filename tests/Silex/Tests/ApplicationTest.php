@@ -11,6 +11,8 @@
 
 namespace Silex\Tests;
 
+use Fig\Link\GenericLinkProvider;
+use Fig\Link\Link;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\Api\ControllerProviderInterface;
@@ -653,6 +655,22 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $response = $app->handle(Request::create('/foo'));
 
         $this->assertEquals('Hello view listener', $response->getContent());
+    }
+
+    public function testWebLinkListener()
+    {
+        $app = new Application();
+
+        $app->get('/', function () {
+            return 'hello';
+        });
+
+        $request = Request::create('/');
+        $request->attributes->set('_links', (new GenericLinkProvider())->withLink(new Link('preload', '/foo.css')));
+
+        $response = $app->handle($request);
+
+        $this->assertEquals('</foo.css>; rel="preload"', $response->headers->get('Link'));
     }
 
     public function testDefaultRoutesFactory()

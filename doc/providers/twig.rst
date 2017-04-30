@@ -80,7 +80,7 @@ additional capabilities.
   <http://symfony.com/doc/current/book/routing.html#generating-urls-from-a-template>`_:
 
   .. code-block:: jinja
-  
+
       {{ path('homepage') }}
       {{ url('homepage') }} {# generates the absolute url http://example.org/ #}
       {{ path('hello', {name: 'Fabien'}) }}
@@ -111,6 +111,15 @@ If you are using the ``SecurityServiceProvider``, you will have access to the
 ``is_granted()`` function in templates. You can find more information in the
 `Symfony Security documentation
 <http://symfony.com/doc/current/book/security.html#access-control-in-templates>`_.
+
+Web Link Support
+~~~~~~~~~~~~~~~~
+
+If you are using the ``symfony/web-link`` component, you will have access to the
+``preload()``, ``prefetch()``, ``prerender()``, ``dns_prefetch()``,
+``preconnect()`` and ``link()`` functions in templates. You can find more
+information in the `Symfony WebLink documentation
+<https://symfony.com/doc/current/components/weblink/introduction.html>`_.
 
 Global Variable
 ~~~~~~~~~~~~~~~
