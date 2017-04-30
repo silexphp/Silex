@@ -1,6 +1,9 @@
 Introduction
 ============
 
+**WARNINIG** You are reading documentation for the Silex 1.x branch, which is
+not maintained anymore. You should upgrade to Silex 2.x.
+
 Silex is a PHP microframework. It is built on the shoulders of `Symfony`_ and
 `Pimple`_ and also inspired by `Sinatra`_.
 
