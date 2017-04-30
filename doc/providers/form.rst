@@ -53,12 +53,12 @@ Registering
         composer require symfony/form
 
     If you are going to use the validation extension with forms, you must also
-    add a dependency to the ``symfony/config`` and ``symfony/translation``
+    add a dependency to the ``symfony/validator`` and ``symfony/config``
     components:
 
     .. code-block:: bash
 
-        composer require symfony/validator symfony/config symfony/translation
+        composer require symfony/validator symfony/config
         
     The Symfony Security CSRF component is used to protect forms against CSRF
     attacks (as of Symfony 2.4+):
@@ -73,7 +73,7 @@ Registering
 
     .. code-block:: bash
 
-        composer require symfony/twig-bridge symfony/config symfony/translation
+        composer require symfony/twig-bridge
 
 Usage
 -----
@@ -132,15 +132,21 @@ form by adding constraints on the fields::
         'translator.domains' => array(),
     ));
 
-    $form = $app['form.factory']->createBuilder('form')
-        ->add('name', 'text', array(
+    // some default data for when the form is displayed the first time
+    $data = array(
+        'name' => 'Your name',
+        'email' => 'Your email',
+    );
+        
+    $form = $app['form.factory']->createBuilder(FormType::class, $data)
+        ->add('name', TextType::class, array(
             'constraints' => array(new Assert\NotBlank(), new Assert\Length(array('min' => 5)))
         ))
-        ->add('email', 'text', array(
+        ->add('email', EmailType::class, array(
             'constraints' => new Assert\Email()
         ))
-        ->add('billing_plan', 'choice', array(
-            'choices' => array(1 => 'free', 2 => 'small_business', 3 => 'corporate'),
+        ->add('billing_plan', ChoiceType::class, array(
+            'choices' => array('free' => 1, 'small business' => 2, 'corporate' => 3),
             'expanded' => true,
             'constraints' => new Assert\Choice(array(1, 2, 3)),
         ))
