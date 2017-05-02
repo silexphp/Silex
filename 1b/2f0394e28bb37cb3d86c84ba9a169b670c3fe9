@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by skalpa at 2017-05-02T00:56:03Z
+
+I went too fast and the "fixed" test didn't work with 3.0 and 3.1.
+
+Thus I just kept the test without the starting slash as the behavior of `getUrl()` in that case is the same from 2.7 to 3.3.
