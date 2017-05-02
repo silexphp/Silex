@@ -29,7 +29,7 @@ class AssetServiceProviderTest extends \PHPUnit_Framework_TestCase
         ));
 
         $this->assertEquals('/foo.png?version=v1', $app['assets.packages']->getUrl('/foo.png'));
-        $this->assertEquals('/whatever-makes-sense/foo.css?css2', $app['assets.packages']->getUrl('/foo.css', 'css'));
+        $this->assertEquals('/whatever-makes-sense/foo.css?css2', $app['assets.packages']->getUrl('foo.css', 'css'));
         $this->assertEquals('https://img.example.com/foo.png', $app['assets.packages']->getUrl('/foo.png', 'images'));
     }
 }
