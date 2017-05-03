@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.1.0 (2016-XX-XX)
+2.1.0 (2017-05-03)
 ------------------
 
 * added more options to security.firewalls
