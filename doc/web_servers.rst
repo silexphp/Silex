@@ -36,6 +36,24 @@ Alternatively, if you use Apache 2.2.16 or higher, you can use the
 
     If your site is not at the webroot level you will have to adjust the path to
     point to your directory, relative from the webroot.
+    
+Or if you're using a VirtualHost, you can add the same directive to the VirtualHost's Directory entry:
+
+.. code-block:: apache
+
+<VirtualHost *:80>
+	# other directives
+
+	<Directory /var/www/domain.com/>
+		# other directives
+		
+		FallbackResource /index.php
+	</Directory>
+</VirtualHost>
+
+.. note::
+
+    Note that you need the leading forward slash there, unlike with the .htaccess version
 
 nginx
 -----
