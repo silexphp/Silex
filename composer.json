@@ -47,7 +47,8 @@
         "twig/twig": "~1.28|~2.0",
         "doctrine/dbal": "~2.2",
         "swiftmailer/swiftmailer": "~5",
-        "monolog/monolog": "^1.4.1"
+        "monolog/monolog": "^1.4.1",
+        "symfony/web-link": "^3.3"
     },
     "replace": {
         "silex/api": "self.version",
