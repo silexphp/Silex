@@ -13,6 +13,7 @@ namespace Silex;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
+use Silex\Legacy\SharedService;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -33,6 +34,7 @@ use Silex\Api\ControllerProviderInterface;
 use Silex\Provider\ExceptionHandlerServiceProvider;
 use Silex\Provider\RoutingServiceProvider;
 use Silex\Provider\HttpKernelServiceProvider;
+use Silex\ServiceProviderInterface as LegacyServiceProviderInterface;
 
 /**
  * The Silex framework class.
@@ -47,6 +49,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     const LATE_EVENT = -512;
 
     protected $providers = array();
+    private $legacyProvider = false;
     protected $booted = false;
 
     /**
@@ -93,6 +96,39 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     }
 
     /**
+     * Registers a legacy service provider.
+     *
+     * @param LegacyServiceProviderInterface $provider A LegacyServiceProviderInterface instance
+     * @param array                          $values   An array of values that customizes the provider
+     *
+     * @return Application
+     *
+     * @throws \Exception
+     */
+    public function registerLegacy(LegacyServiceProviderInterface $provider, array $values = array())
+    {
+        $this->providers[] = $provider;
+
+        try {
+            $this->legacyProvider = true;
+
+            $provider->register($this);
+
+            foreach ($values as $key => $value) {
+                $this[$key] = $value;
+            }
+
+            $this->legacyProvider = false;
+        } catch (\Exception $e) {
+            $this->legacyProvider = false;
+
+            throw $e;
+        }
+
+        return $this;
+    }
+
+    /**
      * Boots all service providers.
      *
      * This method is automatically called by handle(), but you can use it
@@ -107,6 +143,23 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
         $this->booted = true;
 
         foreach ($this->providers as $provider) {
+            if ($provider instanceof LegacyServiceProviderInterface) {
+                try {
+                    $this->legacyProvider = true;
+
+                    $provider->boot($this);
+
+                    $this->legacyProvider = false;
+
+                } catch (\Exception $e) {
+                    $this->legacyProvider = false;
+
+                    throw $e;
+                }
+
+                continue;
+            }
+
             if ($provider instanceof EventListenerProviderInterface) {
                 $provider->subscribe($this, $this['dispatcher']);
             }
@@ -502,5 +555,66 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     public function terminate(Request $request, Response $response)
     {
         $this['kernel']->terminate($request, $response);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function offsetSet($id, $value)
+    {
+        if (!$this->legacyProvider) {
+            parent::offsetSet($id, $value);
+
+            return;
+        }
+
+        if ($value instanceof SharedService) {
+            parent::offsetSet($id, $value->getCallable());
+
+            return;
+        }
+
+        if ($value instanceof \Closure || (is_object($value) && method_exists($value, '__invoke'))) {
+            parent::offsetSet($id, parent::factory($value));
+
+            return;
+        }
+
+        parent::offsetSet($id, $value);
+    }
+
+    /**
+     * Returns a shared service instance that stores the result of the given service definition
+     * for uniqueness in the scope of this instance of Pimple.
+     *
+     * @param callable $callable A service definition to wrap for uniqueness
+     *
+     * @return SharedService
+     */
+    public function share($callable)
+    {
+        if (!is_object($callable) || !method_exists($callable, '__invoke')) {
+            throw new \InvalidArgumentException('Service definition is not a Closure or invokable object.');
+        }
+
+        return new SharedService($callable);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function protect($callable)
+    {
+        if (!$this->legacyProvider) {
+            return parent::protect($callable);
+        }
+
+        if (!is_object($callable) || !method_exists($callable, '__invoke')) {
+            throw new \InvalidArgumentException('Callable is not a Closure or invokable object.');
+        }
+
+        return function ($c) use ($callable) {
+            return $callable;
+        };
     }
 }
