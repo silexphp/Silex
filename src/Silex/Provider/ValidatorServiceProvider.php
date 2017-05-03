@@ -18,6 +18,8 @@ use Symfony\Component\Validator\Validator;
 use Symfony\Component\Validator\Mapping\Factory\LazyLoadingMetadataFactory;
 use Symfony\Component\Validator\Mapping\Loader\StaticMethodLoader;
 use Symfony\Component\Validator\Validation;
+use Doctrine\Common\Annotations\AnnotationReader;
+use Symfony\Component\Validator\Mapping\Loader\AnnotationLoader;
 
 /**
  * Symfony Validator component Provider.
@@ -46,7 +48,21 @@ class ValidatorServiceProvider implements ServiceProviderInterface
         };
 
         $app['validator.mapping.class_metadata_factory'] = function ($app) {
-            return new LazyLoadingMetadataFactory(new StaticMethodLoader());
+            $loader = null;
+
+            if ($app->offsetExists('validator.mapping.use_annotation') && $app['validator.mapping.use_annotation'] === true) {
+                $loader = new AnnotationLoader(new AnnotationReader());
+            } else {
+                $loader = new StaticMethodLoader();
+            }
+
+            $cache = null;
+
+            if ($app->offsetExists('validator.mapping.cache')) {
+                $cache = $app['validator.mapping.cache'];
+            }
+
+            return new LazyLoadingMetadataFactory($loader, $cache);
         };
 
         $app['validator.validator_factory'] = function () use ($app) {

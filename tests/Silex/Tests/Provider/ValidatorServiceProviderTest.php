@@ -11,6 +11,7 @@
 
 namespace Silex\Tests\Provider;
 
+use Doctrine\Common\Cache\ArrayCache;
 use Silex\Application;
 use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
@@ -55,6 +56,21 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
         return $app;
     }
 
+    public function testRegisterWithAnnotationLoader()
+    {
+        $app = new Application();
+
+        $app['validator.mapping.use_annotation'] = true;
+
+        $app['validator.mapping.cache'] = function () {
+            return new ArrayCache();
+        };
+
+        $app->register(new ValidatorServiceProvider());
+
+        return $app;
+    }
+
     /**
      * @depends testRegisterWithCustomValidators
      */
@@ -81,7 +97,7 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testValidatorServiceIsAValidator($app)
     {
-        $this->assertTrue($app['validator'] instanceof ValidatorInterface || $app['validator'] instanceof LegacyValidatorInterface );
+        $this->assertTrue($app['validator'] instanceof ValidatorInterface || $app['validator'] instanceof LegacyValidatorInterface);
     }
 
     /**
