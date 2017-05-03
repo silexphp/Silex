@@ -59,7 +59,9 @@ Registering
 Using Handlers
 --------------
 
-The default session handler is `NativeFileSessionHandler`. However, there are multiple handlers available for use by setting ``session.storage.handler`` to an instance of one of the following handler objects.
+The default session handler is ``NativeFileSessionHandler``. However, there are
+multiple handlers available for use by setting ``session.storage.handler`` to
+an instance of one of the following handler objects:
 
 * `LegacyPdoSessionHandler <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/LegacyPdoSessionHandler.html>`_
 * `MemcacheSessionHandler <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/MemcacheSessionHandler.html>`_
