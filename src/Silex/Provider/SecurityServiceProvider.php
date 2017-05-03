@@ -217,19 +217,8 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
                 $context = isset($firewall['context']) ? $firewall['context'] : $name;
                 $hosts = isset($firewall['hosts']) ? $firewall['hosts'] : null;
                 $methods = isset($firewall['methods']) ? $firewall['methods'] : null;
-
-                unset(
-                    $firewall['pattern'],
-                    $firewall['users'],
-                    $firewall['security'],
-                    $firewall['stateless'],
-                    $firewall['context'],
-                    $firewall['methods'],
-                    $firewall['hosts']
-                );
-
+                unset($firewall['pattern'], $firewall['users'], $firewall['security'], $firewall['stateless'], $firewall['context'], $firewall['methods'], $firewall['hosts']);
                 $protected = false === $security ? false : count($firewall);
-
                 $listeners = array('security.channel_listener');
 
                 if ($protected) {
@@ -322,11 +311,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
             $map = new FirewallMap();
             foreach ($configs as $name => $config) {
                 if (is_string($config['pattern'])) {
-                    $requestMatcher = new RequestMatcher(
-                        $config['pattern'],
-                        $config['hosts'],
-                        $config['methods']
-                    );
+                    $requestMatcher = new RequestMatcher($config['pattern'], $config['hosts'], $config['methods']);
                 } else {
                     $requestMatcher = $config['pattern'];
                 }
