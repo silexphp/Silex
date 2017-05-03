@@ -41,6 +41,14 @@ class TwigServiceProvider implements ServiceProviderInterface
         $app['twig.path'] = array();
         $app['twig.templates'] = array();
 
+        $app['twig.date.format'] = 'F j, Y H:i';
+        $app['twig.date.interval_format'] = '%d days';
+        $app['twig.date.timezone'] = null;
+
+        $app['twig.number_format.decimals'] = 0;
+        $app['twig.number_format.decimal_point'] = '.';
+        $app['twig.number_format.thousands_separator'] = ',';
+
         $app['twig'] = function ($app) {
             $app['twig.options'] = array_replace(
                 array(
@@ -54,6 +62,16 @@ class TwigServiceProvider implements ServiceProviderInterface
             // registered for BC, but should not be used anymore
             // deprecated and should probably be removed in Silex 3.0
             $twig->addGlobal('app', $app);
+
+            $coreExtension = $twig->getExtension('Twig_Extension_Core');
+
+            $coreExtension->setDateFormat($app['twig.date.format'], $app['twig.date.interval_format']);
+
+            if (null !== $app['twig.date.timezone']) {
+                $coreExtension->setTimezone($app['twig.date.timezone']);
+            }
+
+            $coreExtension->setNumberFormat($app['twig.number_format.decimals'], $app['twig.number_format.decimal_point'], $app['twig.number_format.thousands_separator']);
 
             if ($app['debug']) {
                 $twig->addExtension(new \Twig_Extension_Debug());
