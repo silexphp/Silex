@@ -1,0 +1,17 @@
+---------------------------------------------------------------------------
+
+by xabbuh at 2017-05-02T03:32:23Z
+
+The `FormExtension` class is part of the Twig bridge. Checking for the existence of a class from the Form component is not sufficient as the Form component in version 3.2 or higher may be used with an older version of the Twig bridge.
+
+Also, you will then have to make sure that the Twig environment is passed to the Twig renderer engine (see the description of the deprecation in the extension class).
+
+---------------------------------------------------------------------------
+
+by skalpa at 2017-05-03T14:50:11Z
+
+Good catch, thanks.
+
+I changed the test and now check if `Symfony\Bridge\Twig\Extension\HttpKernelRuntime` exists (it was added by symfony/symfony@812fbb444f1d1e4cafff5876ce7b22d5b8d4adf8).
+
+As for the renderer engine: I had already checked and the Twig environment is [already passed to the constructor](https://github.com/silexphp/Silex/blob/1b2f0394e28bb37cb3d86c84ba9a169b670c3fe9/src/Silex/Provider/TwigServiceProvider.php#L103).
