@@ -122,6 +122,21 @@ class TwigServiceProvider implements ServiceProviderInterface
                 }
 
                 if (class_exists(HttpKernelRuntime::class)) {
+                    $app['twig.runtime.httpkernel'] = function ($app) {
+                        return new HttpKernelRuntime($app['fragment.handler']);
+                    };
+
+                    $app['twig.runtimes'] = function ($app) {
+                        return array(
+                            HttpKernelRuntime::class => 'twig.runtime.httpkernel',
+                            TwigRenderer::class => 'twig.form.renderer',
+                        );
+                    };
+
+                    $app['twig.runtime_loader'] = function ($app) {
+                        return new RuntimeLoader($app, $app['twig.runtimes']);
+                    };
+
                     $twig->addRuntimeLoader($app['twig.runtime_loader']);
                 }
             }
@@ -147,20 +162,5 @@ class TwigServiceProvider implements ServiceProviderInterface
         $app['twig.environment_factory'] = $app->protect(function ($app) {
             return new \Twig_Environment($app['twig.loader'], $app['twig.options']);
         });
-
-        $app['twig.runtime.httpkernel'] = function ($app) {
-            return new HttpKernelRuntime($app['fragment.handler']);
-        };
-
-        $app['twig.runtimes'] = function ($app) {
-            return array(
-                HttpKernelRuntime::class => 'twig.runtime.httpkernel',
-                TwigRenderer::class => 'twig.form.renderer',
-            );
-        };
-
-        $app['twig.runtime_loader'] = function ($app) {
-            return new RuntimeLoader($app, $app['twig.runtimes']);
-        };
     }
 }
