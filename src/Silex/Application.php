@@ -128,9 +128,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
         });
 
         $this['request_stack'] = $this->share(function () use ($app) {
-            if (class_exists('Symfony\Component\HttpFoundation\RequestStack')) {
-                return new RequestStack();
-            }
+            return new RequestStack();
         });
 
         $this['request_context'] = $this->share(function () use ($app) {
@@ -145,12 +143,6 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
         $this['url_matcher'] = $this->share(function () use ($app) {
             return new RedirectableUrlMatcher($app['routes'], $app['request_context']);
         });
-
-        $this['request_error'] = $this->protect(function () {
-            throw new \RuntimeException('Accessed request service outside of request scope. Try moving that call to a before handler or controller.');
-        });
-
-        $this['request'] = $this['request_error'];
 
         $this['request.http_port'] = 80;
         $this['request.https_port'] = 443;
@@ -295,6 +287,19 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
     }
 
     /**
+     * Creates a mounting point and creates a callable to mount controllers under it.
+     *
+     * @param string $prefix The mounting point prefix
+     * @param mixed  $to     Callback that creates the controllers under the mounting point
+     *
+     * @return Controller
+     */
+    public function group($prefix, $to = null)
+    {
+        return $this['controllers']->group($prefix, $to);
+    }
+
+    /**
      * Adds an event listener that listens on the specified events.
      *
      * @param string   $eventName The event to listen on
@@ -331,7 +336,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
         $app = $this;
 
         $this->on(KernelEvents::REQUEST, function (GetResponseEvent $event) use ($callback, $app) {
-            if (HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
+            if (!$event->isMasterRequest()) {
                 return;
             }
 
@@ -357,7 +362,7 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
         $app = $this;
 
         $this->on(KernelEvents::RESPONSE, function (FilterResponseEvent $event) use ($callback, $app) {
-            if (HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
+            if (!$event->isMasterRequest()) {
                 return;
             }
 
@@ -514,8 +519,6 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
      * @param null|string         $contentDisposition The type of Content-Disposition to set automatically with the filename
      *
      * @return BinaryFileResponse
-     *
-     * @throws \RuntimeException When the feature is not supported, before http-foundation v2.2
      */
     public function sendFile($file, $status = 200, array $headers = array(), $contentDisposition = null)
     {
@@ -577,17 +580,9 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
             $this->boot();
         }
 
-        $current = HttpKernelInterface::SUB_REQUEST === $type ? $this['request'] : $this['request_error'];
-
-        $this['request'] = $request;
-
         $this->flush();
 
-        $response = $this['kernel']->handle($request, $type, $catch);
-
-        $this['request'] = $current;
-
-        return $response;
+        return $this['kernel']->handle($request, $type, $catch);
     }
 
     /**

@@ -52,6 +52,9 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
         $returnValue = $app->delete('/foo', function () {});
         $this->assertInstanceOf('Silex\Controller', $returnValue);
+
+        $returnValue = $app->group('/foo', function () {});
+        $this->assertInstanceOf('Silex\ControllerCollection', $returnValue);
     }
 
     public function testConstructorInjection()
@@ -417,30 +420,6 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $app->handle(Request::create('/'), HttpKernelInterface::MASTER_REQUEST, false);
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
-    public function testAccessingRequestOutsideOfScopeShouldThrowRuntimeException()
-    {
-        $app = new Application();
-
-        $request = $app['request'];
-    }
-
-    /**
-     * @expectedException \RuntimeException
-     */
-    public function testAccessingRequestOutsideOfScopeShouldThrowRuntimeExceptionAfterHandling()
-    {
-        $app = new Application();
-        $app->get('/', function () {
-            return 'hello';
-        });
-        $app->handle(Request::create('/'), HttpKernelInterface::MASTER_REQUEST, false);
-
-        $request = $app['request'];
-    }
-
     public function testSubRequest()
     {
         $app = new Application();
@@ -452,27 +431,6 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         });
 
         $this->assertEquals('foo', $app->handle(Request::create('/'))->getContent());
-    }
-
-    public function testSubRequestDoesNotReplaceMainRequestAfterHandling()
-    {
-        $mainRequest = Request::create('/');
-        $subRequest = Request::create('/sub');
-
-        $app = new Application();
-        $app->get('/sub', function (Request $request) {
-            return new Response('foo');
-        });
-        $app->get('/', function (Request $request) use ($subRequest, $app) {
-            $response = $app->handle($subRequest, HttpKernelInterface::SUB_REQUEST);
-
-            // request in app must be the main request here
-            $response->setContent($response->getContent().' '.$app['request']->getPathInfo());
-
-            return $response;
-        });
-
-        $this->assertEquals('foo /', $app->handle($mainRequest)->getContent());
     }
 
     public function testRegisterShouldReturnSelf()
@@ -611,9 +569,6 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Hello world', $response->getContent());
     }
 
-    /**
-     * @requires PHP 5.4
-     */
     public function testViewListenerWithCallableTypeHint()
     {
         $app = new Application();
