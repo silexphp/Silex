@@ -11,6 +11,7 @@
 
 namespace Silex\Tests\Application;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
@@ -18,7 +19,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class UrlGeneratorTraitTest extends \PHPUnit_Framework_TestCase
+class UrlGeneratorTraitTest extends TestCase
 {
     public function testUrl()
     {

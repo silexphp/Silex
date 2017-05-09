@@ -11,10 +11,11 @@
 
 namespace Silex\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Pimple\Container;
 use Silex\CallbackResolver;
 
-class CallbackResolverTest extends \PHPUnit_Framework_Testcase
+class CallbackResolverTest extends Testcase
 {
     private $app;
     private $resolver;

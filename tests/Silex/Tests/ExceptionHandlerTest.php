@@ -11,6 +11,7 @@
 
 namespace Silex\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +22,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  *
  * @author Igor Wiedler <igor@wiedler.ch>
  */
-class ExceptionHandlerTest extends \PHPUnit_Framework_TestCase
+class ExceptionHandlerTest extends TestCase
 {
     public function testExceptionHandlerExceptionNoDebug()
     {
@@ -307,7 +308,6 @@ class ExceptionHandlerTest extends \PHPUnit_Framework_TestCase
         // Since we throw a standard Exception above only
         // the second error handler should fire
         $app->error(function (\LogicException $e) { // Extends \Exception
-
             return 'Caught LogicException';
         });
         $app->error(function (\Exception $e) {
@@ -333,7 +333,6 @@ class ExceptionHandlerTest extends \PHPUnit_Framework_TestCase
         // Since we throw a LogicException above
         // the first error handler should fire
         $app->error(function (\LogicException $e) { // Extends \Exception
-
             return 'Caught LogicException';
         });
         $app->error(function (\Exception $e) {
@@ -364,7 +363,6 @@ class ExceptionHandlerTest extends \PHPUnit_Framework_TestCase
             return 'Caught Exception';
         });
         $app->error(function (\LogicException $e) { // Extends \Exception
-
             return 'Caught LogicException';
         });
 

@@ -11,6 +11,7 @@
 
 namespace Silex\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Silex\Controller;
 use Silex\Route;
 
@@ -19,7 +20,7 @@ use Silex\Route;
  *
  * @author Igor Wiedler <igor@wiedler.ch>
  */
-class ControllerTest extends \PHPUnit_Framework_TestCase
+class ControllerTest extends TestCase
 {
     public function testBind()
     {

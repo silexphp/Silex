@@ -11,6 +11,7 @@
 
 namespace Silex\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Silex\Provider\Routing\LazyRequestMatcher;
 
@@ -19,10 +20,10 @@ use Silex\Provider\Routing\LazyRequestMatcher;
  *
  * @author Leszek Prabucki <leszek.prabucki@gmail.com>
  */
-class LazyRequestMatcherTest extends \PHPUnit_Framework_TestCase
+class LazyRequestMatcherTest extends TestCase
 {
     /**
-     * @covers Silex\LazyRequestMatcher::getRequestMatcher
+     * @covers \Silex\LazyRequestMatcher::getRequestMatcher
      */
     public function testUserMatcherIsCreatedLazily()
     {
@@ -42,7 +43,7 @@ class LazyRequestMatcherTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException LogicException
+     * @expectedException \LogicException
      * @expectedExceptionMessage Factory supplied to LazyRequestMatcher must return implementation of Symfony\Component\Routing\RequestMatcherInterface.
      */
     public function testThatCanInjectRequestMatcherOnly()
@@ -56,7 +57,7 @@ class LazyRequestMatcherTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Silex\LazyRequestMatcher::matchRequest
+     * @covers \Silex\LazyRequestMatcher::matchRequest
      */
     public function testMatchIsProxy()
     {
