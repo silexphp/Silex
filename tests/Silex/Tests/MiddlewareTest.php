@@ -11,6 +11,7 @@
 
 namespace Silex\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author Igor Wiedler <igor@wiedler.ch>
  */
-class MiddlewareTest extends \PHPUnit_Framework_TestCase
+class MiddlewareTest extends TestCase
 {
     public function testBeforeAndAfterFilter()
     {

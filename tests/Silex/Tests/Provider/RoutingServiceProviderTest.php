@@ -11,6 +11,7 @@
 
 namespace Silex\Tests\Provider;
 
+use PHPUnit\Framework\TestCase;
 use Pimple\Container;
 use Silex\Application;
 use Silex\Provider\RoutingServiceProvider;
@@ -22,7 +23,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  *
  * @author Igor Wiedler <igor@wiedler.ch>
  */
-class RoutingServiceProviderTest extends \PHPUnit_Framework_TestCase
+class RoutingServiceProviderTest extends TestCase
 {
     public function testRegister()
     {

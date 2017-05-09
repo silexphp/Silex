@@ -13,6 +13,7 @@ namespace Silex\Tests;
 
 use Fig\Link\GenericLinkProvider;
 use Fig\Link\Link;
+use PHPUnit\Framework\TestCase;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\Api\ControllerProviderInterface;
@@ -30,7 +31,7 @@ use Symfony\Component\Routing\RouteCollection;
  *
  * @author Igor Wiedler <igor@wiedler.ch>
  */
-class ApplicationTest extends \PHPUnit_Framework_TestCase
+class ApplicationTest extends TestCase
 {
     public function testMatchReturnValue()
     {

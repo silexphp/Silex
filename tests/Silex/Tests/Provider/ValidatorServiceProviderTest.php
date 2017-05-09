@@ -11,6 +11,7 @@
 
 namespace Silex\Tests\Provider;
 
+use PHPUnit\Framework\TestCase;
 use Silex\Application;
 use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
@@ -27,7 +28,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * Javier Lopez <f12loalf@gmail.com>
  */
-class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
+class ValidatorServiceProviderTest extends TestCase
 {
     public function testRegister()
     {

@@ -11,6 +11,7 @@
 
 namespace Silex\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -19,7 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @author Igor Wiedler <igor@wiedler.ch>
  */
-class StreamTest extends \PHPUnit_Framework_TestCase
+class StreamTest extends TestCase
 {
     public function testStreamReturnsStreamingResponse()
     {
