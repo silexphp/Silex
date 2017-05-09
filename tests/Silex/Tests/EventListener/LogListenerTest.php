@@ -11,6 +11,7 @@
 
 namespace Silex\Tests\EventListener;
 
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LogLevel;
 use Silex\EventListener\LogListener;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -28,7 +29,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
  *
  * @author Jérôme Tamarelle <jerome@tamarelle.net>
  */
-class LogListenerTest extends \PHPUnit_Framework_TestCase
+class LogListenerTest extends TestCase
 {
     public function testRequestListener()
     {

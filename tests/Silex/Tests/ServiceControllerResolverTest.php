@@ -11,6 +11,7 @@
 
 namespace Silex\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Silex\ServiceControllerResolver;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
  * Unit tests for ServiceControllerResolver, see ServiceControllerResolverRouterTest for some
  * integration tests.
  */
-class ServiceControllerResolverTest extends \PHPUnit_Framework_Testcase
+class ServiceControllerResolverTest extends Testcase
 {
     private $app;
     private $mockCallbackResolver;

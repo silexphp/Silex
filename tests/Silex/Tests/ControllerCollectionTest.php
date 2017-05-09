@@ -11,6 +11,7 @@
 
 namespace Silex\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Silex\Application;
 use Silex\Controller;
 use Silex\ControllerCollection;
@@ -23,7 +24,7 @@ use Symfony\Component\Routing\RouteCollection;
  *
  * @author Igor Wiedler <igor@wiedler.ch>
  */
-class ControllerCollectionTest extends \PHPUnit_Framework_TestCase
+class ControllerCollectionTest extends TestCase
 {
     public function testGetRouteCollectionWithNoRoutes()
     {

@@ -11,6 +11,7 @@
 
 namespace Silex\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Silex\Provider\Routing\LazyRequestMatcher;
 
@@ -19,7 +20,7 @@ use Silex\Provider\Routing\LazyRequestMatcher;
  *
  * @author Leszek Prabucki <leszek.prabucki@gmail.com>
  */
-class LazyRequestMatcherTest extends \PHPUnit_Framework_TestCase
+class LazyRequestMatcherTest extends TestCase
 {
     /**
      * @covers Silex\LazyRequestMatcher::getRequestMatcher

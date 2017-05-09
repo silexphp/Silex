@@ -11,6 +11,7 @@
 
 namespace Silex\Tests\Provider;
 
+use PHPUnit\Framework\TestCase;
 use Pimple\Container;
 use Silex\Application;
 use Silex\Provider\DoctrineServiceProvider;
@@ -20,7 +21,7 @@ use Silex\Provider\DoctrineServiceProvider;
  *
  * Fabien Potencier <fabien@symfony.com>
  */
-class DoctrineServiceProviderTest extends \PHPUnit_Framework_TestCase
+class DoctrineServiceProviderTest extends TestCase
 {
     public function testOptionsInitializer()
     {

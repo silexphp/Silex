@@ -11,6 +11,7 @@
 
 namespace Silex\Tests\Application;
 
+use PHPUnit\Framework\TestCase;
 use Silex\Provider\TranslationServiceProvider;
 
 /**
@@ -18,7 +19,7 @@ use Silex\Provider\TranslationServiceProvider;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class TranslationTraitTest extends \PHPUnit_Framework_TestCase
+class TranslationTraitTest extends TestCase
 {
     public function testTrans()
     {

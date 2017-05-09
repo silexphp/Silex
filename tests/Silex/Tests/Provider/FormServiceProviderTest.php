@@ -11,6 +11,7 @@
 
 namespace Silex\Tests\Provider;
 
+use PHPUnit\Framework\TestCase;
 use Silex\Application;
 use Silex\Provider\FormServiceProvider;
 use Silex\Provider\CsrfServiceProvider;
@@ -25,7 +26,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
-class FormServiceProviderTest extends \PHPUnit_Framework_TestCase
+class FormServiceProviderTest extends TestCase
 {
     public function testFormFactoryServiceIsFormFactory()
     {
