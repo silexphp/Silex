@@ -23,7 +23,7 @@ use Silex\Provider\Routing\LazyRequestMatcher;
 class LazyRequestMatcherTest extends TestCase
 {
     /**
-     * @covers Silex\LazyRequestMatcher::getRequestMatcher
+     * @covers \Silex\LazyRequestMatcher::getRequestMatcher
      */
     public function testUserMatcherIsCreatedLazily()
     {
@@ -43,7 +43,7 @@ class LazyRequestMatcherTest extends TestCase
     }
 
     /**
-     * @expectedException LogicException
+     * @expectedException \LogicException
      * @expectedExceptionMessage Factory supplied to LazyRequestMatcher must return implementation of Symfony\Component\Routing\RequestMatcherInterface.
      */
     public function testThatCanInjectRequestMatcherOnly()
@@ -57,7 +57,7 @@ class LazyRequestMatcherTest extends TestCase
     }
 
     /**
-     * @covers Silex\LazyRequestMatcher::matchRequest
+     * @covers \Silex\LazyRequestMatcher::matchRequest
      */
     public function testMatchIsProxy()
     {

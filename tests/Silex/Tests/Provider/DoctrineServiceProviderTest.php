@@ -44,7 +44,7 @@ class DoctrineServiceProviderTest extends TestCase
 
         $db = $app['db'];
         $params = $db->getParams();
-        $this->assertTrue(array_key_exists('memory', $params));
+        $this->assertArrayHasKey('memory', $params);
         $this->assertTrue($params['memory']);
         $this->assertInstanceof('Doctrine\DBAL\Driver\PDOSqlite\Driver', $db->getDriver());
         $this->assertEquals(22, $app['db']->fetchColumn('SELECT 22'));
@@ -68,7 +68,7 @@ class DoctrineServiceProviderTest extends TestCase
 
         $db = $app['db'];
         $params = $db->getParams();
-        $this->assertTrue(array_key_exists('memory', $params));
+        $this->assertArrayHasKey('memory', $params);
         $this->assertTrue($params['memory']);
         $this->assertInstanceof('Doctrine\DBAL\Driver\PDOSqlite\Driver', $db->getDriver());
         $this->assertEquals(22, $app['db']->fetchColumn('SELECT 22'));
@@ -77,7 +77,7 @@ class DoctrineServiceProviderTest extends TestCase
 
         $db2 = $app['dbs']['sqlite2'];
         $params = $db2->getParams();
-        $this->assertTrue(array_key_exists('path', $params));
+        $this->assertArrayHasKey('path', $params);
         $this->assertEquals(sys_get_temp_dir().'/silex', $params['path']);
     }
 
