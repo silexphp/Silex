@@ -1,0 +1,33 @@
+---------------------------------------------------------------------------
+
+by stof at 2017-05-09T13:31:48Z
+
+you can mitigate the BC break for people installing PHPunit as a dev requirement in their project by adding this conflict rule in composer.json (which will force composer to select a compatible PHPUnit version):
+
+```json
+{
+    "conflict": {
+        "phpunit/phpunit": "<4.8.35 || >= 5.0, <5.4.3"
+    }
+}
+```
+
+People installing PHPUnit separately will still need to deal with supported versions themselves (but anyway, incompatible versions are EOLed versions)
+
+---------------------------------------------------------------------------
+
+by fabpot at 2017-05-09T15:08:04Z
+
+I like @stof suggestion.
+
+---------------------------------------------------------------------------
+
+by stof at 2017-05-09T15:26:57Z
+
+Note that this is already what we do in `symfony/phpunit-bridge` in 3.3 (we should also do it in HttpKernel in releases where the WebTestCase was migrated though, but we have not done it yet)
+
+---------------------------------------------------------------------------
+
+by skalpa at 2017-05-09T15:37:40Z
+
+Here you go, I added the `conflict` section to `composer.json` :-)
