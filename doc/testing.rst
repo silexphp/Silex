@@ -192,6 +192,7 @@ look like this:
              processIsolation="false"
              stopOnFailure="false"
              syntaxCheck="false"
+             bootstrap="vendor/autoload.php"
     >
         <testsuites>
             <testsuite name="YourApp Test Suite">
