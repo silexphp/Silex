@@ -159,7 +159,7 @@ using the ``protect`` method::
     // calling it now
     echo $add(2, 3);
 
-Note that protected closures do not get access to the container.
+Note that the container is not provided as an argument to protected closures (but you can access it via `use($app)`).
 
 Core services
 -------------
