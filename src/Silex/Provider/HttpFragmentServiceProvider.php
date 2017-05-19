@@ -51,7 +51,7 @@ class HttpFragmentServiceProvider implements ServiceProviderInterface, EventList
         };
 
         $app['fragment.renderer.esi'] = function ($app) {
-            $renderer = new EsiFragmentRenderer($app['http_cache.esi'], $app['fragment.renderer.inline']);
+            $renderer = new EsiFragmentRenderer($app['http_cache.esi'], $app['fragment.renderer.inline'], $app['uri_signer']);
             $renderer->setFragmentPath($app['fragment.path']);
 
             return $renderer;
