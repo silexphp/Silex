@@ -51,4 +51,17 @@ class ControllerResolver extends BaseControllerResolver
 
         return parent::doGetArguments($request, $controller, $parameters);
     }
+
+    protected function createController($controller)
+    {
+        if (false !== strpos($controller, '::')) {
+            list($class, $method) = explode('::', $controller, 2);
+
+            if ($this->app->offsetExists($class)) {
+                return array($this->app[$class], $method);
+            }
+        }
+
+        return parent::createController($controller);
+    }
 }
