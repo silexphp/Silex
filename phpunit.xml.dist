@@ -11,6 +11,11 @@
          syntaxCheck="false"
          bootstrap="vendor/autoload.php"
 >
+    <php>
+        <env name="REDIS_HOST" value="localhost" />
+        <env name="MEMCACHED_HOST" value="localhost" />
+    </php>
+
     <testsuites>
         <testsuite name="Silex Test Suite">
             <directory>./tests/Silex/</directory>
