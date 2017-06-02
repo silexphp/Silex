@@ -35,7 +35,7 @@ class ExceptionHandlerTest extends TestCase
 
         $request = Request::create('/foo');
         $response = $app->handle($request);
-        $this->assertContains('<h1>Whoops, looks like something went wrong.</h1>', $response->getContent());
+        $this->assertContains('Whoops, looks like something went wrong.', $response->getContent());
         $this->assertEquals(500, $response->getStatusCode());
     }
 
@@ -62,7 +62,7 @@ class ExceptionHandlerTest extends TestCase
 
         $request = Request::create('/foo');
         $response = $app->handle($request);
-        $this->assertContains('<h1>Sorry, the page you are looking for could not be found.</h1>', $response->getContent());
+        $this->assertContains('Sorry, the page you are looking for could not be found.', $response->getContent());
         $this->assertEquals(404, $response->getStatusCode());
     }
 
@@ -86,7 +86,7 @@ class ExceptionHandlerTest extends TestCase
 
         $request = Request::create('/foo', 'POST');
         $response = $app->handle($request);
-        $this->assertContains('<h1>Whoops, looks like something went wrong.</h1>', $response->getContent());
+        $this->assertContains('Whoops, looks like something went wrong.', $response->getContent());
         $this->assertEquals(405, $response->getStatusCode());
         $this->assertEquals('GET', $response->headers->get('Allow'));
     }
