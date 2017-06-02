@@ -105,6 +105,9 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
         }
 
         $this->booted = true;
+        
+        // Flush the routes to a RouteCollection
+        $this->flush();
 
         foreach ($this->providers as $provider) {
             if ($provider instanceof EventListenerProviderInterface) {
@@ -490,8 +493,6 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
         if (!$this->booted) {
             $this->boot();
         }
-
-        $this->flush();
 
         return $this['kernel']->handle($request, $type, $catch);
     }
