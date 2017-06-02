@@ -13,11 +13,12 @@ namespace Silex\Provider;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use Silex\Application;
 use Silex\Api\BootableProviderInterface;
-use Symfony\Component\VarDumper\VarDumper;
+use Silex\Application;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
+use Symfony\Component\VarDumper\Dumper\HtmlDumper;
+use Symfony\Component\VarDumper\VarDumper;
 
 /**
  * Symfony Var Dumper component Provider.
@@ -32,9 +33,15 @@ class VarDumperServiceProvider implements ServiceProviderInterface, BootableProv
             return new CliDumper($app['var_dumper.dump_destination'], $app['charset']);
         };
 
+        $app['var_dumper.html_dumper'] = function ($app) {
+            return new HtmlDumper($app['var_dumper.dump_destination'], $app['charset']);
+        };
+
         $app['var_dumper.cloner'] = function ($app) {
             return new VarCloner();
         };
+
+        $app['var_dumper.env'] = null;
 
         $app['var_dumper.dump_destination'] = null;
     }
@@ -45,13 +52,16 @@ class VarDumperServiceProvider implements ServiceProviderInterface, BootableProv
             return;
         }
 
-        // This code is here to lazy load the dump stack. This default
-        // configuration for CLI mode is overridden in HTTP mode on
-        // 'kernel.request' event
+        // This code is here to lazy load the dump stack.
         VarDumper::setHandler(function ($var) use ($app) {
-            VarDumper::setHandler($handler = function ($var) use ($app) {
-                $app['var_dumper.cli_dumper']->dump($app['var_dumper.cloner']->cloneVar($var));
-            });
+            $handler = function ($var) use ($app) {
+                $env = null === $app['var_dumper.env'] ? \PHP_SAPI : $app['var_dumper.env'];
+                'cli' === $env
+                    ? $app['var_dumper.cli_dumper']->dump($app['var_dumper.cloner']->cloneVar($var))
+                    : $app['var_dumper.html_dumper']->dump($app['var_dumper.cloner']->cloneVar($var))
+                ;
+            };
+
             $handler($var);
         });
     }
