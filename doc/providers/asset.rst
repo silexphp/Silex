@@ -55,6 +55,14 @@ Usage
 
 The AssetServiceProvider is mostly useful with the Twig provider:
 
+.. note::
+
+    Add the Symfony Twig Bridge Component as a dependency:
+
+    .. code-block:: bash
+
+        composer require symfony/twig-bridge
+
 .. code-block:: jinja
 
     {{ asset('/css/foo.png') }}
