@@ -26,6 +26,14 @@ class FormTraitTest extends TestCase
         $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->createApplication()->form());
     }
 
+    public function testNamedForm()
+    {
+        $builder = $this->createApplication()->namedForm('foo');
+
+        $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $builder);
+        $this->assertEquals('foo', $builder->getName());
+    }
+
     public function createApplication()
     {
         $app = new FormApplication();
