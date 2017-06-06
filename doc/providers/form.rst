@@ -30,7 +30,8 @@ Registering
     If you don't want to create your own form layout, it's fine: a default one
     will be used. But you will have to register the :doc:`translation provider
     <translation>` as the default form layout requires it::
-
+        
+        $app->register(new Silex\Provider\LocaleServiceProvider());
         $app->register(new Silex\Provider\TranslationServiceProvider(), array(
             'translator.domains' => array(),
         ));
