@@ -123,8 +123,8 @@ class SwiftmailerServiceProviderTest extends TestCase
 
         $app->register(new SwiftmailerServiceProvider());
 
-        $app['swiftmailer.plugins'] = function ($app) use ($plugin) {
-            return array($plugin);
+        $app['swiftmailer.plugins']['foo'] = function () use ($plugin) {
+            return $plugin;
         };
 
         $dispatcher = $app['swiftmailer.transport.eventdispatcher'];
