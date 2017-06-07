@@ -496,7 +496,13 @@ handle them differently::
                 $message = 'The requested page could not be found.';
                 break;
             default:
-                $message = 'We are sorry, but something went terribly wrong.';
+                // Display the $app->abort() message if has one
+                if ($e->getMessage() !== '') {
+                    $message = $e->getMessage();
+                } else {
+                    // Otherwise, show default error message
+                    $message = 'We are sorry, but something went terribly wrong.';
+                }
         }
 
         return new Response($message);
