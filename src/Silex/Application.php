@@ -408,15 +408,20 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     /**
      * Convert some data into a JSON response.
      *
-     * @param mixed $data    The response data
-     * @param int   $status  The response status code
-     * @param array $headers An array of response headers
+     * @param mixed $data            The response data
+     * @param int   $status          The response status code
+     * @param array $headers         An array of response headers
+     * @param int   $encodingOptions Options to pass to json_encode
      *
      * @return JsonResponse
      */
-    public function json($data = array(), $status = 200, array $headers = array())
+    public function json($data = array(), $status = 200, array $headers = array(), $encodingOptions = 0)
     {
-        return new JsonResponse($data, $status, $headers);
+        $response = new JsonResponse(null, $status, $headers);
+        $response->setEncodingOptions($response->getEncodingOptions() | $encodingOptions);
+        $response->setData($data);
+        
+        return $response;
     }
 
     /**
