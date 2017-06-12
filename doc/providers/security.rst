@@ -675,9 +675,7 @@ Traits
 
 .. code-block:: php
 
-    $user = $app->user();
-
-    $encoded = $app->encodePassword($user, 'foo');
+    $encoded = $app->encodePassword($app['user'], 'foo');
 
 ``Silex\Route\SecurityTrait`` adds the following methods to the controllers:
 
