@@ -15,7 +15,6 @@ Services
 * **csrf.token_manager**: An instance of an implementation of the
   `CsrfTokenManagerInterface
   <http://api.symfony.com/master/Symfony/Component/Security/Csrf/CsrfTokenManagerInterface.html>`_,
-  
 
 Registering
 -----------
@@ -42,12 +41,13 @@ Usage
 When the CSRF Service Provider is registered, all forms created via the Form
 Service Provider are protected against CSRF by default.
 
-You can also use the CSRF protection even without using the Symfony Form
-component. If, for example, you're doing a DELETE action, you can create a token::
+You can also use the CSRF protection without using the Symfony Form component.
+If, for example, you're doing a DELETE action, create a CSRF token to use in
+your code::
 
-      use Symfony\Component\Security\Csrf\CsrfToken;
-      $csrfToken = $app['csrf.token_manager']->getToken('token_id'); //'TOKEN'
+    use Symfony\Component\Security\Csrf\CsrfToken;
+    $csrfToken = $app['csrf.token_manager']->getToken('token_id'); //'TOKEN'
 
-then you can check the CSRF token::
+Then check it::
 
-      $app['csrf.token_manager']->isTokenValid(new CsrfToken('token_id', 'TOKEN'));
+    $app['csrf.token_manager']->isTokenValid(new CsrfToken('token_id', 'TOKEN'));
