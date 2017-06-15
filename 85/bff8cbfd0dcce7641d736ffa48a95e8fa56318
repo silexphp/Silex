@@ -1,0 +1,48 @@
+---------------------------------------------------------------------------
+
+by GromNaN at 2017-02-03T22:18:29Z
+
+This is a bit complex.
+
+We coulf simplify usage of cache for class metadata by creating a service serializer.cache that is null by default.
+
+---------------------------------------------------------------------------
+
+by jlHertel at 2017-02-03T22:42:48Z
+
+I agree.
+Do you have the time to make the necessary changes?
+
+---------------------------------------------------------------------------
+
+by jlHertel at 2017-02-10T18:17:39Z
+
+I have maked the Pull Request [1484](https://github.com/silexphp/Silex/pull/1484)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-14T07:36:30Z
+
+@jlHertel your PR 1484 is related to the validation service, while this PR is about the serializer ;) Thanks for the work!
+
+---------------------------------------------------------------------------
+
+by jlHertel at 2017-03-14T11:25:48Z
+
+@SpacePossum, Ok, you're right.
+Any subjection to merge this? It will improve the documentation showing how to better setup serializer. Or maybe should I write something more simple?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-14T11:42:20Z
+
+Your docs helped me to get things going faster, however I've no powers here (to merge) :)
+
+---------------------------------------------------------------------------
+
+by jlHertel at 2017-03-14T11:54:21Z
+
+Ok, I will wait for someone to merge it.
+In the meantime, you can look at [my blog][1] for some tips.
+
+[1]: http://jeanhertel.com.br/en/configurando-serializer-com-annotation-e-cache-no-silex
