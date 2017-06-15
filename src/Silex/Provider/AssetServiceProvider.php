@@ -19,6 +19,7 @@ use Symfony\Component\Asset\PathPackage;
 use Symfony\Component\Asset\UrlPackage;
 use Symfony\Component\Asset\Context\RequestStackContext;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
+use Symfony\Component\Asset\VersionStrategy\JsonManifestVersionStrategy;
 use Symfony\Component\Asset\VersionStrategy\StaticVersionStrategy;
 
 /**
@@ -33,7 +34,7 @@ class AssetServiceProvider implements ServiceProviderInterface
         $app['assets.packages'] = function ($app) {
             $packages = array();
             foreach ($app['assets.named_packages'] as $name => $package) {
-                $version = $app['assets.strategy_factory'](isset($package['version']) ? $package['version'] : '', isset($package['version_format']) ? $package['version_format'] : null);
+                $version = $app['assets.strategy_factory'](isset($package['version']) ? $package['version'] : null, isset($package['version_format']) ? $package['version_format'] : null, isset($package['json_manifest_path']) ? $package['json_manifest_path'] : null, $name);
 
                 $packages[$name] = $app['assets.package_factory'](isset($package['base_path']) ? $package['base_path'] : '', isset($package['base_urls']) ? $package['base_urls'] : array(), $version, $name);
             }
@@ -42,7 +43,7 @@ class AssetServiceProvider implements ServiceProviderInterface
         };
 
         $app['assets.default_package'] = function ($app) {
-            $version = $app['assets.strategy_factory']($app['assets.version'], $app['assets.version_format']);
+            $version = $app['assets.strategy_factory']($app['assets.version'], $app['assets.version_format'], $app['assets.json_manifest_path'], 'default');
 
             return $app['assets.package_factory']($app['assets.base_path'], $app['assets.base_urls'], $version, 'default');
         };
@@ -55,17 +56,30 @@ class AssetServiceProvider implements ServiceProviderInterface
         $app['assets.base_urls'] = array();
         $app['assets.version'] = null;
         $app['assets.version_format'] = null;
+        $app['assets.json_manifest_path'] = null;
 
         $app['assets.named_packages'] = array();
 
         // prototypes
 
-        $app['assets.strategy_factory'] = $app->protect(function ($version, $format) use ($app) {
-            if (!$version) {
-                return new EmptyVersionStrategy();
+        $app['assets.strategy_factory'] = $app->protect(function ($version, $format, $jsonManifestPath, $name) use ($app) {
+            if ($version && $jsonManifestPath) {
+                throw new \LogicException(sprintf('Asset package "%s" cannot have version and manifest.', $name));
             }
 
-            return new StaticVersionStrategy($version, $format);
+            if ($version) {
+                return new StaticVersionStrategy($version, $format);
+            }
+
+            if ($jsonManifestPath) {
+                if (!class_exists('Symfony\Component\Asset\VersionStrategy\JsonManifestVersionStrategy')) {
+                    throw new \RuntimeException('You must require symfony/asset >= 3.3 to use JSON manifest version strategy.');
+                }
+
+                return new JsonManifestVersionStrategy($jsonManifestPath);
+            }
+
+            return new EmptyVersionStrategy();
         });
 
         $app['assets.package_factory'] = $app->protect(function ($basePath, $baseUrls, $version, $name) use ($app) {
