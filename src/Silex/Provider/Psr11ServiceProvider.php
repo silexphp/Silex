@@ -27,19 +27,19 @@ class Psr11ServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $app)
     {
-        $app['psr11'] = function ($app) {
+        $app['container'] = function ($app) {
             return new PsrContainer($app);
         };
 
         if (Kernel::VERSION_ID >= 30100) {
             $app->extend('argument_value_resolvers', function ($resolvers, $app) {
-                $resolvers[] = new ContainerValueResolver($app['psr11']);
+                $resolvers[] = new ContainerValueResolver($app['container']);
 
                 return $resolvers;
             });
         } else {
             $app->extend('resolver', function ($resolver, $app) {
-                return new ControllerResolver($resolver, $app['psr11']);
+                return new ControllerResolver($resolver, $app['container']);
             });
         }
     }

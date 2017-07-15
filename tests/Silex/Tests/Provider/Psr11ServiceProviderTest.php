@@ -32,7 +32,7 @@ class Psr11ServiceProviderTest extends TestCase
             return new \stdClass();
         };
 
-        $this->assertSame($app['service'], $app['psr11']->get('service'));
+        $this->assertSame($app['service'], $app['container']->get('service'));
     }
 
     /**
@@ -44,7 +44,7 @@ class Psr11ServiceProviderTest extends TestCase
         $app->register(new Psr11ServiceProvider());
 
         if (null !== $containerFactory) {
-            $app['psr11'] = $containerFactory;
+            $app['container'] = $containerFactory;
         }
         $app->get('/', $controller);
 
@@ -56,22 +56,22 @@ class Psr11ServiceProviderTest extends TestCase
         return array(
             // ContainerInterface
             array(
-                function (Application $app, ContainerInterface $container) { return $container === $app['psr11'] ? 'ok' : 'ko'; },
+                function (Application $app, ContainerInterface $container) { return $container === $app['container'] ? 'ok' : 'ko'; },
                 null,
             ),
             // Exact class of the container
             array(
-                function (Application $app, Container $container) { return $container === $app['psr11'] ? 'ok' : 'ko'; },
+                function (Application $app, Container $container) { return $container === $app['container'] ? 'ok' : 'ko'; },
                 null,
             ),
             // Child interface implemented by the container
             array(
-                function (Application $app, ChildInterface $container) { return $container === $app['psr11'] ? 'ok' : 'ko'; },
+                function (Application $app, ChildInterface $container) { return $container === $app['container'] ? 'ok' : 'ko'; },
                 function () { return new ChildContainer(); },
             ),
             // Parent class
             array(
-                function (Application $app, ParentContainer $container) { return $container === $app['psr11'] ? 'ok' : 'ko'; },
+                function (Application $app, ParentContainer $container) { return $container === $app['container'] ? 'ok' : 'ko'; },
                 function () { return new ChildContainer(); },
             ),
         );
@@ -86,7 +86,7 @@ class Psr11ServiceProviderTest extends TestCase
         $app->register(new Psr11ServiceProvider());
 
         if (null !== $containerFactory) {
-            $app['psr11'] = $containerFactory;
+            $app['container'] = $containerFactory;
         }
         $app->get('/', $controller);
 
@@ -98,12 +98,12 @@ class Psr11ServiceProviderTest extends TestCase
         return array(
             // Unrelated class
             array(
-                function (Application $app, ParentContainer $container = null) { return $container === $app['psr11'] ? 'ok' : 'ko'; },
+                function (Application $app, ParentContainer $container = null) { return $container === $app['container'] ? 'ok' : 'ko'; },
                 null,
             ),
             // Child interface not implemented by the container
             array(
-                function (Application $app, ChildInterface $container = null) { return $container === $app['psr11'] ? 'ok' : 'ko'; },
+                function (Application $app, ChildInterface $container = null) { return $container === $app['container'] ? 'ok' : 'ko'; },
                 null,
             ),
         );
@@ -115,7 +115,7 @@ class Psr11ServiceProviderTest extends TestCase
         $app->register(new Psr11ServiceProvider());
 
         $app->get('/', function (Application $app, ContainerInterface $container) {
-            return $container === $app['psr11'] ? 'ok' : 'ko';
+            return $container === $app['container'] ? 'ok' : 'ko';
         })->convert('container', function () {
             return new ParentContainer();
         });
