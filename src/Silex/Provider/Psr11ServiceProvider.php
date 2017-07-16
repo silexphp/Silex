@@ -13,6 +13,7 @@ namespace Silex\Provider;
 
 use Pimple\Container;
 use Pimple\Psr11\Container as PsrContainer;
+use Pimple\Psr11\ServiceLocator;
 use Pimple\ServiceProviderInterface;
 use Silex\Provider\Psr11\ContainerValueResolver;
 use Silex\Provider\Psr11\ControllerResolver;
@@ -30,6 +31,10 @@ class Psr11ServiceProvider implements ServiceProviderInterface
         $app['container'] = function ($app) {
             return new PsrContainer($app);
         };
+
+        $app['service_locator.factory'] = $app->protect(function ($ids) use ($app) {
+            return new ServiceLocator($app, $ids);
+        });
 
         if (Kernel::VERSION_ID >= 30100) {
             $app->extend('argument_value_resolvers', function ($resolvers, $app) {

@@ -35,6 +35,24 @@ class Psr11ServiceProviderTest extends TestCase
         $this->assertSame($app['service'], $app['container']->get('service'));
     }
 
+    public function testServiceLocatorFactory()
+    {
+        $app = new Application();
+        $app->register(new Psr11ServiceProvider());
+        $app['foo'] = function () {
+            return new \stdClass();
+        };
+        $app['bar'] = function () {
+            return new \stdClass();
+        };
+
+        $locator = $app['service_locator.factory'](array('foo'));
+
+        $this->assertInstanceOf(ContainerInterface::class, $locator);
+        $this->assertSame($app['foo'], $locator->get('foo'));
+        $this->assertFalse($locator->has('bar'));
+    }
+
     /**
      * @dataProvider provideControllers
      */
