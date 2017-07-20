@@ -4,10 +4,10 @@ PSR-11
 The *Psr11ServiceProvider* provides a container for accessing your application
 services using the PSR-11 ``ContainerInterface`` interface.
 
-PSR-11 is a standard that describes a common interface for dependency injection
+`PSR-11`_ is a standard that describes a common interface for dependency injection
 containers. Using the PSR-11 container will allow you to:
 
-* Use objects that expect a ``ContainerInterface`` instance.
+* Use objects that expect a ``Psr\Container\ContainerInterface`` instance.
 
 * Decouple your own code from the ``Silex\Application`` class (something that
   could prove useful if you intend to port your application to the Symfony
@@ -16,8 +16,7 @@ containers. Using the PSR-11 container will allow you to:
 Services
 --------
 
-* **container**: A container that implements `ContainerInterface
-  <https://github.com/container-interop/fig-standards/blob/master/proposed/container.md>`_
+* **container**: A container that implements ``Psr\Container\ContainerInterface``
   and give you access to all your services.
 
   Example usage::
@@ -25,8 +24,7 @@ Services
     $container = $app['container'];
     $service = $container->get('service');
 
-* **service_locator.factory**: A factory that creates `PSR-11 service locators
-  <https://github.com/silexphp/Pimple/blob/master/README.rst#using-the-psr-11-servicelocator>`_.
+* **service_locator.factory**: A factory that creates `PSR-11 service locators`_.
 
   Example usage::
 
@@ -103,3 +101,6 @@ instead of the whole container by using the ``convert()`` function:
     })->convert('container', function () use ($app) {
         return $app['service_locator.factory'](array('foo', 'bar'));
     });
+
+.. _PSR-11: https://github.com/container-interop/fig-standards/blob/master/proposed/container.md
+.. _PSR-11 service locators: https://github.com/silexphp/Pimple/blob/master/README.rst#using-the-psr-11-servicelocator
