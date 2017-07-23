@@ -18,14 +18,14 @@
     "require": {
         "php": ">=5.5.9",
         "pimple/pimple": "~3.0",
-        "silex/api": "~2.1"
+        "silex/api": "~2.2"
     },
     "autoload": {
         "psr-4": { "Silex\\Provider\\": "" }
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.0.x-dev"
+            "dev-master": "2.2.x-dev"
         }
     }
 }

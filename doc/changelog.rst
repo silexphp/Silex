@@ -1,10 +1,14 @@
 Changelog
 =========
 
-2.1.1 (2017-XX-XX)
+2.2.0 (2017-07-23)
 ------------------
 
-* n/a
+* added json manifest version strategy support
+* fixed EsiFragment constructor
+* fixed RedirectableUrlMatcher compatibility with Symfony
+* fixed compatibility with Pimple 3.2
+* fixed WebTestCase compatibility with PHPUnit 6+
 
 2.1.0 (2017-05-03)
 ------------------
