@@ -1,0 +1,92 @@
+---------------------------------------------------------------------------
+
+by skalpa at 2017-07-20T14:34:06Z
+
+@fabpot Well, these are two different things.
+
+### Regarding the Silex fix
+
+I believe the fix is correct and that the previous code only worked out of sheer luck. The code was:
+
+```php
+$app['translator.resources'] = $app->protect(function ($app) {
+    return array();
+});
+
+// $app['translator.resources'] is not an array but a Closure, as the entry is protected
+foreach ($app['translator.resources'] as $resource) {
+    $translator->addResource($resource[0], $resource[1], $resource[2], $resource[3]);
+}
+```
+
+It just worked because:
+- PHP fails silently when one tries to iterate over a closure, and skips the loop (whatever the closure is: it doesn't invoke it). I would expect it to throw a warning indicating the variable is invalid as it happens when one tries to iterate over an integer but it's not the case.
+- The default value is an empty array. As there's no difference between iterating over an empty array and not iterating at all, we didn't see something was wrong. Now, if the default value had been something like:
+
+```php
+$app['translator.resources'] = $app->protect(function ($app) {
+    return array(array('array', array('This value should not be blank.' => 'Pas vide'), 'fr', 'validators'));
+});
+```
+
+Then it wouldn't have worked and the issue would have been more obvious.
+
+- Pimple used to misbehave when extending protected closure (see below), and allowed users to extend the parameter.
+
+So whatever we decide regarding the Pimple behavior, I think we should fix the code here.
+
+### Regarding the Pimple change
+
+IMHO the old behavior was incorrect, but thinking about it the _fix_ is a bit too much to throw like that. We only need to _protect_ closures as Pimple is forced to interpret values. Thus, the logic is:
+- `offsetSet` a closure => treat as service definition / lazy entry, and invoke during `offsetGet`
+- `offsetSet` something else or a protected closure => treat as parameter value, and return as-is during `offsetGet`
+
+Now, as Pimple does not let users `extend` parameter values, I think it makes sense to prevent the extension of protected closures too.
+
+Actually, we could do two things:
+
+1. Allow extension of services, prevent extension of parameters by throwing an exception. That's what the recent Pimple PR enforces, but as we see here it breaks code that used to work (even if it shouldn't have IMHO), so I agree throwing a new exception is too much for a minor release and is a BC break.
+
+2. Completely remove this limitation, and allow users to extend anything. I kind of like the idea, as it would have several advantages (I'll come back with that another day). Now, even if we decide to go for this in Pimple 4, then the behavior won't be the one of Pimple 3.1 when extending protected closures anyway, so it will be a BC break too.
+
+Thus my suggestion would be to:
+- Rollback the recent Pimple PR
+- Throw a deprecation notice instead of an exception to advise people they are probably doing something wrong when they try to extend a protected closure
+- Decide what to do later on in Pimple 4 (throw an exception or enable the extension of parameters on first access)
+
+WDYT?
+
+---------------------------------------------------------------------------
+
+by quazardous at 2017-07-22T13:14:24Z
+
+@skalpa Silex wise the 3 suggestions do not solve the issue IMHO. Translator provider needs a way to expose translation resources to **many** other providers (not just the last one who override `translator.resources`).
+Maybe just having a non protected resource ?
+
+```
+        $app['translator.resources'] = function ($app) {
+            return array();
+        };
+```
+
+---------------------------------------------------------------------------
+
+by skalpa at 2017-07-22T13:28:21Z
+
+@quazardous Yep, this PR does exactly [what you suggest](https://github.com/silexphp/Silex/pull/1538/files) already.
+
+The short version of the above comment is:
+- We should use a non-protected closure in Silex, as we're lucky it even worked in the first place (what this PR does)
+- We should revert the Pimple change and throw a deprecation notice instead of an exception, as some people may rely on the fact that extending a protected closure might have worked under specific condition before Pimple 3.2.0 (that's what silexphp/Pimple#239 does)
+
+---------------------------------------------------------------------------
+
+by quazardous at 2017-07-22T13:31:59Z
+
+I should have looked in the code sorry thx
+
+---------------------------------------------------------------------------
+
+by fabpot at 2017-07-23T07:28:01Z
+
+Agree that this worked by chance. Ok for this change. But extending a parameter works already (see `ValidatorServiceProviderTest` where `translator.resources` is extended).
