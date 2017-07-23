@@ -71,7 +71,7 @@ The ``SerializerServiceProvider`` provider provides a ``serializer`` service::
         ));
     })->assert("_format", "xml|json")
       ->assert("id", "\d+");
-      
+
 Using a Cache
 -------------
 
