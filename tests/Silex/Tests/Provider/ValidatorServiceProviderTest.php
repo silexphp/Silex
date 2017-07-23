@@ -82,7 +82,7 @@ class ValidatorServiceProviderTest extends TestCase
      */
     public function testValidatorServiceIsAValidator($app)
     {
-        $this->assertTrue($app['validator'] instanceof ValidatorInterface || $app['validator'] instanceof LegacyValidatorInterface );
+        $this->assertTrue($app['validator'] instanceof ValidatorInterface || $app['validator'] instanceof LegacyValidatorInterface);
     }
 
     /**
@@ -191,5 +191,16 @@ class ValidatorServiceProviderTest extends TestCase
         $app['validator'];
 
         $this->assertEquals('Pas vide', $app['translator']->trans('This value should not be blank.', array(), 'validators', 'fr'));
+    }
+
+    public function testTranslatorResourcesIsArray()
+    {
+        $app = new Application();
+        $app['locale'] = 'fr';
+
+        $app->register(new ValidatorServiceProvider());
+        $app->register(new TranslationServiceProvider());
+
+        $this->assertInternalType('array', $app['translator.resources']);
     }
 }
