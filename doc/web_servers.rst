@@ -44,10 +44,11 @@ Or if you're using a VirtualHost, you can add the same directive to the VirtualH
     <VirtualHost *:80>
         # other directives
 
-        <Directory /var/www/domain.com/>
+        Alias /app/ /path/to/app/
+        <Directory /path/to/app>
             # other directives
 
-            FallbackResource /index.php
+            FallbackResource /app/index.php
         </Directory>
     </VirtualHost>
 
