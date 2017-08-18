@@ -11,10 +11,9 @@
 
 namespace Silex\Application;
 
-use Symfony\Component\Form;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\OptionsResolver\OptionsResolver\FormTypeInterface;
+use Symfony\Component\Form\FormTypeInterface;
 
 /**
  * Form trait.
