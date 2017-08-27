@@ -146,7 +146,7 @@ instance of a `RequestMatcher
 <http://api.symfony.com/master/Symfony/Component/HttpFoundation/RequestMatcher.html>`_
 for the ``pattern`` option::
 
-    use Symfony/Component/HttpFoundation/RequestMatcher;
+    use Symfony\Component\HttpFoundation\RequestMatcher;
 
     $app['security.firewalls'] = array(
         'admin' => array(
