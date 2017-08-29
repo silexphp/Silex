@@ -12,6 +12,8 @@ Parameters
 
 * **assets.format_version** (optional): Default format for assets.
 
+* **assets.base_path**: Default path to prepend to all assets without a package.
+
 * **assets.named_packages** (optional): Named packages. Keys are the package
   names and values the configuration (supported keys are ``version``,
   ``version_format``, ``base_urls``, and ``base_path``).
