@@ -657,14 +657,6 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
                 return new AnonymousAuthenticationProvider($name);
             };
         });
-
-        if (isset($app['validator'])) {
-            $app['security.validator.user_password_validator'] = function ($app) {
-                return new UserPasswordValidator($app['security.token_storage'], $app['security.encoder_factory']);
-            };
-
-            $app['validator.validator_service_ids'] = array_merge($app['validator.validator_service_ids'], array('security.validator.user_password' => 'security.validator.user_password_validator'));
-        }
     }
 
     public function subscribe(Container $app, EventDispatcherInterface $dispatcher)
@@ -686,6 +678,14 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
 
     public function boot(Application $app)
     {
+        if (isset($app['validator'])) {
+            $app['security.validator.user_password_validator'] = function ($app) {
+                return new UserPasswordValidator($app['security.token_storage'], $app['security.encoder_factory']);
+            };
+
+            $app['validator.validator_service_ids'] = array_merge($app['validator.validator_service_ids'], array('security.validator.user_password' => 'security.validator.user_password_validator'));
+        }
+
         $app->mount('/', $this->connect($app));
     }
 
