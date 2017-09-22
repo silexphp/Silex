@@ -11,6 +11,7 @@
 
 namespace Silex\Provider;
 
+use Monolog\Logger;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Doctrine\DBAL\DriverManager;
@@ -28,7 +29,13 @@ class DoctrineServiceProvider implements ServiceProviderInterface
     public function register(Container $app)
     {
         $app['logger.doctrine'] = function (Container $app) {
-            return $app['logger'];
+            $logger = $app['logger'];
+
+            if ($logger instanceof Logger) {
+                $logger = $logger->withName('doctrine');
+            }
+
+            return $logger;
         };
 
         $app['db.default_options'] = array(

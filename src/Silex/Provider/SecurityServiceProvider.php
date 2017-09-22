@@ -11,6 +11,7 @@
 
 namespace Silex\Provider;
 
+use Monolog\Logger;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Silex\Application;
@@ -75,7 +76,13 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
     public function register(Container $app)
     {
         $app['logger.security'] = function (Container $app) {
-            return $app['logger'];
+            $logger = $app['logger'];
+
+            if ($logger instanceof Logger) {
+                $logger = $logger->withName('security');
+            }
+
+            return $logger;
         };
 
         // used to register routes for login_check and logout
