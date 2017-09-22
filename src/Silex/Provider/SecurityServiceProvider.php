@@ -74,6 +74,10 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
 
     public function register(Container $app)
     {
+        $app['logger.security'] = function (Container $app) {
+            return $app['logger'];
+        };
+
         // used to register routes for login_check and logout
         $this->fakeRoutes = array();
 
@@ -161,7 +165,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
                     isset($app['request.http_port']) ? $app['request.http_port'] : 80,
                     isset($app['request.https_port']) ? $app['request.https_port'] : 443
                 ),
-                $app['logger']
+                $app['logger.security']
             );
         };
 
@@ -345,7 +349,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
                 $app['security.access_manager'],
                 $app['security.access_map'],
                 $app['security.authentication_manager'],
-                $app['logger']
+                $app['logger.security']
             );
         };
 
@@ -406,7 +410,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
                     $app['security.token_storage'],
                     $userProviders,
                     $providerKey,
-                    $app['logger'],
+                    $app['logger.security'],
                     $app['dispatcher']
                 );
             };
@@ -433,7 +437,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
                     $app[$entryPoint],
                     null, // errorPage
                     $accessDeniedHandler,
-                    $app['logger']
+                    $app['logger.security']
                 );
             };
         });
@@ -456,7 +460,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
                     $app,
                     $app['security.http_utils'],
                     $options,
-                    $app['logger']
+                    $app['logger.security']
                 );
             };
         });
@@ -477,7 +481,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
                     $app['security.authentication_manager'],
                     $providerKey,
                     $authenticators,
-                    $app['logger']
+                    $app['logger.security']
                 );
             };
         });
@@ -509,7 +513,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
                     $app['security.authentication.success_handler.'.$name],
                     $app['security.authentication.failure_handler.'.$name],
                     $options,
-                    $app['logger'],
+                    $app['logger.security'],
                     $app['dispatcher'],
                     isset($options['with_csrf']) && $options['with_csrf'] && isset($app['csrf.token_manager']) ? $app['csrf.token_manager'] : null
                 );
@@ -523,7 +527,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
                     $app['security.authentication_manager'],
                     $providerKey,
                     $app['security.entry_point.'.$providerKey.'.http'],
-                    $app['logger']
+                    $app['logger.security']
                 );
             };
         });
@@ -533,7 +537,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
                 return new AnonymousAuthenticationListener(
                     $app['security.token_storage'],
                     $providerKey,
-                    $app['logger']
+                    $app['logger.security']
                 );
             };
         });
@@ -584,7 +588,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
                     $app['security.user_checker'],
                     $name,
                     $app['security.access_manager'],
-                    $app['logger'],
+                    $app['logger.security'],
                     isset($options['parameter']) ? $options['parameter'] : '_switch_user',
                     isset($options['role']) ? $options['role'] : 'ROLE_ALLOWED_TO_SWITCH',
                     $app['dispatcher']

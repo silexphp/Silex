@@ -36,10 +36,10 @@ class HttpKernelServiceProvider implements ServiceProviderInterface, EventListen
     {
         $app['resolver'] = function ($app) {
             if (Kernel::VERSION_ID >= 30100) {
-                return new SfControllerResolver($app['logger']);
+                return new SfControllerResolver($app['logger.request']);
             }
 
-            return new ControllerResolver($app, $app['logger']);
+            return new ControllerResolver($app, $app['logger.request']);
         };
 
         if (Kernel::VERSION_ID >= 30100) {

@@ -27,6 +27,10 @@ class DoctrineServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $app)
     {
+        $app['logger.doctrine'] = function (Container $app) {
+            return $app['logger'];
+        };
+
         $app['db.default_options'] = array(
             'driver' => 'pdo_mysql',
             'dbname' => null,
@@ -85,11 +89,14 @@ class DoctrineServiceProvider implements ServiceProviderInterface
             $app['dbs.options.initializer']();
 
             $configs = new Container();
-            $addLogger = isset($app['logger']) && null !== $app['logger'] && class_exists('Symfony\Bridge\Doctrine\Logger\DbalLogger');
+            $addLogger = null !== $app['logger.doctrine'] && class_exists('Symfony\Bridge\Doctrine\Logger\DbalLogger');
             foreach ($app['dbs.options'] as $name => $options) {
                 $configs[$name] = new Configuration();
                 if ($addLogger) {
-                    $configs[$name]->setSQLLogger(new DbalLogger($app['logger'], isset($app['stopwatch']) ? $app['stopwatch'] : null));
+                    $configs[$name]->setSQLLogger(new DbalLogger(
+                        $app['logger.doctrine'],
+                        isset($app['stopwatch']) ? $app['stopwatch'] : null
+                    ));
                 }
             }
 

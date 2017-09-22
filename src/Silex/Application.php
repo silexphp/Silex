@@ -65,6 +65,9 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
         $this['debug'] = false;
         $this['charset'] = 'UTF-8';
         $this['logger'] = null;
+        $this['logger.request'] = function () {
+            return $this['logger'];
+        };
 
         $this->register(new HttpKernelServiceProvider());
         $this->register(new RoutingServiceProvider());
