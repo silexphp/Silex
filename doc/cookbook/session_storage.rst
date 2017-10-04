@@ -63,10 +63,10 @@ have to make another database connection, simply pass the getWrappedConnection m
     $app->register(new Silex\Provider\SessionServiceProvider());
 
     $app['session.db_options'] = array(
-        'db_table'      => 'session',
-        'db_id_col'     => 'session_id',
-        'db_data_col'   => 'session_value',
-        'db_time_col'   => 'session_time',
+        'db_table'    => 'session',
+        'db_id_col'   => 'session_id',
+        'db_data_col' => 'session_value',
+        'db_time_col' => 'session_time',
     );
 
     $app['session.storage.handler'] = $app->share(function () use ($app) {
