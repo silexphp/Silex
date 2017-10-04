@@ -28,10 +28,10 @@ With a dedicated PDO service
     $app['pdo.password'] = 'mypassword';
 
     $app['session.db_options'] = array(
-        'db_table'      => 'session',
-        'db_id_col'     => 'session_id',
-        'db_data_col'   => 'session_value',
-        'db_time_col'   => 'session_time',
+        'db_table'    => 'session',
+        'db_id_col'   => 'session_id',
+        'db_data_col' => 'session_value',
+        'db_time_col' => 'session_time',
     );
 
     $app['pdo'] = function () use ($app) {
