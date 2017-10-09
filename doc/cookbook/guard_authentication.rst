@@ -34,6 +34,7 @@ AbstractGuardAuthenticator. This requires you to implement six methods:
     use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
     use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
     use Symfony\Component\Security\Core\Exception\AuthenticationException;
+    use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
     class TokenAuthenticator extends AbstractGuardAuthenticator
     {
