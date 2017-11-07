@@ -284,7 +284,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
                     }
 
                     if (!isset($app['security.exception_listener.'.$name])) {
-                        if (null == $entryPoint) {
+                        if (null === $entryPoint) {
                             $app[$entryPoint = 'security.entry_point.'.$name.'.form'] = $app['security.entry_point.form._proto']($name, array());
                         }
                         $accessDeniedHandler = null;
