@@ -11,6 +11,7 @@
 
 namespace Silex\Tests\Application;
 
+use PHPUnit\Framework\TestCase;
 use Silex\Provider\FormServiceProvider;
 
 /**
@@ -20,7 +21,7 @@ use Silex\Provider\FormServiceProvider;
  *
  * @requires PHP 5.4
  */
-class FormTraitTest extends \PHPUnit_Framework_TestCase
+class FormTraitTest extends TestCase
 {
     public function testForm()
     {

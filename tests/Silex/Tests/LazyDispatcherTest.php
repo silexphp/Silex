@@ -11,10 +11,11 @@
 
 namespace Silex\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
-class LazyDispatcherTest extends \PHPUnit_Framework_TestCase
+class LazyDispatcherTest extends TestCase
 {
     /** @test */
     public function beforeMiddlewareShouldNotCreateDispatcherEarly()

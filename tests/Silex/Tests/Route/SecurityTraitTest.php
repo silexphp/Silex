@@ -11,6 +11,7 @@
 
 namespace Silex\Tests\Route;
 
+use PHPUnit\Framework\TestCase;
 use Silex\Application;
 use Silex\Provider\SecurityServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +23,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @requires PHP 5.4
  */
-class SecurityTraitTest extends \PHPUnit_Framework_TestCase
+class SecurityTraitTest extends TestCase
 {
     public function testSecureWithNoAuthenticatedUser()
     {

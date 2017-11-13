@@ -11,6 +11,7 @@
 
 namespace Silex\Tests\Application;
 
+use PHPUnit\Framework\TestCase;
 use Silex\Provider\SecurityServiceProvider;
 use Symfony\Component\Security\Core\User\User;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -23,7 +24,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @requires PHP 5.4
  */
-class SecurityTraitTest extends \PHPUnit_Framework_TestCase
+class SecurityTraitTest extends TestCase
 {
     public function testUser()
     {

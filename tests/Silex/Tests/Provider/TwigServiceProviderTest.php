@@ -11,6 +11,7 @@
 
 namespace Silex\Tests\Provider;
 
+use PHPUnit\Framework\TestCase;
 use Silex\Application;
 use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\HttpFragmentServiceProvider;
@@ -21,7 +22,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @author Igor Wiedler <igor@wiedler.ch>
  */
-class TwigServiceProviderTest extends \PHPUnit_Framework_TestCase
+class TwigServiceProviderTest extends TestCase
 {
     public function testRegisterAndRender()
     {

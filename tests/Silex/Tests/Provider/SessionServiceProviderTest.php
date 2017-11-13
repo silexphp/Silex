@@ -24,28 +24,6 @@ use Symfony\Component\HttpKernel\Client;
  */
 class SessionServiceProviderTest extends WebTestCase
 {
-    public function testRegister()
-    {
-        /*
-         * Smoke test
-         */
-        $defaultStorage = $this->app['session.storage.native'];
-
-        $client = $this->createClient();
-
-        $client->request('get', '/login');
-        $this->assertEquals('Logged in successfully.', $client->getResponse()->getContent());
-
-        $client->request('get', '/account');
-        $this->assertEquals('This is your account.', $client->getResponse()->getContent());
-
-        $client->request('get', '/logout');
-        $this->assertEquals('Logged out successfully.', $client->getResponse()->getContent());
-
-        $client->request('get', '/account');
-        $this->assertEquals('You are not logged in.', $client->getResponse()->getContent());
-    }
-
     public function createApplication()
     {
         $app = new Application();
@@ -55,6 +33,7 @@ class SessionServiceProviderTest extends WebTestCase
         ));
 
         $app->get('/login', function () use ($app) {
+            $app['session']->start();
             $app['session']->set('logged_in', true);
 
             return 'Logged in successfully.';
@@ -77,6 +56,26 @@ class SessionServiceProviderTest extends WebTestCase
         return $app;
     }
 
+    public function testRegister()
+    {
+        $client = $this->createClient();
+
+        $this->assertFalse($this->app['session']->isStarted());
+
+        $client->request('get', '/login');
+
+        $this->assertEquals('Logged in successfully.', $client->getResponse()->getContent());
+
+        $client->request('get', '/account');
+        $this->assertEquals('This is your account.', $client->getResponse()->getContent());
+
+        $client->request('get', '/logout');
+        $this->assertEquals('Logged out successfully.', $client->getResponse()->getContent());
+
+        $client->request('get', '/account');
+        $this->assertEquals('You are not logged in.', $client->getResponse()->getContent());
+    }
+
     public function testWithRoutesThatDoesNotUseSession()
     {
         $app = new Application();
@@ -96,12 +95,20 @@ class SessionServiceProviderTest extends WebTestCase
         $app['debug'] = true;
         unset($app['exception_handler']);
 
+        $this->assertFalse($app['session.storage.test']->isStarted());
+
         $client = new Client($app);
 
         $client->request('get', '/');
+
         $this->assertEquals('A welcome page.', $client->getResponse()->getContent());
+        $this->assertFalse($app['session']->isStarted());
+        $this->assertFalse($app['session.storage.test']->isStarted());
 
         $client->request('get', '/robots.txt');
+
         $this->assertEquals('Informations for robots.', $client->getResponse()->getContent());
+        $this->assertFalse($app['session']->isStarted());
+        $this->assertFalse($app['session.storage.test']->isStarted());
     }
 }

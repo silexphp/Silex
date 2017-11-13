@@ -29,7 +29,7 @@ class RedirectableUrlMatcher extends BaseRedirectableUrlMatcher
         $url = $this->context->getBaseUrl().$path;
         $query = $this->context->getQueryString() ?: '';
 
-        if ($query !== '') {
+        if ('' !== $query) {
             $url .= '?'.$query;
         }
 
