@@ -57,7 +57,7 @@ class ControllerCollection
      * @param string               $prefix      The route prefix
      * @param ControllerCollection $controllers A ControllerCollection instance
      */
-    public function mount($prefix, ControllerCollection $controllers)
+    public function mount($prefix, self $controllers)
     {
         $controllers->prefix = $prefix;
 
@@ -193,7 +193,7 @@ class ControllerCollection
 
     private function doFlush($prefix, RouteCollection $routes)
     {
-        if ($prefix !== '') {
+        if ('' !== $prefix) {
             $prefix = '/'.trim(trim($prefix), '/');
         }
 
