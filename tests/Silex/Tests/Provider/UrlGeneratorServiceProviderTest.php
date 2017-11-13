@@ -11,6 +11,7 @@
 
 namespace Silex\Tests\Provider;
 
+use PHPUnit\Framework\TestCase;
 use Silex\Application;
 use Silex\Provider\UrlGeneratorServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,7 +22,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  *
  * @author Igor Wiedler <igor@wiedler.ch>
  */
-class UrlGeneratorServiceProviderTest extends \PHPUnit_Framework_TestCase
+class UrlGeneratorServiceProviderTest extends TestCase
 {
     public function testRegister()
     {

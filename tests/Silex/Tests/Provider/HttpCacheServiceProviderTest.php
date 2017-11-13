@@ -11,6 +11,7 @@
 
 namespace Silex\Tests\Provider;
 
+use PHPUnit\Framework\TestCase;
 use Silex\Application;
 use Silex\Provider\HttpCacheServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,7 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author Igor Wiedler <igor@wiedler.ch>
  */
-class HttpCacheServiceProviderTest extends \PHPUnit_Framework_TestCase
+class HttpCacheServiceProviderTest extends TestCase
 {
     public function testRegister()
     {

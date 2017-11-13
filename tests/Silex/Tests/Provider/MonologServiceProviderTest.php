@@ -13,6 +13,7 @@ namespace Silex\Tests\Provider;
 
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
+use PHPUnit\Framework\TestCase;
 use Silex\Application;
 use Silex\Provider\MonologServiceProvider;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -23,7 +24,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @author Igor Wiedler <igor@wiedler.ch>
  */
-class MonologServiceProviderTest extends \PHPUnit_Framework_TestCase
+class MonologServiceProviderTest extends TestCase
 {
     private $currErrorHandler;
 

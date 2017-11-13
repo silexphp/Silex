@@ -11,6 +11,7 @@
 
 namespace Silex\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Silex\Application;
 
 /**
@@ -18,7 +19,7 @@ use Silex\Application;
  *
  * @author Igor Wiedler <igor@wiedler.ch>
  */
-class JsonTest extends \PHPUnit_Framework_TestCase
+class JsonTest extends TestCase
 {
     public function testJsonReturnsJsonResponse()
     {

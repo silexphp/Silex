@@ -23,13 +23,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\EventDispatcher\Event;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Application test cases.
  *
  * @author Igor Wiedler <igor@wiedler.ch>
  */
-class ApplicationTest extends \PHPUnit_Framework_TestCase
+class ApplicationTest extends TestCase
 {
     public function testMatchReturnValue()
     {

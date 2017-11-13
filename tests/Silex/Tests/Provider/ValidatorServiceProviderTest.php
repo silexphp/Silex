@@ -11,6 +11,7 @@
 
 namespace Silex\Tests\Provider;
 
+use PHPUnit\Framework\TestCase;
 use Silex\Application;
 use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
@@ -27,13 +28,15 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * Javier Lopez <f12loalf@gmail.com>
  */
-class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
+class ValidatorServiceProviderTest extends TestCase
 {
     public function testRegister()
     {
         $app = new Application();
 
         $app->register(new ValidatorServiceProvider());
+
+        $this->assertInstanceOf('Symfony\Component\Validator\Validator\ValidatorInterface', $app['validator']);
 
         return $app;
     }
@@ -51,6 +54,8 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
                 'test.custom.validator' => 'custom.validator',
             ),
         ));
+
+        $this->assertInstanceOf('Symfony\Component\Validator\Validator\ValidatorInterface', $app['validator']);
 
         return $app;
     }
@@ -140,6 +145,8 @@ class ValidatorServiceProviderTest extends \PHPUnit_Framework_TestCase
         } catch (NotFoundResourceException $e) {
             $this->fail('Validator should not add a translation resource that does not exist');
         }
+
+        $this->addToAssertionCount(1);
     }
 
     public function getTestValidatorConstraintProvider()

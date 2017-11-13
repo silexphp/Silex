@@ -14,6 +14,10 @@ namespace Silex;
 use Symfony\Component\HttpKernel\Client;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
+if (!\class_exists('PHPUnit_Framework_TestCase')) {
+    class_alias('PHPUnit\Framework\TestCase', 'PHPUnit_Framework_TestCase');
+}
+
 /**
  * WebTestCase is the base class for functional tests.
  *

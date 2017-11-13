@@ -11,6 +11,7 @@
 
 namespace Silex\Tests\Provider;
 
+use PHPUnit\Framework\TestCase;
 use Silex\Application;
 use Silex\Provider\TranslationServiceProvider;
 
@@ -19,7 +20,7 @@ use Silex\Provider\TranslationServiceProvider;
  *
  * @author Daniel Tschinder <daniel@tschinder.de>
  */
-class TranslationServiceProviderTest extends \PHPUnit_Framework_TestCase
+class TranslationServiceProviderTest extends TestCase
 {
     /**
      * @return Application

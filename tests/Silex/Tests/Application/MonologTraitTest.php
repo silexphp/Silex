@@ -11,6 +11,7 @@
 
 namespace Silex\Tests\Application;
 
+use PHPUnit\Framework\TestCase;
 use Silex\Provider\MonologServiceProvider;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
@@ -22,7 +23,7 @@ use Monolog\Logger;
  *
  * @requires PHP 5.4
  */
-class MonologTraitTest extends \PHPUnit_Framework_TestCase
+class MonologTraitTest extends TestCase
 {
     public function testLog()
     {

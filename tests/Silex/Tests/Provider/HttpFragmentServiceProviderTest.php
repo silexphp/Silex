@@ -11,13 +11,14 @@
 
 namespace Silex\Tests\Provider;
 
+use PHPUnit\Framework\TestCase;
 use Silex\Application;
 use Silex\Provider\HttpCacheServiceProvider;
 use Silex\Provider\HttpFragmentServiceProvider;
 use Silex\Provider\TwigServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
 
-class HttpFragmentServiceProviderTest extends \PHPUnit_Framework_TestCase
+class HttpFragmentServiceProviderTest extends TestCase
 {
     public function testRenderFunction()
     {
