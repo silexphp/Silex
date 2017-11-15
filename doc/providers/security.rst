@@ -420,6 +420,35 @@ switch back to their primary account:
         You are an admin but you've switched to another user,
         <a href="?_switch_user=_exit"> exit</a> the switch.
     {% endif %}
+    
+Sharing security context between multiple firewalls
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+By default, all the firewalls have a different **security context**. 
+In case you need to share the same security context between multiple firewalls 
+you can set the ``context`` setting for each firewall you want the context to be shared with.
+
+    $app['security.firewalls'] = array(
+        'login' => array(
+            'context' => 'admin_security',
+            'pattern' => '^/login',
+            // ...
+        ),
+        'secured' => array(
+            'context' => 'admin_security',
+            'pattern' => '^/admin/',
+            'form' => array('login_path' => '/login', 'check_path' => '/admin/login_check'),
+            'users' => array(
+                'admin' => array('ROLE_ADMIN', '$2y$10$3i9/lVd8UOFIJ6PAMFt8gu3/r5g0qeCJvoSlLCsvMTythye19F77a'),
+            ),
+            // ...
+        ),
+    );
+
+Above configuration ensures that you have the same security context ``admin_security`` 
+inside both , ``login`` and ``admin`` firewalls. This might be useful for instance 
+to redirect already logged in users to the secured area of your website when they visit the login form, 
+as you have the possibility to check if the user has been granted the ``ROLE_ADMIN`` role inside the ``login`` firewall.
 
 Defining a Role Hierarchy
 ~~~~~~~~~~~~~~~~~~~~~~~~~
