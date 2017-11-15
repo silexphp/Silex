@@ -426,7 +426,7 @@ Sharing security context between multiple firewalls
 
 By default, all the firewalls have a different **security context**. 
 In case you need to share the same security context between multiple firewalls 
-you can set the ``context`` setting for each firewall you want the context to be share with.
+you can set the ``context`` setting for each firewall you want the context to be shared with.
 
     $app['security.firewalls'] = array(
         'login' => array(
@@ -446,9 +446,9 @@ you can set the ``context`` setting for each firewall you want the context to be
     );
 
 Above configuration ensures that you have the same security context ``admin_security`` 
-inside your ``/login`` and ``/admin`` paths. This might be useful for instance to redirect already 
-logged in users to the secured area of your website when they visit the login form URL, 
-as you have the possibility to check if the user has been granted the ``ROLE_ADMIN`` role inside ``/login``.
+inside both , ``login`` and ``admin`` firewalls. This might be useful for instance 
+to redirect already logged in users to the secured area of your website when they visit the login form, 
+as you have the possibility to check if the user has been granted the ``ROLE_ADMIN`` role inside the ``login`` firewall.
 
 Defining a Role Hierarchy
 ~~~~~~~~~~~~~~~~~~~~~~~~~
