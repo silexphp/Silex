@@ -164,6 +164,9 @@ It gives access to the following methods:
     {# The debug flag #}
     {{ global.debug }}
 
+    {# The flash messages (Symfony 3.3 or later) #}
+    {{ global.flashes }}
+
 Rendering a Controller
 ~~~~~~~~~~~~~~~~~~~~~~
 
