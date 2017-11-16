@@ -27,6 +27,7 @@ use Symfony\Bridge\Twig\Extension\WebLinkExtension;
 use Symfony\Bridge\Twig\Form\TwigRendererEngine;
 use Symfony\Bridge\Twig\Form\TwigRenderer;
 use Symfony\Bridge\Twig\Extension\HttpKernelRuntime;
+use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\WebLink\HttpHeaderSerializer;
 
 /**
@@ -180,6 +181,7 @@ class TwigServiceProvider implements ServiceProviderInterface
             return array(
                 HttpKernelRuntime::class => 'twig.runtime.httpkernel',
                 TwigRenderer::class => 'twig.form.renderer',
+                FormRenderer::class => 'twig.form.renderer',
             );
         };
 
