@@ -22,3 +22,4 @@ Built-in Service Providers
     service_controller
     var_dumper
     doctrine
+    routing
