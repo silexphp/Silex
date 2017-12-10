@@ -88,7 +88,7 @@ class ApplicationTest extends TestCase
 
         $routes = $app['routes'];
         $this->assertInstanceOf('Symfony\Component\Routing\RouteCollection', $routes);
-        $this->assertEquals(0, count($routes->all()));
+        $this->assertCount(0, $routes->all());
     }
 
     public function testGetRoutesWithRoutes()
@@ -105,9 +105,9 @@ class ApplicationTest extends TestCase
 
         $routes = $app['routes'];
         $this->assertInstanceOf('Symfony\Component\Routing\RouteCollection', $routes);
-        $this->assertEquals(0, count($routes->all()));
+        $this->assertCount(0, $routes->all());
         $app->flush();
-        $this->assertEquals(2, count($routes->all()));
+        $this->assertCount(2, $routes->all());
     }
 
     public function testOnCoreController()
