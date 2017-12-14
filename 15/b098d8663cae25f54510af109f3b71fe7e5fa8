@@ -1,0 +1,41 @@
+---------------------------------------------------------------------------
+
+by Adrien-H at 2017-11-27T09:17:48Z
+
+Good points. (:
+
+I fixuped the commit to keep history clean.
+
+Now the `\Twig_Loader_Filesystem` is defined as follows:
+```php
+// src/Silex/Provider/TwigServiceProvider.php
+$app['twig.loader.filesystem'] = function ($app) {
+    $paths = is_array($app['twig.path']) ? $app['twig.path'] : array($app['twig.path']);
+    $fileSystem = new \Twig_Loader_Filesystem();
+    foreach ($paths as $key => $val) {
+        if (is_string($key)) {
+            $fileSystem->addPath($key, $val);
+        } else {
+            $fileSystem->addPath($val);
+        }
+    }
+
+    return $fileSystem;
+};
+```
+So you can, in the project's code, define the paths like this:
+```php
+$this->register(new TwigServiceProvider(), [
+    'twig.path' => [
+        '../app/Resources/views',
+        '../common/foo-module/Resources/views' => 'FooModule',
+    ]
+]);
+```
+The first element will be attached to the main namespace, and the second one to the FooModule namespace. This structure makes more sense than my previous logic, since it reflects what you would do in Symfony to register namespaces. That's also what I intuitively wrote when I was trying to get it work at the very beginning.
+
+---------------------------------------------------------------------------
+
+by Adrien-H at 2017-11-30T08:44:51Z
+
+Maybe I shouldn't have rebased yet, @stof ? I'm not used to public pull requests. Just for information, my changes are implemented to the PR's original commit. Sorry if that's not the way. (:
