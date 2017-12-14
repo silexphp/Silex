@@ -154,7 +154,17 @@ class TwigServiceProvider implements ServiceProviderInterface
         };
 
         $app['twig.loader.filesystem'] = function ($app) {
-            return new \Twig_Loader_Filesystem($app['twig.path']);
+            $paths = is_array($app['twig.path']) ? $app['twig.path'] : array($app['twig.path']);
+            $fileSystem = new \Twig_Loader_Filesystem();
+            foreach ($paths as $key => $val) {
+                if (is_string($key)) {
+                    $fileSystem->addPath($key, $val);
+                } else {
+                    $fileSystem->addPath($val);
+                }
+            }
+
+            return $fileSystem;
         };
 
         $app['twig.loader.array'] = function ($app) {
