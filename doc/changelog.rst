@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.2.1 (2017-XX-XX)
+2.2.1 (2017-12-14)
 ------------------
 
 * added support for Swiftmailer SSL stream_context_options option
