@@ -30,7 +30,7 @@ class ControllerCollectionTest extends TestCase
     {
         $controllers = new ControllerCollection(new Route());
         $routes = $controllers->flush();
-        $this->assertEquals(0, count($routes->all()));
+        $this->assertCount(0, $routes->all());
     }
 
     public function testGetRouteCollectionWithRoutes()
@@ -40,7 +40,7 @@ class ControllerCollectionTest extends TestCase
         $controllers->match('/bar', function () {});
 
         $routes = $controllers->flush();
-        $this->assertEquals(2, count($routes->all()));
+        $this->assertCount(2, $routes->all());
     }
 
     public function testControllerFreezing()

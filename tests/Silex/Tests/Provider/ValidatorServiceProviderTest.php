@@ -110,8 +110,8 @@ class ValidatorServiceProviderTest extends TestCase
         $form->submit(array('email' => $email));
 
         $this->assertEquals($isValid, $form->isValid());
-        $this->assertEquals($nbGlobalError, count($form->getErrors()));
-        $this->assertEquals($nbEmailError, count($form->offsetGet('email')->getErrors()));
+        $this->assertCount($nbGlobalError, $form->getErrors());
+        $this->assertCount($nbEmailError, $form->offsetGet('email')->getErrors());
     }
 
     public function testValidatorWillNotAddNonexistentTranslationFiles()

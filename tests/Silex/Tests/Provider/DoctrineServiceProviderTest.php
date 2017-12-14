@@ -88,7 +88,7 @@ class DoctrineServiceProviderTest extends TestCase
         }
 
         $app = new Application();
-        $this->assertTrue(isset($app['logger']));
+        $this->assertArrayHasKey('logger', $app);
         $this->assertNull($app['logger']);
         $app->register(new DoctrineServiceProvider(), array(
             'dbs.options' => array(

@@ -28,7 +28,7 @@ class StreamTest extends TestCase
 
         $response = $app->stream();
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\StreamedResponse', $response);
-        $this->assertSame(false, $response->getContent());
+        $this->assertFalse($response->getContent());
     }
 
     public function testStreamActuallyStreams()
