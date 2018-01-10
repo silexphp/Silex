@@ -41,7 +41,7 @@ use Silex\Provider\HttpKernelServiceProvider;
  */
 class Application extends Container implements HttpKernelInterface, TerminableInterface
 {
-    const VERSION = '2.2.1';
+    const VERSION = '2.2.2-DEV';
 
     const EARLY_EVENT = 512;
     const LATE_EVENT = -512;
