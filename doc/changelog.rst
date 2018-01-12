@@ -1,10 +1,10 @@
 Changelog
 =========
 
-2.2.2 (2017-XX-XX)
+2.2.2 (2018-01-12)
 ------------------
 
-* n/a
+* [SECURITY] fixed before handlers not executed under mounts
 
 2.2.1 (2017-12-14)
 ------------------

@@ -191,6 +191,23 @@ class ControllerCollectionTest extends TestCase
         $this->assertEquals('\w+', $controller->getRoute()->getRequirement('extra'));
     }
 
+    public function testAssertWithMountCallable()
+    {
+        $controllers = new ControllerCollection(new Route());
+        $controller = null;
+        $controllers->mount('/{name}', function ($mounted) use (&$controller) {
+            $mounted->assert('name', '\w+');
+            $mounted->mount('/{id}', function ($mounted2) use (&$controller) {
+                $mounted2->assert('id', '\d+');
+                $controller = $mounted2->match('/{extra}', function () {})->assert('extra', '\w+');
+            });
+        });
+
+        $this->assertEquals('\d+', $controller->getRoute()->getRequirement('id'));
+        $this->assertEquals('\w+', $controller->getRoute()->getRequirement('name'));
+        $this->assertEquals('\w+', $controller->getRoute()->getRequirement('extra'));
+    }
+
     public function testValue()
     {
         $controllers = new ControllerCollection(new Route());
