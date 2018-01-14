@@ -63,10 +63,10 @@ class ControllerTest extends TestCase
     public function testConvert()
     {
         $controller = new Controller(new Route('/foo/{bar}'));
-        $ret = $controller->convert('bar', $func = function ($bar) { return $bar; });
+        $ret = $controller->convert('taz', $func = function ($bar) { return $bar; }, 'bar');
 
         $this->assertSame($ret, $controller);
-        $this->assertEquals(array('bar' => $func), $controller->getRoute()->getOption('_converters'));
+        $this->assertEquals(array('taz' => [$func, 'bar']), $controller->getRoute()->getOption('_converters'));
     }
 
     public function testRun()

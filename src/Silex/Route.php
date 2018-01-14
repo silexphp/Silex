@@ -93,10 +93,10 @@ class Route extends BaseRoute
      *
      * @return Route $this The current Route instance
      */
-    public function convert($variable, $callback)
+    public function convert($variable, $callback, $name = null)
     {
         $converters = $this->getOption('_converters');
-        $converters[$variable] = $callback;
+        $converters[$variable] = [$callback, $name ?: $variable];
         $this->setOption('_converters', $converters);
 
         return $this;
