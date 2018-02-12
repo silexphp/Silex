@@ -53,25 +53,29 @@ class MonologServiceProvider implements ServiceProviderInterface, BootableProvid
 
         $app['monolog.logger.class'] = $bridge ? 'Symfony\Bridge\Monolog\Logger' : 'Monolog\Logger';
 
-        $app['monolog'] = function ($app) use ($bridge) {
-            $log = new $app['monolog.logger.class']($app['monolog.name']);
+        $app['monolog.logger._proto'] = $app->protect(function ($name) use ($app, $bridge) {
+            $logger = new $app['monolog.logger.class']($name);
 
             $handler = new Handler\GroupHandler($app['monolog.handlers']);
             if (isset($app['monolog.not_found_activation_strategy'])) {
                 $handler = new Handler\FingersCrossedHandler($handler, $app['monolog.not_found_activation_strategy']);
             }
 
-            $log->pushHandler($handler);
+            $logger->pushHandler($handler);
 
             if ($app['debug'] && $bridge) {
                 if (class_exists(DebugProcessor::class)) {
-                    $log->pushProcessor(new DebugProcessor());
+                    $logger->pushProcessor(new DebugProcessor());
                 } else {
-                    $log->pushHandler($app['monolog.handler.debug']);
+                    $logger->pushHandler($app['monolog.handler.debug']);
                 }
             }
 
-            return $log;
+            return $logger;
+        });
+
+        $app['monolog'] = function ($app) {
+            return $app['monolog.logger._proto']($app['monolog.name']);
         };
 
         $app['monolog.formatter'] = function () {
@@ -103,7 +107,7 @@ class MonologServiceProvider implements ServiceProviderInterface, BootableProvid
         };
 
         $app['monolog.listener'] = function () use ($app) {
-            return new LogListener($app['logger'], $app['monolog.exception.logger_filter']);
+            return new LogListener($app['logger.request'], $app['monolog.exception.logger_filter']);
         };
 
         $app['monolog.name'] = 'app';

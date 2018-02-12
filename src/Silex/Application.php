@@ -11,6 +11,7 @@
 
 namespace Silex;
 
+use Monolog\Logger;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -65,6 +66,15 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
         $this['debug'] = false;
         $this['charset'] = 'UTF-8';
         $this['logger'] = null;
+        $this['logger.request'] = function () {
+            $logger = $this['logger'];
+
+            if ($logger instanceof Logger) {
+                $logger = $logger->withName('request');
+            }
+
+            return $logger;
+        };
 
         $this->register(new HttpKernelServiceProvider());
         $this->register(new RoutingServiceProvider());
