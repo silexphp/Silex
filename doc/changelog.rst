@@ -4,7 +4,7 @@ Changelog
 2.2.3 (2018-XX-XX)
 ------------------
 
- * n/a
+ * fixed compatibility issues with Symfony 3.4
 
 2.2.2 (2018-01-12)
 ------------------
