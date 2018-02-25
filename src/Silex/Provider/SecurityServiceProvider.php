@@ -152,11 +152,11 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
 
         $app[RoleHierarchyVoter::class] = function ($app) {
             return new RoleHierarchyVoter(new RoleHierarchy($app['security.role_hierarchy']));
-        }
+        };
 
         $app[AuthenticatedVoter::class] = function ($app) {
             return new AuthenticatedVoter($app['security.trust_resolver']);
-        }
+        };
 
         // Unused, kept for backwards-compatibility
         // Extend security.voter_services instead to prevent circular references
