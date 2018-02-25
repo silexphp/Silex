@@ -4,7 +4,7 @@ Changelog
 2.3.0 (2018-XX-XX)
 ------------------
 
- * n/a
+ * added support for Symfony 4
 
 2.2.3 (2018-02-25)
 ------------------
