@@ -9,6 +9,9 @@ Changelog
  * allow setting custom status code on exception response with Symfony 3.3+
  * made CSRF extension work with Validator translations domain
  * fixed Security provider context usage
+ * dropped support for Twig < 2.0
+ * dropped support for PHP < 7.1
+ * dropped support for Symfony 2.x and 3.x
  * added support for Symfony 4
 
 2.2.3 (2018-02-25)
