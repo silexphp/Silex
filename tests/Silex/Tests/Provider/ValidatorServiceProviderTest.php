@@ -35,8 +35,6 @@ class ValidatorServiceProviderTest extends TestCase
         $app->register(new ValidatorServiceProvider());
         $app->register(new FormServiceProvider());
 
-        $this->assertInstanceOf('Symfony\Component\Validator\Validator\ValidatorInterface', $app['validator']);
-
         return $app;
     }
 
@@ -53,8 +51,6 @@ class ValidatorServiceProviderTest extends TestCase
                 'test.custom.validator' => 'custom.validator',
             ],
         ]);
-
-        $this->assertInstanceOf('Symfony\Component\Validator\Validator\ValidatorInterface', $app['validator']);
 
         return $app;
     }
