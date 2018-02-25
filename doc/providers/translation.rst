@@ -16,6 +16,9 @@ Parameters
 * **locale_fallbacks** (optional): Fallback locales for the translator. It will
   be used when the current locale has no messages set. Defaults to ``en``.
 
+* **translator.cache_dir** (optional): Defines the cache directory
+  if you want translations to be cached.
+
 Services
 --------
 

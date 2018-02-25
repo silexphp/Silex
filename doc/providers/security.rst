@@ -12,6 +12,11 @@ Parameters
 
 * **security.encoder.bcrypt.cost** (optional): Defines BCrypt password encoder cost. Defaults to 13.
 
+* **security.role_hierarchy**:(optional): Defines a map of roles including other roles.
+
+* **security.access_rules** (optional): Defines rules based on paths and roles.
+  See `Defining Access Rule <#defining-access-rules>`_.
+
 Services
 --------
 
