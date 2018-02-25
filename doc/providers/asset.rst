@@ -55,7 +55,10 @@ Registering
 Usage
 -----
 
-The AssetServiceProvider is mostly useful with the Twig provider:
+The AssetServiceProvider is mostly useful with the Twig provider using the asset(method).
+This has two string arguments. In the case of named packages, the first is the path relative to
+the base_path specified in the package definition and the second is the package name. For unmamed
+packages, there is only one argument, the path relative to the assets folder:
 
 .. code-block:: jinja
 
@@ -64,6 +67,8 @@ The AssetServiceProvider is mostly useful with the Twig provider:
     {{ asset('/img/foo.png', 'images') }}
 
     {{ asset_version('/css/foo.png') }}
+    
+
 
 For more information, check out the `Asset Component documentation
 <https://symfony.com/doc/current/components/asset/introduction.html>`_.
