@@ -12,6 +12,7 @@
 namespace Silex\Provider;
 
 use Pimple\Container;
+use Pimple\ServiceIterator;
 use Pimple\ServiceProviderInterface;
 use Silex\Application;
 use Silex\Api\BootableProviderInterface;
@@ -140,14 +141,29 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
         };
 
         $app['security.access_manager'] = function ($app) {
-            return new AccessDecisionManager($app['security.voters']);
+            $votersIterator = new ServiceIterator($app, $app['security.voter_services']);
+
+            return new AccessDecisionManager($votersIterator);
         };
 
+        $app['security.voter_services'] = function () {
+            return [RoleHierarchyVoter::class, AuthenticatedVoter::class];
+        };
+
+        $app[RoleHierarchyVoter::class] = function ($app) {
+            return new RoleHierarchyVoter(new RoleHierarchy($app['security.role_hierarchy']));
+        };
+
+        $app[AuthenticatedVoter::class] = function ($app) {
+            return new AuthenticatedVoter($app['security.trust_resolver']);
+        };
+
+        // Unused, kept for backwards-compatibility
+        // Extend security.voter_services instead to prevent circular references
         $app['security.voters'] = function ($app) {
-            return [
-                new RoleHierarchyVoter(new RoleHierarchy($app['security.role_hierarchy'])),
-                new AuthenticatedVoter($app['security.trust_resolver']),
-            ];
+            return array_map(function ($voterServiceId) use ($app) {
+                return $app[$voterServiceId];
+            });
         };
 
         $app['security.firewall'] = function ($app) {
