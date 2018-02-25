@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by hkdobrev at 2017-11-21T23:22:40Z
+
+Here are some places in the docs where parts of this are mentioned. You might want to update/remove them or add links.
+
+- https://silex.symfony.com/doc/2.0/services.html#core-traits
+- https://silex.symfony.com/doc/2.0/providers/twig.html#symfony-components-integration
+- https://silex.symfony.com/doc/2.0/usage.html#traits
+
+Cheers! 🍻
