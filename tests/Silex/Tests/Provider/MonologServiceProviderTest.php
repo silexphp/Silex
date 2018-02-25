@@ -20,7 +20,6 @@ use Silex\Provider\MonologServiceProvider;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * MonologProvider test cases.
@@ -59,12 +58,8 @@ class MonologServiceProviderTest extends TestCase
         $this->assertTrue($app['monolog.handler']->hasDebug('< 200'));
 
         $records = $app['monolog.handler']->getRecords();
-        if (Kernel::VERSION_ID < 30100) {
-            $this->assertContains('Matched route "GET_foo"', $records[0]['message']);
-        } else {
-            $this->assertContains('Matched route "{route}".', $records[0]['message']);
-            $this->assertSame('GET_foo', $records[0]['context']['route']);
-        }
+        $this->assertContains('Matched route "{route}".', $records[0]['message']);
+        $this->assertSame('GET_foo', $records[0]['context']['route']);
     }
 
     public function testManualLogging()

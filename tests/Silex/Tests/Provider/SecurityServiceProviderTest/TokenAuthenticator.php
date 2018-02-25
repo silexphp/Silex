@@ -13,7 +13,6 @@ namespace Silex\Tests\Provider\SecurityServiceProviderTest;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
@@ -28,7 +27,7 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
     public function getCredentials(Request $request)
     {
         if (!$token = $request->headers->get('X-AUTH-TOKEN')) {
-            return Kernel::VERSION_ID < 30400 ? null : false;
+            return false;
         }
 
         list($username, $secret) = explode(':', $token);
