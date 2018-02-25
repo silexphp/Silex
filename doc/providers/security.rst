@@ -495,7 +495,7 @@ Defining a custom User Provider
 Using an array of users is simple and useful when securing an admin section of
 a personal website, but you can override this default mechanism with you own.
 
-The ``users`` setting can be defined as a service or an service id that returns
+The ``users`` setting can be defined as a service or a service id that returns
 an instance of `UserProviderInterface
 <http://api.symfony.com/master/Symfony/Component/Security/Core/User/UserProviderInterface.html>`_::
 
