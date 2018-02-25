@@ -52,7 +52,7 @@ class SilexFormExtension implements FormExtensionInterface
 
     public function getTypeExtensions($name)
     {
-        return isset($this->typeExtensions[$name]) ? $this->typeExtensions[$name] : [];
+        return isset($this->typeExtensions[$name]) ? $this->typeExtensions[$name] : array();
     }
 
     public function hasTypeExtensions($name)
@@ -66,7 +66,7 @@ class SilexFormExtension implements FormExtensionInterface
             $this->guesserLoaded = true;
 
             if ($this->guessers) {
-                $guessers = [];
+                $guessers = array();
                 foreach ($this->guessers as $guesser) {
                     if (!is_object($guesser)) {
                         $guesser = $this->app[$guesser];
@@ -82,7 +82,7 @@ class SilexFormExtension implements FormExtensionInterface
 
     private function setTypes(array $types)
     {
-        $this->types = [];
+        $this->types = array();
         foreach ($types as $type) {
             if (!is_object($type)) {
                 if (!isset($this->app[$type])) {
@@ -97,7 +97,7 @@ class SilexFormExtension implements FormExtensionInterface
 
     private function setTypeExtensions(array $typeExtensions)
     {
-        $this->typeExtensions = [];
+        $this->typeExtensions = array();
         foreach ($typeExtensions as $extension) {
             if (!is_object($extension)) {
                 if (!isset($this->app[$extension])) {
@@ -111,7 +111,7 @@ class SilexFormExtension implements FormExtensionInterface
 
     private function setGuessers(array $guessers)
     {
-        $this->guessers = [];
+        $this->guessers = array();
         foreach ($guessers as $guesser) {
             if (!is_object($guesser) && !isset($this->app[$guesser])) {
                 throw new InvalidArgumentException(sprintf('Invalid form type guesser. The silex service "%s" does not exist.', $guesser));

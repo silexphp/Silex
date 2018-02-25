@@ -62,7 +62,7 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface, EventListe
                 'password' => '',
                 'encryption' => null,
                 'auth_mode' => null,
-                'stream_context_options' => [],
+                'stream_context_options' => array(),
             ), $app['swiftmailer.options']);
 
             $transport->setHost($options['host']);

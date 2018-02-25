@@ -154,7 +154,7 @@ class ControllerCollectionTest extends TestCase
 
         $routes = $controllers->flush();
         $subRoutes = $subControllers->flush();
-        $this->assertTrue($routes->count() == 2 && $subRoutes->count() == 0);
+        $this->assertTrue(2 == $routes->count() && 0 == $subRoutes->count());
     }
 
     public function testMountControllersFactory()

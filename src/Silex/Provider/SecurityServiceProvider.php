@@ -613,7 +613,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
                 return $app[$options['entry_point']];
             }
             $authenticatorIds = $options['authenticators'];
-            if (count($authenticatorIds) == 1) {
+            if (1 == count($authenticatorIds)) {
                 // if there is only one authenticator, use that as the entry point
                 return $app[reset($authenticatorIds)];
             }

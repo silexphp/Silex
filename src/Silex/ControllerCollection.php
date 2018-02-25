@@ -211,7 +211,7 @@ class ControllerCollection
 
     private function doFlush($prefix, RouteCollection $routes)
     {
-        if ($prefix !== '') {
+        if ('' !== $prefix) {
             $prefix = '/'.trim(trim($prefix), '/');
         }
 

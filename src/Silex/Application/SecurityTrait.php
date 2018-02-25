@@ -44,7 +44,7 @@ trait SecurityTrait
      *
      * @return bool
      *
-     * @throws AuthenticationCredentialsNotFoundException when the token storage has no authentication token.
+     * @throws AuthenticationCredentialsNotFoundException when the token storage has no authentication token
      */
     public function isGranted($attributes, $object = null)
     {
