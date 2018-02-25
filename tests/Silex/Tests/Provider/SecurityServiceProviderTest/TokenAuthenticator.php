@@ -28,7 +28,7 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
     public function getCredentials(Request $request)
     {
         if (!$token = $request->headers->get('X-AUTH-TOKEN')) {
-            return Kernel::VERSION_ID < 34000 ? null : false;
+            return Kernel::VERSION_ID < 30400 ? null : false;
         }
 
         list($username, $secret) = explode(':', $token);
