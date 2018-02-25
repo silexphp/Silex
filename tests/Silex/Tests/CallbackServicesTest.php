@@ -23,7 +23,7 @@ use Silex\Provider\ServiceControllerServiceProvider;
  */
 class CallbackServicesTest extends TestCase
 {
-    public $called = array();
+    public $called = [];
 
     public function testCallbacksAsServices()
     {
@@ -51,7 +51,7 @@ class CallbackServicesTest extends TestCase
         $response = $app->handle($request);
         $app->terminate($request, $response);
 
-        $this->assertEquals(array(
+        $this->assertEquals([
             'BEFORE APP',
             'ON REQUEST',
             'BEFORE',
@@ -60,7 +60,7 @@ class CallbackServicesTest extends TestCase
             'AFTER',
             'AFTER APP',
             'FINISH APP',
-        ), $app['service']->called);
+        ], $app['service']->called);
     }
 
     public function controller(Application $app)

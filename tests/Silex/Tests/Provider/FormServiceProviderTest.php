@@ -54,7 +54,7 @@ class FormServiceProviderTest extends TestCase
             return $extensions;
         });
 
-        $form = $app['form.factory']->createBuilder('Symfony\Component\Form\Extension\Core\Type\FormType', array())
+        $form = $app['form.factory']->createBuilder('Symfony\Component\Form\Extension\Core\Type\FormType', [])
             ->add('dummy', 'Silex\Tests\Provider\DummyFormType')
             ->getForm();
 
@@ -77,7 +77,7 @@ class FormServiceProviderTest extends TestCase
         });
 
         $form = $app['form.factory']
-            ->createBuilder('Symfony\Component\Form\Extension\Core\Type\FormType', array())
+            ->createBuilder('Symfony\Component\Form\Extension\Core\Type\FormType', [])
             ->add('dummy', 'dummy')
             ->getForm();
 
@@ -101,7 +101,7 @@ class FormServiceProviderTest extends TestCase
         });
 
         $app['form.factory']
-            ->createBuilder('Symfony\Component\Form\Extension\Core\Type\FormType', array())
+            ->createBuilder('Symfony\Component\Form\Extension\Core\Type\FormType', [])
             ->add('dummy', 'dummy')
             ->getForm();
     }
@@ -118,8 +118,8 @@ class FormServiceProviderTest extends TestCase
             return $extensions;
         });
 
-        $form = $app['form.factory']->createBuilder('Symfony\Component\Form\Extension\Core\Type\FormType', array())
-            ->add('file', 'Symfony\Component\Form\Extension\Core\Type\FileType', array('image_path' => 'webPath'))
+        $form = $app['form.factory']->createBuilder('Symfony\Component\Form\Extension\Core\Type\FormType', [])
+            ->add('file', 'Symfony\Component\Form\Extension\Core\Type\FileType', ['image_path' => 'webPath'])
             ->getForm();
 
         $this->assertInstanceOf('Symfony\Component\Form\Form', $form);
@@ -141,8 +141,8 @@ class FormServiceProviderTest extends TestCase
         });
 
         $form = $app['form.factory']
-            ->createBuilder('Symfony\Component\Form\Extension\Core\Type\FormType', array())
-            ->add('file', 'Symfony\Component\Form\Extension\Core\Type\FileType', array('image_path' => 'webPath'))
+            ->createBuilder('Symfony\Component\Form\Extension\Core\Type\FormType', [])
+            ->add('file', 'Symfony\Component\Form\Extension\Core\Type\FileType', ['image_path' => 'webPath'])
             ->getForm();
 
         $this->assertInstanceOf('Symfony\Component\Form\Form', $form);
@@ -165,7 +165,7 @@ class FormServiceProviderTest extends TestCase
         });
 
         $app['form.factory']
-            ->createBuilder('Symfony\Component\Form\Extension\Core\Type\FormType', array())
+            ->createBuilder('Symfony\Component\Form\Extension\Core\Type\FormType', [])
             ->add('dummy', 'dummy.form.type')
             ->getForm();
     }
@@ -177,7 +177,7 @@ class FormServiceProviderTest extends TestCase
         $app->register(new FormServiceProvider());
 
         $app->extend('form.type.guessers', function ($guessers) {
-            $guessers[] = new FormTypeGuesserChain(array());
+            $guessers[] = new FormTypeGuesserChain([]);
 
             return $guessers;
         });
@@ -192,7 +192,7 @@ class FormServiceProviderTest extends TestCase
         $app->register(new FormServiceProvider());
 
         $app['dummy.form.type.guesser'] = function () {
-            return new FormTypeGuesserChain(array());
+            return new FormTypeGuesserChain([]);
         };
         $app->extend('form.type.guessers', function ($guessers) {
             $guessers[] = 'dummy.form.type.guesser';
@@ -228,25 +228,25 @@ class FormServiceProviderTest extends TestCase
 
         $app->register(new FormServiceProvider());
         $app->register(new TranslationServiceProvider());
-        $app['translator.domains'] = array(
-            'messages' => array(
-                'de' => array(
+        $app['translator.domains'] = [
+            'messages' => [
+                'de' => [
                     'The CSRF token is invalid. Please try to resubmit the form.' => 'German translation',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
         $app['locale'] = 'de';
 
         $app['csrf.token_manager'] = function () {
             return $this->getMockBuilder('Symfony\Component\Security\Csrf\CsrfTokenManagerInterface')->getMock();
         };
 
-        $form = $app['form.factory']->createBuilder('Symfony\Component\Form\Extension\Core\Type\FormType', array())
+        $form = $app['form.factory']->createBuilder('Symfony\Component\Form\Extension\Core\Type\FormType', [])
             ->getForm();
 
-        $form->handleRequest($req = Request::create('/', 'POST', array('form' => array(
+        $form->handleRequest($req = Request::create('/', 'POST', ['form' => [
             '_token' => 'the wrong token',
-        ))));
+        ]]));
 
         $this->assertFalse($form->isValid());
         $r = new \ReflectionMethod($form, 'getErrors');
@@ -260,15 +260,15 @@ class FormServiceProviderTest extends TestCase
 
     public function testFormServiceProviderWillNotAddNonexistentTranslationFiles()
     {
-        $app = new Application(array(
+        $app = new Application([
             'locale' => 'nonexistent',
-        ));
+        ]);
 
         $app->register(new FormServiceProvider());
         $app->register(new ValidatorServiceProvider());
-        $app->register(new TranslationServiceProvider(), array(
-            'locale_fallbacks' => array(),
-        ));
+        $app->register(new TranslationServiceProvider(), [
+            'locale_fallbacks' => [],
+        ]);
 
         $app['form.factory'];
         $translator = $app['translator'];
@@ -288,7 +288,7 @@ class FormServiceProviderTest extends TestCase
         $app->register(new CsrfServiceProvider());
         $app['session.test'] = true;
 
-        $form = $app['form.factory']->createBuilder('Symfony\Component\Form\Extension\Core\Type\FormType', array())->getForm();
+        $form = $app['form.factory']->createBuilder('Symfony\Component\Form\Extension\Core\Type\FormType', [])->getForm();
 
         $this->assertTrue(isset($form->createView()['_token']));
     }
@@ -306,7 +306,7 @@ class FormServiceProviderTest extends TestCase
 
             return $extensions;
         });
-        $form = $app['form.factory']->createBuilder('Symfony\Component\Form\Extension\Core\Type\FormType', array())->getForm();
+        $form = $app['form.factory']->createBuilder('Symfony\Component\Form\Extension\Core\Type\FormType', [])->getForm();
 
         $this->assertFalse($form->getConfig()->getOption('csrf_protection'));
     }
@@ -340,7 +340,7 @@ if (method_exists('Symfony\Component\Form\AbstractType', 'configureOptions')) {
 
         public function configureOptions(OptionsResolver $resolver)
         {
-            $resolver->setDefined(array('image_path'));
+            $resolver->setDefined(['image_path']);
         }
     }
 } else {
@@ -354,9 +354,9 @@ if (method_exists('Symfony\Component\Form\AbstractType', 'configureOptions')) {
         public function setDefaultOptions(OptionsResolverInterface $resolver)
         {
             if (!method_exists($resolver, 'setDefined')) {
-                $resolver->setOptional(array('image_path'));
+                $resolver->setOptional(['image_path']);
             } else {
-                $resolver->setDefined(array('image_path'));
+                $resolver->setDefined(['image_path']);
             }
         }
     }

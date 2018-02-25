@@ -255,7 +255,7 @@ class MiddlewareTest extends TestCase
 
         $test = $this;
 
-        $middlewareTarget = array();
+        $middlewareTarget = [];
         $applicationBeforeMiddleware = function ($request, $app) use (&$middlewareTarget, $test) {
             $test->assertInstanceOf('\Symfony\Component\HttpFoundation\Request', $request);
             $test->assertInstanceOf('\Silex\Application', $app);
@@ -303,6 +303,6 @@ class MiddlewareTest extends TestCase
         $response = $app->handle($request);
         $app->terminate($request, $response);
 
-        $this->assertSame(array('application_before_middleware_triggered', 'route_before_middleware_triggered', 'route_after_middleware_triggered', 'application_after_middleware_triggered', 'application_finish_middleware_triggered'), $middlewareTarget);
+        $this->assertSame(['application_before_middleware_triggered', 'route_before_middleware_triggered', 'route_after_middleware_triggered', 'application_after_middleware_triggered', 'application_finish_middleware_triggered'], $middlewareTarget);
     }
 }

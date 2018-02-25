@@ -90,7 +90,7 @@ class ControllerCollectionTest extends TestCase
         $routes = $controllers->flush();
 
         $this->assertCount(3, $routes->all());
-        $this->assertEquals(array('_a_a', '_a_a_1', '_a_a_2'), array_keys($routes->all()));
+        $this->assertEquals(['_a_a', '_a_a_1', '_a_a_2'], array_keys($routes->all()));
     }
 
     public function testUniqueGeneratedRouteNamesAmongMounts()
@@ -106,7 +106,7 @@ class ControllerCollectionTest extends TestCase
         $routes = $controllers->flush();
 
         $this->assertCount(2, $routes->all());
-        $this->assertEquals(array('_root_a_leaf', '_root_a_leaf_1'), array_keys($routes->all()));
+        $this->assertEquals(['_root_a_leaf', '_root_a_leaf_1'], array_keys($routes->all()));
     }
 
     public function testUniqueGeneratedRouteNamesAmongNestedMounts()
@@ -125,7 +125,7 @@ class ControllerCollectionTest extends TestCase
         $routes = $controllers->flush();
 
         $this->assertCount(2, $routes->all());
-        $this->assertEquals(array('_root_a_tree_leaf', '_root_a_tree_leaf_1'), array_keys($routes->all()));
+        $this->assertEquals(['_root_a_tree_leaf', '_root_a_tree_leaf_1'], array_keys($routes->all()));
     }
 
     public function testMountCallable()
@@ -227,7 +227,7 @@ class ControllerCollectionTest extends TestCase
         $controller = $controllers->match('/{id}/{name}/{extra}', function () {})->convert('name', 'Fabien')->convert('extra', 'Symfony');
         $controllers->convert('extra', 'Twig');
 
-        $this->assertEquals(array('id' => '1', 'name' => 'Fabien', 'extra' => 'Twig'), $controller->getRoute()->getOption('_converters'));
+        $this->assertEquals(['id' => '1', 'name' => 'Fabien', 'extra' => 'Twig'], $controller->getRoute()->getOption('_converters'));
     }
 
     public function testRequireHttp()
@@ -236,11 +236,11 @@ class ControllerCollectionTest extends TestCase
         $controllers->requireHttp();
         $controller = $controllers->match('/{id}/{name}/{extra}', function () {})->requireHttps();
 
-        $this->assertEquals(array('https'), $controller->getRoute()->getSchemes());
+        $this->assertEquals(['https'], $controller->getRoute()->getSchemes());
 
         $controllers->requireHttp();
 
-        $this->assertEquals(array('http'), $controller->getRoute()->getSchemes());
+        $this->assertEquals(['http'], $controller->getRoute()->getSchemes());
     }
 
     public function testBefore()
@@ -250,7 +250,7 @@ class ControllerCollectionTest extends TestCase
         $controller = $controllers->match('/{id}/{name}/{extra}', function () {})->before('mid2');
         $controllers->before('mid3');
 
-        $this->assertEquals(array('mid1', 'mid2', 'mid3'), $controller->getRoute()->getOption('_before_middlewares'));
+        $this->assertEquals(['mid1', 'mid2', 'mid3'], $controller->getRoute()->getOption('_before_middlewares'));
     }
 
     public function testAfter()
@@ -260,7 +260,7 @@ class ControllerCollectionTest extends TestCase
         $controller = $controllers->match('/{id}/{name}/{extra}', function () {})->after('mid2');
         $controllers->after('mid3');
 
-        $this->assertEquals(array('mid1', 'mid2', 'mid3'), $controller->getRoute()->getOption('_after_middlewares'));
+        $this->assertEquals(['mid1', 'mid2', 'mid3'], $controller->getRoute()->getOption('_after_middlewares'));
     }
 
     public function testWhen()
@@ -305,9 +305,9 @@ class ControllerCollectionTest extends TestCase
 
         $cl1->flush();
 
-        $this->assertEquals(array('before'), $c1->getRoute()->getOption('_before_middlewares'));
-        $this->assertEquals(array('before'), $c2->getRoute()->getOption('_before_middlewares'));
-        $this->assertEquals(array('before'), $c3->getRoute()->getOption('_before_middlewares'));
+        $this->assertEquals(['before'], $c1->getRoute()->getOption('_before_middlewares'));
+        $this->assertEquals(['before'], $c2->getRoute()->getOption('_before_middlewares'));
+        $this->assertEquals(['before'], $c3->getRoute()->getOption('_before_middlewares'));
     }
 
     public function testRoutesFactoryOmitted()

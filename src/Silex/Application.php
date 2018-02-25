@@ -46,7 +46,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     const EARLY_EVENT = 512;
     const LATE_EVENT = -512;
 
-    protected $providers = array();
+    protected $providers = [];
     protected $booted = false;
 
     /**
@@ -56,7 +56,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      *
      * @param array $values the parameters or objects
      */
-    public function __construct(array $values = array())
+    public function __construct(array $values = [])
     {
         parent::__construct();
 
@@ -83,7 +83,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      *
      * @return Application
      */
-    public function register(ServiceProviderInterface $provider, array $values = array())
+    public function register(ServiceProviderInterface $provider, array $values = [])
     {
         $this->providers[] = $provider;
 
@@ -311,7 +311,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      * @param string $message    The status message
      * @param array  $headers    An array of HTTP headers
      */
-    public function abort($statusCode, $message = '', array $headers = array())
+    public function abort($statusCode, $message = '', array $headers = [])
     {
         throw new HttpException($statusCode, $message, null, $headers);
     }
@@ -385,7 +385,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      *
      * @return StreamedResponse
      */
-    public function stream($callback = null, $status = 200, array $headers = array())
+    public function stream($callback = null, $status = 200, array $headers = [])
     {
         return new StreamedResponse($callback, $status, $headers);
     }
@@ -414,7 +414,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      *
      * @return JsonResponse
      */
-    public function json($data = array(), $status = 200, array $headers = array())
+    public function json($data = [], $status = 200, array $headers = [])
     {
         return new JsonResponse($data, $status, $headers);
     }
@@ -429,7 +429,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      *
      * @return BinaryFileResponse
      */
-    public function sendFile($file, $status = 200, array $headers = array(), $contentDisposition = null)
+    public function sendFile($file, $status = 200, array $headers = [], $contentDisposition = null)
     {
         return new BinaryFileResponse($file, $status, $headers, true, $contentDisposition);
     }

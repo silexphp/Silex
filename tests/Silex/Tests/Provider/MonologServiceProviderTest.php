@@ -87,10 +87,10 @@ class MonologServiceProviderTest extends TestCase
     {
         $app = new Application();
 
-        $app->register(new MonologServiceProvider(), array(
+        $app->register(new MonologServiceProvider(), [
             'monolog.formatter' => new JsonFormatter(),
             'monolog.logfile' => 'php://memory',
-        ));
+        ]);
 
         $this->assertInstanceOf('Monolog\Formatter\JsonFormatter', $app['monolog.handler']->getFormatter());
     }
@@ -151,15 +151,15 @@ class MonologServiceProviderTest extends TestCase
         $app = $this->getApplication();
         $app['monolog.level'] = Logger::ERROR;
 
-        $app->register(new \Silex\Provider\SecurityServiceProvider(), array(
-            'security.firewalls' => array(
-                'admin' => array(
+        $app->register(new \Silex\Provider\SecurityServiceProvider(), [
+            'security.firewalls' => [
+                'admin' => [
                     'pattern' => '^/admin',
                     'http' => true,
-                    'users' => array(),
-                ),
-            ),
-        ));
+                    'users' => [],
+                ],
+            ],
+        ]);
 
         $app->get('/admin', function () {
             return 'SECURE!';
@@ -209,7 +209,7 @@ class MonologServiceProviderTest extends TestCase
         });
 
         $level = Logger::ERROR;
-        $app->register(new MonologServiceProvider(), array(
+        $app->register(new MonologServiceProvider(), [
             'monolog.exception.logger_filter' => $app->protect(function () {
                 return Logger::DEBUG;
             }),
@@ -218,7 +218,7 @@ class MonologServiceProviderTest extends TestCase
             },
             'monolog.level' => $level,
             'monolog.logfile' => 'php://memory',
-        ));
+        ]);
 
         $request = Request::create('/foo');
         $app->handle($request);
@@ -243,14 +243,14 @@ class MonologServiceProviderTest extends TestCase
     {
         $app = new Application();
 
-        $app->register(new MonologServiceProvider(), array(
+        $app->register(new MonologServiceProvider(), [
             'monolog.handler' => function () use ($app) {
                 $level = MonologServiceProvider::translateLevel($app['monolog.level']);
 
                 return new TestHandler($level);
             },
             'monolog.logfile' => 'php://memory',
-        ));
+        ]);
 
         return $app;
     }

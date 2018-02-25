@@ -28,14 +28,14 @@ class JsonTest extends TestCase
         $response = $app->json();
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $response);
         $response = json_decode($response->getContent(), true);
-        $this->assertSame(array(), $response);
+        $this->assertSame([], $response);
     }
 
     public function testJsonUsesData()
     {
         $app = new Application();
 
-        $response = $app->json(array('foo' => 'bar'));
+        $response = $app->json(['foo' => 'bar']);
         $this->assertSame('{"foo":"bar"}', $response->getContent());
     }
 
@@ -43,7 +43,7 @@ class JsonTest extends TestCase
     {
         $app = new Application();
 
-        $response = $app->json(array(), 202);
+        $response = $app->json([], 202);
         $this->assertSame(202, $response->getStatusCode());
     }
 
@@ -51,7 +51,7 @@ class JsonTest extends TestCase
     {
         $app = new Application();
 
-        $response = $app->json(array(), 200, array('ETag' => 'foo'));
+        $response = $app->json([], 200, ['ETag' => 'foo']);
         $this->assertSame('foo', $response->headers->get('ETag'));
     }
 }

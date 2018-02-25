@@ -70,16 +70,16 @@ class SecurityTraitTest extends TestCase
     {
         $app = new Application();
         $app['route_class'] = 'Silex\Tests\Route\SecurityRoute';
-        $app->register(new SecurityServiceProvider(), array(
-            'security.firewalls' => array(
-                'default' => array(
+        $app->register(new SecurityServiceProvider(), [
+            'security.firewalls' => [
+                'default' => [
                     'http' => true,
-                    'users' => array(
-                        'fabien' => array('ROLE_ADMIN', '$2y$15$lzUNsTegNXvZW3qtfucV0erYBcEqWVeyOmjolB7R1uodsAVJ95vvu'),
-                    ),
-                ),
-            ),
-        ));
+                    'users' => [
+                        'fabien' => ['ROLE_ADMIN', '$2y$15$lzUNsTegNXvZW3qtfucV0erYBcEqWVeyOmjolB7R1uodsAVJ95vvu'],
+                    ],
+                ],
+            ],
+        ]);
 
         return $app;
     }

@@ -47,11 +47,11 @@ class ValidatorServiceProviderTest extends TestCase
             return new CustomValidator();
         };
 
-        $app->register(new ValidatorServiceProvider(), array(
-            'validator.validator_service_ids' => array(
+        $app->register(new ValidatorServiceProvider(), [
+            'validator.validator_service_ids' => [
                 'test.custom.validator' => 'custom.validator',
-            ),
-        ));
+            ],
+        ]);
 
         return $app;
     }
@@ -91,23 +91,23 @@ class ValidatorServiceProviderTest extends TestCase
      */
     public function testValidatorConstraint($email, $isValid, $nbGlobalError, $nbEmailError, $app)
     {
-        $constraints = new Assert\Collection(array(
-            'email' => array(
+        $constraints = new Assert\Collection([
+            'email' => [
                 new Assert\NotBlank(),
                 new Assert\Email(),
-            ),
-        ));
+            ],
+        ]);
 
-        $builder = $app['form.factory']->createBuilder('Symfony\Component\Form\Extension\Core\Type\FormType', array(), array(
+        $builder = $app['form.factory']->createBuilder('Symfony\Component\Form\Extension\Core\Type\FormType', [], [
             'constraints' => $constraints,
-        ));
+        ]);
 
         $form = $builder
-            ->add('email', 'Symfony\Component\Form\Extension\Core\Type\EmailType', array('label' => 'Email'))
+            ->add('email', 'Symfony\Component\Form\Extension\Core\Type\EmailType', ['label' => 'Email'])
             ->getForm()
         ;
 
-        $form->submit(array('email' => $email));
+        $form->submit(['email' => $email]);
 
         $this->assertEquals($isValid, $form->isValid());
         $this->assertCount($nbGlobalError, $form->getErrors());
@@ -116,14 +116,14 @@ class ValidatorServiceProviderTest extends TestCase
 
     public function testValidatorWillNotAddNonexistentTranslationFiles()
     {
-        $app = new Application(array(
+        $app = new Application([
             'locale' => 'nonexistent',
-        ));
+        ]);
 
         $app->register(new ValidatorServiceProvider());
-        $app->register(new TranslationServiceProvider(), array(
-            'locale_fallbacks' => array(),
-        ));
+        $app->register(new TranslationServiceProvider(), [
+            'locale_fallbacks' => [],
+        ]);
 
         $app['validator'];
         $translator = $app['translator'];
@@ -138,11 +138,11 @@ class ValidatorServiceProviderTest extends TestCase
     public function getTestValidatorConstraintProvider()
     {
         // Email, form is valid, nb global error, nb email error
-        return array(
-            array('', false, 0, 1),
-            array('not an email', false, 0, 1),
-            array('email@sample.com', true, 0, 0),
-        );
+        return [
+            ['', false, 0, 1],
+            ['not an email', false, 0, 1],
+            ['email@sample.com', true, 0, 0],
+        ];
     }
 
     /**
@@ -156,7 +156,7 @@ class ValidatorServiceProviderTest extends TestCase
         $app->register(new ValidatorServiceProvider());
         $app->register(new TranslationServiceProvider());
         $app['translator'] = $app->extend('translator', function ($translator, $app) {
-            $translator->addResource('array', array('This value should not be blank.' => 'Pas vide'), 'fr', 'validators');
+            $translator->addResource('array', ['This value should not be blank.' => 'Pas vide'], 'fr', 'validators');
 
             return $translator;
         });
@@ -165,12 +165,12 @@ class ValidatorServiceProviderTest extends TestCase
             $app['validator'];
         }
 
-        $this->assertEquals('Pas vide', $app['translator']->trans('This value should not be blank.', array(), 'validators', 'fr'));
+        $this->assertEquals('Pas vide', $app['translator']->trans('This value should not be blank.', [], 'validators', 'fr'));
     }
 
     public function getAddResourceData()
     {
-        return array(array(false), array(true));
+        return [[false], [true]];
     }
 
     public function testAddResourceAlternate()
@@ -181,16 +181,16 @@ class ValidatorServiceProviderTest extends TestCase
         $app->register(new ValidatorServiceProvider());
         $app->register(new TranslationServiceProvider());
         $app->factory($app->extend('translator.resources', function ($resources, $app) {
-            $resources = array_merge($resources, array(
-                array('array', array('This value should not be blank.' => 'Pas vide'), 'fr', 'validators'),
-            ));
+            $resources = array_merge($resources, [
+                ['array', ['This value should not be blank.' => 'Pas vide'], 'fr', 'validators'],
+            ]);
 
             return $resources;
         }));
 
         $app['validator'];
 
-        $this->assertEquals('Pas vide', $app['translator']->trans('This value should not be blank.', array(), 'validators', 'fr'));
+        $this->assertEquals('Pas vide', $app['translator']->trans('This value should not be blank.', [], 'validators', 'fr'));
     }
 
     public function testTranslatorResourcesIsArray()

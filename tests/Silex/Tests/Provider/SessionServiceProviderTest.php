@@ -51,9 +51,9 @@ class SessionServiceProviderTest extends WebTestCase
     {
         $app = new Application();
 
-        $app->register(new SessionServiceProvider(), array(
+        $app->register(new SessionServiceProvider(), [
             'session.test' => true,
-        ));
+        ]);
 
         $app->get('/login', function () use ($app) {
             $app['session']->set('logged_in', true);
@@ -82,9 +82,9 @@ class SessionServiceProviderTest extends WebTestCase
     {
         $app = new Application();
 
-        $app->register(new SessionServiceProvider(), array(
+        $app->register(new SessionServiceProvider(), [
             'session.test' => true,
-        ));
+        ]);
 
         $app->get('/', function () {
             return 'A welcome page.';
@@ -112,11 +112,11 @@ class SessionServiceProviderTest extends WebTestCase
 
         $attrs = new Session\Attribute\AttributeBag();
         $flash = new Session\Flash\FlashBag();
-        $app->register(new SessionServiceProvider(), array(
+        $app->register(new SessionServiceProvider(), [
             'session.attribute_bag' => $attrs,
             'session.flash_bag' => $flash,
             'session.test' => true,
-        ));
+        ]);
 
         $session = $app['session'];
 
