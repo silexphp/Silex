@@ -47,7 +47,9 @@ class FormServiceProvider implements ServiceProviderInterface
 
         $app['form.extension.csrf'] = function ($app) {
             if (isset($app['translator'])) {
-                return new CsrfExtension($app['csrf.token_manager'], $app['translator']);
+                $translationDomain = isset($app['validator.translation_domain']) ? $app['validator.translation_domain'] : null;
+
+                return new CsrfExtension($app['csrf.token_manager'], $app['translator'], $translationDomain);
             }
 
             return new CsrfExtension($app['csrf.token_manager']);
