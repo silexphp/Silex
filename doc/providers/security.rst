@@ -424,9 +424,10 @@ switch back to their primary account:
 Sharing security context between multiple firewalls
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-By default, all the firewalls have a different **security context**. 
-In case you need to share the same security context between multiple firewalls 
-you can set the ``context`` setting for each firewall you want the context to be shared with.
+By default, all the firewalls have a different **security context**. In case you
+need to share the same security context between multiple firewalls you can set
+the ``context`` setting for each firewall you want the context to be shared
+with.
 
     $app['security.firewalls'] = array(
         'login' => array(
@@ -445,10 +446,12 @@ you can set the ``context`` setting for each firewall you want the context to be
         ),
     );
 
-Above configuration ensures that you have the same security context ``admin_security`` 
-inside both , ``login`` and ``admin`` firewalls. This might be useful for instance 
-to redirect already logged in users to the secured area of your website when they visit the login form, 
-as you have the possibility to check if the user has been granted the ``ROLE_ADMIN`` role inside the ``login`` firewall.
+Above configuration ensures that you have the same security context
+``admin_security`` inside both, ``login`` and ``admin`` firewalls. This might be
+useful for instance to redirect already logged in users to the secured area of
+your website when they visit the login form, as you have the possibility to
+check if the user has been granted the ``ROLE_ADMIN`` role inside the ``login``
+firewall.
 
 Defining a Role Hierarchy
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -623,10 +626,10 @@ Defining a custom Authentication Provider
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The Symfony Security component provides a lot of ready-to-use authentication
-providers (form, HTTP, X509, remember me, ...), but you can add new ones
-easily. To register a new authentication provider, create a service named
-``security.authentication_listener.factory.XXX`` where ``XXX`` is the name you want to
-use in your configuration::
+providers (form, HTTP, X509, remember me, ...), but you can add new ones easily.
+To register a new authentication provider, create a service named
+``security.authentication_listener.factory.XXX`` where ``XXX`` is the name you
+want to use in your configuration::
 
     $app['security.authentication_listener.factory.wsse'] = $app->protect(function ($name, $options) use ($app) {
         // define the authentication provider object
