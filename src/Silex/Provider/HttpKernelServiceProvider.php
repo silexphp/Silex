@@ -48,16 +48,16 @@ class HttpKernelServiceProvider implements ServiceProviderInterface, EventListen
             };
             $app['argument_value_resolvers'] = function ($app) {
                 if (Kernel::VERSION_ID < 30200) {
-                    return array(
+                    return [
                         new AppArgumentValueResolver($app),
                         new RequestAttributeValueResolver(),
                         new RequestValueResolver(),
                         new DefaultValueResolver(),
                         new VariadicValueResolver(),
-                    );
+                    ];
                 }
 
-                return array_merge(array(new AppArgumentValueResolver($app)), ArgumentResolver::getDefaultArgumentValueResolvers());
+                return array_merge([new AppArgumentValueResolver($app)], ArgumentResolver::getDefaultArgumentValueResolvers());
             };
         }
 

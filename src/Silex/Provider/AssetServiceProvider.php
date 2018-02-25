@@ -32,11 +32,11 @@ class AssetServiceProvider implements ServiceProviderInterface
     public function register(Container $app)
     {
         $app['assets.packages'] = function ($app) {
-            $packages = array();
+            $packages = [];
             foreach ($app['assets.named_packages'] as $name => $package) {
                 $version = $app['assets.strategy_factory'](isset($package['version']) ? $package['version'] : null, isset($package['version_format']) ? $package['version_format'] : null, isset($package['json_manifest_path']) ? $package['json_manifest_path'] : null, $name);
 
-                $packages[$name] = $app['assets.package_factory'](isset($package['base_path']) ? $package['base_path'] : '', isset($package['base_urls']) ? $package['base_urls'] : array(), $version, $name);
+                $packages[$name] = $app['assets.package_factory'](isset($package['base_path']) ? $package['base_path'] : '', isset($package['base_urls']) ? $package['base_urls'] : [], $version, $name);
             }
 
             return new Packages($app['assets.default_package'], $packages);
@@ -53,12 +53,12 @@ class AssetServiceProvider implements ServiceProviderInterface
         };
 
         $app['assets.base_path'] = '';
-        $app['assets.base_urls'] = array();
+        $app['assets.base_urls'] = [];
         $app['assets.version'] = null;
         $app['assets.version_format'] = null;
         $app['assets.json_manifest_path'] = null;
 
-        $app['assets.named_packages'] = array();
+        $app['assets.named_packages'] = [];
 
         // prototypes
 

@@ -39,7 +39,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class ControllerCollection
 {
-    protected $controllers = array();
+    protected $controllers = [];
     protected $defaultRoute;
     protected $defaultController;
     protected $prefix;
@@ -184,10 +184,10 @@ class ControllerCollection
             throw new \BadMethodCallException(sprintf('Method "%s::%s" does not exist.', get_class($this->defaultRoute), $method));
         }
 
-        call_user_func_array(array($this->defaultRoute, $method), $arguments);
+        call_user_func_array([$this->defaultRoute, $method], $arguments);
 
         foreach ($this->controllers as $controller) {
-            call_user_func_array(array($controller, $method), $arguments);
+            call_user_func_array([$controller, $method], $arguments);
         }
 
         return $this;
@@ -211,7 +211,7 @@ class ControllerCollection
 
     private function doFlush($prefix, RouteCollection $routes)
     {
-        if ($prefix !== '') {
+        if ('' !== $prefix) {
             $prefix = '/'.trim(trim($prefix), '/');
         }
 
@@ -233,7 +233,7 @@ class ControllerCollection
             }
         }
 
-        $this->controllers = array();
+        $this->controllers = [];
 
         return $routes;
     }

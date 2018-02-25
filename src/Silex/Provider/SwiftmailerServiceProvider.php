@@ -28,7 +28,7 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface, EventListe
 {
     public function register(Container $app)
     {
-        $app['swiftmailer.options'] = array();
+        $app['swiftmailer.options'] = [];
         $app['swiftmailer.use_spool'] = true;
 
         $app['mailer.initialized'] = false;
@@ -51,11 +51,11 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface, EventListe
         $app['swiftmailer.transport'] = function ($app) {
             $transport = new \Swift_Transport_EsmtpTransport(
                 $app['swiftmailer.transport.buffer'],
-                array($app['swiftmailer.transport.authhandler']),
+                [$app['swiftmailer.transport.authhandler']],
                 $app['swiftmailer.transport.eventdispatcher']
             );
 
-            $options = $app['swiftmailer.options'] = array_replace(array(
+            $options = $app['swiftmailer.options'] = array_replace([
                 'host' => 'localhost',
                 'port' => 25,
                 'username' => '',
@@ -63,7 +63,7 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface, EventListe
                 'encryption' => null,
                 'auth_mode' => null,
                 'stream_context_options' => [],
-            ), $app['swiftmailer.options']);
+            ], $app['swiftmailer.options']);
 
             $transport->setHost($options['host']);
             $transport->setPort($options['port']);
@@ -81,11 +81,11 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface, EventListe
         };
 
         $app['swiftmailer.transport.authhandler'] = function () {
-            return new \Swift_Transport_Esmtp_AuthHandler(array(
+            return new \Swift_Transport_Esmtp_AuthHandler([
                 new \Swift_Transport_Esmtp_Auth_CramMd5Authenticator(),
                 new \Swift_Transport_Esmtp_Auth_LoginAuthenticator(),
                 new \Swift_Transport_Esmtp_Auth_PlainAuthenticator(),
-            ));
+            ]);
         };
 
         $app['swiftmailer.transport.eventdispatcher'] = function ($app) {
@@ -112,12 +112,12 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface, EventListe
         };
 
         $app['swiftmailer.plugins'] = function ($app) {
-            return array();
+            return [];
         };
 
         $app['swiftmailer.sender_address'] = null;
-        $app['swiftmailer.delivery_addresses'] = array();
-        $app['swiftmailer.delivery_whitelist'] = array();
+        $app['swiftmailer.delivery_addresses'] = [];
+        $app['swiftmailer.delivery_whitelist'] = [];
     }
 
     public function subscribe(Container $app, EventDispatcherInterface $dispatcher)

@@ -38,9 +38,9 @@ class DoctrineServiceProviderTest extends TestCase
         }
 
         $app = new Application();
-        $app->register(new DoctrineServiceProvider(), array(
-            'db.options' => array('driver' => 'pdo_sqlite', 'memory' => true),
-        ));
+        $app->register(new DoctrineServiceProvider(), [
+            'db.options' => ['driver' => 'pdo_sqlite', 'memory' => true],
+        ]);
 
         $db = $app['db'];
         $params = $db->getParams();
@@ -59,12 +59,12 @@ class DoctrineServiceProviderTest extends TestCase
         }
 
         $app = new Application();
-        $app->register(new DoctrineServiceProvider(), array(
-            'dbs.options' => array(
-                'sqlite1' => array('driver' => 'pdo_sqlite', 'memory' => true),
-                'sqlite2' => array('driver' => 'pdo_sqlite', 'path' => sys_get_temp_dir().'/silex'),
-            ),
-        ));
+        $app->register(new DoctrineServiceProvider(), [
+            'dbs.options' => [
+                'sqlite1' => ['driver' => 'pdo_sqlite', 'memory' => true],
+                'sqlite2' => ['driver' => 'pdo_sqlite', 'path' => sys_get_temp_dir().'/silex'],
+            ],
+        ]);
 
         $db = $app['db'];
         $params = $db->getParams();
@@ -90,11 +90,11 @@ class DoctrineServiceProviderTest extends TestCase
         $app = new Application();
         $this->assertArrayHasKey('logger', $app);
         $this->assertNull($app['logger']);
-        $app->register(new DoctrineServiceProvider(), array(
-            'dbs.options' => array(
-                'sqlite1' => array('driver' => 'pdo_sqlite', 'memory' => true),
-            ),
-        ));
+        $app->register(new DoctrineServiceProvider(), [
+            'dbs.options' => [
+                'sqlite1' => ['driver' => 'pdo_sqlite', 'memory' => true],
+            ],
+        ]);
         $this->assertEquals(22, $app['db']->fetchColumn('SELECT 22'));
         $this->assertNull($app['db']->getConfiguration()->getSQLLogger());
     }
@@ -106,11 +106,11 @@ class DoctrineServiceProviderTest extends TestCase
         }
 
         $app = new Container();
-        $app->register(new DoctrineServiceProvider(), array(
-            'dbs.options' => array(
-                'sqlite1' => array('driver' => 'pdo_sqlite', 'memory' => true),
-            ),
-        ));
+        $app->register(new DoctrineServiceProvider(), [
+            'dbs.options' => [
+                'sqlite1' => ['driver' => 'pdo_sqlite', 'memory' => true],
+            ],
+        ]);
         $this->assertEquals(22, $app['db']->fetchColumn('SELECT 22'));
         $this->assertNull($app['db']->getConfiguration()->getSQLLogger());
     }

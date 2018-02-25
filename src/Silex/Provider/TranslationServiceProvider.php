@@ -81,11 +81,11 @@ class TranslationServiceProvider implements ServiceProviderInterface, EventListe
         };
 
         $app['translator.resources'] = function ($app) {
-            return array();
+            return [];
         };
 
-        $app['translator.domains'] = array();
-        $app['locale_fallbacks'] = array('en');
+        $app['translator.domains'] = [];
+        $app['locale_fallbacks'] = ['en'];
         $app['translator.cache_dir'] = null;
     }
 

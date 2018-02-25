@@ -46,7 +46,7 @@ class MonologServiceProvider implements ServiceProviderInterface, BootableProvid
 
             if (isset($app['request_stack'])) {
                 $app['monolog.not_found_activation_strategy'] = function () use ($app) {
-                    return new NotFoundActivationStrategy($app['request_stack'], array('^/'), $app['monolog.level']);
+                    return new NotFoundActivationStrategy($app['request_stack'], ['^/'], $app['monolog.level']);
                 };
             }
         }
@@ -88,7 +88,7 @@ class MonologServiceProvider implements ServiceProviderInterface, BootableProvid
         };
 
         $app['monolog.handlers'] = function () use ($app, $defaultHandler) {
-            $handlers = array();
+            $handlers = [];
 
             // enables the default handler if a logfile was set or the monolog.handler service was redefined
             if ($app['monolog.logfile'] || $defaultHandler !== $app->raw('monolog.handler')) {

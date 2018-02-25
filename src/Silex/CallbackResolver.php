@@ -43,13 +43,13 @@ class CallbackResolver
      *
      * @return callable
      *
-     * @throws \InvalidArgumentException In case the method does not exist.
+     * @throws \InvalidArgumentException in case the method does not exist
      */
     public function convertCallback($name)
     {
         if (preg_match(static::SERVICE_PATTERN, $name)) {
             list($service, $method) = explode(':', $name, 2);
-            $callback = array($this->app[$service], $method);
+            $callback = [$this->app[$service], $method];
         } else {
             $service = $name;
             $callback = $this->app[$name];
@@ -69,7 +69,7 @@ class CallbackResolver
      *
      * @return string|callable A callable value or the string passed in
      *
-     * @throws \InvalidArgumentException In case the method does not exist.
+     * @throws \InvalidArgumentException in case the method does not exist
      */
     public function resolveCallback($name)
     {

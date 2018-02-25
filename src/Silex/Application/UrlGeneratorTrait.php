@@ -28,7 +28,7 @@ trait UrlGeneratorTrait
      *
      * @return string The generated path
      */
-    public function path($route, $parameters = array())
+    public function path($route, $parameters = [])
     {
         return $this['url_generator']->generate($route, $parameters, UrlGeneratorInterface::ABSOLUTE_PATH);
     }
@@ -41,7 +41,7 @@ trait UrlGeneratorTrait
      *
      * @return string The generated URL
      */
-    public function url($route, $parameters = array())
+    public function url($route, $parameters = [])
     {
         return $this['url_generator']->generate($route, $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
     }

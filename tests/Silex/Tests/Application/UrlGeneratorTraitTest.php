@@ -25,7 +25,7 @@ class UrlGeneratorTraitTest extends TestCase
     {
         $app = new UrlGeneratorApplication();
         $app['url_generator'] = $this->getMockBuilder('Symfony\Component\Routing\Generator\UrlGeneratorInterface')->disableOriginalConstructor()->getMock();
-        $app['url_generator']->expects($this->once())->method('generate')->with('foo', array(), UrlGeneratorInterface::ABSOLUTE_URL);
+        $app['url_generator']->expects($this->once())->method('generate')->with('foo', [], UrlGeneratorInterface::ABSOLUTE_URL);
         $app->url('foo');
     }
 
@@ -33,7 +33,7 @@ class UrlGeneratorTraitTest extends TestCase
     {
         $app = new UrlGeneratorApplication();
         $app['url_generator'] = $this->getMockBuilder('Symfony\Component\Routing\Generator\UrlGeneratorInterface')->disableOriginalConstructor()->getMock();
-        $app['url_generator']->expects($this->once())->method('generate')->with('foo', array(), UrlGeneratorInterface::ABSOLUTE_PATH);
+        $app['url_generator']->expects($this->once())->method('generate')->with('foo', [], UrlGeneratorInterface::ABSOLUTE_PATH);
         $app->path('foo');
     }
 }

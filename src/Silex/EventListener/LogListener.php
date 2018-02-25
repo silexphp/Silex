@@ -116,19 +116,19 @@ class LogListener implements EventSubscriberInterface
      */
     protected function logException(\Exception $e)
     {
-        $this->logger->log(call_user_func($this->exceptionLogFilter, $e), sprintf('%s: %s (uncaught exception) at %s line %s', get_class($e), $e->getMessage(), $e->getFile(), $e->getLine()), array('exception' => $e));
+        $this->logger->log(call_user_func($this->exceptionLogFilter, $e), sprintf('%s: %s (uncaught exception) at %s line %s', get_class($e), $e->getMessage(), $e->getFile(), $e->getLine()), ['exception' => $e]);
     }
 
     public static function getSubscribedEvents()
     {
-        return array(
-            KernelEvents::REQUEST => array('onKernelRequest', 0),
-            KernelEvents::RESPONSE => array('onKernelResponse', 0),
+        return [
+            KernelEvents::REQUEST => ['onKernelRequest', 0],
+            KernelEvents::RESPONSE => ['onKernelResponse', 0],
             /*
              * Priority -4 is used to come after those from SecurityServiceProvider (0)
              * but before the error handlers added with Silex\Application::error (defaults to -8)
              */
-            KernelEvents::EXCEPTION => array('onKernelException', -4),
-        );
+            KernelEvents::EXCEPTION => ['onKernelException', -4],
+        ];
     }
 }

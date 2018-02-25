@@ -54,17 +54,17 @@ class RememberMeServiceProvider implements ServiceProviderInterface, EventListen
                 $app['security.authentication_provider.'.$name.'.remember_me'] = $app['security.authentication_provider.remember_me._proto']($name, $options);
             }
 
-            return array(
+            return [
                 'security.authentication_provider.'.$name.'.remember_me',
                 'security.authentication_listener.'.$name.'.remember_me',
                 null, // entry point
                 'remember_me',
-            );
+            ];
         });
 
         $app['security.remember_me.service._proto'] = $app->protect(function ($providerKey, $options) use ($app) {
             return function () use ($providerKey, $options, $app) {
-                $options = array_replace(array(
+                $options = array_replace([
                     'name' => 'REMEMBERME',
                     'lifetime' => 31536000,
                     'path' => '/',
@@ -73,9 +73,9 @@ class RememberMeServiceProvider implements ServiceProviderInterface, EventListen
                     'httponly' => true,
                     'always_remember_me' => false,
                     'remember_me_parameter' => '_remember_me',
-                ), $options);
+                ], $options);
 
-                return new TokenBasedRememberMeServices(array($app['security.user_provider.'.$providerKey]), $options['key'], $providerKey, $options, $app['logger']);
+                return new TokenBasedRememberMeServices([$app['security.user_provider.'.$providerKey]], $options['key'], $providerKey, $options, $app['logger']);
             };
         });
 

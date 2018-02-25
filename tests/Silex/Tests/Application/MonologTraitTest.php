@@ -28,7 +28,7 @@ class MonologTraitTest extends TestCase
         $app = $this->createApplication();
 
         $app->log('Foo');
-        $app->log('Bar', array(), Logger::DEBUG);
+        $app->log('Bar', [], Logger::DEBUG);
         $this->assertTrue($app['monolog.handler']->hasInfo('Foo'));
         $this->assertTrue($app['monolog.handler']->hasDebug('Bar'));
     }
@@ -36,12 +36,12 @@ class MonologTraitTest extends TestCase
     public function createApplication()
     {
         $app = new MonologApplication();
-        $app->register(new MonologServiceProvider(), array(
+        $app->register(new MonologServiceProvider(), [
             'monolog.handler' => function () use ($app) {
                 return new TestHandler($app['monolog.level']);
             },
             'monolog.logfile' => 'php://memory',
-        ));
+        ]);
 
         return $app;
     }
