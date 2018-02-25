@@ -1,0 +1,19 @@
+---------------------------------------------------------------------------
+
+by GromNaN at 2016-06-02T14:07:11Z
+
+This is a feature of Pimple. You should improve the Pimple documentation and link to it : http://pimple.sensiolabs.org/#modifying-services-after-definition
+
+---------------------------------------------------------------------------
+
+by stof at 2016-06-02T14:11:29Z
+
+Linking to the Pimple documentation is indeed a much better idea.
+
+---------------------------------------------------------------------------
+
+by hvt at 2016-06-02T22:05:16Z
+
+So why are there descriptions of `factory` and `protect`? These are both also Pimple features.
+
+Besides, the `extend` example is already on the Twig provider page. Some explanation of what `extend` is and does, seems appropriate to me.
