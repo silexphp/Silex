@@ -275,6 +275,7 @@ class FormServiceProviderTest extends TestCase
 
         try {
             $translator->trans('test');
+            $this->addToAssertionCount(1);
         } catch (NotFoundResourceException $e) {
             $this->fail('Form factory should not add a translation resource that does not exist');
         }

@@ -58,11 +58,15 @@ class ControllerCollectionTest extends TestCase
         } catch (ControllerFrozenException $e) {
         }
 
+        $this->addToAssertionCount(1);
+
         try {
             $barController->bind('bar2');
             $this->fail();
         } catch (ControllerFrozenException $e) {
         }
+
+        $this->addToAssertionCount(1);
     }
 
     public function testConflictingRouteNames()
