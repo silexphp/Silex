@@ -90,7 +90,7 @@ Usage
 
 The Symfony Security component is powerful. To learn more about it, read the
 `Symfony Security documentation
-<http://symfony.com/doc/2.8/book/security.html>`_.
+<http://symfony.com/doc/current/security.html>`_.
 
 .. tip::
 
