@@ -146,7 +146,6 @@ class SecurityServiceProviderTest extends WebTestCase
     {
         $app = new Application();
 
-        $app->register(new ValidatorServiceProvider());
         $app->register(new SecurityServiceProvider(), [
             'security.firewalls' => [
                 'admin' => [
@@ -158,6 +157,7 @@ class SecurityServiceProviderTest extends WebTestCase
                 ],
             ],
         ]);
+        $app->register(new ValidatorServiceProvider());
 
         $app->boot();
 
