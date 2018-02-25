@@ -30,6 +30,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Silex\Api\BootableProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
 use Silex\Api\ControllerProviderInterface;
+use Silex\Api\ControllerServiceProviderInterface;
 use Silex\Provider\ExceptionHandlerServiceProvider;
 use Silex\Provider\RoutingServiceProvider;
 use Silex\Provider\HttpKernelServiceProvider;
@@ -459,6 +460,25 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
         }
 
         $this['controllers']->mount($prefix, $controllers);
+
+        return $this;
+    }
+
+    /**
+     * Registers a controller provider and mounts it under a route prefix.
+     *
+     * @param string                             $prefix   The route prefix
+     * @param ControllerServiceProviderInterface $provider A ControllerServiceProviderInterface instance
+     * @param array                              $values   An array of values that customizes the provider
+     *
+     * @return Application
+     *
+     * @throws \LogicException
+     */
+    public function registerAndMount($prefix, ControllerServiceProviderInterface $provider, array $values = array())
+    {
+        $this->register($provider, $values);
+        $this->mount($prefix, $provider);
 
         return $this;
     }

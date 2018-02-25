@@ -520,6 +520,23 @@ class ApplicationTest extends TestCase
         $this->assertEquals(1, $app['routes']->count());
     }
 
+    public function testRegisterAndMountShouldReturnSelf()
+    {
+        $app = new Application();
+        $provider = $this->getMock('Silex\Api\ControllerServiceProviderInterface');
+
+        $mounted = new ControllerCollection(new Route());
+        $mounted->get('/{name}', function ($name) { return new Response($name); });
+
+        $provider->expects($this->once())
+            ->method('connect')
+            ->with($app)
+            ->will($this->returnValue($mounted))
+        ;
+
+        $this->assertSame($app, $app->registerAndMount('/hello', $provider));
+    }
+
     public function testSendFile()
     {
         $app = new Application();
