@@ -280,19 +280,19 @@ class SecurityServiceProviderTest extends WebTestCase
 
     public function testUserAsServiceString()
     {
-        $users = array(
-            'fabien' => array('ROLE_ADMIN', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg=='),
-        );
+        $users = [
+            'fabien' => ['ROLE_ADMIN', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg=='],
+        ];
 
         $app = new Application();
-        $app->register(new SecurityServiceProvider(), array(
-            'security.firewalls' => array(
-                'default' => array(
+        $app->register(new SecurityServiceProvider(), [
+            'security.firewalls' => [
+                'default' => [
                     'http' => true,
                     'users' => 'my_user_provider',
-                ),
-            ),
-        ));
+                ],
+            ],
+        ]);
         $app['my_user_provider'] = $app['security.user_provider.inmemory._proto']($users);
         $app->get('/', function () { return 'foo'; });
 
