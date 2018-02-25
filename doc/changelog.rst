@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.2.3 (2018-XX-XX)
+2.2.3 (2018-02-25)
 ------------------
 
  * fixed validator integration into the security provider (order of registration of the validator and security providers does not matter anymore)
