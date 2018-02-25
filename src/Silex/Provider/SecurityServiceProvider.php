@@ -230,12 +230,12 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
                 $listeners = ['security.channel_listener'];
 
                 if ($protected) {
-                    if (!isset($app['security.context_listener.'.$name])) {
+                    if (!isset($app['security.context_listener.'.$context])) {
                         if (!isset($app['security.user_provider.'.$name])) {
                             $app['security.user_provider.'.$name] = is_array($users) ? $app['security.user_provider.inmemory._proto']($users) : $users;
                         }
 
-                        $app['security.context_listener.'.$name] = $app['security.context_listener._proto']($name, [$app['security.user_provider.'.$name]]);
+                        $app['security.context_listener.'.$context] = $app['security.context_listener._proto']($name, [$app['security.user_provider.'.$name]]);
                     }
 
                     if (false === $stateless) {
