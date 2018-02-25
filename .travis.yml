@@ -12,29 +12,31 @@ cache:
       - $HOME/.composer/cache/files
       - $HOME/.symfony-phpunit
 
-before_script:
+before_install:
+    - phpenv config-rm xdebug.ini
+
     # Twig 1.x
     - if [[ $TWIG_VERSION != 2.0 ]]; then sed -i 's/~1.8|~2.0/~1.8/g' composer.json; fi
 
     # Symfony 2.8
-    - if [[ $SYMFONY_DEPS_VERSION = 2.8 ]]; then sed -i 's/~2\.8|^3\.0/2.8.*@dev/g' composer.json; fi
+    - if [[ $SYMFONY_DEPS_VERSION = 2.8 ]]; then sed -i 's/~2\.8|^3\.0/2.8.*/g' composer.json; fi
     # Symfony 3.3
     - |
       if [[ $SYMFONY_DEPS_VERSION = 3.3 ]]; then
-          sed -i 's/~2\.8|^3\.0/3.3.*@dev/g' composer.json;
-          composer require --dev --no-update symfony/web-link:3.3.*
+          sed -i 's/~2\.8|^3\.0/3.3.*/g' composer.json;
+          composer require --no-update symfony/web-link:3.3.*
       fi
     # Symfony 3.4
     - |
       if [[ $SYMFONY_DEPS_VERSION = 3.4 ]]; then
-          sed -i 's/~2\.8|^3\.0/3.4.*@dev/g' composer.json;
-          composer require --dev --no-update symfony/web-link:3.3.*
+          sed -i 's/~2\.8|^3\.0/3.4.*/g' composer.json;
+          composer require --no-update symfony/web-link:3.4.*
       fi
 
     - composer update --no-suggest
 
 install:
-    - ./vendor/bin/simple-phpunit install 
+    - ./vendor/bin/simple-phpunit install
 
 script: ./vendor/bin/simple-phpunit
 
