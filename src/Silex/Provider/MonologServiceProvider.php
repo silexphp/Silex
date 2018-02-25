@@ -74,8 +74,8 @@ class MonologServiceProvider implements ServiceProviderInterface, BootableProvid
             return $log;
         };
 
-        $app['monolog.formatter'] = function () use ($app) {
-            return new LineFormatter($app['monolog.formatter.output'], $app['monolog.formatter.dateformat']);
+        $app['monolog.formatter'] = function () {
+            return new LineFormatter();
         };
 
         $app['monolog.handler'] = $defaultHandler = function () use ($app) {
@@ -114,8 +114,6 @@ class MonologServiceProvider implements ServiceProviderInterface, BootableProvid
         $app['monolog.use_error_handler'] = function ($app) {
             return !$app['debug'];
         };
-        $app['monolog.formatter.output'] = "[%datetime%] [%level_name%] %channel% - %message% %context% %extra%\n";
-        $app['monolog.formatter.dateformat'] = 'Y-m-d H:i:s';
     }
 
     public function boot(Application $app)
