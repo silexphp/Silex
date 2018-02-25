@@ -281,7 +281,7 @@ class SecurityServiceProviderTest extends WebTestCase
     public function testUserAsServiceString()
     {
         $users = [
-            'fabien' => ['ROLE_ADMIN', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg=='],
+            'fabien' => ['ROLE_ADMIN', '$2y$15$lzUNsTegNXvZW3qtfucV0erYBcEqWVeyOmjolB7R1uodsAVJ95vvu'],
         ];
 
         $app = new Application();
