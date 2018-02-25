@@ -213,4 +213,4 @@ Traits
     $app->namedForm($name, $data, $options, $type);
 
 For more information, consult the `Symfony Forms documentation
-<http://symfony.com/doc/2.8/book/forms.html>`_.
+<http://symfony.com/doc/current/forms.html>`_.
