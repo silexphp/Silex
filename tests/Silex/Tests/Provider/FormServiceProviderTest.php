@@ -23,7 +23,6 @@ use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormTypeGuesserChain;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 class FormServiceProviderTest extends TestCase
@@ -313,52 +312,19 @@ class FormServiceProviderTest extends TestCase
     }
 }
 
-if (!class_exists('Symfony\Component\Form\Deprecated\FormEvents')) {
-    class DummyFormType extends AbstractType
-    {
-    }
-} else {
-    // FormTypeInterface::getName() is needed by the form component 2.8.x
-    class DummyFormType extends AbstractType
-    {
-        /**
-         * @return string The name of this type
-         */
-        public function getName()
-        {
-            return 'dummy';
-        }
-    }
+class DummyFormType extends AbstractType
+{
 }
 
-if (method_exists('Symfony\Component\Form\AbstractType', 'configureOptions')) {
-    class DummyFormTypeExtension extends AbstractTypeExtension
+class DummyFormTypeExtension extends AbstractTypeExtension
+{
+    public function getExtendedType()
     {
-        public function getExtendedType()
-        {
-            return 'Symfony\Component\Form\Extension\Core\Type\FileType';
-        }
-
-        public function configureOptions(OptionsResolver $resolver)
-        {
-            $resolver->setDefined(['image_path']);
-        }
+        return 'Symfony\Component\Form\Extension\Core\Type\FileType';
     }
-} else {
-    class DummyFormTypeExtension extends AbstractTypeExtension
-    {
-        public function getExtendedType()
-        {
-            return 'Symfony\Component\Form\Extension\Core\Type\FileType';
-        }
 
-        public function setDefaultOptions(OptionsResolverInterface $resolver)
-        {
-            if (!method_exists($resolver, 'setDefined')) {
-                $resolver->setOptional(['image_path']);
-            } else {
-                $resolver->setDefined(['image_path']);
-            }
-        }
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefined(['image_path']);
     }
 }

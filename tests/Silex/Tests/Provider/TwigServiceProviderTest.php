@@ -18,10 +18,7 @@ use Silex\Provider\CsrfServiceProvider;
 use Silex\Provider\FormServiceProvider;
 use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\AssetServiceProvider;
-use Symfony\Bridge\Twig\Extension\WebLinkExtension;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\WebLink\HttpHeaderSerializer;
 
 /**
  * TwigProvider test cases.
@@ -112,11 +109,7 @@ class TwigServiceProviderTest extends TestCase
 
         $this->assertInstanceOf('Twig_Environment', $app['twig']);
         $this->assertInstanceOf('Symfony\Bridge\Twig\Form\TwigRendererEngine', $app['twig.form.engine']);
-        if (Kernel::VERSION_ID < 30400) {
-            $this->assertInstanceOf('Symfony\Bridge\Twig\Form\TwigRenderer', $app['twig.form.renderer']);
-        } else {
-            $this->assertInstanceOf('Symfony\Component\Form\FormRenderer', $app['twig.form.renderer']);
-        }
+        $this->assertInstanceOf('Symfony\Component\Form\FormRenderer', $app['twig.form.renderer']);
     }
 
     public function testFormWithoutCsrf()
@@ -152,10 +145,6 @@ class TwigServiceProviderTest extends TestCase
 
     public function testWebLinkIntegration()
     {
-        if (!class_exists(HttpHeaderSerializer::class) || !class_exists(WebLinkExtension::class)) {
-            $this->markTestSkipped('Twig WebLink extension not available.');
-        }
-
         $app = new Application();
         $app['request_stack']->push($request = Request::create('/'));
         $app->register(new TwigServiceProvider(), [

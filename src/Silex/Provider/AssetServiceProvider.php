@@ -72,10 +72,6 @@ class AssetServiceProvider implements ServiceProviderInterface
             }
 
             if ($jsonManifestPath) {
-                if (!class_exists('Symfony\Component\Asset\VersionStrategy\JsonManifestVersionStrategy')) {
-                    throw new \RuntimeException('You must require symfony/asset >= 3.3 to use JSON manifest version strategy.');
-                }
-
                 return new JsonManifestVersionStrategy($jsonManifestPath);
             }
 

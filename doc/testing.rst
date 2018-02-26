@@ -26,10 +26,12 @@ PHPUnit
 `PHPUnit <https://github.com/sebastianbergmann/phpunit>`_ is the de-facto
 standard testing framework for PHP. It was built for writing unit tests, but it
 can be used for functional tests too. You write tests by creating a new class,
-that extends the ``PHPUnit_Framework_TestCase``. Your test cases are methods
+that extends the ``PHPUnit\Framework\TestCase``. Your test cases are methods
 prefixed with ``test``::
 
-    class ContactFormTest extends \PHPUnit_Framework_TestCase
+    use PHPUnit\Framework\TestCase;
+
+    class ContactFormTest extends TestCase
     {
         public function testInitialPage()
         {

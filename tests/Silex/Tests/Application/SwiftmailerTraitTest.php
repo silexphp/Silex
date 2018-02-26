@@ -15,8 +15,6 @@ use PHPUnit\Framework\TestCase;
 use Silex\Provider\SwiftmailerServiceProvider;
 
 /**
- * SwiftmailerTrait test cases.
- *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class SwiftmailerTraitTest extends TestCase

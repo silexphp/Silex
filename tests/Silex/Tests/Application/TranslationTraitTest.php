@@ -15,8 +15,6 @@ use PHPUnit\Framework\TestCase;
 use Silex\Provider\TranslationServiceProvider;
 
 /**
- * TranslationTrait test cases.
- *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class TranslationTraitTest extends TestCase

@@ -36,12 +36,6 @@ class AssetServiceProviderTest extends TestCase
 
     public function testJsonManifestVersionStrategy()
     {
-        if (!class_exists('Symfony\Component\Asset\VersionStrategy\JsonManifestVersionStrategy')) {
-            $this->markTestSkipped('JsonManifestVersionStrategy class is not available.');
-
-            return;
-        }
-
         $app = new Application();
         $app->register(new AssetServiceProvider(), [
             'assets.json_manifest_path' => __DIR__.'/../Fixtures/manifest.json',

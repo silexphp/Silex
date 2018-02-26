@@ -17,8 +17,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
- * TwigTrait test cases.
- *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class TwigTraitTest extends TestCase

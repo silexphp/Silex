@@ -25,7 +25,6 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\Routing\RouteCollection;
-use Symfony\Component\WebLink\HttpHeaderSerializer;
 
 /**
  * Application test cases.
@@ -661,10 +660,6 @@ class ApplicationTest extends TestCase
 
     public function testWebLinkListener()
     {
-        if (!class_exists(HttpHeaderSerializer::class)) {
-            self::markTestSkipped('Symfony WebLink component is required.');
-        }
-
         $app = new Application();
 
         $app->get('/', function () {
