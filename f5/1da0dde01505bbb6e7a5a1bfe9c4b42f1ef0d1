@@ -1,0 +1,45 @@
+---------------------------------------------------------------------------
+
+by hkdobrev at 2018-02-25T11:40:04Z
+
+:raised_hands: just one question - would that be released as a new major version of Silex?
+
+---------------------------------------------------------------------------
+
+by fabpot at 2018-02-25T11:41:45Z
+
+@hkdobrev 2.3.0 would be the version. I don't think we need a new major version here.
+
+---------------------------------------------------------------------------
+
+by GBeushausen at 2018-02-25T13:00:25Z
+
+I totally agree with all of this, but is supporting only PHP 7.1 and above a little too much? I think we should support 7.0 because this is the version that comes with the latest Ubuntu LTS release wich is widely used on many hosting solutions, i.e. AWS.
+
+---------------------------------------------------------------------------
+
+by fabpot at 2018-02-25T13:09:15Z
+
+@GBeushausen Symfony 4 requires PHP 7.1, so that's why I'm using 7.1+ here as well. And keep in mind that people can still use older Silex versions if they need to.
+
+---------------------------------------------------------------------------
+
+by GBeushausen at 2018-02-25T13:11:37Z
+
+@fabpot Ah ok. Then of course this is the best solution.
+
+---------------------------------------------------------------------------
+
+by Ocramius at 2018-02-25T13:17:05Z
+
+Proud reader here 👍
+
+@fabpot does this effectively mean that you want to keep the project alive under reduced maintenance?
+
+Overall, reducing maintenance burden is a big win anyway, so this is a good idea.
+
+---------------------------------------------------------------------------
+
+by fabpot at 2018-02-25T16:04:06Z
+
+@Ocramius I'm trying to make it easier for a new team to take over :)
