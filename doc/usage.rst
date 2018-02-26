@@ -516,12 +516,20 @@ setting a more specific type hint for the Closure argument::
 
     As Silex ensures that the Response status code is set to the most
     appropriate one depending on the exception, setting the status on the
-    response alone won't work. If you want to overwrite the status code
-    of the exception response, which you should not without a good reason, call
+    response alone won't work.
+
+    If you want to overwrite the status code, which you should not without a
+    good reason, set the ``X-Status-Code`` header (on Symfony until version
+    3.2)::
+
+        return new Response('Error', 404 /* ignored */, array('X-Status-Code' => 200));
+
+    As of Symfony 3.3, call
     ``GetResponseForExceptionEvent::allowCustomResponseCode()`` first and then
-    then set the status code on the response as normal. The kernel will
-    now use your status code when sending the response to the client.
-    The ``GetResponseForExceptionEvent`` is passed to the error callback as a 4th parameter::
+    then set the status code on the response as normal. The kernel will now use
+    your status code when sending the response to the client. The
+    ``GetResponseForExceptionEvent`` is passed to the error callback as a 4th
+    parameter::
 
         use Symfony\Component\HttpFoundation\Response;
         use Symfony\Component\HttpFoundation\Request;
