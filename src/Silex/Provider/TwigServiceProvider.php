@@ -192,9 +192,11 @@ class TwigServiceProvider implements ServiceProviderInterface
         };
 
         $app['twig.runtimes'] = function ($app) {
-            $runtimes = [
-                HttpKernelRuntime::class => 'twig.runtime.httpkernel',
-            ];
+            $runtimes = [];
+
+            if (class_exists(HttpKernelRuntime::class)) {
+                $runtimes[HttpKernelRuntime::class] = 'twig.runtime.httpkernel';
+            }
 
             if (Kernel::VERSION_ID < 30400) {
                 $runtimes[TwigRenderer::class] = 'twig.form.renderer';
