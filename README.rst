@@ -23,7 +23,7 @@ components`_:
 
     $app->run();
 
-Silex works with PHP 5.5.9 or later.
+Silex works with PHP 7.1.3 or later.
 
 Installation
 ------------
