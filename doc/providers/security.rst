@@ -426,13 +426,15 @@ switch back to their primary account:
         <a href="?_switch_user=_exit"> exit</a> the switch.
     {% endif %}
     
-Sharing security context between multiple firewalls
+Sharing Security Context between multiple Firewalls
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 By default, all the firewalls have a different **security context**. In case you
 need to share the same security context between multiple firewalls you can set
 the ``context`` setting for each firewall you want the context to be shared
 with.
+
+.. code-block:: php
 
     $app['security.firewalls'] = array(
         'login' => array(
