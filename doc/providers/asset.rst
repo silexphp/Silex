@@ -14,7 +14,8 @@ Parameters
 
 * **assets.base_path**: Default path to prepend to all assets without a package.
 
-* **assets.base_urls**: (Alternative to ``assets.base_path``) List of base URLs to choose from to prepend to assets without a package.
+* **assets.base_urls**: (Alternative to ``assets.base_path``) List of base URLs
+  to choose from to prepend to assets without a package.
 
 * **assets.named_packages** (optional): Named packages. Keys are the package
   names and values the configuration (supported keys are ``version``,
