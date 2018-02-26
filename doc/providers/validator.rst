@@ -8,8 +8,15 @@ standalone.
 Parameters
 ----------
 
-* **validator.validator_service_ids**: An array of service names representing
+* **validator.validator_service_ids** (optional): An array of service names representing
   validators.
+
+* **validator.translation_domain** (optional): The translation domain to use for translating validator messages.
+  (Defaults to ``validators``.)
+
+* **validator.object_initializers** (optional): An array of object initializers.
+  See `the relevant Validation documentation
+  <http://symfony.com/doc/current/reference/dic_tags.html#validator-initializer>`_.
 
 Services
 --------
