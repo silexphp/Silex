@@ -4,6 +4,10 @@ Changelog
 2.3.0 (2018-XX-XX)
 ------------------
 
+ * fixed error when HttpKernelRuntime is not available
+ * allow setting custom status code on exception response with Symfony 3.3+
+ * made CSRF extension work with Validator translations domain
+ * fixed Security provider context usage
  * added support for Symfony 4
 
 2.2.3 (2018-02-25)
