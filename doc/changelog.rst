@@ -4,6 +4,7 @@ Changelog
 2.3.0 (2018-XX-XX)
 ------------------
 
+ * added support for defining users provider as a service ID
  * added support for ServiceIterator in Security provider for voters
  * fixed error when HttpKernelRuntime is not available
  * allow setting custom status code on exception response with Symfony 3.3+
