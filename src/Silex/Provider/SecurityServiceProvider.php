@@ -164,7 +164,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
         $app['security.voters'] = function ($app) {
             return array_map(function ($voterServiceId) use ($app) {
                 return $app[$voterServiceId];
-            });
+            }, $app['security.voter_services']);
         };
 
         $app['security.firewall'] = function ($app) {
