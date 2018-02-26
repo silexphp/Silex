@@ -128,7 +128,7 @@ class TwigServiceProvider implements ServiceProviderInterface
                         return new FormRenderer($app['twig.form.engine'], $csrfTokenManager);
                     };
 
-                    $twig->addExtension(new FormExtension(class_exists(HttpKernelRuntime::class) ? null : $app['twig.form.renderer']));
+                    $twig->addExtension(new FormExtension());
 
                     // add loader for Symfony built-in form templates
                     $reflected = new \ReflectionClass('Symfony\Bridge\Twig\Extension\FormExtension');

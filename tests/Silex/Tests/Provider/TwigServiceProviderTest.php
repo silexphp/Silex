@@ -18,9 +18,7 @@ use Silex\Provider\CsrfServiceProvider;
 use Silex\Provider\FormServiceProvider;
 use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\AssetServiceProvider;
-use Symfony\Bridge\Twig\Extension\WebLinkExtension;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\WebLink\HttpHeaderSerializer;
 
 /**
  * TwigProvider test cases.
@@ -147,10 +145,6 @@ class TwigServiceProviderTest extends TestCase
 
     public function testWebLinkIntegration()
     {
-        if (!class_exists(HttpHeaderSerializer::class) || !class_exists(WebLinkExtension::class)) {
-            $this->markTestSkipped('Twig WebLink extension not available.');
-        }
-
         $app = new Application();
         $app['request_stack']->push($request = Request::create('/'));
         $app->register(new TwigServiceProvider(), [

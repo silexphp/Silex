@@ -19,7 +19,6 @@ use Monolog\Handler;
 use Monolog\ErrorHandler;
 use Silex\Application;
 use Silex\Api\BootableProviderInterface;
-use Symfony\Bridge\Monolog\Handler\DebugHandler;
 use Symfony\Bridge\Monolog\Handler\FingersCrossed\NotFoundActivationStrategy;
 use Symfony\Bridge\Monolog\Processor\DebugProcessor;
 use Silex\EventListener\LogListener;
@@ -38,12 +37,6 @@ class MonologServiceProvider implements ServiceProviderInterface, BootableProvid
         };
 
         if ($bridge = class_exists('Symfony\Bridge\Monolog\Logger')) {
-            $app['monolog.handler.debug'] = function () use ($app) {
-                $level = MonologServiceProvider::translateLevel($app['monolog.level']);
-
-                return new DebugHandler($level);
-            };
-
             if (isset($app['request_stack'])) {
                 $app['monolog.not_found_activation_strategy'] = function () use ($app) {
                     return new NotFoundActivationStrategy($app['request_stack'], ['^/'], $app['monolog.level']);
@@ -64,11 +57,7 @@ class MonologServiceProvider implements ServiceProviderInterface, BootableProvid
             $log->pushHandler($handler);
 
             if ($app['debug'] && $bridge) {
-                if (class_exists(DebugProcessor::class)) {
-                    $log->pushProcessor(new DebugProcessor());
-                } else {
-                    $log->pushHandler($app['monolog.handler.debug']);
-                }
+                $log->pushProcessor(new DebugProcessor());
             }
 
             return $log;
