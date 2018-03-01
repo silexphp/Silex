@@ -86,8 +86,6 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
         $app['security.hide_user_not_found'] = true;
         $app['security.encoder.bcrypt.cost'] = 13;
 
-        $default_voters = [RoleHierarchyVoter::class, AuthenticatedVoter::class];
-
         $app['security.authorization_checker'] = function ($app) {
             return new AuthorizationChecker($app['security.token_storage'], $app['security.authentication_manager'], $app['security.access_manager']);
         };
@@ -143,9 +141,11 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
             return new UserChecker();
         };
 
-        $app['security.access_manager'] = function ($app) use ($default_voters) {
+        $defaultVoters = [RoleHierarchyVoter::class, AuthenticatedVoter::class];
+
+        $app['security.access_manager'] = function ($app) use ($defaultVoters) {
             $voter_services = $app['security.voter_services'];
-            if (empty(array_diff($voter_services, $default_voters))) {
+            if (empty(array_diff($voter_services, $defaultVoters))) {
                 // BC: If you don't need lazy voter service evaluation, you could still extend security.voters
                 $voters = $app['security.voters'];
             } else {
@@ -155,8 +155,8 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
             return new AccessDecisionManager($voters);
         };
 
-        $app['security.voter_services'] = function () use ($default_voters) {
-            return $default_voters;
+        $app['security.voter_services'] = function () use ($defaultVoters) {
+            return $defaultVoters;
         };
 
         $app[RoleHierarchyVoter::class] = function ($app) {
