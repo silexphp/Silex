@@ -157,7 +157,7 @@ You can register form types by extending ``form.types``::
         $types[] = 'your.type.service';
 
         return $types;
-    }));
+    });
 
 You can register form extensions by extending ``form.extensions``::
 
