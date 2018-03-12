@@ -25,6 +25,8 @@ Parameters
   level in string form, for example: ``"DEBUG"``, ``"INFO"``, ``"WARNING"``,
   ``"ERROR"``.
 
+  PSR-3 log levels from ``\Psr\Log\LogLevel::`` constants are also supported.
+
 * **monolog.name** (optional): Name of the monolog channel,
   defaults to ``myapp``.
 
