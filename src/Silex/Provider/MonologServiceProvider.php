@@ -19,8 +19,10 @@ use Monolog\Handler;
 use Monolog\ErrorHandler;
 use Silex\Application;
 use Silex\Api\BootableProviderInterface;
+use Silex\Api\EventListenerProviderInterface;
 use Symfony\Bridge\Monolog\Handler\FingersCrossed\NotFoundActivationStrategy;
 use Symfony\Bridge\Monolog\Processor\DebugProcessor;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Silex\EventListener\LogListener;
 
 /**
@@ -28,7 +30,7 @@ use Silex\EventListener\LogListener;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class MonologServiceProvider implements ServiceProviderInterface, BootableProviderInterface
+class MonologServiceProvider implements ServiceProviderInterface, BootableProviderInterface, EventListenerProviderInterface
 {
     public function register(Container $app)
     {
@@ -110,9 +112,12 @@ class MonologServiceProvider implements ServiceProviderInterface, BootableProvid
         if ($app['monolog.use_error_handler']) {
             ErrorHandler::register($app['monolog']);
         }
+    }
 
+    public function subscribe(Container $app, EventDispatcherInterface $dispatcher)
+    {
         if (isset($app['monolog.listener'])) {
-            $app['dispatcher']->addSubscriber($app['monolog.listener']);
+            $dispatcher->addSubscriber($app['monolog.listener']);
         }
     }
 
