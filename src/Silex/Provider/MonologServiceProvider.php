@@ -39,7 +39,9 @@ class MonologServiceProvider implements ServiceProviderInterface, BootableProvid
         if ($bridge = class_exists('Symfony\Bridge\Monolog\Logger')) {
             if (isset($app['request_stack'])) {
                 $app['monolog.not_found_activation_strategy'] = function () use ($app) {
-                    return new NotFoundActivationStrategy($app['request_stack'], ['^/'], $app['monolog.level']);
+                    $level = MonologServiceProvider::translateLevel($app['monolog.level']);
+
+                    return new NotFoundActivationStrategy($app['request_stack'], ['^/'], $level);
                 };
             }
         }
