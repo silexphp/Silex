@@ -79,7 +79,7 @@ class SessionServiceProvider implements ServiceProviderInterface, EventListenerP
         $dispatcher->addSubscriber($app['session.listener']);
 
         if ($app['session.test']) {
-            $app['dispatcher']->addSubscriber($app['session.listener.test']);
+            $dispatcher->addSubscriber($app['session.listener.test']);
         }
     }
 }
