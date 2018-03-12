@@ -14,6 +14,7 @@ Changelog
  * dropped support for PHP < 7.1
  * dropped support for Symfony 2.x and 3.x
  * added support for Symfony 4
+ * added support PSR-3 log levels in MonologServiceProvider
 
 2.2.3 (2018-02-25)
 ------------------

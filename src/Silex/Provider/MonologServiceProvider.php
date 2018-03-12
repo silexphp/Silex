@@ -125,6 +125,12 @@ class MonologServiceProvider implements ServiceProviderInterface, BootableProvid
             return $name;
         }
 
+        $psrLevel = Logger::toMonologLevel($name);
+
+        if (is_int($psrLevel)) {
+            return $psrLevel;
+        }
+
         $levels = Logger::getLevels();
         $upper = strtoupper($name);
 
