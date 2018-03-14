@@ -13,7 +13,6 @@ namespace Silex\Provider;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Translation\Translator;
 use Symfony\Component\Translation\Formatter\MessageFormatter;
 use Symfony\Component\Translation\MessageSelector;
@@ -79,11 +78,11 @@ class TranslationServiceProvider implements ServiceProviderInterface, EventListe
         }
 
         $app['translator.message_selector'] = function () {
-            if (Kernel::VERSION_ID < 30400) {
-                return new MessageSelector();
+            if (class_exists(MessageFormatter::class)) {  // BC layer
+                return new MessageFormatter();
             }
 
-            return new MessageFormatter();
+            return new MessageSelector();
         };
 
         $app['translator.resources'] = function ($app) {
