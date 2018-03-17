@@ -32,6 +32,7 @@ use Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationPro
 use Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider;
 use Symfony\Component\Security\Core\Authentication\AuthenticationProviderManager;
 use Symfony\Component\Security\Core\Authentication\AuthenticationTrustResolver;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Http\Authentication\DefaultAuthenticationSuccessHandler;
 use Symfony\Component\Security\Http\Authentication\DefaultAuthenticationFailureHandler;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
@@ -685,6 +686,10 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
                 return new AnonymousAuthenticationProvider($name);
             };
         });
+
+        $app['security.authentication_utils'] = function ($app) {
+            return new AuthenticationUtils($app['request_stack']);
+        };
     }
 
     public function subscribe(Container $app, EventDispatcherInterface $dispatcher)
