@@ -39,8 +39,11 @@ Services
 
 * **security.user_checker**: Checks user flags after authentication.
 
-* **security.last_error**: Returns the last authentication errors when given a
-  Request object.
+* **security.last_error**: Returns the last authentication error message when
+  given a Request object.
+
+* **security.authentication_utils**: Returns the AuthenticationUtils service
+  allowing you to get last authentication exception or last username.
 
 * **security.encoder_factory**: Defines the encoding strategies for user
   passwords (uses ``security.default_encoder``).
@@ -246,6 +249,10 @@ For the login form to work, create a controller like the following::
 The ``error`` and ``last_username`` variables contain the last authentication
 error and the last username entered by the user in case of an authentication
 error.
+
+If you want to have the last error message translated, you would need to use
+the ``security.authentication_utils`` service and retrieve
+the actual ``AuthenticationException`` instance.
 
 Create the associated template:
 
