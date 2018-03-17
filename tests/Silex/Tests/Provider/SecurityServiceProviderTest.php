@@ -17,6 +17,7 @@ use Silex\Provider\SecurityServiceProvider;
 use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\HttpKernel\Client;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -180,6 +181,13 @@ class SecurityServiceProviderTest extends WebTestCase
 
         $client->request('post', '/login_check', ['_username' => 'unknown', '_password' => 'bar']);
         $this->assertEquals('Username "unknown" does not exist.', $app['security.last_error']($client->getRequest()));
+        $client->getRequest()->getSession()->save();
+
+        $client->request('post', '/login_check', ['_username' => 'unknown', '_password' => 'bar']);
+        $app['request_stack']->push($client->getRequest());
+        $authenticationException = $app['security.authentication_utils']->getLastAuthenticationError();
+        $this->assertInstanceOf(AuthenticationException::class, $authenticationException);
+        $this->assertEquals('Username "unknown" does not exist.', $authenticationException->getMessage());
         $client->getRequest()->getSession()->save();
     }
 
