@@ -15,6 +15,7 @@ Changelog
  * dropped support for Symfony 2.x and 3.x
  * added support for Symfony 4
  * added support PSR-3 log levels in MonologServiceProvider
+ * exposed AuthenticationUtils in SecurityServiceProvider
 
 2.2.3 (2018-02-25)
 ------------------
