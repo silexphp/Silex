@@ -702,13 +702,13 @@ See the `Security component documentation on voters <http://symfony.com/doc/curr
 
 By default Silex includes the role hierarchy and authenticated voters. If you
 want to add a custom voter, you need to register it as a service and extend
-``security.voter_services``::
+``security.voter_service_ids``::
 
     $app['custom_voter'] = function () {
         return MyCustomVoter();
     };
 
-    $app->extend('security.voter_services', function (array $voters) {
+    $app->extend('security.voter_service_ids', function (array $voters) {
         $voters[] = 'custom_voter';
 
         return $voters;
