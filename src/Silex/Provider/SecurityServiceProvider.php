@@ -143,7 +143,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
 
         $defaultVoterServiceIds = [RoleHierarchyVoter::class, AuthenticatedVoter::class];
 
-        $app['security.__default_voters'] = function () use ($defaultVoterServiceIds) {
+        $app['security.__default_voters'] = function ($app) use ($defaultVoterServiceIds) {
             return array_map(function ($voterServiceId) use ($app) {
                 return $app[$voterServiceId];
             }, $defaultVoterServiceIds);
