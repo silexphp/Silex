@@ -43,7 +43,7 @@ final class ServiceIterator implements Iterator
     public function current()
     {
         $item = \current($this->serviceItems);
-        if (\is_string($item) && \isset($this->container[$item])) {
+        if (\is_string($item) && isset($this->container[$item])) {
             return $this->container[$item];
         }
 

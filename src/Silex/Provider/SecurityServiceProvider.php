@@ -167,7 +167,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
             return new AccessDecisionManager(new ServiceIterator($app, $voters));
         };
 
-        $app['security.voter_service_ids'] = function () {
+        $app['security.voter_service_ids'] = function () use ($defaultVoterServiceIds) {
             return $defaultVoterServiceIds;
         };
 
