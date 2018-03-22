@@ -51,14 +51,6 @@ class TwigServiceProvider implements ServiceProviderInterface
         $app['twig.number_format.thousands_separator'] = ',';
 
         $app['twig'] = function ($app) {
-            $app['twig.options'] = array_replace(
-                [
-                    'charset' => $app['charset'],
-                    'debug' => $app['debug'],
-                    'strict_variables' => $app['debug'],
-                ], $app['twig.options']
-            );
-
             $twig = $app['twig.environment_factory']($app);
             // registered for BC, but should not be used anymore
             // deprecated and should probably be removed in Silex 3.0
@@ -172,7 +164,11 @@ class TwigServiceProvider implements ServiceProviderInterface
         };
 
         $app['twig.environment_factory'] = $app->protect(function ($app) {
-            return new \Twig_Environment($app['twig.loader'], $app['twig.options']);
+            return new \Twig_Environment($app['twig.loader'], array_replace([
+                'charset' => $app['charset'],
+                'debug' => $app['debug'],
+                'strict_variables' => $app['debug'],
+            ], $app['twig.options']));
         });
 
         $app['twig.runtime.httpkernel'] = function ($app) {
