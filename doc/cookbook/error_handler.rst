@@ -36,3 +36,15 @@ the ``$debug`` argument::
     use Symfony\Component\Debug\ExceptionHandler;
 
     ExceptionHandler::register(false);
+
+.. note::
+
+    Important caveat when using Silex on a command-line interface:
+    The ``ExceptionHandler`` should not be enabled as it would convert an error
+    to HTML output and return a non-zero exit code::
+
+        use Symfony\Component\Debug\ExceptionHandler;
+
+        if (!in_array(PHP_SAPI, ['cli', 'phpdbg'])) {
+            ExceptionHandler::register();
+        }
