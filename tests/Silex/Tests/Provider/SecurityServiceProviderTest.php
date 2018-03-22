@@ -307,6 +307,7 @@ class SecurityServiceProviderTest extends WebTestCase
         $request = Request::create('/');
         $app->handle($request);
         $this->assertNull($app['user']);
+        $this->assertSame($app['my_user_provider'], $app['security.user_provider.default']);
 
         $request->headers->set('PHP_AUTH_USER', 'fabien');
         $request->headers->set('PHP_AUTH_PW', 'foo');
