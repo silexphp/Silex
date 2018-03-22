@@ -12,9 +12,9 @@
 namespace Silex\Provider;
 
 use Pimple\Container;
-use Pimple\ServiceIterator;
 use Pimple\ServiceProviderInterface;
 use Silex\Application;
+use Silex\ServiceIterator;
 use Silex\Api\BootableProviderInterface;
 use Silex\Api\ControllerProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
@@ -141,14 +141,34 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
             return new UserChecker();
         };
 
-        $app['security.access_manager'] = function ($app) {
-            $votersIterator = new ServiceIterator($app, $app['security.voter_services']);
+        $defaultVoterServiceIds = [RoleHierarchyVoter::class, AuthenticatedVoter::class];
 
-            return new AccessDecisionManager($votersIterator);
+        $app['security.__default_voters'] = function ($app) use ($defaultVoterServiceIds) {
+            return array_map(function ($voterServiceId) use ($app) {
+                return $app[$voterServiceId];
+            }, $defaultVoterServiceIds);
         };
 
-        $app['security.voter_services'] = function () {
-            return [RoleHierarchyVoter::class, AuthenticatedVoter::class];
+        $app['security.access_manager'] = function ($app) use ($defaultVoterServiceIds) {
+            $voters = [];
+
+            if ($app['security.voters'] !== $app['security.__default_voters']) {
+                @trigger_error(
+                    'Using security.voters is deprecated! Extend security.voter_service_ids instead',
+                    E_USER_DEPRECATED
+                );
+                $voters = $app['security.voters'];
+            }
+
+            if ($app['security.voter_service_ids'] !== $defaultVoterServiceIds || empty($voters)) {
+                $voters = array_merge($voters, $app['security.voter_service_ids']);
+            }
+
+            return new AccessDecisionManager(new ServiceIterator($app, $voters));
+        };
+
+        $app['security.voter_service_ids'] = function () use ($defaultVoterServiceIds) {
+            return $defaultVoterServiceIds;
         };
 
         $app[RoleHierarchyVoter::class] = function ($app) {
@@ -160,11 +180,9 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
         };
 
         // Unused, kept for backwards-compatibility
-        // Extend security.voter_services instead to prevent circular references
+        // Extend security.voter_service_ids instead to prevent circular references
         $app['security.voters'] = function ($app) {
-            return array_map(function ($voterServiceId) use ($app) {
-                return $app[$voterServiceId];
-            });
+            return $app['security.__default_voters'];
         };
 
         $app['security.firewall'] = function ($app) {

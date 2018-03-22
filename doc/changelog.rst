@@ -16,6 +16,7 @@ Changelog
  * added support for Symfony 4
  * added support PSR-3 log levels in MonologServiceProvider
  * exposed AuthenticationUtils in SecurityServiceProvider
+ * deprecated security.voters in favour of security.voter_service_ids
 
 2.2.3 (2018-02-25)
 ------------------
