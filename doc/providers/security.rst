@@ -695,32 +695,6 @@ Symfony `cookbook`_.
     providers. :doc:`How to Create a Custom Authentication System with Guard
     </cookbook/guard_authentication>`
 
-Using Voters to check User Permissions
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-See the `Security component documentation on voters <http://symfony.com/doc/current/security/voters.html>`_.
-
-By default Silex includes the role hierarchy and authenticated voters. If you
-want to add a custom voter, you need to register it as a service and extend
-``security.voter_services``::
-
-    $app['custom_voter'] = function () {
-        return MyCustomVoter();
-    };
-
-    $app->extend('security.voter_services', function (array $voters) {
-        $voters[] = 'custom_voter';
-
-        return $voters;
-    });
-
-.. note::
-
-    Using the above approach with the service names, circular references are
-    avoided and you can use the ``AccessDecisionManager`` in your custom voter
-    to `check for roles inside a voter
-    <http://symfony.com/doc/current/security/voters.html#checking-for-roles-inside-a-voter>`_.
-
 Stateless Authentication
 ~~~~~~~~~~~~~~~~~~~~~~~~
 

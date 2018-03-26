@@ -5,7 +5,6 @@ Changelog
 ------------------
 
  * added support for defining users provider as a service ID
- * added support for ServiceIterator in Security provider for voters
  * fixed error when HttpKernelRuntime is not available
  * allow setting custom status code on exception response with Symfony 3.3+
  * made CSRF extension work with Validator translations domain
