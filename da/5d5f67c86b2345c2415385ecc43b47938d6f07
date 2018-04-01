@@ -1,0 +1,17 @@
+---------------------------------------------------------------------------
+
+by agilare at 2018-04-01T16:19:31Z
+
+Thank you for this work, which helps to look forward for existing Silex projects.
+
+Then, after 2 months of "help wanted" announcement, neither the current contributors, nore other people wanted to take over Silex ? On reason would be, that there is no reason now to start or continue a project with Silex, because, like you say, Symfony 4 is a better way to follow.
+
+It would be nice to create a short guide explaining how to migrate from Silex to Symfony 4 like  https://github.com/symfony/symfony/blob/master/UPGRADE-4.0.md
+
+Now that end of Silex seems clear the [homepage of the framework](https://silex.symfony.com/) should be updated.
+
+---------------------------------------------------------------------------
+
+by fabpot at 2018-04-01T18:17:57Z
+
+The website now has a warning as well.
