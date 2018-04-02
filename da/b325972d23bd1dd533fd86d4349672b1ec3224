@@ -1,0 +1,19 @@
+---------------------------------------------------------------------------
+
+by hkdobrev at 2018-03-26T21:00:28Z
+
+Created https://github.com/symfony/symfony/pull/26677 so `Debug::enable()` supports PHPDBG as well.
+
+---------------------------------------------------------------------------
+
+by hkdobrev at 2018-03-26T21:04:53Z
+
+I'm happy to change the whole document to use just `Debug::enable()` as long as https://github.com/symfony/symfony/pull/26677 is released.
+
+I'm trying to get this CLI-specific changes in as we had a minor outage on production, because of this issue as errors were not caught properly in CLI and tests.
+
+---------------------------------------------------------------------------
+
+by hkdobrev at 2018-04-01T19:56:18Z
+
+I've addressed all inline comments. Let me know if all should be replaced with `Debug::enable()` or that should be separate PR. Thanks!
