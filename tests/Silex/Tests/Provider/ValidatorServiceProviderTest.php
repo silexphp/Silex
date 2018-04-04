@@ -155,7 +155,7 @@ class ValidatorServiceProviderTest extends TestCase
 
         $app->register(new ValidatorServiceProvider());
         $app->register(new TranslationServiceProvider());
-        $app['translator'] = $app->extend('translator', function ($translator, $app) {
+        $app->extend('translator', function ($translator, $app) {
             $translator->addResource('array', ['This value should not be blank.' => 'Pas vide'], 'fr', 'validators');
 
             return $translator;
