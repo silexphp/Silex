@@ -225,7 +225,7 @@ class MiddlewareTest extends TestCase
     {
         $app = new Application();
         
-        //Swapped Order of ->before Arguments, but with Type hints.
+        // Swap order of before() callback arguments based on type hints
         $app->match('/', function() use ($app) { return ''; })
             ->before(function (Application $app, Request $r) {
             $app['success'] = true;
@@ -242,7 +242,7 @@ class MiddlewareTest extends TestCase
         
         $test = $this;
         $i = 0;
-        //Normal order of arguments, but without type hints.
+        // Normal order of arguments, but without type hints.
         $app->match('/', function() use ($app) { return ''; })->before(function ($r, $a) use ($test, &$i){
             $test->assertInstanceOf(Application::class, $a);
             $test->assertInstanceOf(Request::class, $r);
@@ -260,7 +260,7 @@ class MiddlewareTest extends TestCase
         $test = $this;
         $i = 0;
         
-        //Normal order of arguments, but without type hints.
+        // Normal order of arguments, but without type hints.
         $app->before(function ($r, $a) use ($test, &$i){
             $test->assertInstanceOf(Application::class, $a);
             $test->assertInstanceOf(Request::class, $r);
