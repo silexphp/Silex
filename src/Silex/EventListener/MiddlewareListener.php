@@ -51,7 +51,16 @@ class MiddlewareListener implements EventSubscriberInterface
         }
 
         foreach ((array) $route->getOption('_before_middlewares') as $callback) {
-            $ret = call_user_func($this->app['callback_resolver']->resolveCallback($callback), $request, $this->app);
+            $c = $this->app['callback_resolver']->resolveCallback($callback);
+            try {
+                $arguments = $this->app['argument_resolver']->getArguments($request, $c);
+            } catch (\RuntimeException $e) {
+                $arguments = array(
+                    $request, $this->app
+                );
+            }
+            
+            $ret = \call_user_func_array($c, $arguments);
             if ($ret instanceof Response) {
                 $event->setResponse($ret);
 

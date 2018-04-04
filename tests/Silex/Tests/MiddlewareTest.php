@@ -221,6 +221,100 @@ class MiddlewareTest extends TestCase
         $this->assertEquals('Fabien', $app->handle($request)->getContent());
     }
 
+    public function testBeforeCustomOrderArgumentsOnRoute()
+    {
+        $app = new Application();
+        
+        //Swapped Order of ->before Arguments, but with Type hints.
+        $app->match('/', function() use ($app) { return ''; })
+            ->before(function (Application $app, Request $r) {
+            $app['success'] = true;
+        });
+            
+        $request = Request::create('/');
+        $app->handle($request);
+        $this->assertTrue($app['success']);
+    }
+    
+    public function testBeforeFunctionWithoutTypeHintsOnRoute()
+    {
+        $app = new Application();
+        
+        $test = $this;
+        $i = 0;
+        //Normal order of arguments, but without type hints.
+        $app->match('/', function() use ($app) { return ''; })->before(function ($r, $a) use ($test, &$i){
+            $test->assertInstanceOf(Application::class, $a);
+            $test->assertInstanceOf(Request::class, $r);
+            $i++;
+        });
+            
+        $request = Request::create('/');
+        $app->handle($request);
+        $this->assertEquals(1, $i);
+    }
+    
+    public function testBeforeFunctionWithoutTypeHintsOnContainer() {
+        $app = new Application();
+        
+        $test = $this;
+        $i = 0;
+        
+        //Normal order of arguments, but without type hints.
+        $app->before(function ($r, $a) use ($test, &$i){
+            $test->assertInstanceOf(Application::class, $a);
+            $test->assertInstanceOf(Request::class, $r);
+            $i++;
+        });
+        $app->match('/', function() use ($app) { return ''; });
+            
+        $request = Request::create('/');
+        $app->handle($request);
+        $this->assertEquals(1, $i);
+    }
+    
+    public function testBeforeWithRequestAttributesOnRoute()
+    {
+        $app = new Application();
+        
+        $test = $this;
+        $i = 0;
+        
+        $app->match('/{attr}', function() use ($app) { return ''; })
+            ->before(function (Application $app, Request $request, $attr) use ($test, &$i) {
+                $test->assertInstanceOf(Application::class, $app);
+                $test->assertInstanceOf(Request::class, $request);
+                $test->assertEquals('attributeValue', $attr);
+                $i++;
+        });
+            
+        $request = Request::create('/attributeValue');
+        $app->handle($request);
+        $this->assertEquals(1, $i);
+    }
+    
+    public function testBeforeCustomOrderWithRequestAttributesOnContainer()
+    {
+        $app = new Application();
+        
+        $test = $this;
+        $i = 0;
+        
+        $app->before(function (Application $app, Request $request, $attr) use ($test, &$i) {
+            $test->assertInstanceOf(Application::class, $app);
+            $test->assertInstanceOf(Request::class, $request);
+            $test->assertEquals('attributeValue', $attr);
+            $i++;
+        });
+        
+        $app->match('/{attr}', function() use ($app) { return ''; });
+            
+            
+        $request = Request::create('/attributeValue');
+        $app->handle($request);
+        $this->assertEquals(1, $i);
+    }
+
     public function testAfterFilterAccessRequestResponse()
     {
         $app = new Application();
