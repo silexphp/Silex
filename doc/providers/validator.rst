@@ -16,13 +16,13 @@ Parameters
 
 * **validator.object_initializers** (optional): An array of object initializers.
   See `the relevant Validation documentation
-  <http://symfony.com/doc/current/reference/dic_tags.html#validator-initializer>`_.
+  <https://symfony.com/doc/current/reference/dic_tags.html#validator-initializer>`_.
 
 Services
 --------
 
 * **validator**: An instance of `Validator
-  <http://api.symfony.com/master/Symfony/Component/Validator/ValidatorInterface.html>`_.
+  <https://api.symfony.com/master/Symfony/Component/Validator/ValidatorInterface.html>`_.
 
 * **validator.mapping.class_metadata_factory**: Factory for metadata loaders,
   which can read validation constraint information from classes. Defaults to
@@ -221,4 +221,4 @@ provider and register the messages under the ``validators`` domain::
     );
 
 For more information, consult the `Symfony Validation documentation
-<http://symfony.com/doc/master/book/validation.html>`_.
+<https://symfony.com/doc/master/book/validation.html>`_.

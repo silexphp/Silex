@@ -13,7 +13,7 @@ Services
 --------
 
 * **form.factory**: An instance of `FormFactory
-  <http://api.symfony.com/master/Symfony/Component/Form/FormFactory.html>`_,
+  <https://api.symfony.com/master/Symfony/Component/Form/FormFactory.html>`_,
   that is used to build a form.
 
 Registering
@@ -213,4 +213,4 @@ Traits
     $app->namedForm($name, $data, $options, $type);
 
 For more information, consult the `Symfony Forms documentation
-<http://symfony.com/doc/current/forms.html>`_.
+<https://symfony.com/doc/current/forms.html>`_.

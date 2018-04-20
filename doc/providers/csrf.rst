@@ -15,7 +15,7 @@ Services
 
 * **csrf.token_manager**: An instance of an implementation of the
   `CsrfTokenManagerInterface
-  <http://api.symfony.com/master/Symfony/Component/Security/Csrf/CsrfTokenManagerInterface.html>`_,
+  <https://api.symfony.com/master/Symfony/Component/Security/Csrf/CsrfTokenManagerInterface.html>`_,
 
 Registering
 -----------
@@ -29,7 +29,7 @@ Registering
 .. note::
 
     Add the Symfony's `Security CSRF Component
-    <http://symfony.com/doc/current/components/security/index.html>`_ as a
+    <https://symfony.com/doc/current/components/security/index.html>`_ as a
     dependency:
 
     .. code-block:: bash

@@ -45,6 +45,6 @@ is sent back to the client.
 Finally, the app is run. Visit ``/hello/world`` to see the result. It's really
 that easy!
 
-.. _Symfony: http://symfony.com/
+.. _Symfony: https://symfony.com/
 .. _Pimple:  https://pimple.symfony.com/
 .. _Sinatra: http://www.sinatrarb.com/

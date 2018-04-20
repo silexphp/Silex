@@ -149,7 +149,7 @@ point:
         "^(/[^\?]*)(\?.*)?" => "/index.php$1$2"
     )
 
-.. _FallbackResource directive: http://www.adayinthelifeof.nl/2012/01/21/apaches-fallbackresource-your-new-htaccess-command/
+.. _FallbackResource directive: https://www.adayinthelifeof.nl/2012/01/21/apaches-fallbackresource-your-new-htaccess-command/
 
 PHP
 ---

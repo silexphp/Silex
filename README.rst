@@ -2,7 +2,7 @@ Silex, a simple Web Framework
 =============================
 
 **WARNING**: Silex is in maintenance mode only. Ends of life is set to June
-2018. Read more on `Symfony's blog <http://symfony.com/blog/the-end-of-silex>`_.
+2018. Read more on `Symfony's blog <https://symfony.com/blog/the-end-of-silex>`_.
 
 Silex is a PHP micro-framework to develop websites based on `Symfony
 components`_:
@@ -62,8 +62,8 @@ License
 
 Silex is licensed under the MIT license.
 
-.. _Symfony components: http://symfony.com
-.. _Composer:           http://getcomposer.org
+.. _Symfony components: https://symfony.com
+.. _Composer:           https://getcomposer.org
 .. _PHPUnit:            https://phpunit.de
 .. _silex.zip:          https://silex.symfony.com/download
 .. _documentation:      https://silex.symfony.com/documentation

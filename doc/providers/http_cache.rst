@@ -10,21 +10,21 @@ Parameters
 * **http_cache.cache_dir**: The cache directory to store the HTTP cache data.
 
 * **http_cache.options** (optional): An array of options for the `HttpCache
-  <http://api.symfony.com/master/Symfony/Component/HttpKernel/HttpCache/HttpCache.html>`_
+  <https://api.symfony.com/master/Symfony/Component/HttpKernel/HttpCache/HttpCache.html>`_
   constructor.
 
 Services
 --------
 
 * **http_cache**: An instance of `HttpCache
-  <http://api.symfony.com/master/Symfony/Component/HttpKernel/HttpCache/HttpCache.html>`_.
+  <https://api.symfony.com/master/Symfony/Component/HttpKernel/HttpCache/HttpCache.html>`_.
 
 * **http_cache.esi**: An instance of `Esi
-  <http://api.symfony.com/master/Symfony/Component/HttpKernel/HttpCache/Esi.html>`_,
+  <https://api.symfony.com/master/Symfony/Component/HttpKernel/HttpCache/Esi.html>`_,
   that implements the ESI capabilities to Request and Response instances.
 
 * **http_cache.store**: An instance of `Store
-  <http://api.symfony.com/master/Symfony/Component/HttpKernel/HttpCache/Store.html>`_,
+  <https://api.symfony.com/master/Symfony/Component/HttpKernel/HttpCache/Store.html>`_,
   that implements all the logic for storing cache metadata (Request and Response
   headers).
 
@@ -56,7 +56,7 @@ setting Response HTTP cache headers::
     If you want Silex to trust the ``X-Forwarded-For*`` headers from your
     reverse proxy at address $ip, you will need to whitelist it as documented
     in `Trusting Proxies
-    <http://symfony.com/doc/current/components/http_foundation/trusting_proxies.html>`_.
+    <https://symfony.com/doc/current/components/http_foundation/trusting_proxies.html>`_.
 
     If you would be running Varnish in front of your application on the same machine::
 
@@ -125,4 +125,4 @@ overall performance::
     Finally, check that your Web server does not override your caching strategy.
 
 For more information, consult the `Symfony HTTP Cache documentation
-<http://symfony.com/doc/current/book/http_cache.html>`_.
+<https://symfony.com/doc/current/book/http_cache.html>`_.

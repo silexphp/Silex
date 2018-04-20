@@ -14,9 +14,9 @@ Services
 --------
 
 * **url_generator**: An instance of `UrlGenerator
-  <http://api.symfony.com/master/Symfony/Component/Routing/Generator/UrlGenerator.html>`_,
+  <https://api.symfony.com/master/Symfony/Component/Routing/Generator/UrlGenerator.html>`_,
   using the `RouteCollection
-  <http://api.symfony.com/master/Symfony/Component/Routing/RouteCollection.html>`_
+  <https://api.symfony.com/master/Symfony/Component/Routing/RouteCollection.html>`_
   that is provided through the ``routes`` service. It has a ``generate``
   method, which takes the route name as an argument, followed by an array of
   route parameters.

@@ -2,7 +2,7 @@ Swiftmailer
 ===========
 
 The *SwiftmailerServiceProvider* provides a service for sending email through
-the `Swift Mailer <http://swiftmailer.org>`_ library.
+the `Swift Mailer <https://swiftmailer.symfony.com>`_ library.
 
 You can use the ``mailer`` service to send messages easily. By default, it
 will attempt to send emails through SMTP.
@@ -153,4 +153,4 @@ Traits
         ->setBody($request->get('message')));
 
 For more information, check out the `Swift Mailer documentation
-<http://swiftmailer.org>`_.
+<https://swiftmailer.symfony.com>`_.

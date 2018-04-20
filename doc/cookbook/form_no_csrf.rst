@@ -10,7 +10,7 @@ intend to submit.
 
 You can find more details about CSRF Protection and CSRF token in the
 `Symfony Book
-<http://symfony.com/doc/current/book/forms.html#csrf-protection>`_.
+<https://symfony.com/doc/current/book/forms.html#csrf-protection>`_.
 
 In some cases (for example, when embedding a form in an html email) you might
 want not to use this protection. The easiest way to avoid this is to
@@ -33,4 +33,4 @@ This specific example showed how to change the ``csrf_protection`` in the
 ``$options`` parameter of the ``createBuilder()`` function. More of them could
 be passed through this parameter, it is as simple as using the Symfony
 ``getDefaultOptions()`` method in your form classes. `See more here
-<http://symfony.com/doc/current/book/forms.html#book-form-creating-form-classes>`_.
+<https://symfony.com/doc/current/book/forms.html#book-form-creating-form-classes>`_.

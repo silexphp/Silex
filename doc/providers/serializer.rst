@@ -12,17 +12,17 @@ Services
 --------
 
 * **serializer**: An instance of `Symfony\\Component\\Serializer\\Serializer
-  <http://api.symfony.com/master/Symfony/Component/Serializer/Serializer.html>`_.
+  <https://api.symfony.com/master/Symfony/Component/Serializer/Serializer.html>`_.
 
 * **serializer.encoders**: `Symfony\\Component\\Serializer\\Encoder\\JsonEncoder
-  <http://api.symfony.com/master/Symfony/Component/Serializer/Encoder/JsonEncoder.html>`_
+  <https://api.symfony.com/master/Symfony/Component/Serializer/Encoder/JsonEncoder.html>`_
   and `Symfony\\Component\\Serializer\\Encoder\\XmlEncoder
-  <http://api.symfony.com/master/Symfony/Component/Serializer/Encoder/XmlEncoder.html>`_.
+  <https://api.symfony.com/master/Symfony/Component/Serializer/Encoder/XmlEncoder.html>`_.
 
 * **serializer.normalizers**: `Symfony\\Component\\Serializer\\Normalizer\\CustomNormalizer
-  <http://api.symfony.com/master/Symfony/Component/Serializer/Normalizer/CustomNormalizer.html>`_
+  <https://api.symfony.com/master/Symfony/Component/Serializer/Normalizer/CustomNormalizer.html>`_
   and `Symfony\\Component\\Serializer\\Normalizer\\GetSetMethodNormalizer
-  <http://api.symfony.com/master/Symfony/Component/Serializer/Normalizer/GetSetMethodNormalizer.html>`_.
+  <https://api.symfony.com/master/Symfony/Component/Serializer/Normalizer/GetSetMethodNormalizer.html>`_.
 
 Registering
 -----------
@@ -34,7 +34,7 @@ Registering
 .. note::
 
     Add the Symfony's `Serializer Component
-    <http://symfony.com/doc/current/components/serializer.html>`_ as a
+    <https://symfony.com/doc/current/components/serializer.html>`_ as a
     dependency:
 
     .. code-block:: bash

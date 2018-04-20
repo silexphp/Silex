@@ -18,7 +18,7 @@ test your application in usually under a second by running a single command.
 For more information on functional testing, unit testing, and automated
 software tests in general, check out `PHPUnit
 <https://github.com/sebastianbergmann/phpunit>`_ and `Bulat Shakirzyanov's talk
-on Clean Code <http://www.slideshare.net/avalanche123/clean-code-5609451>`_.
+on Clean Code <https://www.slideshare.net/avalanche123/clean-code-5609451>`_.
 
 PHPUnit
 -------
@@ -159,7 +159,7 @@ application.
 
     You can find some documentation for it in `the client section of the
     testing chapter of the Symfony documentation
-    <http://symfony.com/doc/current/book/testing.html#the-test-client>`_.
+    <https://symfony.com/doc/current/book/testing.html#the-test-client>`_.
 
 Crawler
 ~~~~~~~
@@ -171,7 +171,7 @@ using CSS expressions and lots more.
 
     You can find some documentation for it in `the crawler section of the testing
     chapter of the Symfony documentation
-    <http://symfony.com/doc/current/book/testing.html#the-test-client>`_.
+    <https://symfony.com/doc/current/book/testing.html#the-test-client>`_.
 
 Configuration
 -------------

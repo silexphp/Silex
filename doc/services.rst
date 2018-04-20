@@ -197,7 +197,7 @@ Core services
 Silex defines a range of services.
 
 * **request_stack**: Controls the lifecycle of requests, an instance of
-  `RequestStack <http://api.symfony.com/master/Symfony/Component/HttpFoundation/RequestStack.html>`_.
+  `RequestStack <https://api.symfony.com/master/Symfony/Component/HttpFoundation/RequestStack.html>`_.
   It gives you access to ``GET``, ``POST`` parameters and lots more!
 
   Example usage::
@@ -209,13 +209,13 @@ Silex defines a range of services.
   or an error handler.
 
 * **routes**: The `RouteCollection
-  <http://api.symfony.com/master/Symfony/Component/Routing/RouteCollection.html>`_
+  <https://api.symfony.com/master/Symfony/Component/Routing/RouteCollection.html>`_
   that is used internally. You can add, modify, read routes.
 
 * **url_generator**: An instance of `UrlGenerator
-  <http://api.symfony.com/master/Symfony/Component/Routing/Generator/UrlGenerator.html>`_,
+  <https://api.symfony.com/master/Symfony/Component/Routing/Generator/UrlGenerator.html>`_,
   using the `RouteCollection
-  <http://api.symfony.com/master/Symfony/Component/Routing/RouteCollection.html>`_
+  <https://api.symfony.com/master/Symfony/Component/Routing/RouteCollection.html>`_
   that is provided through the ``routes`` service. It has a ``generate``
   method, which takes the route name as an argument, followed by an array of
   route parameters.
@@ -224,17 +224,17 @@ Silex defines a range of services.
   Check the :doc:`Internals chapter <internals>` for more information.
 
 * **dispatcher**: The `EventDispatcher
-  <http://api.symfony.com/master/Symfony/Component/EventDispatcher/EventDispatcher.html>`_
+  <https://api.symfony.com/master/Symfony/Component/EventDispatcher/EventDispatcher.html>`_
   that is used internally. It is the core of the Symfony system and is used
   quite a bit by Silex.
 
 * **resolver**: The `ControllerResolver
-  <http://api.symfony.com/master/Symfony/Component/HttpKernel/Controller/ControllerResolver.html>`_
+  <https://api.symfony.com/master/Symfony/Component/HttpKernel/Controller/ControllerResolver.html>`_
   that is used internally. It takes care of executing the controller with the
   right arguments.
 
 * **kernel**: The `HttpKernel
-  <http://api.symfony.com/master/Symfony/Component/HttpKernel/HttpKernel.html>`_
+  <https://api.symfony.com/master/Symfony/Component/HttpKernel/HttpKernel.html>`_
   that is used internally. The HttpKernel is the heart of Symfony, it takes a
   Request as input and returns a Response as output.
 

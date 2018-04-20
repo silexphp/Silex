@@ -11,20 +11,20 @@ Application
 
 The application is the main interface to Silex. It implements Symfony's
 `HttpKernelInterface
-<http://api.symfony.com/master/Symfony/Component/HttpKernel/HttpKernelInterface.html>`_,
+<https://api.symfony.com/master/Symfony/Component/HttpKernel/HttpKernelInterface.html>`_,
 so you can pass a `Request
-<http://api.symfony.com/master/Symfony/Component/HttpFoundation/Request.html>`_
+<https://api.symfony.com/master/Symfony/Component/HttpFoundation/Request.html>`_
 to the ``handle`` method and it will return a `Response
-<http://api.symfony.com/master/Symfony/Component/HttpFoundation/Response.html>`_.
+<https://api.symfony.com/master/Symfony/Component/HttpFoundation/Response.html>`_.
 
 It extends the ``Pimple`` service container, allowing for flexibility on the
 outside as well as the inside. You could replace any service, and you are also
 able to read them.
 
 The application makes strong use of the `EventDispatcher
-<http://api.symfony.com/master/Symfony/Component/EventDispatcher/EventDispatcher
+<https://api.symfony.com/master/Symfony/Component/EventDispatcher/EventDispatcher
 .html>`_ to hook into the Symfony `HttpKernel
-<http://api.symfony.com/master/Symfony/Component/HttpKernel/HttpKernel.html>`_
+<https://api.symfony.com/master/Symfony/Component/HttpKernel/HttpKernel.html>`_
 events. This allows fetching the ``Request``, converting string responses into
 ``Response`` objects and handling Exceptions. We also use it to dispatch some
 custom events like before/after middlewares and errors.
@@ -33,7 +33,7 @@ Controller
 ~~~~~~~~~~
 
 The Symfony `Route
-<http://api.symfony.com/master/Symfony/Component/Routing/Route.html>`_ is
+<https://api.symfony.com/master/Symfony/Component/Routing/Route.html>`_ is
 actually quite powerful. Routes can be named, which allows for URL generation.
 They can also have requirements for the variable parts. In order to allow
 setting these through a nice interface, the ``match`` method (which is used by
@@ -44,7 +44,7 @@ ControllerCollection
 ~~~~~~~~~~~~~~~~~~~~
 
 One of the goals of exposing the `RouteCollection
-<http://api.symfony.com/master/Symfony/Component/Routing/RouteCollection.html>`_
+<https://api.symfony.com/master/Symfony/Component/Routing/RouteCollection.html>`_
 was to make it mutable, so providers could add stuff to it. The challenge here
 is the fact that routes know nothing about their name. The name only has
 meaning in context of the ``RouteCollection`` and cannot be changed.
@@ -81,4 +81,4 @@ Following Symfony components are used by Silex:
 
 * **EventDispatcher**: For hooking into the HttpKernel.
 
-For more information, `check out the Symfony website <http://symfony.com/>`_.
+For more information, `check out the Symfony website <https://symfony.com/>`_.

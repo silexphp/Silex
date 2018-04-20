@@ -30,7 +30,7 @@ class SerializerServiceProvider implements ServiceProviderInterface
     /**
      * {@inheritdoc}
      *
-     * This method registers a serializer service. {@link http://api.symfony.com/master/Symfony/Component/Serializer/Serializer.html
+     * This method registers a serializer service. {@link https://api.symfony.com/master/Symfony/Component/Serializer/Serializer.html
      * The service is provided by the Symfony Serializer component}.
      */
     public function register(Container $app)

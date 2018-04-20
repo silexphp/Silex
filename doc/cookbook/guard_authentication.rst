@@ -181,4 +181,4 @@ under different conditions:
     # the homepage controller is executed: the page loads normally
 
 For more details read the Symfony cookbook entry on
-`How to Create a Custom Authentication System with Guard <http://symfony.com/doc/current/cookbook/security/guard-authentication.html>`_.
+`How to Create a Custom Authentication System with Guard <https://symfony.com/doc/current/cookbook/security/guard-authentication.html>`_.

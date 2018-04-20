@@ -2,7 +2,7 @@ Doctrine
 ========
 
 The *DoctrineServiceProvider* provides integration with the `Doctrine DBAL
-<http://www.doctrine-project.org/projects/dbal>`_ for easy database access
+<https://www.doctrine-project.org/projects/dbal>`_ for easy database access
 (Doctrine ORM integration is **not** supplied).
 
 Parameters
@@ -36,7 +36,7 @@ Parameters
     specifies the port of the database to connect to.
 
   These and additional options are described in detail in the `Doctrine DBAL
-  configuration documentation <http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html>`_.
+  configuration documentation <https://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html>`_.
 
 Services
 --------
@@ -134,4 +134,4 @@ Using multiple connections::
     });
 
 For more information, consult the `Doctrine DBAL documentation
-<http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/>`_.
+<https://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/>`_.

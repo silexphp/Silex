@@ -732,7 +732,7 @@ will create a ``BinaryFileResponse`` response for you::
 
 To further customize the response before returning it, check the API doc for
 `Symfony\Component\HttpFoundation\BinaryFileResponse
-<http://api.symfony.com/master/Symfony/Component/HttpFoundation/BinaryFileResponse.html>`_::
+<https://api.symfony.com/master/Symfony/Component/HttpFoundation/BinaryFileResponse.html>`_::
 
     return $app
         ->sendFile('/base/path/' . $path)
@@ -812,9 +812,9 @@ Cross-Site-Scripting attacks.
           return $app->json(array('name' => $name));
       });
 
-.. _Silex Skeleton: http://github.com/silexphp/Silex-Skeleton
-.. _Composer: http://getcomposer.org/
-.. _Request: http://api.symfony.com/master/Symfony/Component/HttpFoundation/Request.html
-.. _Response: http://api.symfony.com/master/Symfony/Component/HttpFoundation/Response.html
-.. _Monolog: https://github.com/Seldaek/monolog
-.. _Expression: https://symfony.com/doc/current/book/routing.html#completely-customized-route-matching-with-conditions
+.. _Silex Skeleton: https://github.com/silexphp/Silex-Skeleton
+.. _Composer:       https://getcomposer.org/
+.. _Request:        https://api.symfony.com/master/Symfony/Component/HttpFoundation/Request.html
+.. _Response:       https://api.symfony.com/master/Symfony/Component/HttpFoundation/Response.html
+.. _Monolog:        https://github.com/Seldaek/monolog
+.. _Expression:     https://symfony.com/doc/current/book/routing.html#completely-customized-route-matching-with-conditions

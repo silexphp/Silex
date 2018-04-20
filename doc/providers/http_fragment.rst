@@ -20,7 +20,7 @@ Services
 --------
 
 * **fragment.handler**: An instance of `FragmentHandler
-  <http://api.symfony.com/master/Symfony/Component/HttpKernel/Fragment/FragmentHandler.html>`_.
+  <https://api.symfony.com/master/Symfony/Component/HttpKernel/Fragment/FragmentHandler.html>`_.
 
 * **fragment.renderers**: An array of fragment renderers (by default, the
   inline, ESI, and HInclude renderers are pre-configured).

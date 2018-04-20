@@ -15,7 +15,7 @@ Parameters
   constructor of the ``session.storage`` service.
 
   In case of the default `NativeSessionStorage
-  <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/NativeSessionStorage.html>`_,
+  <https://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/NativeSessionStorage.html>`_,
   the most useful options are:
 
   * **name**: The cookie name (_SESS by default)
@@ -30,7 +30,7 @@ Parameters
   seconds (30 minutes). To override this, set the ``lifetime`` option.
 
   For a full list of available options, read the `PHP
-  <http://php.net/session.configuration>`_ official documentation.
+  <https://secure.php.net/session.configuration>`_ official documentation.
 
 * **session.test**: Whether to simulate sessions or not (useful when writing
   functional tests).
@@ -45,14 +45,14 @@ Services
 --------
 
 * **session**: An instance of Symfony's `Session
-  <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Session.html>`_.
+  <https://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Session.html>`_.
 
 * **session.storage**: A service that is used for persistence of the session
   data.
 
 * **session.storage.handler**: A service that is used by the
   ``session.storage`` for data access. Defaults to a `NativeFileSessionHandler
-  <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/NativeFileSessionHandler.html>`_
+  <https://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/NativeFileSessionHandler.html>`_
   storage handler.
 
 Registering
@@ -69,15 +69,15 @@ The default session handler is ``NativeFileSessionHandler``. However, there are
 multiple handlers available for use by setting ``session.storage.handler`` to
 an instance of one of the following handler objects:
 
-* `LegacyPdoSessionHandler <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/LegacyPdoSessionHandler.html>`_
-* `MemcacheSessionHandler <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/MemcacheSessionHandler.html>`_
-* `MemcachedSessionHandler <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/MemcachedSessionHandler.html>`_
-* `MongoDbSessionHandler <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/MongoDbSessionHandler.html>`_
-* `NativeFileSessionHandler <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/NativeFileSessionHandler.html>`_
-* `NativeSessionHandler <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/NativeSessionHandler.html>`_
-* `NullSessionHandler <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/NullSessionHandler.html>`_
-* `PdoSessionHandler <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/PdoSessionHandler.html>`_
-* `WriteCheckSessionHandler <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/WriteCheckSessionHandler.html>`_
+* `LegacyPdoSessionHandler <https://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/LegacyPdoSessionHandler.html>`_
+* `MemcacheSessionHandler <https://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/MemcacheSessionHandler.html>`_
+* `MemcachedSessionHandler <https://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/MemcachedSessionHandler.html>`_
+* `MongoDbSessionHandler <https://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/MongoDbSessionHandler.html>`_
+* `NativeFileSessionHandler <https://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/NativeFileSessionHandler.html>`_
+* `NativeSessionHandler <https://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/NativeSessionHandler.html>`_
+* `NullSessionHandler <https://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/NullSessionHandler.html>`_
+* `PdoSessionHandler <https://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/PdoSessionHandler.html>`_
+* `WriteCheckSessionHandler <https://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/WriteCheckSessionHandler.html>`_
 
 Usage
 -----

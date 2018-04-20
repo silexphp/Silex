@@ -7,10 +7,10 @@ medium to large websites use a database to store sessions instead of files,
 because databases are easier to use and scale in a multi-webserver environment.
 
 Symfony's `NativeSessionStorage
-<http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/NativeSessionStorage.html>`_
+<https://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/NativeSessionStorage.html>`_
 has multiple storage handlers and one of them uses PDO to store sessions,
 `PdoSessionHandler
-<http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/PdoSessionHandler.html>`_.
+<https://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/PdoSessionHandler.html>`_.
 To use it, replace the ``session.storage.handler`` service in your application
 like explained below.
 
@@ -86,4 +86,4 @@ PdoSessionStorage needs a database table with 3 columns:
 
 You can find examples of SQL statements to create the session table in the
 `Symfony cookbook
-<http://symfony.com/doc/current/cookbook/configuration/pdo_session_storage.html#example-sql-statements>`_
+<https://symfony.com/doc/current/cookbook/configuration/pdo_session_storage.html#example-sql-statements>`_
