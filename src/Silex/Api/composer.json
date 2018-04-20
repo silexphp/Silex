@@ -3,7 +3,7 @@
     "name": "silex/api",
     "description": "The Silex interfaces",
     "keywords": ["microframework"],
-    "homepage": "http://silex.sensiolabs.org",
+    "homepage": "https://silex.symfony.com",
     "license": "MIT",
     "authors": [
         {

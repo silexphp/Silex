@@ -46,5 +46,5 @@ Finally, the app is run. Visit ``/hello/world`` to see the result. It's really
 that easy!
 
 .. _Symfony: http://symfony.com/
-.. _Pimple: http://pimple.sensiolabs.org/
+.. _Pimple:  https://pimple.symfony.com/
 .. _Sinatra: http://www.sinatrarb.com/

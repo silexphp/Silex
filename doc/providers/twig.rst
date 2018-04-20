@@ -2,7 +2,7 @@ Twig
 ====
 
 The *TwigServiceProvider* provides integration with the `Twig
-<http://twig.sensiolabs.org/>`_ template engine.
+<https://twig.symfony.com/>`_ template engine.
 
 Parameters
 ----------
@@ -14,7 +14,7 @@ Parameters
   template contents. Use this if you want to define your templates inline.
 
 * **twig.options** (optional): An associative array of twig
-  options. Check out the `twig documentation <http://twig.sensiolabs.org/doc/api.html#environment-options>`_
+  options. Check out the `twig documentation <https://twig.symfony.com/doc/api.html#environment-options>`_
   for more information.
 
 * **twig.form.templates** (optional): An array of templates used to render
@@ -235,6 +235,6 @@ You can configure the Twig environment before using it by extending the
     });
 
 For more information, check out the `official Twig documentation
-<http://twig.sensiolabs.org>`_.
+<https://twig.symfony.com>`_.
 
 .. _reference: https://symfony.com/doc/current/reference/twig_reference.html#controller

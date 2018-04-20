@@ -65,7 +65,7 @@ Silex is licensed under the MIT license.
 .. _Symfony components: http://symfony.com
 .. _Composer:           http://getcomposer.org
 .. _PHPUnit:            https://phpunit.de
-.. _silex.zip:          http://silex.sensiolabs.org/download
-.. _documentation:      http://silex.sensiolabs.org/documentation
+.. _silex.zip:          https://silex.symfony.com/download
+.. _documentation:      https://silex.symfony.com/documentation
 .. _silex tag:          https://stackoverflow.com/questions/tagged/silex
 .. _open an issue:      https://github.com/silexphp/Silex/issues/new
