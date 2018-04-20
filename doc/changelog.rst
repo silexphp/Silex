@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.3.0 (2018-XX-XX)
+2.3.0 (2018-04-20)
 ------------------
 
  * added support for defining users provider as a service ID
