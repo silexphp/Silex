@@ -89,6 +89,7 @@ class TwigServiceProvider implements ServiceProviderInterface
                 if (isset($app['request_stack'])) {
                     $twig->addExtension(new HttpFoundationExtension($app['request_stack']));
                     $twig->addExtension(new RoutingExtension($app['url_generator']));
+                    $twig->addExtension(new WebLinkExtension($app['request_stack']));
                 }
 
                 if (isset($app['translator'])) {
@@ -133,7 +134,6 @@ class TwigServiceProvider implements ServiceProviderInterface
                 }
 
                 $twig->addRuntimeLoader($app['twig.runtime_loader']);
-                $twig->addExtension(new WebLinkExtension($app['request_stack']));
             }
 
             return $twig;
