@@ -251,7 +251,17 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
                 return;
             }
 
-            $ret = call_user_func($app['callback_resolver']->resolveCallback($callback), $event->getRequest(), $app);
+            $request = $event->getRequest();
+            $resolvedCallback = $app['callback_resolver']->resolveCallback($callback);
+            try {
+                $arguments = $app['argument_resolver']->getArguments($request, $resolvedCallback);
+            } catch (\RuntimeException $e) {
+                $arguments = array(
+                    $request, $app
+                );
+            }
+            
+            $ret = \call_user_func_array($resolvedCallback, $arguments);
 
             if ($ret instanceof Response) {
                 $event->setResponse($ret);
